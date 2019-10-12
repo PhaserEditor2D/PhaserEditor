@@ -1,5 +1,8 @@
 namespace phasereditor2d.ui.ide.views.files {
 
+    import controls = colibri.ui.controls;
+    import core = colibri.core;
+
     export class FileSection extends controls.properties.PropertySection<core.io.FilePath> {
 
         constructor(page: controls.properties.PropertyPage) {

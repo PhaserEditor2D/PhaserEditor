@@ -2,6 +2,8 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.properties {
 
+    import controls = colibri.ui.controls;
+
     export class VariableSection extends SceneSection<Phaser.GameObjects.GameObject> {
 
         constructor(page: controls.properties.PropertyPage) {

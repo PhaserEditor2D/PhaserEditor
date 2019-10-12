@@ -1,7 +1,10 @@
 
 namespace phasereditor2d.ui.ide.views.files {
 
-    import viewers = phasereditor2d.ui.controls.viewers;
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+    import viewers = colibri.ui.controls.viewers;
 
     export class FilesView extends ide.ViewerView {
 
@@ -10,7 +13,7 @@ namespace phasereditor2d.ui.ide.views.files {
         constructor() {
             super("filesView");
             this.setTitle("Files");
-            this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_FOLDER));
+            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
         }
 
         protected createViewer() {
@@ -24,7 +27,7 @@ namespace phasereditor2d.ui.ide.views.files {
         protected createPart(): void {
             super.createPart();
 
-            const root = Workbench.getWorkbench().getProjectRoot();
+            const root = ide.Workbench.getWorkbench().getProjectRoot();
 
             const viewer = this._viewer;
             viewer.setLabelProvider(new FileLabelProvider());
@@ -35,12 +38,12 @@ namespace phasereditor2d.ui.ide.views.files {
             viewer.repaint();
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e: CustomEvent) => {
-                Workbench.getWorkbench().openEditor(e.detail);
+                ide.Workbench.getWorkbench().openEditor(e.detail);
             });
         }
 
         getIcon() {
-            return controls.Controls.getIcon(ICON_FOLDER);
+            return controls.Controls.getIcon(ide.ICON_FOLDER);
         }
 
     }

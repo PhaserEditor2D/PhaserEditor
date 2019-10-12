@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
+    import controls = colibri.ui.controls;
+
     export class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
 
         constructor(viewer: controls.viewers.TreeViewer) {

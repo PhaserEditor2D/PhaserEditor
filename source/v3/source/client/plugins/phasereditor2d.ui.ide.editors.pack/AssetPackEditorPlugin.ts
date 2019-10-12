@@ -1,12 +1,16 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export const ICON_ASSET_PACK = "asset-pack";
 
-    export class AssetPackEditorPlugin extends Plugin {
+    export class AssetPackEditorPlugin extends ide.Plugin {
 
         private static _instance = new AssetPackEditorPlugin();
 
-        static getInstance(): Plugin {
+        static getInstance(): ide.Plugin {
             return this._instance;
         }
 
@@ -29,7 +33,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             contentTypeIconMap.set(CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
         }
 
-        registerEditor(registry: EditorRegistry) {
+        registerEditor(registry: ide.EditorRegistry) {
             registry.registerFactory(editors.pack.AssetPackEditor.getFactory());
         }
 

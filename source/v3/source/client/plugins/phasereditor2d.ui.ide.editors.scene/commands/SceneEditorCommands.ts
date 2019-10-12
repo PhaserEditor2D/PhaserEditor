@@ -2,18 +2,21 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
     const CMD_JOIN_IN_CONTAINER = "joinObjectsInContainer";
 
-    function isSceneScope(args: ide.commands.CommandArgs) {
+    import controls = colibri.ui.controls;
+    import core = colibri.core;
+
+    function isSceneScope(args: colibri.ui.ide.commands.CommandArgs) {
         return args.activePart instanceof SceneEditor ||
             args.activePart instanceof ide.views.outline.OutlineView && args.activeEditor instanceof SceneEditor
     }
 
     export class SceneEditorCommands {
 
-        static registerCommands(manager : commands.CommandManager) {
+        static registerCommands(manager : colibri.ui.ide.commands.CommandManager) {
 
             // delete 
 
-            manager.addHandlerHelper(ide.CMD_DELETE,
+            manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE,
 
                 args => isSceneScope(args),
 
@@ -35,7 +38,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     editor.getActionManager().joinObjectsInContainer();
                 });
 
-            manager.addKeyBinding(CMD_JOIN_IN_CONTAINER, new commands.KeyMatcher({
+            manager.addKeyBinding(CMD_JOIN_IN_CONTAINER, new colibri.ui.ide.commands.KeyMatcher({
                 key: "j"
             }));
         }

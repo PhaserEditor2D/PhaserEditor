@@ -1,15 +1,18 @@
-/// <reference path="../../phasereditor2d/ui/ide/WorkbenchWindow.ts" />
+/// <reference path="../../colibri/ui/ide/WorkbenchWindow.ts" />
 
 namespace phasereditor2d.ui.ide {
 
-    export class DesignWindow extends WorkbenchWindow {
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
+    export class DesignWindow extends ide.WorkbenchWindow {
 
         private _outlineView: views.outline.OutlineView;
         private _filesView: views.files.FilesView;
         private _inspectorView: views.inspector.InspectorView;
         private _blocksView: views.blocks.BlocksView;
         private _editorArea: ide.EditorArea;
-        private _toolbar: toolbar.Toolbar;
         private _split_Files_Blocks: controls.SplitPanel;
         private _split_Editor_FilesBlocks: controls.SplitPanel;
         private _split_Outline_EditorFilesBlocks: controls.SplitPanel;

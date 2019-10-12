@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
+    import controls = colibri.ui.controls;
+
     export class SelectionManager {
         private _editor: SceneEditor;
 

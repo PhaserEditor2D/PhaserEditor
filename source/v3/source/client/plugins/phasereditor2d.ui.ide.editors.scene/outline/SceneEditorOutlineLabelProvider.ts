@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.scene.outline {
 
+    import controls = colibri.ui.controls;
+
     export class SceneEditorOutlineLabelProvider implements controls.viewers.ILabelProvider {
 
         getLabel(obj: any): string {

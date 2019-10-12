@@ -1,5 +1,8 @@
 namespace phasereditor2d.ui.ide.editors.scene.outline {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+
     export class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
 
         private _editor: SceneEditor;

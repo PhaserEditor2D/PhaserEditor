@@ -2,6 +2,10 @@
 
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export class AtlasXMLParser extends BaseAtlasParser {
 
         constructor(packItem: AssetPackItem) {

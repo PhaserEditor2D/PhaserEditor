@@ -1,17 +1,20 @@
 
 namespace phasereditor2d.ui.ide.views.inspector {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+
     export class InspectorView extends ide.ViewPart {
 
-        private _propertyPage: ui.controls.properties.PropertyPage;
-        private _currentPart: Part;
+        private _propertyPage: controls.properties.PropertyPage;
+        private _currentPart: ide.Part;
         private _selectionListener: any;
 
         constructor() {
             super("InspectorView");
 
             this.setTitle("Inspector");
-            this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_INSPECTOR));
+            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
         }
 
         layout() {
@@ -19,17 +22,17 @@ namespace phasereditor2d.ui.ide.views.inspector {
         }
 
         protected createPart() {
-            this._propertyPage = new ui.controls.properties.PropertyPage();
+            this._propertyPage = new controls.properties.PropertyPage();
 
             this.add(this._propertyPage);
 
             this._selectionListener = (e: CustomEvent) => this.onPartSelection();
 
-            Workbench.getWorkbench().addEventListener(EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
+            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
         }
 
         private onWorkbenchPartActivate() {
-            const part = Workbench.getWorkbench().getActivePart();
+            const part = ide.Workbench.getWorkbench().getActivePart();
 
             if (part !== this && part !== this._currentPart) {
 

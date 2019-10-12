@@ -4,7 +4,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
         getCellRenderer(element: any) {
 
-            if (element instanceof core.io.FilePath) {
+            if (element instanceof colibri.core.io.FilePath) {
 
                 return new SceneCellRenderer();
 

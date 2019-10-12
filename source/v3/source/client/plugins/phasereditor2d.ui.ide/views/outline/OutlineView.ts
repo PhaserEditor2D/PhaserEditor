@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.views.outline {
 
+    import ide = colibri.ui.ide;
+
     export class OutlineView extends ide.EditorViewerView {
 
         static EDITOR_VIEWER_PROVIDER_KEY = "Outline";
@@ -8,10 +10,10 @@ namespace phasereditor2d.ui.ide.views.outline {
             super("OutlineView");
 
             this.setTitle("Outline");
-            this.setIcon(Workbench.getWorkbench().getWorkbenchIcon(ICON_OUTLINE));
+            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
         }
 
-        getViewerProvider(editor: EditorPart): EditorViewerProvider {
+        getViewerProvider(editor: ide.EditorPart): ide.EditorViewerProvider {
             return editor.getEditorViewerProvider(OutlineView.EDITOR_VIEWER_PROVIDER_KEY);
         }
     }

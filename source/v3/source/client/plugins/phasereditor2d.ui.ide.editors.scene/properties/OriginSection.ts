@@ -2,6 +2,10 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.properties {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+    
     export class OriginSection extends SceneSection<Phaser.GameObjects.Image> {
 
         constructor(page: controls.properties.PropertyPage) {

@@ -1,6 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
+    import controls = colibri.ui.controls;
+
     export abstract class ImageFrameParser {
+        
         private _packItem: AssetPackItem;
 
         constructor(packItem: AssetPackItem) {
@@ -19,14 +22,14 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             return "__frames_cache" in this._packItem.getEditorData();
         }
 
-        abstract addToPhaserCache(game : Phaser.Game) : void;
+        abstract addToPhaserCache(game: Phaser.Game): void;
 
         getPackItem() {
             return this._packItem;
         }
 
         async preload(): Promise<controls.PreloadResult> {
-            
+
             if (this.hasCachedFrames()) {
                 return controls.Controls.resolveNothingLoaded();
             }

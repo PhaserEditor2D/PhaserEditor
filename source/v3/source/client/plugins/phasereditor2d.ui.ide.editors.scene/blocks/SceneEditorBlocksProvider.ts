@@ -1,6 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
-    export class SceneEditorBlocksProvider extends EditorViewerProvider {
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    
+    export class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
 
         async preload() {
             pack.PackFinder.preload();

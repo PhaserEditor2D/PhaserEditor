@@ -1,13 +1,14 @@
 namespace phasereditor2d.ui.ide.views.files {
 
-    import io = phasereditor2d.core.io;
-    import viewers = phasereditor2d.ui.controls.viewers;
+    import controls = colibri.ui.controls;
+    import viewers = controls.viewers;
+    import core = colibri.core;
 
     export class FileTreeContentProvider implements viewers.ITreeContentProvider {
 
         getRoots(input: any): any[] {
 
-            if (input instanceof io.FilePath) {
+            if (input instanceof core.io.FilePath) {
                 return [input];
             }
 
@@ -19,7 +20,7 @@ namespace phasereditor2d.ui.ide.views.files {
         }
 
         getChildren(parent: any): any[] {
-            return (<io.FilePath>parent).getFiles();
+            return (<core.io.FilePath>parent).getFiles();
         }
 
     }

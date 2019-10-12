@@ -1,5 +1,6 @@
 namespace phasereditor2d {
 
+
     export const VER = "3.0.0";
 
     export async function main() {
@@ -12,7 +13,7 @@ namespace phasereditor2d {
             "background-color:silver",
         );
 
-        await ui.ide.Workbench.getWorkbench()
+        await colibri.ui.ide.Workbench.getWorkbench()
 
             .launch([
 

@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack.properties {
 
+    import controls = colibri.ui.controls;
+    
     export class AssetPackItemSection extends controls.properties.PropertySection<AssetPackItem> {
 
         constructor(page : controls.properties.PropertyPage) {

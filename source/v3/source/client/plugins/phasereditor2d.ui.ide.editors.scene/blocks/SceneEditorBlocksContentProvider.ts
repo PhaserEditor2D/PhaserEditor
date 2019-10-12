@@ -1,6 +1,8 @@
 
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
+    import ide = colibri.ui.ide;
+
     const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
 
     export class SceneEditorBlocksContentProvider extends pack.viewers.AssetPackContentProvider {
@@ -27,7 +29,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
         }
 
         getSceneFiles() {
-            return FileUtils.getAllFiles().filter(file => file.getExtension() === "scene");
+            return ide.FileUtils.getAllFiles().filter(file => file.getExtension() === "scene");
         }
 
         getChildren(parent: any): any[] {

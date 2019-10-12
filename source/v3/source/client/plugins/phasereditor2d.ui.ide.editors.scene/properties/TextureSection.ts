@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.scene.properties {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export class TextureSection extends SceneSection<Phaser.GameObjects.Image> {
 
         constructor(page: controls.properties.PropertyPage) {
@@ -9,7 +13,7 @@ namespace phasereditor2d.ui.ide.editors.scene.properties {
         protected createForm(parent: HTMLDivElement) {
             parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
 
-            const imgControl = new controls.ImageControl(IMG_SECTION_PADDING);
+            const imgControl = new controls.ImageControl(ide.IMG_SECTION_PADDING);
 
             this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
                 imgControl.resizeTo();

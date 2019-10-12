@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     const IMAGE_FRAME_CONTAINER_TYPES = new Set([
         IMAGE_TYPE,
         MULTI_ATLAS_TYPE,
@@ -18,7 +22,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
     export class AssetPackUtils {
 
-        static isAtlasPackItem(packItem : AssetPackItem) {
+        static isAtlasPackItem(packItem: AssetPackItem) {
             return ATLAS_TYPES.has(packItem.getType());
         }
 
@@ -64,7 +68,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         }
 
         static async getAllPacks() {
-            const files = await FileUtils.getFilesWithContentType(CONTENT_TYPE_ASSET_PACK);
+            const files = await ide.FileUtils.getFilesWithContentType(CONTENT_TYPE_ASSET_PACK);
 
             const packs: AssetPack[] = [];
 
@@ -76,33 +80,43 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return packs;
         }
 
-        
+
 
         static getFileFromPackUrl(url: string): core.io.FilePath {
-            return FileUtils.getFileFromPath(url);
+            return ide.FileUtils.getFileFromPath(url);
         }
 
         static getFileStringFromPackUrl(url: string): string {
-            const file = FileUtils.getFileFromPath(url);
-            const str = FileUtils.getFileString(file);
+
+            const file = ide.FileUtils.getFileFromPath(url);
+            const str = ide.FileUtils.getFileString(file);
+
             return str;
         }
 
         static getFileJSONFromPackUrl(url: string): any {
+
             const str = this.getFileStringFromPackUrl(url);
+
             return JSON.parse(str);
         }
+
         static getFileXMLFromPackUrl(url: string): Document {
+
             const str = this.getFileStringFromPackUrl(url);
             const parser = new DOMParser();
+
             return parser.parseFromString(str, "text/xml");
         }
 
         static getImageFromPackUrl(url: string): controls.IImage {
+
             const file = this.getFileFromPackUrl(url);
+
             if (file) {
-                return Workbench.getWorkbench().getFileImage(file);
+                return ide.Workbench.getWorkbench().getFileImage(file);
             }
+
             return null;
         }
 

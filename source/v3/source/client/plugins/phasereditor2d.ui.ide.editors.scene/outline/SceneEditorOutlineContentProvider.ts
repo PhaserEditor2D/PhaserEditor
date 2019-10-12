@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.scene.outline {
 
+    import controls = colibri.ui.controls;
+
     export class SceneEditorOutlineContentProvider implements controls.viewers.ITreeContentProvider {
 
         getRoots(input: any): any[] {

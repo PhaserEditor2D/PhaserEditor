@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export const CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
 
     export class AssetPackContentTypeResolver implements core.IContentTypeResolver {
@@ -7,7 +11,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         async computeContentType(file: core.io.FilePath): Promise<string> {
             if (file.getExtension() === "json") {
 
-                const content = await FileUtils.preloadAndGetFileString(file);
+                const content = await ide.FileUtils.preloadAndGetFileString(file);
 
                 if (content !== null) {
 

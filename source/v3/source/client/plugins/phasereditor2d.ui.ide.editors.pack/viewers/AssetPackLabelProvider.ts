@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
+    import controls = colibri.ui.controls;
+
     export class AssetPackLabelProvider implements controls.viewers.ILabelProvider {
 
         getLabel(obj: any): string {

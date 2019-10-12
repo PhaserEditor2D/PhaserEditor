@@ -1,6 +1,10 @@
 
 namespace phasereditor2d.ui.ide.editors.scene {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export class SceneMaker {
 
         private _scene: GameScene;
@@ -31,7 +35,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
 
-            const nameMaker = new utils.NameMaker(obj => {
+            const nameMaker = new ide.utils.NameMaker(obj => {
                 return (<Phaser.GameObjects.GameObject>obj).getEditorLabel();
             });
 

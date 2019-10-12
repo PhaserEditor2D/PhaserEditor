@@ -3,7 +3,7 @@ var phasereditor2d;
     phasereditor2d.VER = "3.0.0";
     async function main() {
         console.log(`%c %c Phaser Editor 2D %c v${phasereditor2d.VER} %c %c https://phasereditor2d.com `, "background-color:red", "background-color:#3f3f3f;color:whitesmoke", "background-color:orange;color:black", "background-color:red", "background-color:silver");
-        await phasereditor2d.ui.ide.Workbench.getWorkbench()
+        await colibri.ui.ide.Workbench.getWorkbench()
             .launch([
             phasereditor2d.ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
             phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin.getInstance(),
@@ -13,8 +13,8 @@ var phasereditor2d;
     phasereditor2d.main = main;
 })(phasereditor2d || (phasereditor2d = {}));
 window.addEventListener("load", phasereditor2d.main);
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -34,14 +34,14 @@ var phasereditor2d;
                     const entry = this._map.get(filename);
                     if (entry) {
                         if (entry.modTime === file.getModTime()) {
-                            return phasereditor2d.ui.controls.Controls.resolveNothingLoaded();
+                            return colibri.ui.controls.Controls.resolveNothingLoaded();
                         }
                         const promise = this._backendGetContent(file)
                             .then((content) => {
                             this._preloadMap.delete(filename);
                             entry.modTime = file.getModTime();
                             entry.content = content;
-                            return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
+                            return colibri.ui.controls.PreloadResult.RESOURCES_LOADED;
                         });
                         this._preloadMap.set(filename, promise);
                         return promise;
@@ -50,7 +50,7 @@ var phasereditor2d;
                         .then((content) => {
                         this._preloadMap.delete(filename);
                         this._map.set(filename, new ContentEntry(content, file.getModTime()));
-                        return phasereditor2d.ui.controls.PreloadResult.RESOURCES_LOADED;
+                        return colibri.ui.controls.PreloadResult.RESOURCES_LOADED;
                     });
                     this._preloadMap.set(filename, promise);
                     return promise;
@@ -87,11 +87,11 @@ var phasereditor2d;
             }
             io.ContentEntry = ContentEntry;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
 /// <reference path="./io/FileContentCache.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         class ContentTypeRegistry {
@@ -126,17 +126,17 @@ var phasereditor2d;
                 });
             }
         }
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         core.CONTENT_TYPE_ANY = "any";
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -255,10 +255,10 @@ var phasereditor2d;
             }
             io.FilePath = FilePath;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -289,10 +289,10 @@ var phasereditor2d;
             }
             io.FileStorageChange = FileStorageChange;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -304,10 +304,10 @@ var phasereditor2d;
             }
             io.FileStringCache = FileStringCache;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -426,10 +426,10 @@ var phasereditor2d;
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var io;
@@ -461,10 +461,10 @@ var phasereditor2d;
             }
             io.SyncFileContentCache = SyncFileContentCache;
         })(io = core.io || (core.io = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var json;
@@ -483,10 +483,22 @@ var phasereditor2d;
             }
             json.read = read;
         })(json = core.json || (core.json = {}));
-    })(core = phasereditor2d.core || (phasereditor2d.core = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class Action {
+            }
+            controls.Action = Action;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -620,11 +632,82 @@ var phasereditor2d;
             }
             controls.Control = Control;
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/Control.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ActionButton extends controls.Control {
+                constructor(action) {
+                    super("button");
+                    this._action = action;
+                    this.getElement().classList.add("actionButton");
+                }
+                getAction() {
+                    return this._action;
+                }
+            }
+            controls.ActionButton = ActionButton;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class CanvasControl extends controls.Control {
+                constructor(padding = 0, ...classList) {
+                    super("canvas", "CanvasControl", ...classList);
+                    this._padding = padding;
+                    this._canvas = this.getElement();
+                    this.initContext();
+                }
+                getCanvas() {
+                    return this._canvas;
+                }
+                resizeTo(parent) {
+                    parent = parent || this.getElement().parentElement;
+                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
+                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
+                    this.repaint();
+                }
+                getPadding() {
+                    return this._padding;
+                }
+                ensureCanvasSize() {
+                    if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
+                        this._canvas.width = this._canvas.clientWidth;
+                        this._canvas.height = this._canvas.clientHeight;
+                        this.initContext();
+                    }
+                }
+                clear() {
+                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                }
+                repaint() {
+                    this.ensureCanvasSize();
+                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                    this.paint();
+                }
+                initContext() {
+                    this._context = this.getCanvas().getContext("2d");
+                    this._context.imageSmoothingEnabled = false;
+                    this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
+                }
+            }
+            controls.CanvasControl = CanvasControl;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="./Control.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -705,7 +788,7 @@ var phasereditor2d;
                     Controls._images.set(id, img);
                     return img;
                 }
-                static getIcon(name, baseUrl = "phasereditor2d.ui.controls/images") {
+                static getIcon(name, baseUrl = "colibri/ui/controls/images") {
                     const url = `${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);
                 }
@@ -777,135 +860,643 @@ var phasereditor2d;
             Controls.theme = Controls.DARK_THEME;
             controls.Controls = Controls;
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
-        var ide;
-        (function (ide) {
-            ide.EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
-            class Part extends ui.controls.Control {
-                constructor(id) {
-                    super();
-                    this._id = id;
-                    this._title = "";
-                    this._selection = [];
-                    this._partCreated = false;
-                    this._undoManager = new ide.undo.UndoManager();
-                    this.getElement().setAttribute("id", id);
-                    this.getElement().classList.add("Part");
-                    this.getElement()["__part"] = this;
+        var controls;
+        (function (controls) {
+            class DefaultImage {
+                constructor(img, url) {
+                    this._imageElement = img;
+                    this._url = url;
+                    this._ready = false;
+                    this._error = false;
                 }
-                getUndoManager() {
-                    return this._undoManager;
+                getImageElement() {
+                    return this._imageElement;
                 }
-                getPartFolder() {
-                    return this._folder;
+                preload() {
+                    if (this._ready || this._error) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                    if (this._requestPromise) {
+                        return this._requestPromise;
+                    }
+                    this._requestPromise = new Promise((resolve, reject) => {
+                        this._imageElement.src = this._url;
+                        this._imageElement.addEventListener("load", e => {
+                            this._requestPromise = null;
+                            this._ready = true;
+                            resolve(controls.PreloadResult.RESOURCES_LOADED);
+                        });
+                        this._imageElement.addEventListener("error", e => {
+                            console.error("ERROR: Loading image " + this._url);
+                            this._requestPromise = null;
+                            this._error = true;
+                            resolve(controls.PreloadResult.NOTHING_LOADED);
+                        });
+                    });
+                    return this._requestPromise;
+                    /*
+                    return this._img.decode().then(_ => {
+                        this._ready = true;
+                        return Controls.resolveResourceLoaded();
+                    }).catch(e => {
+                        this._ready = true;
+                        console.error("ERROR: Cannot decode " + this._url);
+                        console.error(e);
+                        return Controls.resolveNothingLoaded();
+                    });
+                    */
                 }
-                setPartFolder(folder) {
-                    this._folder = folder;
+                getWidth() {
+                    return this._ready ? this._imageElement.naturalWidth : 16;
                 }
-                getTitle() {
-                    return this._title;
+                getHeight() {
+                    return this._ready ? this._imageElement.naturalHeight : 16;
                 }
-                setTitle(title) {
-                    this._title = title;
-                    this.dispatchTitleUpdatedEvent();
-                }
-                setIcon(icon) {
-                    this._icon = icon;
-                    this.dispatchTitleUpdatedEvent();
-                }
-                dispatchTitleUpdatedEvent() {
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
-                }
-                getIcon() {
-                    return this._icon;
-                }
-                getId() {
-                    return this._id;
-                }
-                setSelection(selection, notify = true) {
-                    this._selection = selection;
-                    window["SELECTION"] = selection;
-                    if (notify) {
-                        this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION_CHANGED, {
-                            detail: selection
-                        }));
+                paint(context, x, y, w, h, center) {
+                    if (this._ready) {
+                        DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
+                    }
+                    else {
+                        DefaultImage.paintEmpty(context, x, y, w, h);
                     }
                 }
-                getSelection() {
-                    return this._selection;
+                static paintImageElement(context, image, x, y, w, h, center) {
+                    const naturalWidth = image.naturalWidth;
+                    const naturalHeight = image.naturalHeight;
+                    let renderHeight = h;
+                    let renderWidth = w;
+                    let imgW = naturalWidth;
+                    let imgH = naturalHeight;
+                    // compute the right width
+                    imgW = imgW * (renderHeight / imgH);
+                    imgH = renderHeight;
+                    // fix width if it goes beyond the area
+                    if (imgW > renderWidth) {
+                        imgH = imgH * (renderWidth / imgW);
+                        imgW = renderWidth;
+                    }
+                    let scale = imgW / naturalWidth;
+                    let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                    let imgY = y + renderHeight / 2 - imgH / 2;
+                    let imgDstW = naturalWidth * scale;
+                    let imgDstH = naturalHeight * scale;
+                    if (imgDstW > 0 && imgDstH > 0) {
+                        context.drawImage(image, imgX, imgY, imgDstW, imgDstH);
+                    }
                 }
-                getPropertyProvider() {
-                    return null;
+                static paintEmpty(context, x, y, w, h) {
+                    if (w > 10 && h > 10) {
+                        context.save();
+                        context.strokeStyle = controls.Controls.theme.treeItemForeground;
+                        const cx = x + w / 2;
+                        const cy = y + h / 2;
+                        context.strokeRect(cx, cy - 1, 2, 2);
+                        context.strokeRect(cx - 5, cy - 1, 2, 2);
+                        context.strokeRect(cx + 5, cy - 1, 2, 2);
+                        context.restore();
+                    }
+                }
+                static paintImageElementFrame(context, image, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    context.drawImage(image, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                }
+                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    if (this._ready) {
+                        DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+                    }
+                    else {
+                        DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
+                    }
+                }
+            }
+            controls.DefaultImage = DefaultImage;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class FillLayout {
+                constructor(padding = 0) {
+                    this._padding = 0;
+                    this._padding = padding;
+                }
+                getPadding() {
+                    return this._padding;
+                }
+                setPadding(padding) {
+                    this._padding = padding;
+                }
+                layout(parent) {
+                    const children = parent.getChildren();
+                    if (children.length > 1) {
+                        console.warn("[FillLayout] Invalid number for children or parent control.");
+                    }
+                    const b = parent.getBounds();
+                    controls.setElementBounds(parent.getElement(), b);
+                    if (children.length > 0) {
+                        const child = children[0];
+                        child.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
+                    }
+                }
+            }
+            controls.FillLayout = FillLayout;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class FrameData {
+                constructor(index, src, dst, srcSize) {
+                    this.index = index;
+                    this.src = src;
+                    this.dst = dst;
+                    this.srcSize = srcSize;
+                }
+                static fromRect(index, rect) {
+                    return new FrameData(0, rect.clone(), new controls.Rect(0, 0, rect.w, rect.h), new controls.Point(rect.w, rect.h));
+                }
+            }
+            controls.FrameData = FrameData;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="CanvasControl.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ImageControl extends controls.CanvasControl {
+                constructor(padding = 0, ...classList) {
+                    super(padding, "ImageControl", ...classList);
+                }
+                setImage(image) {
+                    this._image = image;
+                }
+                getImage() {
+                    return this._image;
+                }
+                async paint() {
+                    if (this._image) {
+                        this.paint2();
+                        const result = await this._image.preload();
+                        if (result === controls.PreloadResult.RESOURCES_LOADED) {
+                            this.paint2();
+                        }
+                    }
+                    else {
+                        this.clear();
+                    }
+                }
+                paint2() {
+                    this.ensureCanvasSize();
+                    this.clear();
+                    this._image.paint(this._context, 0, 0, this._canvas.width, this._canvas.height, true);
+                }
+            }
+            controls.ImageControl = ImageControl;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ImageFrame {
+                constructor(name, image, frameData) {
+                    this._name = name;
+                    this._image = image;
+                    this._frameData = frameData;
+                }
+                getName() {
+                    return this._name;
+                }
+                getImage() {
+                    return this._image;
+                }
+                getFrameData() {
+                    return this._frameData;
+                }
+                paint(context, x, y, w, h, center) {
+                    const fd = this._frameData;
+                    const img = this._image;
+                    const renderWidth = w;
+                    const renderHeight = h;
+                    let imgW = fd.src.w;
+                    let imgH = fd.src.h;
+                    // compute the right width
+                    imgW = imgW * (renderHeight / imgH);
+                    imgH = renderHeight;
+                    // fix width if it goes beyond the area
+                    if (imgW > renderWidth) {
+                        imgH = imgH * (renderWidth / imgW);
+                        imgW = renderWidth;
+                    }
+                    const scale = imgW / fd.src.w;
+                    var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
+                    var imgY = y + renderHeight / 2 - imgH / 2;
+                    // here we use the trimmed version of the image, maybe this should be parametrized
+                    const imgDstW = fd.src.w * scale;
+                    const imgDstH = fd.src.h * scale;
+                    if (imgDstW > 0 && imgDstH > 0) {
+                        img.paintFrame(context, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX, imgY, imgDstW, imgDstH);
+                    }
+                }
+                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
+                    // not implemented fow now
+                }
+                preload() {
+                    return this._image.preload();
+                }
+                getWidth() {
+                    return this._frameData.srcSize.x;
+                }
+                getHeight() {
+                    return this._frameData.srcSize.y;
+                }
+            }
+            controls.ImageFrame = ImageFrame;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ImageWrapper {
+                constructor(imageElement) {
+                    this._imageElement = imageElement;
+                }
+                paint(context, x, y, w, h, center) {
+                    if (this._imageElement) {
+                        controls.DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
+                    }
+                    else {
+                        controls.DefaultImage.paintEmpty(context, x, y, w, h);
+                    }
+                }
+                paintFrame(context, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
+                    if (this._imageElement) {
+                        controls.DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+                    }
+                    else {
+                        controls.DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
+                    }
+                }
+                preload() {
+                    return controls.Controls.resolveNothingLoaded();
+                }
+                getWidth() {
+                    if (this._imageElement) {
+                        return this._imageElement.naturalWidth;
+                    }
+                    return 0;
+                }
+                getHeight() {
+                    if (this._imageElement) {
+                        return this._imageElement.naturalHeight;
+                    }
+                    return 0;
+                }
+            }
+            controls.ImageWrapper = ImageWrapper;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class Point {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+            controls.Point = Point;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class Rect {
+                constructor(x = 0, y = 0, w = 0, h = 0) {
+                    this.x = x;
+                    this.y = y;
+                    this.w = w;
+                    this.h = h;
+                }
+                set(x, y, w, h) {
+                    this.x = x;
+                    this.y = y;
+                    this.w = w;
+                    this.h = h;
+                }
+                contains(x, y) {
+                    return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
+                }
+                clone() {
+                    return new Rect(this.x, this.y, this.w, this.h);
+                }
+            }
+            controls.Rect = Rect;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ScrollPane extends controls.Control {
+                constructor(clientControl) {
+                    super("div", "ScrollPane");
+                    this._clientContentHeight = 0;
+                    this._startDragY = -1;
+                    this._startScrollY = 0;
+                    this._clientControl = clientControl;
+                    this.add(this._clientControl);
+                    this._scrollBar = document.createElement("div");
+                    this._scrollBar.classList.add("ScrollBar");
+                    this.getElement().appendChild(this._scrollBar);
+                    this._scrollHandler = document.createElement("div");
+                    this._scrollHandler.classList.add("ScrollHandler");
+                    this._scrollBar.appendChild(this._scrollHandler);
+                    const l2 = (e) => this.onMouseDown(e);
+                    const l3 = (e) => this.onMouseUp(e);
+                    const l4 = (e) => this.onMouseMove(e);
+                    const l5 = (e) => {
+                        if (!this.getElement().isConnected) {
+                            window.removeEventListener("mousedown", l2);
+                            window.removeEventListener("mouseup", l3);
+                            window.removeEventListener("mousemove", l4);
+                            window.removeEventListener("mousemove", l5);
+                        }
+                    };
+                    window.addEventListener("mousedown", l2);
+                    window.addEventListener("mouseup", l3);
+                    window.addEventListener("mousemove", l4);
+                    window.addEventListener("mousemove", l5);
+                    this.getViewer().getElement().addEventListener("wheel", e => this.onClientWheel(e));
+                    this._scrollBar.addEventListener("mousedown", e => this.onBarMouseDown(e));
+                }
+                getViewer() {
+                    if (this._clientControl instanceof controls.viewers.ViewerContainer) {
+                        return this._clientControl.getViewer();
+                    }
+                    return this._clientControl;
+                }
+                updateScroll(clientContentHeight) {
+                    const scrollY = this.getViewer().getScrollY();
+                    const b = this.getBounds();
+                    let newScrollY = scrollY;
+                    newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
+                    newScrollY = Math.min(0, newScrollY);
+                    if (newScrollY !== scrollY) {
+                        this._clientContentHeight = clientContentHeight;
+                        this.setClientScrollY(scrollY);
+                    }
+                    else if (clientContentHeight !== this._clientContentHeight) {
+                        this._clientContentHeight = clientContentHeight;
+                        this.layout();
+                    }
+                }
+                onBarMouseDown(e) {
+                    if (e.target !== this._scrollBar) {
+                        return;
+                    }
+                    e.stopImmediatePropagation();
+                    const b = this.getBounds();
+                    this.setClientScrollY(-e.offsetY / b.height * (this._clientContentHeight - b.height));
+                }
+                onClientWheel(e) {
+                    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+                        return;
+                    }
+                    let y = this.getViewer().getScrollY();
+                    y += e.deltaY < 0 ? 30 : -30;
+                    this.setClientScrollY(y);
+                }
+                setClientScrollY(y) {
+                    const b = this.getBounds();
+                    y = Math.max(-this._clientContentHeight + b.height, y);
+                    y = Math.min(0, y);
+                    this.getViewer().setScrollY(y);
+                    this.layout();
+                }
+                onMouseDown(e) {
+                    if (e.target === this._scrollHandler) {
+                        e.stopImmediatePropagation();
+                        this._startDragY = e.y;
+                        this._startScrollY = this.getViewer().getScrollY();
+                    }
+                }
+                onMouseMove(e) {
+                    if (this._startDragY !== -1) {
+                        let delta = e.y - this._startDragY;
+                        const b = this.getBounds();
+                        delta = delta / b.height * this._clientContentHeight;
+                        this.setClientScrollY(this._startScrollY - delta);
+                    }
+                }
+                onMouseUp(e) {
+                    if (this._startDragY !== -1) {
+                        e.stopImmediatePropagation();
+                        this._startDragY = -1;
+                    }
+                }
+                getBounds() {
+                    const b = this.getElement().getBoundingClientRect();
+                    return { x: 0, y: 0, width: b.width, height: b.height };
                 }
                 layout() {
-                }
-                onPartClosed() {
-                    return true;
-                }
-                onPartShown() {
-                    if (!this._partCreated) {
-                        this._partCreated = true;
-                        this.createPart();
+                    const b = this.getBounds();
+                    if (b.height < this._clientContentHeight) {
+                        this._scrollHandler.style.display = "block";
+                        const h = Math.max(10, b.height / this._clientContentHeight * b.height);
+                        const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
+                        controls.setElementBounds(this._scrollHandler, {
+                            y: y,
+                            height: h
+                        });
+                        this.removeClass("hideScrollBar");
                     }
+                    else {
+                        this.addClass("hideScrollBar");
+                    }
+                    this._clientControl.layout();
                 }
             }
-            ide.Part = Part;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+            controls.ScrollPane = ScrollPane;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
-        var ide;
-        (function (ide) {
-            class EditorPart extends ide.Part {
-                constructor(id) {
-                    super(id);
-                    this.addClass("EditorPart");
-                    this._dirty = false;
-                }
-                setDirty(dirty) {
-                    this._dirty = dirty;
-                    const folder = this.getPartFolder();
-                    const label = folder.getLabelFromContent(this);
-                    const iconClose = ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_CLOSE);
-                    const iconDirty = dirty ? ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_DIRTY) : iconClose;
-                    folder.setTabCloseIcons(label, iconDirty, iconClose);
-                }
-                isDirty() {
-                    return this._dirty;
-                }
-                save() {
-                }
-                onPartClosed() {
-                    if (this.isDirty()) {
-                        return confirm("This editor is not saved, do you want to close it?");
+        var controls;
+        (function (controls) {
+            class SplitPanel extends controls.Control {
+                constructor(left, right, horizontal = true) {
+                    super("div", "split");
+                    this._startDrag = -1;
+                    this._horizontal = horizontal;
+                    this._splitPosition = 50;
+                    this._splitFactor = 0.5;
+                    this._splitWidth = 2;
+                    const l1 = (e) => this.onMouseLeave(e);
+                    const l2 = (e) => this.onMouseDown(e);
+                    const l3 = (e) => this.onMouseUp(e);
+                    const l4 = (e) => this.onMouseMove(e);
+                    const l5 = (e) => {
+                        if (!this.getElement().isConnected) {
+                            window.removeEventListener("mouseleave", l1);
+                            window.removeEventListener("mousedown", l2);
+                            window.removeEventListener("mouseup", l3);
+                            window.removeEventListener("mousemove", l4);
+                            window.removeEventListener("mousemove", l5);
+                        }
+                    };
+                    window.addEventListener("mouseleave", l1);
+                    window.addEventListener("mousedown", l2);
+                    window.addEventListener("mouseup", l3);
+                    window.addEventListener("mousemove", l4);
+                    window.addEventListener("mousemove", l5);
+                    if (left) {
+                        this.setLeftControl(left);
                     }
-                    return true;
+                    if (right) {
+                        this.setRightControl(right);
+                    }
                 }
-                getInput() {
-                    return this._input;
+                onMouseDown(e) {
+                    const pos = this.getControlPosition(e.x, e.y);
+                    const offset = this._horizontal ? pos.x : pos.y;
+                    const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
+                    if (inside) {
+                        e.stopImmediatePropagation();
+                        this._startDrag = this._horizontal ? e.x : e.y;
+                        this._startPos = this._splitPosition;
+                    }
                 }
-                setInput(input) {
-                    this._input = input;
+                onMouseUp(e) {
+                    if (this._startDrag !== -1) {
+                        e.stopImmediatePropagation();
+                    }
+                    this._startDrag = -1;
                 }
-                getEditorViewerProvider(key) {
-                    return null;
+                onMouseMove(e) {
+                    const pos = this.getControlPosition(e.x, e.y);
+                    const offset = this._horizontal ? pos.x : pos.y;
+                    const screen = this._horizontal ? e.x : e.y;
+                    const boundsSize = this._horizontal ? this.getBounds().width : this.getBounds().height;
+                    const cursorResize = this._horizontal ? "ew-resize" : "ns-resize";
+                    const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
+                    if (inside) {
+                        if (e.buttons === 0 || this._startDrag !== -1) {
+                            e.preventDefault();
+                            this.getElement().style.cursor = cursorResize;
+                        }
+                    }
+                    else {
+                        this.getElement().style.cursor = "inherit";
+                    }
+                    if (this._startDrag !== -1) {
+                        this.getElement().style.cursor = cursorResize;
+                        const newPos = this._startPos + screen - this._startDrag;
+                        if (newPos > 100 && boundsSize - newPos > 100) {
+                            this._splitPosition = newPos;
+                            this._splitFactor = this._splitPosition / boundsSize;
+                            this.layout();
+                        }
+                    }
+                }
+                onMouseLeave(e) {
+                    this.getElement().style.cursor = "inherit";
+                    this._startDrag = -1;
+                }
+                setHorizontal(horizontal = true) {
+                    this._horizontal = horizontal;
+                }
+                setVertical(vertical = true) {
+                    this._horizontal = !vertical;
+                }
+                getSplitFactor() {
+                    return this._splitFactor;
+                }
+                getSize() {
+                    const b = this.getBounds();
+                    return this._horizontal ? b.width : b.height;
+                }
+                setSplitFactor(factor) {
+                    this._splitFactor = Math.min(Math.max(0, factor), 1);
+                    this._splitPosition = this.getSize() * this._splitFactor;
+                }
+                setLeftControl(control) {
+                    this._leftControl = control;
+                    this.add(control);
+                }
+                getLeftControl() {
+                    return this._leftControl;
+                }
+                setRightControl(control) {
+                    this._rightControl = control;
+                    this.add(control);
+                }
+                getRightControl() {
+                    return this._rightControl;
+                }
+                layout() {
+                    controls.setElementBounds(this.getElement(), this.getBounds());
+                    if (!this._leftControl || !this._rightControl) {
+                        return;
+                    }
+                    this.setSplitFactor(this._splitFactor);
+                    const pos = this._splitPosition;
+                    const sw = this._splitWidth;
+                    let b = this.getBounds();
+                    if (this._horizontal) {
+                        this._leftControl.setBoundsValues(0, 0, pos - sw, b.height);
+                        this._rightControl.setBoundsValues(pos + sw, 0, b.width - pos - sw, b.height);
+                    }
+                    else {
+                        this._leftControl.setBoundsValues(0, 0, b.width, pos - sw);
+                        this._rightControl.setBoundsValues(0, pos + sw, b.width, b.height - pos - sw);
+                    }
                 }
             }
-            ide.EditorPart = EditorPart;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+            controls.SplitPanel = SplitPanel;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -1125,2173 +1716,10 @@ var phasereditor2d;
             }
             controls.TabPane = TabPane;
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class PartFolder extends ui.controls.TabPane {
-                constructor(...classList) {
-                    super("PartsTabPane", ...classList);
-                    this.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
-                        const content = this.getSelectedTabContent();
-                        if (content) {
-                            content.layout();
-                        }
-                    });
-                    this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
-                        const part = e.detail;
-                        if (part.onPartClosed()) {
-                            if (this.getContentList().length === 1) {
-                                ide.Workbench.getWorkbench().setActivePart(null);
-                                if (this instanceof ide.EditorArea) {
-                                    ide.Workbench.getWorkbench().setActiveEditor(null);
-                                }
-                            }
-                        }
-                        else {
-                            e.preventDefault();
-                        }
-                    });
-                    this.addEventListener(ui.controls.EVENT_TAB_SELECTED, (e) => {
-                        const part = e.detail;
-                        ide.Workbench.getWorkbench().setActivePart(part);
-                        part.onPartShown();
-                    });
-                }
-                addPart(part, closeable = false) {
-                    part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
-                        this.setTabTitle(part, part.getTitle(), part.getIcon());
-                    });
-                    this.addTab(part.getTitle(), part.getIcon(), part, closeable);
-                    part.setPartFolder(this);
-                }
-            }
-            ide.PartFolder = PartFolder;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./Part.ts"/>
-/// <reference path="./EditorPart.ts"/>
-/// <reference path="./PartFolder.ts"/>
-/// <reference path="../../../phasereditor2d.ui.controls/TabPane.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class EditorArea extends ide.PartFolder {
-                constructor() {
-                    super("EditorArea");
-                }
-                activateEditor(editor) {
-                    super.selectTabWithContent(editor);
-                }
-            }
-            ide.EditorArea = EditorArea;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class EditorFactory {
-                constructor(id) {
-                    this._id = id;
-                }
-                getId() {
-                    return this._id;
-                }
-            }
-            ide.EditorFactory = EditorFactory;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class EditorRegistry {
-                constructor() {
-                    this._map = new Map();
-                }
-                registerFactory(factory) {
-                    this._map.set(factory.getId(), factory);
-                }
-                getFactoryForInput(input) {
-                    for (const factory of this._map.values()) {
-                        if (factory.acceptInput(input)) {
-                            return factory;
-                        }
-                    }
-                    return null;
-                }
-            }
-            ide.EditorRegistry = EditorRegistry;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class EditorViewerProvider {
-                constructor() {
-                    this._viewer = null;
-                    this._initialSelection = null;
-                }
-                setViewer(viewer) {
-                    this._viewer = viewer;
-                    if (this._initialSelection) {
-                        this.setSelection(this._initialSelection, true, true);
-                        this._initialSelection = null;
-                    }
-                }
-                setSelection(selection, reveal, notify) {
-                    if (this._viewer) {
-                        this._viewer.setSelection(selection, notify);
-                        this._viewer.reveal(...selection);
-                    }
-                    else {
-                        this._initialSelection = selection;
-                    }
-                }
-                onViewerSelectionChanged(selection) {
-                }
-                repaint() {
-                    if (this._viewer) {
-                        this._viewer.repaint();
-                    }
-                }
-            }
-            ide.EditorViewerProvider = EditorViewerProvider;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class FilterControl extends controls.Control {
-                    constructor() {
-                        super("div", "FilterControl");
-                        this.setLayoutChildren(false);
-                        this._filterElement = document.createElement("input");
-                        this.getElement().appendChild(this._filterElement);
-                    }
-                    getFilterElement() {
-                        return this._filterElement;
-                    }
-                }
-                class ViewerContainer extends controls.Control {
-                    constructor(viewer) {
-                        super("div", "ViewerContainer");
-                        this._viewer = viewer;
-                        this.add(viewer);
-                        setTimeout(() => this.layout(), 1);
-                    }
-                    getViewer() {
-                        return this._viewer;
-                    }
-                    layout() {
-                        const b = this.getElement().getBoundingClientRect();
-                        this._viewer.setBoundsValues(b.left, b.top, b.width, b.height);
-                    }
-                }
-                viewers.ViewerContainer = ViewerContainer;
-                class FilteredViewer extends controls.Control {
-                    constructor(viewer, ...classList) {
-                        super("div", "FilteredViewer", ...classList);
-                        this._viewer = viewer;
-                        this._filterControl = new FilterControl();
-                        this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
-                        this.add(this._filterControl);
-                        this._viewerContainer = new ViewerContainer(this._viewer);
-                        this._scrollPane = new controls.ScrollPane(this._viewerContainer);
-                        this.add(this._scrollPane);
-                        this.setLayoutChildren(false);
-                    }
-                    onFilterInput(e) {
-                        const value = this._filterControl.getFilterElement().value;
-                        this._viewer.setFilterText(value);
-                    }
-                    getViewer() {
-                        return this._viewer;
-                    }
-                    layout() {
-                        this._viewerContainer.layout();
-                        this._scrollPane.layout();
-                    }
-                }
-                viewers.FilteredViewer = FilteredViewer;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ViewPart extends ide.Part {
-                constructor(id) {
-                    super(id);
-                    this.addClass("View");
-                }
-            }
-            ide.ViewPart = ViewPart;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/viewers/FilteredViewer.ts" />
-/// <reference path="./ViewPart.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ViewerView extends ide.ViewPart {
-                constructor(id) {
-                    super(id);
-                }
-                createPart() {
-                    this._viewer = this.createViewer();
-                    this.addClass("ViewerView");
-                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
-                    this.add(this._filteredViewer);
-                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
-                        this.setSelection(e.detail);
-                    });
-                }
-                getViewer() {
-                    return this._viewer;
-                }
-                layout() {
-                    if (this._filteredViewer) {
-                        this._filteredViewer.layout();
-                    }
-                }
-            }
-            ide.ViewerView = ViewerView;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./ViewerView.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var viewers = ui.controls.viewers;
-            class EditorViewerView extends ide.ViewerView {
-                constructor(id) {
-                    super(id);
-                    this._viewerMap = new Map();
-                }
-                createViewer() {
-                    const viewer = new viewers.TreeViewer();
-                    viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => {
-                        if (this._currentViewerProvider) {
-                            this._currentViewerProvider.onViewerSelectionChanged(this._viewer.getSelection());
-                        }
-                    });
-                    return viewer;
-                }
-                createPart() {
-                    super.createPart();
-                    ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
-                }
-                async onWorkbenchEditorActivated() {
-                    if (this._currentEditor !== null) {
-                        const state = this._viewer.getState();
-                        this._viewerMap.set(this._currentEditor, state);
-                    }
-                    const editor = ide.Workbench.getWorkbench().getActiveEditor();
-                    let provider = null;
-                    if (editor) {
-                        if (editor === this._currentEditor) {
-                            provider = this._currentViewerProvider;
-                        }
-                        else {
-                            provider = this.getViewerProvider(editor);
-                        }
-                    }
-                    if (provider) {
-                        provider.setViewer(this._viewer);
-                        await provider.preload();
-                        this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
-                        this._viewer.setLabelProvider(provider.getLabelProvider());
-                        this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
-                        this._viewer.setContentProvider(provider.getContentProvider());
-                        this._viewer.setInput(provider.getInput());
-                        const state = this._viewerMap.get(editor);
-                        if (state) {
-                            this._viewer.setState(state);
-                        }
-                    }
-                    else {
-                        this._viewer.setInput(null);
-                        this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
-                    }
-                    this._currentViewerProvider = provider;
-                    this._currentEditor = editor;
-                    this._viewer.repaint();
-                }
-                getPropertyProvider() {
-                    if (this._currentViewerProvider) {
-                        return this._currentViewerProvider.getPropertySectionProvider();
-                    }
-                    return null;
-                }
-            }
-            ide.EditorViewerView = EditorViewerView;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class FileEditor extends ide.EditorPart {
-                constructor(id) {
-                    super(id);
-                }
-                setInput(file) {
-                    super.setInput(file);
-                    this.setTitle(file.getName());
-                }
-                getInput() {
-                    return super.getInput();
-                }
-                getIcon() {
-                    const file = this.getInput();
-                    if (!file) {
-                        return ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE);
-                    }
-                    const wb = ide.Workbench.getWorkbench();
-                    const ct = wb.getContentTypeRegistry().getCachedContentType(file);
-                    const icon = wb.getContentTypeIcon(ct);
-                    return icon;
-                }
-            }
-            ide.FileEditor = FileEditor;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class FileUtils {
-                static getImage(file) {
-                    return ide.Workbench.getWorkbench().getFileImage(file);
-                }
-                static async preloadAndGetFileString(file) {
-                    await this.preloadFileString(file);
-                    return this.getFileString(file);
-                }
-                static getFileString(file) {
-                    return ide.Workbench.getWorkbench().getFileStringCache().getContent(file);
-                }
-                static setFileString_async(file, content) {
-                    return ide.Workbench.getWorkbench().getFileStringCache().setContent(file, content);
-                }
-                static async preloadFileString(file) {
-                    const cache = ide.Workbench.getWorkbench().getFileStringCache();
-                    return cache.preload(file);
-                }
-                static getFileFromPath(path) {
-                    const root = ide.Workbench.getWorkbench().getProjectRoot();
-                    const names = path.split("/");
-                    let result = root;
-                    for (const name of names) {
-                        const child = result.getFile(name);
-                        if (child) {
-                            result = child;
-                        }
-                        else {
-                            return null;
-                        }
-                    }
-                    return result;
-                }
-                static async getFilesWithContentType(contentType) {
-                    const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();
-                    const files = this.getAllFiles();
-                    for (const file of files) {
-                        await reg.preload(file);
-                    }
-                    return files.filter(file => reg.getCachedContentType(file) === contentType);
-                }
-                static getAllFiles() {
-                    const files = [];
-                    ide.Workbench.getWorkbench().getProjectRoot().flatTree(files, false);
-                    return files;
-                }
-            }
-            ide.FileUtils = FileUtils;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class KeyMatcher {
-                    constructor(config) {
-                        this._control = config.control === undefined ? false : config.control;
-                        this._shift = config.shift === undefined ? false : config.shift;
-                        this._alt = config.alt === undefined ? false : config.alt;
-                        this._meta = config.meta === undefined ? false : config.meta;
-                        this._key = config.key === undefined ? "" : config.key;
-                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
-                    }
-                    matchesKeys(event) {
-                        return event.ctrlKey === this._control
-                            && event.shiftKey === this._shift
-                            && event.altKey === this._alt
-                            && event.metaKey === this._meta
-                            && event.key.toLowerCase() === this._key.toLowerCase();
-                    }
-                    matchesTarget(element) {
-                        if (this._filterInputElements) {
-                            return !(element instanceof HTMLInputElement);
-                        }
-                        return true;
-                    }
-                }
-                commands.KeyMatcher = KeyMatcher;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./commands/KeyMatcher.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var KeyMatcher = phasereditor2d.ui.ide.commands.KeyMatcher;
-            ide.CMD_SAVE = "save";
-            ide.CMD_DELETE = "delete";
-            ide.CMD_RENAME = "rename";
-            ide.CMD_UNDO = "undo";
-            ide.CMD_REDO = "redo";
-            ide.CMD_SWITCH_THEME = "switchTheme";
-            ide.CMD_COLLAPSE_ALL = "collapseAll";
-            ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
-            class IDECommands {
-                static init() {
-                    const manager = ide.Workbench.getWorkbench().getCommandManager();
-                    this.initEdit(manager);
-                    this.initUndo(manager);
-                    this.initTheme(manager);
-                    this.initViewer(manager);
-                }
-                static initViewer(manager) {
-                    // collapse all
-                    manager.addCommandHelper(ide.CMD_COLLAPSE_ALL);
-                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
-                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
-                        viewer.collapseAll();
-                        viewer.repaint();
-                    });
-                    manager.addKeyBinding(ide.CMD_COLLAPSE_ALL, new KeyMatcher({
-                        key: "c"
-                    }));
-                    // collapse expand branch
-                    manager.addCommandHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH);
-                    manager.addHandlerHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
-                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
-                        const parents = [];
-                        for (const obj of viewer.getSelection()) {
-                            const objParents = viewer.expandCollapseBranch(obj);
-                            parents.push(...objParents);
-                        }
-                        viewer.setSelection(parents);
-                    });
-                    manager.addKeyBinding(ide.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
-                        key: " "
-                    }));
-                }
-                static initTheme(manager) {
-                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
-                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
-                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new KeyMatcher({
-                        control: true,
-                        key: "2"
-                    }));
-                }
-                static initUndo(manager) {
-                    // undo
-                    manager.addCommandHelper(ide.CMD_UNDO);
-                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
-                    manager.addKeyBinding(ide.CMD_UNDO, new KeyMatcher({
-                        control: true,
-                        key: "z"
-                    }));
-                    // redo
-                    manager.addCommandHelper(ide.CMD_REDO);
-                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
-                    manager.addKeyBinding(ide.CMD_REDO, new KeyMatcher({
-                        control: true,
-                        shift: true,
-                        key: "z"
-                    }));
-                }
-                static initEdit(manager) {
-                    // save
-                    manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
-                        args.activeEditor.save();
-                    });
-                    manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
-                        control: true,
-                        key: "s"
-                    }));
-                    // delete
-                    manager.addCommandHelper(ide.CMD_DELETE);
-                    manager.addKeyBinding(ide.CMD_DELETE, new KeyMatcher({
-                        key: "delete"
-                    }));
-                    // rename
-                    manager.addCommandHelper(ide.CMD_RENAME);
-                    manager.addKeyBinding(ide.CMD_RENAME, new KeyMatcher({
-                        key: "f2"
-                    }));
-                }
-            }
-            ide.IDECommands = IDECommands;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            ide.CONTENT_TYPE_IMAGE = "image";
-            ide.CONTENT_TYPE_AUDIO = "audio";
-            ide.CONTENT_TYPE_VIDEO = "video";
-            ide.CONTENT_TYPE_SCRIPT = "script";
-            ide.CONTENT_TYPE_TEXT = "text";
-            class ExtensionContentTypeResolver {
-                constructor(defs) {
-                    this._map = new Map();
-                    for (const def of defs) {
-                        this._map.set(def[0].toUpperCase(), def[1]);
-                    }
-                }
-                computeContentType(file) {
-                    const ext = file.getExtension().toUpperCase();
-                    if (this._map.has(ext)) {
-                        return Promise.resolve(this._map.get(ext));
-                    }
-                    return Promise.resolve(phasereditor2d.core.CONTENT_TYPE_ANY);
-                }
-            }
-            ide.ExtensionContentTypeResolver = ExtensionContentTypeResolver;
-            class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
-                constructor() {
-                    super([
-                        ["png", ide.CONTENT_TYPE_IMAGE],
-                        ["jpg", ide.CONTENT_TYPE_IMAGE],
-                        ["bmp", ide.CONTENT_TYPE_IMAGE],
-                        ["gif", ide.CONTENT_TYPE_IMAGE],
-                        ["webp", ide.CONTENT_TYPE_IMAGE],
-                        ["mp3", ide.CONTENT_TYPE_AUDIO],
-                        ["wav", ide.CONTENT_TYPE_AUDIO],
-                        ["ogg", ide.CONTENT_TYPE_AUDIO],
-                        ["mp4", ide.CONTENT_TYPE_VIDEO],
-                        ["ogv", ide.CONTENT_TYPE_VIDEO],
-                        ["mp4", ide.CONTENT_TYPE_VIDEO],
-                        ["webm", ide.CONTENT_TYPE_VIDEO],
-                        ["js", ide.CONTENT_TYPE_SCRIPT],
-                        ["html", ide.CONTENT_TYPE_SCRIPT],
-                        ["css", ide.CONTENT_TYPE_SCRIPT],
-                        ["ts", ide.CONTENT_TYPE_SCRIPT],
-                        ["json", ide.CONTENT_TYPE_SCRIPT],
-                        ["txt", ide.CONTENT_TYPE_TEXT],
-                        ["md", ide.CONTENT_TYPE_TEXT],
-                    ]);
-                }
-            }
-            ide.DefaultExtensionTypeResolver = DefaultExtensionTypeResolver;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d/core/io/SyncFileContentCache.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ImageFileCache extends phasereditor2d.core.io.SyncFileContentCache {
-                constructor() {
-                    super(file => new ui.controls.DefaultImage(new Image(), file.getUrl()));
-                }
-            }
-            ide.ImageFileCache = ImageFileCache;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class OutlineProvider extends EventTarget {
-                constructor(editor) {
-                    super();
-                    this._editor = editor;
-                }
-            }
-            ide.OutlineProvider = OutlineProvider;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class Plugin {
-                constructor(id) {
-                    this._id = id;
-                }
-                getId() {
-                    return this._id;
-                }
-                preloadIcons(contentTypeIconMap) {
-                    return Promise.resolve();
-                }
-                registerContentTypes(registry) {
-                }
-                preloadProjectResources() {
-                    return Promise.resolve();
-                }
-                registerCommands(manager) {
-                }
-                registerEditor(registry) {
-                }
-                createWindow(windows) {
-                }
-            }
-            ide.Plugin = Plugin;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var toolbar;
-        (function (toolbar) {
-            class Toolbar {
-                constructor() {
-                    this._toolbarElement = document.createElement("div");
-                    this._toolbarElement.innerHTML = `
-
-            <button>Load</button>
-            <button>Play</button>
-
-            `;
-                    this._toolbarElement.classList.add("toolbar");
-                    document.getElementsByTagName("body")[0].appendChild(this._toolbarElement);
-                }
-                getElement() {
-                    return this._toolbarElement;
-                }
-            }
-            toolbar.Toolbar = Toolbar;
-        })(toolbar = ui.toolbar || (ui.toolbar = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class ViewFolder extends ide.PartFolder {
-                constructor(...classList) {
-                    super("ViewFolder", ...classList);
-                }
-            }
-            ide.ViewFolder = ViewFolder;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/Control.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class WorkbenchWindow extends ui.controls.Control {
-                constructor() {
-                    super("div", "Window");
-                    this.setLayout(new ui.controls.FillLayout(5));
-                    window.addEventListener("resize", e => {
-                        this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
-                    });
-                    window.addEventListener(ui.controls.EVENT_THEME_CHANGED, e => this.layout());
-                }
-                createViewFolder(...parts) {
-                    const folder = new ide.ViewFolder();
-                    for (const part of parts) {
-                        folder.addPart(part);
-                    }
-                    return folder;
-                }
-            }
-            ide.WorkbenchWindow = WorkbenchWindow;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../phasereditor2d/ui/ide/WorkbenchWindow.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class DesignWindow extends ide.WorkbenchWindow {
-                constructor() {
-                    super();
-                    this._outlineView = new ide.views.outline.OutlineView();
-                    this._filesView = new ide.views.files.FilesView();
-                    this._inspectorView = new ide.views.inspector.InspectorView();
-                    this._blocksView = new ide.views.blocks.BlocksView();
-                    this._editorArea = new ide.EditorArea();
-                    this._split_Files_Blocks = new ui.controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
-                    this._split_Editor_FilesBlocks = new ui.controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
-                    this._split_Outline_EditorFilesBlocks = new ui.controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
-                    this._split_OutlineEditorFilesBlocks_Inspector = new ui.controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
-                    this.add(this._split_OutlineEditorFilesBlocks_Inspector);
-                    this.initialLayout();
-                }
-                getEditorArea() {
-                    return this._editorArea;
-                }
-                initialLayout() {
-                    const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-                    this._split_Files_Blocks.setSplitFactor(0.2);
-                    this._split_Editor_FilesBlocks.setSplitFactor(0.6);
-                    this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
-                    this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
-                    this.setBounds(b);
-                }
-            }
-            ide.DesignWindow = DesignWindow;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../FileEditor.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var editors;
-            (function (editors) {
-                var image;
-                (function (image) {
-                    class ImageEditorFactory extends ide.EditorFactory {
-                        constructor() {
-                            super("phasereditor2d.ImageEditorFactory");
-                        }
-                        acceptInput(input) {
-                            if (input instanceof phasereditor2d.core.io.FilePath) {
-                                const file = input;
-                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                                if (contentType === ide.CONTENT_TYPE_IMAGE) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        }
-                        createEditor() {
-                            return new ImageEditor();
-                        }
-                    }
-                    class ImageEditor extends ide.FileEditor {
-                        constructor() {
-                            super("phasereditor2d.ImageEditor");
-                            this.addClass("ImageEditor");
-                        }
-                        static getFactory() {
-                            return new ImageEditorFactory();
-                        }
-                        async createPart() {
-                            this._imageControl = new ui.controls.ImageControl();
-                            const container = document.createElement("div");
-                            container.classList.add("ImageEditorContainer");
-                            container.appendChild(this._imageControl.getElement());
-                            this.getElement().appendChild(container);
-                            this.updateImage();
-                        }
-                        async updateImage() {
-                            const file = this.getInput();
-                            if (!file) {
-                                return;
-                            }
-                            const img = ide.Workbench.getWorkbench().getFileImage(file);
-                            this._imageControl.setImage(img);
-                            this._imageControl.repaint();
-                            const result = await img.preload();
-                            if (result === ui.controls.PreloadResult.RESOURCES_LOADED) {
-                                this._imageControl.repaint();
-                            }
-                            this.dispatchTitleUpdatedEvent();
-                        }
-                        getIcon() {
-                            const file = this.getInput();
-                            if (!file) {
-                                return super.getIcon();
-                            }
-                            const img = ide.Workbench.getWorkbench().getFileImage(file);
-                            return img;
-                        }
-                        layout() {
-                            if (this._imageControl) {
-                                this._imageControl.resizeTo();
-                            }
-                        }
-                        setInput(input) {
-                            super.setInput(input);
-                            if (this._imageControl) {
-                                this.updateImage();
-                            }
-                        }
-                    }
-                    image.ImageEditor = ImageEditor;
-                })(image = editors.image || (editors.image = {}));
-            })(editors = ide.editors || (ide.editors = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="../../../phasereditor2d.ui.controls/Controls.ts"/>
-/// <reference path="../ide/ViewPart.ts"/>
-/// <reference path="../../../plugins/phasereditor2d.ui.ide/DesignWindow.ts"/>
-/// <reference path="../../core/io/IFileStorage.ts"/>
-/// <reference path="./editors/image/ImageEditor.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            ide.EVENT_PART_DEACTIVATED = "partDeactivated";
-            ide.EVENT_PART_ACTIVATED = "partActivated";
-            ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
-            ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
-            ide.ICON_FILE = "file";
-            ide.ICON_FOLDER = "folder";
-            ide.ICON_FILE_FONT = "file-font";
-            ide.ICON_FILE_IMAGE = "file-image";
-            ide.ICON_FILE_VIDEO = "file-movie";
-            ide.ICON_FILE_SCRIPT = "file-script";
-            ide.ICON_FILE_SOUND = "file-sound";
-            ide.ICON_FILE_TEXT = "file-text";
-            ide.ICON_OUTLINE = "outline";
-            ide.ICON_INSPECTOR = "inspector";
-            ide.ICON_BLOCKS = "blocks";
-            ide.ICON_GROUP = "group";
-            const ICONS = [
-                ide.ICON_FILE,
-                ide.ICON_FOLDER,
-                ide.ICON_FILE_FONT,
-                ide.ICON_FILE_IMAGE,
-                ide.ICON_FILE_VIDEO,
-                ide.ICON_FILE_SCRIPT,
-                ide.ICON_FILE_SOUND,
-                ide.ICON_FILE_TEXT,
-                ide.ICON_OUTLINE,
-                ide.ICON_INSPECTOR,
-                ide.ICON_BLOCKS,
-                ide.ICON_GROUP
-            ];
-            class Workbench extends EventTarget {
-                constructor() {
-                    super();
-                    this._editorRegistry = new ide.EditorRegistry();
-                    this._activePart = null;
-                    this._activeEditor = null;
-                    this._activeElement = null;
-                    this._fileImageCache = new ide.ImageFileCache();
-                }
-                static getWorkbench() {
-                    if (!Workbench._workbench) {
-                        Workbench._workbench = new Workbench();
-                    }
-                    return this._workbench;
-                }
-                async launch(plugins) {
-                    console.log("Workbench: starting.");
-                    await ui.controls.Controls.preload();
-                    console.log("Workbench: fetching UI resources.");
-                    await this.preloadIcons(plugins);
-                    console.log("Workbench: fetching project metadata.");
-                    await this.preloadFileStorage();
-                    console.log("Workbench: fetching required project resources.");
-                    this.registerContentTypes(plugins);
-                    await this.preloadProjectResources(plugins);
-                    this.initCommands(plugins);
-                    this.registerEditors(plugins);
-                    this.registerWindow(plugins);
-                    this.initEvents();
-                    console.log("Workbench: started.");
-                }
-                registerWindow(plugins) {
-                    const windows = [];
-                    for (const plugin of plugins) {
-                        plugin.createWindow(windows);
-                    }
-                    if (windows.length === 0) {
-                        alert("No workbench window provided.");
-                    }
-                    else {
-                        this._activeWindow = windows[0];
-                        document.body.appendChild(this._activeWindow.getElement());
-                    }
-                }
-                async preloadProjectResources(plugins) {
-                    for (const plugin of plugins) {
-                        await plugin.preloadProjectResources();
-                    }
-                }
-                async preloadIcons(plugins) {
-                    this._contentType_icon_Map = new Map();
-                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ide.ICON_FILE_IMAGE));
-                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ide.ICON_FILE_SOUND));
-                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ide.ICON_FILE_VIDEO));
-                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ide.ICON_FILE_SCRIPT));
-                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ide.ICON_FILE_TEXT));
-                    for (const plugin of plugins) {
-                        await plugin.preloadIcons(this._contentType_icon_Map);
-                    }
-                    return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
-                }
-                initCommands(plugins) {
-                    this._commandManager = new ide.commands.CommandManager();
-                    ide.IDECommands.init();
-                    for (const plugin of plugins) {
-                        plugin.registerCommands(this._commandManager);
-                    }
-                }
-                getFileStringCache() {
-                    return this._fileStringCache;
-                }
-                getCommandManager() {
-                    return this._commandManager;
-                }
-                registerEditors(plugins) {
-                    this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
-                    for (const plugin of plugins) {
-                        plugin.registerEditor(this._editorRegistry);
-                    }
-                }
-                getActiveWindow() {
-                    return this._activeWindow;
-                }
-                initEvents() {
-                    window.addEventListener("mousedown", e => {
-                        this._activeElement = e.target;
-                        const part = this.findPart(e.target);
-                        this.setActivePart(part);
-                    });
-                }
-                getActiveElement() {
-                    return this._activeElement;
-                }
-                getActivePart() {
-                    return this._activePart;
-                }
-                getActiveEditor() {
-                    return this._activeEditor;
-                }
-                setActiveEditor(editor) {
-                    if (editor === this._activeEditor) {
-                        return;
-                    }
-                    this._activeEditor = editor;
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
-                }
-                /**
-                 * Users may not call this method. This is public only for convenience.
-                 */
-                setActivePart(part) {
-                    if (part !== this._activePart) {
-                        const old = this._activePart;
-                        this._activePart = part;
-                        if (old) {
-                            this.toggleActivePartClass(old);
-                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
-                        }
-                        if (part) {
-                            this.toggleActivePartClass(part);
-                        }
-                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
-                    }
-                    if (part instanceof ide.EditorPart) {
-                        this.setActiveEditor(part);
-                    }
-                }
-                toggleActivePartClass(part) {
-                    const tabPane = this.findTabPane(part.getElement());
-                    if (!tabPane) {
-                        // maybe the clicked part was closed
-                        return;
-                    }
-                    if (part.containsClass("activePart")) {
-                        part.removeClass("activePart");
-                        tabPane.removeClass("activePart");
-                    }
-                    else {
-                        part.addClass("activePart");
-                        tabPane.addClass("activePart");
-                    }
-                }
-                findTabPane(element) {
-                    if (element) {
-                        const control = ui.controls.Control.getControlOf(element);
-                        if (control && control instanceof ui.controls.TabPane) {
-                            return control;
-                        }
-                        return this.findTabPane(element.parentElement);
-                    }
-                    return null;
-                }
-                findPart(element) {
-                    if (ui.controls.TabPane.isTabLabel(element)) {
-                        element = ui.controls.TabPane.getContentFromLabel(element).getElement();
-                    }
-                    if (element["__part"]) {
-                        return element["__part"];
-                    }
-                    const control = ui.controls.Control.getControlOf(element);
-                    if (control && control instanceof ui.controls.TabPane) {
-                        const tabPane = control;
-                        const content = tabPane.getSelectedTabContent();
-                        if (content) {
-                            const element = content.getElement();
-                            if (element["__part"]) {
-                                return element["__part"];
-                            }
-                        }
-                    }
-                    if (element.parentElement) {
-                        return this.findPart(element.parentElement);
-                    }
-                    return null;
-                }
-                async preloadFileStorage() {
-                    this._fileStorage = new phasereditor2d.core.io.FileStorage_HTTPServer();
-                    this._fileStringCache = new phasereditor2d.core.io.FileStringCache(this._fileStorage);
-                    await this._fileStorage.reload();
-                }
-                registerContentTypes(plugins) {
-                    const reg = new phasereditor2d.core.ContentTypeRegistry();
-                    for (const plugin of plugins) {
-                        plugin.registerContentTypes(reg);
-                    }
-                    reg.registerResolver(new ide.DefaultExtensionTypeResolver());
-                    this._contentTypeRegistry = reg;
-                }
-                getContentTypeRegistry() {
-                    return this._contentTypeRegistry;
-                }
-                getProjectRoot() {
-                    return this._fileStorage.getRoot();
-                }
-                getContentTypeIcon(contentType) {
-                    if (this._contentType_icon_Map.has(contentType)) {
-                        return this._contentType_icon_Map.get(contentType);
-                    }
-                    return null;
-                }
-                getFileImage(file) {
-                    return this._fileImageCache.getContent(file);
-                }
-                getWorkbenchIcon(name) {
-                    return ui.controls.Controls.getIcon(name, "phasereditor2d/ui/ide/images");
-                }
-                getEditorRegistry() {
-                    return this._editorRegistry;
-                }
-                getEditors() {
-                    const editorArea = this.getActiveWindow().getEditorArea();
-                    return editorArea.getContentList();
-                }
-                openEditor(input) {
-                    const editorArea = this.getActiveWindow().getEditorArea();
-                    {
-                        const editors = this.getEditors();
-                        for (let editor of editors) {
-                            if (editor.getInput() === input) {
-                                editorArea.activateEditor(editor);
-                                this.setActivePart(editor);
-                                return;
-                            }
-                        }
-                    }
-                    const factory = this._editorRegistry.getFactoryForInput(input);
-                    if (factory) {
-                        const editor = factory.createEditor();
-                        editorArea.addPart(editor, true);
-                        editor.setInput(input);
-                        editorArea.activateEditor(editor);
-                        this.setActivePart(editor);
-                    }
-                    else {
-                        alert("No editor available for the given input.");
-                    }
-                }
-            }
-            ide.Workbench = Workbench;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            ide.IMG_SECTION_PADDING = 10;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class Command {
-                    constructor(id) {
-                        this._id = id;
-                    }
-                    getId() {
-                        return this._id;
-                    }
-                }
-                commands.Command = Command;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class CommandArgs {
-                    constructor(activePart, activeEditor, activeElement) {
-                        this.activePart = activePart;
-                        this.activeEditor = activeEditor;
-                        this.activeElement = activeElement;
-                    }
-                }
-                commands.CommandArgs = CommandArgs;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class CommandHandler {
-                    constructor(config) {
-                        this._testFunc = config.testFunc;
-                        this._executeFunc = config.executeFunc;
-                    }
-                    test(args) {
-                        return this._testFunc ? this._testFunc(args) : true;
-                    }
-                    execute(args) {
-                        if (this._executeFunc) {
-                            this._executeFunc(args);
-                        }
-                    }
-                }
-                commands.CommandHandler = CommandHandler;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var commands;
-            (function (commands) {
-                class CommandManager {
-                    constructor() {
-                        this._commands = [];
-                        this._commandIdMap = new Map();
-                        this._commandMatcherMap = new Map();
-                        this._commandHandlerMap = new Map();
-                        window.addEventListener("keydown", e => { this.onKeyDown(e); });
-                    }
-                    onKeyDown(event) {
-                        if (event.isComposing) {
-                            return;
-                        }
-                        const args = this.makeArgs();
-                        for (const command of this._commands) {
-                            let eventMatches = false;
-                            const matchers = this._commandMatcherMap.get(command);
-                            for (const matcher of matchers) {
-                                if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
-                                    event.preventDefault();
-                                    eventMatches = true;
-                                    break;
-                                }
-                            }
-                            if (eventMatches) {
-                                const handlers = this._commandHandlerMap.get(command);
-                                for (const handler of handlers) {
-                                    if (handler.test(args)) {
-                                        handler.execute(args);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    addCommand(cmd) {
-                        this._commands.push(cmd);
-                        this._commandIdMap.set(cmd.getId(), cmd);
-                        this._commandMatcherMap.set(cmd, []);
-                        this._commandHandlerMap.set(cmd, []);
-                    }
-                    addCommandHelper(id) {
-                        this.addCommand(new commands.Command(id));
-                    }
-                    makeArgs() {
-                        const wb = ide.Workbench.getWorkbench();
-                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement());
-                    }
-                    getCommand(id) {
-                        const command = this._commandIdMap.get(id);
-                        if (!command) {
-                            console.error(`Command ${id} not found.`);
-                        }
-                        return command;
-                    }
-                    addKeyBinding(commandId, matcher) {
-                        const command = this.getCommand(commandId);
-                        if (command) {
-                            this._commandMatcherMap.get(command).push(matcher);
-                        }
-                    }
-                    addHandler(commandId, handler) {
-                        const command = this.getCommand(commandId);
-                        if (command) {
-                            this._commandHandlerMap.get(command).push(handler);
-                        }
-                    }
-                    addHandlerHelper(commandId, testFunc, executeFunc) {
-                        this.addHandler(commandId, new commands.CommandHandler({
-                            testFunc: testFunc,
-                            executeFunc: executeFunc
-                        }));
-                    }
-                }
-                commands.CommandManager = CommandManager;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var properties;
-            (function (properties) {
-                class FilteredViewerInPropertySection extends ui.controls.viewers.FilteredViewer {
-                    constructor(page, viewer, ...classList) {
-                        super(viewer, ...classList);
-                        this.setHandlePosition(false);
-                        this.style.position = "relative";
-                        this.style.height = "100%";
-                        this.resizeTo();
-                        page.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
-                            this.resizeTo();
-                        });
-                    }
-                    resizeTo() {
-                        setTimeout(() => {
-                            const parent = this.getElement().parentElement;
-                            if (parent) {
-                                this.setBounds({
-                                    width: parent.clientWidth,
-                                    height: parent.clientHeight
-                                });
-                            }
-                            this.getViewer().repaint();
-                        }, 10);
-                    }
-                }
-                properties.FilteredViewerInPropertySection = FilteredViewerInPropertySection;
-            })(properties = ide.properties || (ide.properties = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var undo;
-            (function (undo) {
-                class Operation {
-                }
-                undo.Operation = Operation;
-            })(undo = ide.undo || (ide.undo = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var undo;
-            (function (undo) {
-                class UndoManager {
-                    constructor() {
-                        this._undoList = [];
-                        this._redoList = [];
-                    }
-                    add(op) {
-                        this._undoList.push(op);
-                        this._redoList = [];
-                    }
-                    undo() {
-                        if (this._undoList.length > 0) {
-                            const op = this._undoList.pop();
-                            op.undo();
-                            this._redoList.push(op);
-                        }
-                    }
-                    redo() {
-                        if (this._redoList.length > 0) {
-                            const op = this._redoList.pop();
-                            op.redo();
-                            this._undoList.push(op);
-                        }
-                    }
-                }
-                undo.UndoManager = UndoManager;
-            })(undo = ide.undo || (ide.undo = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var utils;
-            (function (utils) {
-                class NameMaker {
-                    constructor(getName) {
-                        this._getName = getName;
-                        this._nameSet = new Set();
-                    }
-                    update(objects) {
-                        for (const obj of objects) {
-                            const name = this._getName(obj);
-                            this._nameSet.add(name);
-                        }
-                    }
-                    makeName(baseName) {
-                        let name;
-                        let i = 0;
-                        do {
-                            name = baseName + (i === 0 ? "" : "_" + i);
-                            i++;
-                        } while (this._nameSet.has(name));
-                        this._nameSet.add(name);
-                        return name;
-                    }
-                }
-                utils.NameMaker = NameMaker;
-            })(utils = ide.utils || (ide.utils = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class Action {
-            }
-            controls.Action = Action;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ActionButton extends controls.Control {
-                constructor(action) {
-                    super("button");
-                    this._action = action;
-                    this.getElement().classList.add("actionButton");
-                }
-                getAction() {
-                    return this._action;
-                }
-            }
-            controls.ActionButton = ActionButton;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class CanvasControl extends controls.Control {
-                constructor(padding = 0, ...classList) {
-                    super("canvas", "CanvasControl", ...classList);
-                    this._padding = padding;
-                    this._canvas = this.getElement();
-                    this.initContext();
-                }
-                getCanvas() {
-                    return this._canvas;
-                }
-                resizeTo(parent) {
-                    parent = parent || this.getElement().parentElement;
-                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
-                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
-                    this.repaint();
-                }
-                getPadding() {
-                    return this._padding;
-                }
-                ensureCanvasSize() {
-                    if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
-                        this._canvas.width = this._canvas.clientWidth;
-                        this._canvas.height = this._canvas.clientHeight;
-                        this.initContext();
-                    }
-                }
-                clear() {
-                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-                }
-                repaint() {
-                    this.ensureCanvasSize();
-                    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-                    this.paint();
-                }
-                initContext() {
-                    this._context = this.getCanvas().getContext("2d");
-                    this._context.imageSmoothingEnabled = false;
-                    this._context.font = `${controls.FONT_HEIGHT}px sans-serif`;
-                }
-            }
-            controls.CanvasControl = CanvasControl;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class DefaultImage {
-                constructor(img, url) {
-                    this._imageElement = img;
-                    this._url = url;
-                    this._ready = false;
-                    this._error = false;
-                }
-                getImageElement() {
-                    return this._imageElement;
-                }
-                preload() {
-                    if (this._ready || this._error) {
-                        return controls.Controls.resolveNothingLoaded();
-                    }
-                    if (this._requestPromise) {
-                        return this._requestPromise;
-                    }
-                    this._requestPromise = new Promise((resolve, reject) => {
-                        this._imageElement.src = this._url;
-                        this._imageElement.addEventListener("load", e => {
-                            this._requestPromise = null;
-                            this._ready = true;
-                            resolve(controls.PreloadResult.RESOURCES_LOADED);
-                        });
-                        this._imageElement.addEventListener("error", e => {
-                            console.error("ERROR: Loading image " + this._url);
-                            this._requestPromise = null;
-                            this._error = true;
-                            resolve(controls.PreloadResult.NOTHING_LOADED);
-                        });
-                    });
-                    return this._requestPromise;
-                    /*
-                    return this._img.decode().then(_ => {
-                        this._ready = true;
-                        return Controls.resolveResourceLoaded();
-                    }).catch(e => {
-                        this._ready = true;
-                        console.error("ERROR: Cannot decode " + this._url);
-                        console.error(e);
-                        return Controls.resolveNothingLoaded();
-                    });
-                    */
-                }
-                getWidth() {
-                    return this._ready ? this._imageElement.naturalWidth : 16;
-                }
-                getHeight() {
-                    return this._ready ? this._imageElement.naturalHeight : 16;
-                }
-                paint(context, x, y, w, h, center) {
-                    if (this._ready) {
-                        DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
-                    }
-                    else {
-                        DefaultImage.paintEmpty(context, x, y, w, h);
-                    }
-                }
-                static paintImageElement(context, image, x, y, w, h, center) {
-                    const naturalWidth = image.naturalWidth;
-                    const naturalHeight = image.naturalHeight;
-                    let renderHeight = h;
-                    let renderWidth = w;
-                    let imgW = naturalWidth;
-                    let imgH = naturalHeight;
-                    // compute the right width
-                    imgW = imgW * (renderHeight / imgH);
-                    imgH = renderHeight;
-                    // fix width if it goes beyond the area
-                    if (imgW > renderWidth) {
-                        imgH = imgH * (renderWidth / imgW);
-                        imgW = renderWidth;
-                    }
-                    let scale = imgW / naturalWidth;
-                    let imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
-                    let imgY = y + renderHeight / 2 - imgH / 2;
-                    let imgDstW = naturalWidth * scale;
-                    let imgDstH = naturalHeight * scale;
-                    if (imgDstW > 0 && imgDstH > 0) {
-                        context.drawImage(image, imgX, imgY, imgDstW, imgDstH);
-                    }
-                }
-                static paintEmpty(context, x, y, w, h) {
-                    if (w > 10 && h > 10) {
-                        context.save();
-                        context.strokeStyle = controls.Controls.theme.treeItemForeground;
-                        const cx = x + w / 2;
-                        const cy = y + h / 2;
-                        context.strokeRect(cx, cy - 1, 2, 2);
-                        context.strokeRect(cx - 5, cy - 1, 2, 2);
-                        context.strokeRect(cx + 5, cy - 1, 2, 2);
-                        context.restore();
-                    }
-                }
-                static paintImageElementFrame(context, image, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
-                    context.drawImage(image, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
-                }
-                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
-                    if (this._ready) {
-                        DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
-                    }
-                    else {
-                        DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
-                    }
-                }
-            }
-            controls.DefaultImage = DefaultImage;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class FillLayout {
-                constructor(padding = 0) {
-                    this._padding = 0;
-                    this._padding = padding;
-                }
-                getPadding() {
-                    return this._padding;
-                }
-                setPadding(padding) {
-                    this._padding = padding;
-                }
-                layout(parent) {
-                    const children = parent.getChildren();
-                    if (children.length > 1) {
-                        console.warn("[FillLayout] Invalid number for children or parent control.");
-                    }
-                    const b = parent.getBounds();
-                    controls.setElementBounds(parent.getElement(), b);
-                    if (children.length > 0) {
-                        const child = children[0];
-                        child.setBoundsValues(this._padding, this._padding, b.width - this._padding * 2, b.height - this._padding * 2);
-                    }
-                }
-            }
-            controls.FillLayout = FillLayout;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class FrameData {
-                constructor(index, src, dst, srcSize) {
-                    this.index = index;
-                    this.src = src;
-                    this.dst = dst;
-                    this.srcSize = srcSize;
-                }
-                static fromRect(index, rect) {
-                    return new FrameData(0, rect.clone(), new controls.Rect(0, 0, rect.w, rect.h), new controls.Point(rect.w, rect.h));
-                }
-            }
-            controls.FrameData = FrameData;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="CanvasControl.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ImageControl extends controls.CanvasControl {
-                constructor(padding = 0, ...classList) {
-                    super(padding, "ImageControl", ...classList);
-                }
-                setImage(image) {
-                    this._image = image;
-                }
-                getImage() {
-                    return this._image;
-                }
-                async paint() {
-                    if (this._image) {
-                        this.paint2();
-                        const result = await this._image.preload();
-                        if (result === controls.PreloadResult.RESOURCES_LOADED) {
-                            this.paint2();
-                        }
-                    }
-                    else {
-                        this.clear();
-                    }
-                }
-                paint2() {
-                    this.ensureCanvasSize();
-                    this.clear();
-                    this._image.paint(this._context, 0, 0, this._canvas.width, this._canvas.height, true);
-                }
-            }
-            controls.ImageControl = ImageControl;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ImageFrame {
-                constructor(name, image, frameData) {
-                    this._name = name;
-                    this._image = image;
-                    this._frameData = frameData;
-                }
-                getName() {
-                    return this._name;
-                }
-                getImage() {
-                    return this._image;
-                }
-                getFrameData() {
-                    return this._frameData;
-                }
-                paint(context, x, y, w, h, center) {
-                    const fd = this._frameData;
-                    const img = this._image;
-                    const renderWidth = w;
-                    const renderHeight = h;
-                    let imgW = fd.src.w;
-                    let imgH = fd.src.h;
-                    // compute the right width
-                    imgW = imgW * (renderHeight / imgH);
-                    imgH = renderHeight;
-                    // fix width if it goes beyond the area
-                    if (imgW > renderWidth) {
-                        imgH = imgH * (renderWidth / imgW);
-                        imgW = renderWidth;
-                    }
-                    const scale = imgW / fd.src.w;
-                    var imgX = x + (center ? renderWidth / 2 - imgW / 2 : 0);
-                    var imgY = y + renderHeight / 2 - imgH / 2;
-                    // here we use the trimmed version of the image, maybe this should be parametrized
-                    const imgDstW = fd.src.w * scale;
-                    const imgDstH = fd.src.h * scale;
-                    if (imgDstW > 0 && imgDstH > 0) {
-                        img.paintFrame(context, fd.src.x, fd.src.y, fd.src.w, fd.src.h, imgX, imgY, imgDstW, imgDstH);
-                    }
-                }
-                paintFrame(context, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH) {
-                    // not implemented fow now
-                }
-                preload() {
-                    return this._image.preload();
-                }
-                getWidth() {
-                    return this._frameData.srcSize.x;
-                }
-                getHeight() {
-                    return this._frameData.srcSize.y;
-                }
-            }
-            controls.ImageFrame = ImageFrame;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ImageWrapper {
-                constructor(imageElement) {
-                    this._imageElement = imageElement;
-                }
-                paint(context, x, y, w, h, center) {
-                    if (this._imageElement) {
-                        controls.DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
-                    }
-                    else {
-                        controls.DefaultImage.paintEmpty(context, x, y, w, h);
-                    }
-                }
-                paintFrame(context, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH) {
-                    if (this._imageElement) {
-                        controls.DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-                    }
-                    else {
-                        controls.DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
-                    }
-                }
-                preload() {
-                    return controls.Controls.resolveNothingLoaded();
-                }
-                getWidth() {
-                    if (this._imageElement) {
-                        return this._imageElement.naturalWidth;
-                    }
-                    return 0;
-                }
-                getHeight() {
-                    if (this._imageElement) {
-                        return this._imageElement.naturalHeight;
-                    }
-                    return 0;
-                }
-            }
-            controls.ImageWrapper = ImageWrapper;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class Point {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                }
-            }
-            controls.Point = Point;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class Rect {
-                constructor(x = 0, y = 0, w = 0, h = 0) {
-                    this.x = x;
-                    this.y = y;
-                    this.w = w;
-                    this.h = h;
-                }
-                set(x, y, w, h) {
-                    this.x = x;
-                    this.y = y;
-                    this.w = w;
-                    this.h = h;
-                }
-                contains(x, y) {
-                    return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
-                }
-                clone() {
-                    return new Rect(this.x, this.y, this.w, this.h);
-                }
-            }
-            controls.Rect = Rect;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ScrollPane extends controls.Control {
-                constructor(clientControl) {
-                    super("div", "ScrollPane");
-                    this._clientContentHeight = 0;
-                    this._startDragY = -1;
-                    this._startScrollY = 0;
-                    this._clientControl = clientControl;
-                    this.add(this._clientControl);
-                    this._scrollBar = document.createElement("div");
-                    this._scrollBar.classList.add("ScrollBar");
-                    this.getElement().appendChild(this._scrollBar);
-                    this._scrollHandler = document.createElement("div");
-                    this._scrollHandler.classList.add("ScrollHandler");
-                    this._scrollBar.appendChild(this._scrollHandler);
-                    const l2 = (e) => this.onMouseDown(e);
-                    const l3 = (e) => this.onMouseUp(e);
-                    const l4 = (e) => this.onMouseMove(e);
-                    const l5 = (e) => {
-                        if (!this.getElement().isConnected) {
-                            window.removeEventListener("mousedown", l2);
-                            window.removeEventListener("mouseup", l3);
-                            window.removeEventListener("mousemove", l4);
-                            window.removeEventListener("mousemove", l5);
-                        }
-                    };
-                    window.addEventListener("mousedown", l2);
-                    window.addEventListener("mouseup", l3);
-                    window.addEventListener("mousemove", l4);
-                    window.addEventListener("mousemove", l5);
-                    this.getViewer().getElement().addEventListener("wheel", e => this.onClientWheel(e));
-                    this._scrollBar.addEventListener("mousedown", e => this.onBarMouseDown(e));
-                }
-                getViewer() {
-                    if (this._clientControl instanceof controls.viewers.ViewerContainer) {
-                        return this._clientControl.getViewer();
-                    }
-                    return this._clientControl;
-                }
-                updateScroll(clientContentHeight) {
-                    const scrollY = this.getViewer().getScrollY();
-                    const b = this.getBounds();
-                    let newScrollY = scrollY;
-                    newScrollY = Math.max(-this._clientContentHeight + b.height, newScrollY);
-                    newScrollY = Math.min(0, newScrollY);
-                    if (newScrollY !== scrollY) {
-                        this._clientContentHeight = clientContentHeight;
-                        this.setClientScrollY(scrollY);
-                    }
-                    else if (clientContentHeight !== this._clientContentHeight) {
-                        this._clientContentHeight = clientContentHeight;
-                        this.layout();
-                    }
-                }
-                onBarMouseDown(e) {
-                    if (e.target !== this._scrollBar) {
-                        return;
-                    }
-                    e.stopImmediatePropagation();
-                    const b = this.getBounds();
-                    this.setClientScrollY(-e.offsetY / b.height * (this._clientContentHeight - b.height));
-                }
-                onClientWheel(e) {
-                    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
-                        return;
-                    }
-                    let y = this.getViewer().getScrollY();
-                    y += e.deltaY < 0 ? 30 : -30;
-                    this.setClientScrollY(y);
-                }
-                setClientScrollY(y) {
-                    const b = this.getBounds();
-                    y = Math.max(-this._clientContentHeight + b.height, y);
-                    y = Math.min(0, y);
-                    this.getViewer().setScrollY(y);
-                    this.layout();
-                }
-                onMouseDown(e) {
-                    if (e.target === this._scrollHandler) {
-                        e.stopImmediatePropagation();
-                        this._startDragY = e.y;
-                        this._startScrollY = this.getViewer().getScrollY();
-                    }
-                }
-                onMouseMove(e) {
-                    if (this._startDragY !== -1) {
-                        let delta = e.y - this._startDragY;
-                        const b = this.getBounds();
-                        delta = delta / b.height * this._clientContentHeight;
-                        this.setClientScrollY(this._startScrollY - delta);
-                    }
-                }
-                onMouseUp(e) {
-                    if (this._startDragY !== -1) {
-                        e.stopImmediatePropagation();
-                        this._startDragY = -1;
-                    }
-                }
-                getBounds() {
-                    const b = this.getElement().getBoundingClientRect();
-                    return { x: 0, y: 0, width: b.width, height: b.height };
-                }
-                layout() {
-                    const b = this.getBounds();
-                    if (b.height < this._clientContentHeight) {
-                        this._scrollHandler.style.display = "block";
-                        const h = Math.max(10, b.height / this._clientContentHeight * b.height);
-                        const y = -(b.height - h) * this.getViewer().getScrollY() / (this._clientContentHeight - b.height);
-                        controls.setElementBounds(this._scrollHandler, {
-                            y: y,
-                            height: h
-                        });
-                        this.removeClass("hideScrollBar");
-                    }
-                    else {
-                        this.addClass("hideScrollBar");
-                    }
-                    this._clientControl.layout();
-                }
-            }
-            controls.ScrollPane = ScrollPane;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class SplitPanel extends controls.Control {
-                constructor(left, right, horizontal = true) {
-                    super("div", "split");
-                    this._startDrag = -1;
-                    this._horizontal = horizontal;
-                    this._splitPosition = 50;
-                    this._splitFactor = 0.5;
-                    this._splitWidth = 2;
-                    const l1 = (e) => this.onMouseLeave(e);
-                    const l2 = (e) => this.onMouseDown(e);
-                    const l3 = (e) => this.onMouseUp(e);
-                    const l4 = (e) => this.onMouseMove(e);
-                    const l5 = (e) => {
-                        if (!this.getElement().isConnected) {
-                            window.removeEventListener("mouseleave", l1);
-                            window.removeEventListener("mousedown", l2);
-                            window.removeEventListener("mouseup", l3);
-                            window.removeEventListener("mousemove", l4);
-                            window.removeEventListener("mousemove", l5);
-                        }
-                    };
-                    window.addEventListener("mouseleave", l1);
-                    window.addEventListener("mousedown", l2);
-                    window.addEventListener("mouseup", l3);
-                    window.addEventListener("mousemove", l4);
-                    window.addEventListener("mousemove", l5);
-                    if (left) {
-                        this.setLeftControl(left);
-                    }
-                    if (right) {
-                        this.setRightControl(right);
-                    }
-                }
-                onMouseDown(e) {
-                    const pos = this.getControlPosition(e.x, e.y);
-                    const offset = this._horizontal ? pos.x : pos.y;
-                    const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
-                    if (inside) {
-                        e.stopImmediatePropagation();
-                        this._startDrag = this._horizontal ? e.x : e.y;
-                        this._startPos = this._splitPosition;
-                    }
-                }
-                onMouseUp(e) {
-                    if (this._startDrag !== -1) {
-                        e.stopImmediatePropagation();
-                    }
-                    this._startDrag = -1;
-                }
-                onMouseMove(e) {
-                    const pos = this.getControlPosition(e.x, e.y);
-                    const offset = this._horizontal ? pos.x : pos.y;
-                    const screen = this._horizontal ? e.x : e.y;
-                    const boundsSize = this._horizontal ? this.getBounds().width : this.getBounds().height;
-                    const cursorResize = this._horizontal ? "ew-resize" : "ns-resize";
-                    const inside = Math.abs(offset - this._splitPosition) <= controls.SPLIT_OVER_ZONE_WIDTH && this.containsLocalPoint(pos.x, pos.y);
-                    if (inside) {
-                        if (e.buttons === 0 || this._startDrag !== -1) {
-                            e.preventDefault();
-                            this.getElement().style.cursor = cursorResize;
-                        }
-                    }
-                    else {
-                        this.getElement().style.cursor = "inherit";
-                    }
-                    if (this._startDrag !== -1) {
-                        this.getElement().style.cursor = cursorResize;
-                        const newPos = this._startPos + screen - this._startDrag;
-                        if (newPos > 100 && boundsSize - newPos > 100) {
-                            this._splitPosition = newPos;
-                            this._splitFactor = this._splitPosition / boundsSize;
-                            this.layout();
-                        }
-                    }
-                }
-                onMouseLeave(e) {
-                    this.getElement().style.cursor = "inherit";
-                    this._startDrag = -1;
-                }
-                setHorizontal(horizontal = true) {
-                    this._horizontal = horizontal;
-                }
-                setVertical(vertical = true) {
-                    this._horizontal = !vertical;
-                }
-                getSplitFactor() {
-                    return this._splitFactor;
-                }
-                getSize() {
-                    const b = this.getBounds();
-                    return this._horizontal ? b.width : b.height;
-                }
-                setSplitFactor(factor) {
-                    this._splitFactor = Math.min(Math.max(0, factor), 1);
-                    this._splitPosition = this.getSize() * this._splitFactor;
-                }
-                setLeftControl(control) {
-                    this._leftControl = control;
-                    this.add(control);
-                }
-                getLeftControl() {
-                    return this._leftControl;
-                }
-                setRightControl(control) {
-                    this._rightControl = control;
-                    this.add(control);
-                }
-                getRightControl() {
-                    return this._rightControl;
-                }
-                layout() {
-                    controls.setElementBounds(this.getElement(), this.getBounds());
-                    if (!this._leftControl || !this._rightControl) {
-                        return;
-                    }
-                    this.setSplitFactor(this._splitFactor);
-                    const pos = this._splitPosition;
-                    const sw = this._splitWidth;
-                    let b = this.getBounds();
-                    if (this._horizontal) {
-                        this._leftControl.setBoundsValues(0, 0, pos - sw, b.height);
-                        this._rightControl.setBoundsValues(pos + sw, 0, b.width - pos - sw, b.height);
-                    }
-                    else {
-                        this._leftControl.setBoundsValues(0, 0, b.width, pos - sw);
-                        this._rightControl.setBoundsValues(0, pos + sw, b.width, b.height - pos - sw);
-                    }
-                }
-            }
-            controls.SplitPanel = SplitPanel;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3330,10 +1758,10 @@ var phasereditor2d;
             }
             controls.getElementBounds = getElementBounds;
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3476,10 +1904,10 @@ var phasereditor2d;
                 properties.PropertyPage = PropertyPage;
             })(properties = controls.properties || (controls.properties = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3562,10 +1990,10 @@ var phasereditor2d;
                 properties.PropertySection = PropertySection;
             })(properties = controls.properties || (controls.properties = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3577,10 +2005,10 @@ var phasereditor2d;
                 properties.PropertySectionProvider = PropertySectionProvider;
             })(properties = controls.properties || (controls.properties = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3600,10 +2028,10 @@ var phasereditor2d;
                 viewers.ArrayTreeContentProvider = ArrayTreeContentProvider;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3626,10 +2054,95 @@ var phasereditor2d;
                 viewers.EmptyCellRenderer = EmptyCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class EmptyTreeContentProvider {
+                    getRoots(input) {
+                        return viewers.EMPTY_ARRAY;
+                    }
+                    getChildren(parent) {
+                        return viewers.EMPTY_ARRAY;
+                    }
+                }
+                viewers.EmptyTreeContentProvider = EmptyTreeContentProvider;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class FilterControl extends controls.Control {
+                    constructor() {
+                        super("div", "FilterControl");
+                        this.setLayoutChildren(false);
+                        this._filterElement = document.createElement("input");
+                        this.getElement().appendChild(this._filterElement);
+                    }
+                    getFilterElement() {
+                        return this._filterElement;
+                    }
+                }
+                class ViewerContainer extends controls.Control {
+                    constructor(viewer) {
+                        super("div", "ViewerContainer");
+                        this._viewer = viewer;
+                        this.add(viewer);
+                        setTimeout(() => this.layout(), 1);
+                    }
+                    getViewer() {
+                        return this._viewer;
+                    }
+                    layout() {
+                        const b = this.getElement().getBoundingClientRect();
+                        this._viewer.setBoundsValues(b.left, b.top, b.width, b.height);
+                    }
+                }
+                viewers.ViewerContainer = ViewerContainer;
+                class FilteredViewer extends controls.Control {
+                    constructor(viewer, ...classList) {
+                        super("div", "FilteredViewer", ...classList);
+                        this._viewer = viewer;
+                        this._filterControl = new FilterControl();
+                        this._filterControl.getFilterElement().addEventListener("input", e => this.onFilterInput(e));
+                        this.add(this._filterControl);
+                        this._viewerContainer = new ViewerContainer(this._viewer);
+                        this._scrollPane = new controls.ScrollPane(this._viewerContainer);
+                        this.add(this._scrollPane);
+                        this.setLayoutChildren(false);
+                    }
+                    onFilterInput(e) {
+                        const value = this._filterControl.getFilterElement().value;
+                        this._viewer.setFilterText(value);
+                    }
+                    getViewer() {
+                        return this._viewer;
+                    }
+                    layout() {
+                        this._viewerContainer.layout();
+                        this._scrollPane.layout();
+                    }
+                }
+                viewers.FilteredViewer = FilteredViewer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3704,10 +2217,10 @@ var phasereditor2d;
                 viewers.FolderCellRenderer = FolderCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -3810,11 +2323,11 @@ var phasereditor2d;
                 viewers.TreeViewerRenderer = TreeViewerRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="./TreeViewerRenderer.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4005,10 +2518,10 @@ var phasereditor2d;
                 viewers.GridTreeViewerRenderer = GridTreeViewerRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4034,10 +2547,10 @@ var phasereditor2d;
                 viewers.LabelCellRenderer = LabelCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4067,14 +2580,14 @@ var phasereditor2d;
                 viewers.ImageCellRenderer = ImageCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="../Rect.ts"/>
-/// <reference path="../../phasereditor2d.ui.controls/Controls.ts"/>
+/// <reference path="../Controls.ts"/>
 /// <reference path="./LabelCellRenderer.ts"/>
 /// <reference path="./ImageCellRenderer.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4442,11 +2955,11 @@ var phasereditor2d;
                 viewers.Viewer = Viewer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="./Viewer.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4468,10 +2981,10 @@ var phasereditor2d;
                 viewers.IconImageCellRenderer = IconImageCellRenderer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4489,10 +3002,10 @@ var phasereditor2d;
                 viewers.PaintItem = PaintItem;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4518,11 +3031,12 @@ var phasereditor2d;
                 ;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="./Viewer.ts"/>
-var phasereditor2d;
-(function (phasereditor2d) {
+/// <reference path="./EmptyTreeContentProvider.ts" />
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4682,14 +3196,1480 @@ var phasereditor2d;
                 viewers.TreeViewer = TreeViewer;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/Controls.ts"/>
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
+            class Part extends ui.controls.Control {
+                constructor(id) {
+                    super();
+                    this._id = id;
+                    this._title = "";
+                    this._selection = [];
+                    this._partCreated = false;
+                    this._undoManager = new ide.undo.UndoManager();
+                    this.getElement().setAttribute("id", id);
+                    this.getElement().classList.add("Part");
+                    this.getElement()["__part"] = this;
+                }
+                getUndoManager() {
+                    return this._undoManager;
+                }
+                getPartFolder() {
+                    return this._folder;
+                }
+                setPartFolder(folder) {
+                    this._folder = folder;
+                }
+                getTitle() {
+                    return this._title;
+                }
+                setTitle(title) {
+                    this._title = title;
+                    this.dispatchTitleUpdatedEvent();
+                }
+                setIcon(icon) {
+                    this._icon = icon;
+                    this.dispatchTitleUpdatedEvent();
+                }
+                dispatchTitleUpdatedEvent() {
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PART_TITLE_UPDATED, { detail: this }));
+                }
+                getIcon() {
+                    return this._icon;
+                }
+                getId() {
+                    return this._id;
+                }
+                setSelection(selection, notify = true) {
+                    this._selection = selection;
+                    window["SELECTION"] = selection;
+                    if (notify) {
+                        this.dispatchEvent(new CustomEvent(ui.controls.EVENT_SELECTION_CHANGED, {
+                            detail: selection
+                        }));
+                    }
+                }
+                getSelection() {
+                    return this._selection;
+                }
+                getPropertyProvider() {
+                    return null;
+                }
+                layout() {
+                }
+                onPartClosed() {
+                    return true;
+                }
+                onPartShown() {
+                    if (!this._partCreated) {
+                        this._partCreated = true;
+                        this.createPart();
+                    }
+                }
+            }
+            ide.Part = Part;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorPart extends ide.Part {
+                constructor(id) {
+                    super(id);
+                    this.addClass("EditorPart");
+                    this._dirty = false;
+                }
+                setDirty(dirty) {
+                    this._dirty = dirty;
+                    const folder = this.getPartFolder();
+                    const label = folder.getLabelFromContent(this);
+                    const iconClose = ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_CLOSE);
+                    const iconDirty = dirty ? ui.controls.Controls.getIcon(ui.controls.ICON_CONTROL_DIRTY) : iconClose;
+                    folder.setTabCloseIcons(label, iconDirty, iconClose);
+                }
+                isDirty() {
+                    return this._dirty;
+                }
+                save() {
+                }
+                onPartClosed() {
+                    if (this.isDirty()) {
+                        return confirm("This editor is not saved, do you want to close it?");
+                    }
+                    return true;
+                }
+                getInput() {
+                    return this._input;
+                }
+                setInput(input) {
+                    this._input = input;
+                }
+                getEditorViewerProvider(key) {
+                    return null;
+                }
+            }
+            ide.EditorPart = EditorPart;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/TabPane.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class PartFolder extends ui.controls.TabPane {
+                constructor(...classList) {
+                    super("PartsTabPane", ...classList);
+                    this.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                        const content = this.getSelectedTabContent();
+                        if (content) {
+                            content.layout();
+                        }
+                    });
+                    this.addEventListener(ui.controls.EVENT_TAB_CLOSED, (e) => {
+                        const part = e.detail;
+                        if (part.onPartClosed()) {
+                            if (this.getContentList().length === 1) {
+                                ide.Workbench.getWorkbench().setActivePart(null);
+                                if (this instanceof ide.EditorArea) {
+                                    ide.Workbench.getWorkbench().setActiveEditor(null);
+                                }
+                            }
+                        }
+                        else {
+                            e.preventDefault();
+                        }
+                    });
+                    this.addEventListener(ui.controls.EVENT_TAB_SELECTED, (e) => {
+                        const part = e.detail;
+                        ide.Workbench.getWorkbench().setActivePart(part);
+                        part.onPartShown();
+                    });
+                }
+                addPart(part, closeable = false) {
+                    part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
+                        this.setTabTitle(part, part.getTitle(), part.getIcon());
+                    });
+                    this.addTab(part.getTitle(), part.getIcon(), part, closeable);
+                    part.setPartFolder(this);
+                }
+            }
+            ide.PartFolder = PartFolder;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./Part.ts"/>
+/// <reference path="./EditorPart.ts"/>
+/// <reference path="./PartFolder.ts"/>
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorArea extends ide.PartFolder {
+                constructor() {
+                    super("EditorArea");
+                }
+                activateEditor(editor) {
+                    super.selectTabWithContent(editor);
+                }
+            }
+            ide.EditorArea = EditorArea;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorFactory {
+                constructor(id) {
+                    this._id = id;
+                }
+                getId() {
+                    return this._id;
+                }
+            }
+            ide.EditorFactory = EditorFactory;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorRegistry {
+                constructor() {
+                    this._map = new Map();
+                }
+                registerFactory(factory) {
+                    this._map.set(factory.getId(), factory);
+                }
+                getFactoryForInput(input) {
+                    for (const factory of this._map.values()) {
+                        if (factory.acceptInput(input)) {
+                            return factory;
+                        }
+                    }
+                    return null;
+                }
+            }
+            ide.EditorRegistry = EditorRegistry;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class EditorViewerProvider {
+                constructor() {
+                    this._viewer = null;
+                    this._initialSelection = null;
+                }
+                setViewer(viewer) {
+                    this._viewer = viewer;
+                    if (this._initialSelection) {
+                        this.setSelection(this._initialSelection, true, true);
+                        this._initialSelection = null;
+                    }
+                }
+                setSelection(selection, reveal, notify) {
+                    if (this._viewer) {
+                        this._viewer.setSelection(selection, notify);
+                        this._viewer.reveal(...selection);
+                    }
+                    else {
+                        this._initialSelection = selection;
+                    }
+                }
+                onViewerSelectionChanged(selection) {
+                }
+                repaint() {
+                    if (this._viewer) {
+                        this._viewer.repaint();
+                    }
+                }
+            }
+            ide.EditorViewerProvider = EditorViewerProvider;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewPart extends ide.Part {
+                constructor(id) {
+                    super(id);
+                    this.addClass("View");
+                }
+            }
+            ide.ViewPart = ViewPart;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./ViewPart.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewerView extends ide.ViewPart {
+                constructor(id) {
+                    super(id);
+                }
+                createPart() {
+                    this._viewer = this.createViewer();
+                    this.addClass("ViewerView");
+                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
+                    this.add(this._filteredViewer);
+                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
+                        this.setSelection(e.detail);
+                    });
+                }
+                getViewer() {
+                    return this._viewer;
+                }
+                layout() {
+                    if (this._filteredViewer) {
+                        this._filteredViewer.layout();
+                    }
+                }
+            }
+            ide.ViewerView = ViewerView;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./ViewerView.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var viewers = ui.controls.viewers;
+            class EditorViewerView extends ide.ViewerView {
+                constructor(id) {
+                    super(id);
+                    this._viewerMap = new Map();
+                }
+                createViewer() {
+                    const viewer = new viewers.TreeViewer();
+                    viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => {
+                        if (this._currentViewerProvider) {
+                            this._currentViewerProvider.onViewerSelectionChanged(this._viewer.getSelection());
+                        }
+                    });
+                    return viewer;
+                }
+                createPart() {
+                    super.createPart();
+                    ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onWorkbenchEditorActivated());
+                }
+                async onWorkbenchEditorActivated() {
+                    if (this._currentEditor !== null) {
+                        const state = this._viewer.getState();
+                        this._viewerMap.set(this._currentEditor, state);
+                    }
+                    const editor = ide.Workbench.getWorkbench().getActiveEditor();
+                    let provider = null;
+                    if (editor) {
+                        if (editor === this._currentEditor) {
+                            provider = this._currentViewerProvider;
+                        }
+                        else {
+                            provider = this.getViewerProvider(editor);
+                        }
+                    }
+                    if (provider) {
+                        provider.setViewer(this._viewer);
+                        await provider.preload();
+                        this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
+                        this._viewer.setLabelProvider(provider.getLabelProvider());
+                        this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
+                        this._viewer.setContentProvider(provider.getContentProvider());
+                        this._viewer.setInput(provider.getInput());
+                        const state = this._viewerMap.get(editor);
+                        if (state) {
+                            this._viewer.setState(state);
+                        }
+                    }
+                    else {
+                        this._viewer.setInput(null);
+                        this._viewer.setContentProvider(new ui.controls.viewers.EmptyTreeContentProvider());
+                    }
+                    this._currentViewerProvider = provider;
+                    this._currentEditor = editor;
+                    this._viewer.repaint();
+                }
+                getPropertyProvider() {
+                    if (this._currentViewerProvider) {
+                        return this._currentViewerProvider.getPropertySectionProvider();
+                    }
+                    return null;
+                }
+            }
+            ide.EditorViewerView = EditorViewerView;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class FileEditor extends ide.EditorPart {
+                constructor(id) {
+                    super(id);
+                }
+                setInput(file) {
+                    super.setInput(file);
+                    this.setTitle(file.getName());
+                }
+                getInput() {
+                    return super.getInput();
+                }
+                getIcon() {
+                    const file = this.getInput();
+                    if (!file) {
+                        return ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE);
+                    }
+                    const wb = ide.Workbench.getWorkbench();
+                    const ct = wb.getContentTypeRegistry().getCachedContentType(file);
+                    const icon = wb.getContentTypeIcon(ct);
+                    return icon;
+                }
+            }
+            ide.FileEditor = FileEditor;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class FileUtils {
+                static getImage(file) {
+                    return ide.Workbench.getWorkbench().getFileImage(file);
+                }
+                static async preloadAndGetFileString(file) {
+                    await this.preloadFileString(file);
+                    return this.getFileString(file);
+                }
+                static getFileString(file) {
+                    return ide.Workbench.getWorkbench().getFileStringCache().getContent(file);
+                }
+                static setFileString_async(file, content) {
+                    return ide.Workbench.getWorkbench().getFileStringCache().setContent(file, content);
+                }
+                static async preloadFileString(file) {
+                    const cache = ide.Workbench.getWorkbench().getFileStringCache();
+                    return cache.preload(file);
+                }
+                static getFileFromPath(path) {
+                    const root = ide.Workbench.getWorkbench().getProjectRoot();
+                    const names = path.split("/");
+                    let result = root;
+                    for (const name of names) {
+                        const child = result.getFile(name);
+                        if (child) {
+                            result = child;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    return result;
+                }
+                static async getFilesWithContentType(contentType) {
+                    const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();
+                    const files = this.getAllFiles();
+                    for (const file of files) {
+                        await reg.preload(file);
+                    }
+                    return files.filter(file => reg.getCachedContentType(file) === contentType);
+                }
+                static getAllFiles() {
+                    const files = [];
+                    ide.Workbench.getWorkbench().getProjectRoot().flatTree(files, false);
+                    return files;
+                }
+            }
+            ide.FileUtils = FileUtils;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class KeyMatcher {
+                    constructor(config) {
+                        this._control = config.control === undefined ? false : config.control;
+                        this._shift = config.shift === undefined ? false : config.shift;
+                        this._alt = config.alt === undefined ? false : config.alt;
+                        this._meta = config.meta === undefined ? false : config.meta;
+                        this._key = config.key === undefined ? "" : config.key;
+                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
+                    }
+                    matchesKeys(event) {
+                        return event.ctrlKey === this._control
+                            && event.shiftKey === this._shift
+                            && event.altKey === this._alt
+                            && event.metaKey === this._meta
+                            && event.key.toLowerCase() === this._key.toLowerCase();
+                    }
+                    matchesTarget(element) {
+                        if (this._filterInputElements) {
+                            return !(element instanceof HTMLInputElement);
+                        }
+                        return true;
+                    }
+                }
+                commands.KeyMatcher = KeyMatcher;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./commands/KeyMatcher.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var KeyMatcher = ide.commands.KeyMatcher;
+            ide.CMD_SAVE = "save";
+            ide.CMD_DELETE = "delete";
+            ide.CMD_RENAME = "rename";
+            ide.CMD_UNDO = "undo";
+            ide.CMD_REDO = "redo";
+            ide.CMD_SWITCH_THEME = "switchTheme";
+            ide.CMD_COLLAPSE_ALL = "collapseAll";
+            ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
+            class IDECommands {
+                static init() {
+                    const manager = ide.Workbench.getWorkbench().getCommandManager();
+                    this.initEdit(manager);
+                    this.initUndo(manager);
+                    this.initTheme(manager);
+                    this.initViewer(manager);
+                }
+                static initViewer(manager) {
+                    // collapse all
+                    manager.addCommandHelper(ide.CMD_COLLAPSE_ALL);
+                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                        viewer.collapseAll();
+                        viewer.repaint();
+                    });
+                    manager.addKeyBinding(ide.CMD_COLLAPSE_ALL, new KeyMatcher({
+                        key: "c"
+                    }));
+                    // collapse expand branch
+                    manager.addCommandHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH);
+                    manager.addHandlerHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                        const parents = [];
+                        for (const obj of viewer.getSelection()) {
+                            const objParents = viewer.expandCollapseBranch(obj);
+                            parents.push(...objParents);
+                        }
+                        viewer.setSelection(parents);
+                    });
+                    manager.addKeyBinding(ide.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
+                        key: " "
+                    }));
+                }
+                static initTheme(manager) {
+                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
+                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
+                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new KeyMatcher({
+                        control: true,
+                        key: "2"
+                    }));
+                }
+                static initUndo(manager) {
+                    // undo
+                    manager.addCommandHelper(ide.CMD_UNDO);
+                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
+                    manager.addKeyBinding(ide.CMD_UNDO, new KeyMatcher({
+                        control: true,
+                        key: "z"
+                    }));
+                    // redo
+                    manager.addCommandHelper(ide.CMD_REDO);
+                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
+                    manager.addKeyBinding(ide.CMD_REDO, new KeyMatcher({
+                        control: true,
+                        shift: true,
+                        key: "z"
+                    }));
+                }
+                static initEdit(manager) {
+                    // save
+                    manager.addCommandHelper(ide.CMD_SAVE);
+                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
+                        args.activeEditor.save();
+                    });
+                    manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
+                        control: true,
+                        key: "s"
+                    }));
+                    // delete
+                    manager.addCommandHelper(ide.CMD_DELETE);
+                    manager.addKeyBinding(ide.CMD_DELETE, new KeyMatcher({
+                        key: "delete"
+                    }));
+                    // rename
+                    manager.addCommandHelper(ide.CMD_RENAME);
+                    manager.addKeyBinding(ide.CMD_RENAME, new KeyMatcher({
+                        key: "f2"
+                    }));
+                }
+            }
+            ide.IDECommands = IDECommands;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.CONTENT_TYPE_IMAGE = "image";
+            ide.CONTENT_TYPE_AUDIO = "audio";
+            ide.CONTENT_TYPE_VIDEO = "video";
+            ide.CONTENT_TYPE_SCRIPT = "script";
+            ide.CONTENT_TYPE_TEXT = "text";
+            class ExtensionContentTypeResolver {
+                constructor(defs) {
+                    this._map = new Map();
+                    for (const def of defs) {
+                        this._map.set(def[0].toUpperCase(), def[1]);
+                    }
+                }
+                computeContentType(file) {
+                    const ext = file.getExtension().toUpperCase();
+                    if (this._map.has(ext)) {
+                        return Promise.resolve(this._map.get(ext));
+                    }
+                    return Promise.resolve(colibri.core.CONTENT_TYPE_ANY);
+                }
+            }
+            ide.ExtensionContentTypeResolver = ExtensionContentTypeResolver;
+            class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
+                constructor() {
+                    super([
+                        ["png", ide.CONTENT_TYPE_IMAGE],
+                        ["jpg", ide.CONTENT_TYPE_IMAGE],
+                        ["bmp", ide.CONTENT_TYPE_IMAGE],
+                        ["gif", ide.CONTENT_TYPE_IMAGE],
+                        ["webp", ide.CONTENT_TYPE_IMAGE],
+                        ["mp3", ide.CONTENT_TYPE_AUDIO],
+                        ["wav", ide.CONTENT_TYPE_AUDIO],
+                        ["ogg", ide.CONTENT_TYPE_AUDIO],
+                        ["mp4", ide.CONTENT_TYPE_VIDEO],
+                        ["ogv", ide.CONTENT_TYPE_VIDEO],
+                        ["mp4", ide.CONTENT_TYPE_VIDEO],
+                        ["webm", ide.CONTENT_TYPE_VIDEO],
+                        ["js", ide.CONTENT_TYPE_SCRIPT],
+                        ["html", ide.CONTENT_TYPE_SCRIPT],
+                        ["css", ide.CONTENT_TYPE_SCRIPT],
+                        ["ts", ide.CONTENT_TYPE_SCRIPT],
+                        ["json", ide.CONTENT_TYPE_SCRIPT],
+                        ["txt", ide.CONTENT_TYPE_TEXT],
+                        ["md", ide.CONTENT_TYPE_TEXT],
+                    ]);
+                }
+            }
+            ide.DefaultExtensionTypeResolver = DefaultExtensionTypeResolver;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../../core/io/SyncFileContentCache.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ImageFileCache extends colibri.core.io.SyncFileContentCache {
+                constructor() {
+                    super(file => new ui.controls.DefaultImage(new Image(), file.getUrl()));
+                }
+            }
+            ide.ImageFileCache = ImageFileCache;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class OutlineProvider extends EventTarget {
+                constructor(editor) {
+                    super();
+                    this._editor = editor;
+                }
+            }
+            ide.OutlineProvider = OutlineProvider;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class Plugin {
+                constructor(id) {
+                    this._id = id;
+                }
+                getId() {
+                    return this._id;
+                }
+                preloadIcons(contentTypeIconMap) {
+                    return Promise.resolve();
+                }
+                registerContentTypes(registry) {
+                }
+                preloadProjectResources() {
+                    return Promise.resolve();
+                }
+                registerCommands(manager) {
+                }
+                registerEditor(registry) {
+                }
+                createWindow(windows) {
+                }
+            }
+            ide.Plugin = Plugin;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var toolbar;
+        (function (toolbar) {
+            class Toolbar {
+                constructor() {
+                    this._toolbarElement = document.createElement("div");
+                    this._toolbarElement.innerHTML = `
+
+            <button>Load</button>
+            <button>Play</button>
+
+            `;
+                    this._toolbarElement.classList.add("toolbar");
+                    document.getElementsByTagName("body")[0].appendChild(this._toolbarElement);
+                }
+                getElement() {
+                    return this._toolbarElement;
+                }
+            }
+            toolbar.Toolbar = Toolbar;
+        })(toolbar = ui.toolbar || (ui.toolbar = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewFolder extends ide.PartFolder {
+                constructor(...classList) {
+                    super("ViewFolder", ...classList);
+                }
+            }
+            ide.ViewFolder = ViewFolder;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/Controls.ts"/>
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.EVENT_PART_DEACTIVATED = "partDeactivated";
+            ide.EVENT_PART_ACTIVATED = "partActivated";
+            ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+            ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
+            ide.ICON_FILE = "file";
+            ide.ICON_FOLDER = "folder";
+            ide.ICON_FILE_FONT = "file-font";
+            ide.ICON_FILE_IMAGE = "file-image";
+            ide.ICON_FILE_VIDEO = "file-movie";
+            ide.ICON_FILE_SCRIPT = "file-script";
+            ide.ICON_FILE_SOUND = "file-sound";
+            ide.ICON_FILE_TEXT = "file-text";
+            ide.ICON_OUTLINE = "outline";
+            ide.ICON_INSPECTOR = "inspector";
+            ide.ICON_BLOCKS = "blocks";
+            ide.ICON_GROUP = "group";
+            const ICONS = [
+                ide.ICON_FILE,
+                ide.ICON_FOLDER,
+                ide.ICON_FILE_FONT,
+                ide.ICON_FILE_IMAGE,
+                ide.ICON_FILE_VIDEO,
+                ide.ICON_FILE_SCRIPT,
+                ide.ICON_FILE_SOUND,
+                ide.ICON_FILE_TEXT,
+                ide.ICON_OUTLINE,
+                ide.ICON_INSPECTOR,
+                ide.ICON_BLOCKS,
+                ide.ICON_GROUP
+            ];
+            class Workbench extends EventTarget {
+                constructor() {
+                    super();
+                    this._editorRegistry = new ide.EditorRegistry();
+                    this._activePart = null;
+                    this._activeEditor = null;
+                    this._activeElement = null;
+                    this._fileImageCache = new ide.ImageFileCache();
+                }
+                static getWorkbench() {
+                    if (!Workbench._workbench) {
+                        Workbench._workbench = new Workbench();
+                    }
+                    return this._workbench;
+                }
+                async launch(plugins) {
+                    console.log("Workbench: starting.");
+                    await ui.controls.Controls.preload();
+                    console.log("Workbench: fetching UI resources.");
+                    await this.preloadIcons(plugins);
+                    console.log("Workbench: fetching project metadata.");
+                    await this.preloadFileStorage();
+                    console.log("Workbench: fetching required project resources.");
+                    this.registerContentTypes(plugins);
+                    await this.preloadProjectResources(plugins);
+                    this.initCommands(plugins);
+                    this.registerEditors(plugins);
+                    this.registerWindow(plugins);
+                    this.initEvents();
+                    console.log("Workbench: started.");
+                }
+                registerWindow(plugins) {
+                    const windows = [];
+                    for (const plugin of plugins) {
+                        plugin.createWindow(windows);
+                    }
+                    if (windows.length === 0) {
+                        alert("No workbench window provided.");
+                    }
+                    else {
+                        this._activeWindow = windows[0];
+                        document.body.appendChild(this._activeWindow.getElement());
+                    }
+                }
+                async preloadProjectResources(plugins) {
+                    for (const plugin of plugins) {
+                        await plugin.preloadProjectResources();
+                    }
+                }
+                async preloadIcons(plugins) {
+                    this._contentType_icon_Map = new Map();
+                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_IMAGE, this.getWorkbenchIcon(ide.ICON_FILE_IMAGE));
+                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_AUDIO, this.getWorkbenchIcon(ide.ICON_FILE_SOUND));
+                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ide.ICON_FILE_VIDEO));
+                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ide.ICON_FILE_SCRIPT));
+                    this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ide.ICON_FILE_TEXT));
+                    for (const plugin of plugins) {
+                        await plugin.preloadIcons(this._contentType_icon_Map);
+                    }
+                    return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
+                }
+                initCommands(plugins) {
+                    this._commandManager = new ide.commands.CommandManager();
+                    ide.IDECommands.init();
+                    for (const plugin of plugins) {
+                        plugin.registerCommands(this._commandManager);
+                    }
+                }
+                getFileStringCache() {
+                    return this._fileStringCache;
+                }
+                getCommandManager() {
+                    return this._commandManager;
+                }
+                registerEditors(plugins) {
+                    this._editorRegistry.registerFactory(ide.editors.image.ImageEditor.getFactory());
+                    for (const plugin of plugins) {
+                        plugin.registerEditor(this._editorRegistry);
+                    }
+                }
+                getActiveWindow() {
+                    return this._activeWindow;
+                }
+                initEvents() {
+                    window.addEventListener("mousedown", e => {
+                        this._activeElement = e.target;
+                        const part = this.findPart(e.target);
+                        this.setActivePart(part);
+                    });
+                }
+                getActiveElement() {
+                    return this._activeElement;
+                }
+                getActivePart() {
+                    return this._activePart;
+                }
+                getActiveEditor() {
+                    return this._activeEditor;
+                }
+                setActiveEditor(editor) {
+                    if (editor === this._activeEditor) {
+                        return;
+                    }
+                    this._activeEditor = editor;
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
+                }
+                /**
+                 * Users may not call this method. This is public only for convenience.
+                 */
+                setActivePart(part) {
+                    if (part !== this._activePart) {
+                        const old = this._activePart;
+                        this._activePart = part;
+                        if (old) {
+                            this.toggleActivePartClass(old);
+                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
+                        }
+                        if (part) {
+                            this.toggleActivePartClass(part);
+                        }
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
+                    }
+                    if (part instanceof ide.EditorPart) {
+                        this.setActiveEditor(part);
+                    }
+                }
+                toggleActivePartClass(part) {
+                    const tabPane = this.findTabPane(part.getElement());
+                    if (!tabPane) {
+                        // maybe the clicked part was closed
+                        return;
+                    }
+                    if (part.containsClass("activePart")) {
+                        part.removeClass("activePart");
+                        tabPane.removeClass("activePart");
+                    }
+                    else {
+                        part.addClass("activePart");
+                        tabPane.addClass("activePart");
+                    }
+                }
+                findTabPane(element) {
+                    if (element) {
+                        const control = ui.controls.Control.getControlOf(element);
+                        if (control && control instanceof ui.controls.TabPane) {
+                            return control;
+                        }
+                        return this.findTabPane(element.parentElement);
+                    }
+                    return null;
+                }
+                findPart(element) {
+                    if (ui.controls.TabPane.isTabLabel(element)) {
+                        element = ui.controls.TabPane.getContentFromLabel(element).getElement();
+                    }
+                    if (element["__part"]) {
+                        return element["__part"];
+                    }
+                    const control = ui.controls.Control.getControlOf(element);
+                    if (control && control instanceof ui.controls.TabPane) {
+                        const tabPane = control;
+                        const content = tabPane.getSelectedTabContent();
+                        if (content) {
+                            const element = content.getElement();
+                            if (element["__part"]) {
+                                return element["__part"];
+                            }
+                        }
+                    }
+                    if (element.parentElement) {
+                        return this.findPart(element.parentElement);
+                    }
+                    return null;
+                }
+                async preloadFileStorage() {
+                    this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
+                    this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
+                    await this._fileStorage.reload();
+                }
+                registerContentTypes(plugins) {
+                    const reg = new colibri.core.ContentTypeRegistry();
+                    for (const plugin of plugins) {
+                        plugin.registerContentTypes(reg);
+                    }
+                    reg.registerResolver(new ide.DefaultExtensionTypeResolver());
+                    this._contentTypeRegistry = reg;
+                }
+                getContentTypeRegistry() {
+                    return this._contentTypeRegistry;
+                }
+                getProjectRoot() {
+                    return this._fileStorage.getRoot();
+                }
+                getContentTypeIcon(contentType) {
+                    if (this._contentType_icon_Map.has(contentType)) {
+                        return this._contentType_icon_Map.get(contentType);
+                    }
+                    return null;
+                }
+                getFileImage(file) {
+                    return this._fileImageCache.getContent(file);
+                }
+                getWorkbenchIcon(name) {
+                    return ui.controls.Controls.getIcon(name, "colibri/ui/ide/images");
+                }
+                getEditorRegistry() {
+                    return this._editorRegistry;
+                }
+                getEditors() {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    return editorArea.getContentList();
+                }
+                openEditor(input) {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    {
+                        const editors = this.getEditors();
+                        for (let editor of editors) {
+                            if (editor.getInput() === input) {
+                                editorArea.activateEditor(editor);
+                                this.setActivePart(editor);
+                                return;
+                            }
+                        }
+                    }
+                    const factory = this._editorRegistry.getFactoryForInput(input);
+                    if (factory) {
+                        const editor = factory.createEditor();
+                        editorArea.addPart(editor, true);
+                        editor.setInput(input);
+                        editorArea.activateEditor(editor);
+                        this.setActivePart(editor);
+                    }
+                    else {
+                        alert("No editor available for the given input.");
+                    }
+                }
+            }
+            ide.Workbench = Workbench;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/Control.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class WorkbenchWindow extends ui.controls.Control {
+                constructor() {
+                    super("div", "Window");
+                    this.setLayout(new ui.controls.FillLayout(5));
+                    window.addEventListener("resize", e => {
+                        this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
+                    });
+                    window.addEventListener(ui.controls.EVENT_THEME_CHANGED, e => this.layout());
+                }
+                createViewFolder(...parts) {
+                    const folder = new ide.ViewFolder();
+                    for (const part of parts) {
+                        folder.addPart(part);
+                    }
+                    return folder;
+                }
+            }
+            ide.WorkbenchWindow = WorkbenchWindow;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.IMG_SECTION_PADDING = 10;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class Command {
+                    constructor(id) {
+                        this._id = id;
+                    }
+                    getId() {
+                        return this._id;
+                    }
+                }
+                commands.Command = Command;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class CommandArgs {
+                    constructor(activePart, activeEditor, activeElement) {
+                        this.activePart = activePart;
+                        this.activeEditor = activeEditor;
+                        this.activeElement = activeElement;
+                    }
+                }
+                commands.CommandArgs = CommandArgs;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class CommandHandler {
+                    constructor(config) {
+                        this._testFunc = config.testFunc;
+                        this._executeFunc = config.executeFunc;
+                    }
+                    test(args) {
+                        return this._testFunc ? this._testFunc(args) : true;
+                    }
+                    execute(args) {
+                        if (this._executeFunc) {
+                            this._executeFunc(args);
+                        }
+                    }
+                }
+                commands.CommandHandler = CommandHandler;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class CommandManager {
+                    constructor() {
+                        this._commands = [];
+                        this._commandIdMap = new Map();
+                        this._commandMatcherMap = new Map();
+                        this._commandHandlerMap = new Map();
+                        window.addEventListener("keydown", e => { this.onKeyDown(e); });
+                    }
+                    onKeyDown(event) {
+                        if (event.isComposing) {
+                            return;
+                        }
+                        const args = this.makeArgs();
+                        for (const command of this._commands) {
+                            let eventMatches = false;
+                            const matchers = this._commandMatcherMap.get(command);
+                            for (const matcher of matchers) {
+                                if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
+                                    event.preventDefault();
+                                    eventMatches = true;
+                                    break;
+                                }
+                            }
+                            if (eventMatches) {
+                                const handlers = this._commandHandlerMap.get(command);
+                                for (const handler of handlers) {
+                                    if (handler.test(args)) {
+                                        handler.execute(args);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    addCommand(cmd) {
+                        this._commands.push(cmd);
+                        this._commandIdMap.set(cmd.getId(), cmd);
+                        this._commandMatcherMap.set(cmd, []);
+                        this._commandHandlerMap.set(cmd, []);
+                    }
+                    addCommandHelper(id) {
+                        this.addCommand(new commands.Command(id));
+                    }
+                    makeArgs() {
+                        const wb = ide.Workbench.getWorkbench();
+                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement());
+                    }
+                    getCommand(id) {
+                        const command = this._commandIdMap.get(id);
+                        if (!command) {
+                            console.error(`Command ${id} not found.`);
+                        }
+                        return command;
+                    }
+                    addKeyBinding(commandId, matcher) {
+                        const command = this.getCommand(commandId);
+                        if (command) {
+                            this._commandMatcherMap.get(command).push(matcher);
+                        }
+                    }
+                    addHandler(commandId, handler) {
+                        const command = this.getCommand(commandId);
+                        if (command) {
+                            this._commandHandlerMap.get(command).push(handler);
+                        }
+                    }
+                    addHandlerHelper(commandId, testFunc, executeFunc) {
+                        this.addHandler(commandId, new commands.CommandHandler({
+                            testFunc: testFunc,
+                            executeFunc: executeFunc
+                        }));
+                    }
+                }
+                commands.CommandManager = CommandManager;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../../FileEditor.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var editors;
+            (function (editors) {
+                var image;
+                (function (image) {
+                    class ImageEditorFactory extends ide.EditorFactory {
+                        constructor() {
+                            super("phasereditor2d.ImageEditorFactory");
+                        }
+                        acceptInput(input) {
+                            if (input instanceof colibri.core.io.FilePath) {
+                                const file = input;
+                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                                if (contentType === ide.CONTENT_TYPE_IMAGE) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        createEditor() {
+                            return new ImageEditor();
+                        }
+                    }
+                    class ImageEditor extends ide.FileEditor {
+                        constructor() {
+                            super("phasereditor2d.ImageEditor");
+                            this.addClass("ImageEditor");
+                        }
+                        static getFactory() {
+                            return new ImageEditorFactory();
+                        }
+                        async createPart() {
+                            this._imageControl = new ui.controls.ImageControl();
+                            const container = document.createElement("div");
+                            container.classList.add("ImageEditorContainer");
+                            container.appendChild(this._imageControl.getElement());
+                            this.getElement().appendChild(container);
+                            this.updateImage();
+                        }
+                        async updateImage() {
+                            const file = this.getInput();
+                            if (!file) {
+                                return;
+                            }
+                            const img = ide.Workbench.getWorkbench().getFileImage(file);
+                            this._imageControl.setImage(img);
+                            this._imageControl.repaint();
+                            const result = await img.preload();
+                            if (result === ui.controls.PreloadResult.RESOURCES_LOADED) {
+                                this._imageControl.repaint();
+                            }
+                            this.dispatchTitleUpdatedEvent();
+                        }
+                        getIcon() {
+                            const file = this.getInput();
+                            if (!file) {
+                                return super.getIcon();
+                            }
+                            const img = ide.Workbench.getWorkbench().getFileImage(file);
+                            return img;
+                        }
+                        layout() {
+                            if (this._imageControl) {
+                                this._imageControl.resizeTo();
+                            }
+                        }
+                        setInput(input) {
+                            super.setInput(input);
+                            if (this._imageControl) {
+                                this.updateImage();
+                            }
+                        }
+                    }
+                    image.ImageEditor = ImageEditor;
+                })(image = editors.image || (editors.image = {}));
+            })(editors = ide.editors || (ide.editors = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var properties;
+            (function (properties) {
+                class FilteredViewerInPropertySection extends ui.controls.viewers.FilteredViewer {
+                    constructor(page, viewer, ...classList) {
+                        super(viewer, ...classList);
+                        this.setHandlePosition(false);
+                        this.style.position = "relative";
+                        this.style.height = "100%";
+                        this.resizeTo();
+                        page.addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                            this.resizeTo();
+                        });
+                    }
+                    resizeTo() {
+                        setTimeout(() => {
+                            const parent = this.getElement().parentElement;
+                            if (parent) {
+                                this.setBounds({
+                                    width: parent.clientWidth,
+                                    height: parent.clientHeight
+                                });
+                            }
+                            this.getViewer().repaint();
+                        }, 10);
+                    }
+                }
+                properties.FilteredViewerInPropertySection = FilteredViewerInPropertySection;
+            })(properties = ide.properties || (ide.properties = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var undo;
+            (function (undo) {
+                class Operation {
+                }
+                undo.Operation = Operation;
+            })(undo = ide.undo || (ide.undo = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var undo;
+            (function (undo) {
+                class UndoManager {
+                    constructor() {
+                        this._undoList = [];
+                        this._redoList = [];
+                    }
+                    add(op) {
+                        this._undoList.push(op);
+                        this._redoList = [];
+                    }
+                    undo() {
+                        if (this._undoList.length > 0) {
+                            const op = this._undoList.pop();
+                            op.undo();
+                            this._redoList.push(op);
+                        }
+                    }
+                    redo() {
+                        if (this._redoList.length > 0) {
+                            const op = this._redoList.pop();
+                            op.redo();
+                            this._undoList.push(op);
+                        }
+                    }
+                }
+                undo.UndoManager = UndoManager;
+            })(undo = ide.undo || (ide.undo = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var utils;
+            (function (utils) {
+                class NameMaker {
+                    constructor(getName) {
+                        this._getName = getName;
+                        this._nameSet = new Set();
+                    }
+                    update(objects) {
+                        for (const obj of objects) {
+                            const name = this._getName(obj);
+                            this._nameSet.add(name);
+                        }
+                    }
+                    makeName(baseName) {
+                        let name;
+                        let i = 0;
+                        do {
+                            name = baseName + (i === 0 ? "" : "_" + i);
+                            i++;
+                        } while (this._nameSet.has(name));
+                        this._nameSet.add(name);
+                        return name;
+                    }
+                }
+                utils.NameMaker = NameMaker;
+            })(utils = ide.utils || (ide.utils = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_1) {
+            var ide = colibri.ui.ide;
             class DesignPlugin extends ide.Plugin {
                 constructor() {
                     super("phasereditor2d.ui.ide.DesignPlugin");
@@ -4698,11 +4678,51 @@ var phasereditor2d;
                     return this._instance;
                 }
                 createWindow(windows) {
-                    windows.push(new ide.DesignWindow());
+                    windows.push(new ide_1.DesignWindow());
                 }
             }
             DesignPlugin._instance = new DesignPlugin();
-            ide.DesignPlugin = DesignPlugin;
+            ide_1.DesignPlugin = DesignPlugin;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../colibri/ui/ide/WorkbenchWindow.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide_2) {
+            var controls = colibri.ui.controls;
+            var ide = colibri.ui.ide;
+            class DesignWindow extends ide.WorkbenchWindow {
+                constructor() {
+                    super();
+                    this._outlineView = new ide_2.views.outline.OutlineView();
+                    this._filesView = new ide_2.views.files.FilesView();
+                    this._inspectorView = new ide_2.views.inspector.InspectorView();
+                    this._blocksView = new ide_2.views.blocks.BlocksView();
+                    this._editorArea = new ide.EditorArea();
+                    this._split_Files_Blocks = new controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
+                    this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
+                    this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
+                    this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
+                    this.add(this._split_OutlineEditorFilesBlocks_Inspector);
+                    this.initialLayout();
+                }
+                getEditorArea() {
+                    return this._editorArea;
+                }
+                initialLayout() {
+                    const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+                    this._split_Files_Blocks.setSplitFactor(0.2);
+                    this._split_Editor_FilesBlocks.setSplitFactor(0.6);
+                    this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
+                    this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
+                    this.setBounds(b);
+                }
+            }
+            ide_2.DesignWindow = DesignWindow;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4711,11 +4731,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_3) {
             var views;
             (function (views) {
                 var blocks;
                 (function (blocks) {
+                    var ide = colibri.ui.ide;
                     class BlocksView extends ide.EditorViewerView {
                         constructor() {
                             super("BlocksView");
@@ -4729,7 +4750,7 @@ var phasereditor2d;
                     BlocksView.EDITOR_VIEWER_PROVIDER_KEY = "Blocks";
                     blocks.BlocksView = BlocksView;
                 })(blocks = views.blocks || (views.blocks = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_3.views || (ide_3.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4738,12 +4759,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_4) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
-                    var viewers = phasereditor2d.ui.controls.viewers;
+                    var viewers = colibri.ui.controls.viewers;
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
                     class FileCellRenderer extends viewers.LabelCellRenderer {
                         getImage(obj) {
                             const file = obj;
@@ -4755,9 +4778,9 @@ var phasereditor2d;
                                 }
                             }
                             else {
-                                return ui.controls.Controls.getIcon(ide.ICON_FOLDER);
+                                return controls.Controls.getIcon(ide.ICON_FOLDER);
                             }
-                            return ui.controls.Controls.getIcon(ide.ICON_FILE);
+                            return controls.Controls.getIcon(ide.ICON_FILE);
                         }
                         preload(obj) {
                             const file = obj;
@@ -4769,7 +4792,7 @@ var phasereditor2d;
                     }
                     files.FileCellRenderer = FileCellRenderer;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_4.views || (ide_4.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4778,16 +4801,17 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_5) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
+                    var ide = colibri.ui.ide;
                     class FileCellRendererProvider {
                         getCellRenderer(file) {
                             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
                             switch (contentType) {
-                                case ui.ide.CONTENT_TYPE_IMAGE:
+                                case ide.CONTENT_TYPE_IMAGE:
                                     return new files.FileImageRenderer();
                                 case ui.ide.editors.scene.CONTENT_TYPE_SCENE:
                                     return new ui.ide.editors.scene.blocks.SceneCellRenderer();
@@ -4800,7 +4824,7 @@ var phasereditor2d;
                     }
                     files.FileCellRendererProvider = FileCellRendererProvider;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_5.views || (ide_5.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4809,13 +4833,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_6) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
-                    var viewers = phasereditor2d.ui.controls.viewers;
-                    class FileImageRenderer extends viewers.ImageCellRenderer {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
+                    class FileImageRenderer extends controls.viewers.ImageCellRenderer {
                         getLabel(file) {
                             return file.getName();
                         }
@@ -4825,7 +4850,7 @@ var phasereditor2d;
                     }
                     files.FileImageRenderer = FileImageRenderer;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_6.views || (ide_6.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4860,7 +4885,8 @@ var phasereditor2d;
             (function (views) {
                 var files;
                 (function (files) {
-                    class FilePropertySectionProvider extends ui.controls.properties.PropertySectionProvider {
+                    var controls = colibri.ui.controls;
+                    class FilePropertySectionProvider extends controls.properties.PropertySectionProvider {
                         addSections(page, sections) {
                             sections.push(new files.FileSection(page));
                             sections.push(new files.ImageFileSection(page));
@@ -4883,7 +4909,9 @@ var phasereditor2d;
             (function (views) {
                 var files;
                 (function (files) {
-                    class FileSection extends ui.controls.properties.PropertySection {
+                    var controls = colibri.ui.controls;
+                    var core = colibri.core;
+                    class FileSection extends controls.properties.PropertySection {
                         constructor(page) {
                             super(page, "files.FileSection", "File");
                         }
@@ -4918,7 +4946,7 @@ var phasereditor2d;
                             }
                         }
                         canEdit(obj) {
-                            return obj instanceof phasereditor2d.core.io.FilePath;
+                            return obj instanceof core.io.FilePath;
                         }
                         canEditNumber(n) {
                             return n > 0;
@@ -4940,10 +4968,10 @@ var phasereditor2d;
             (function (views) {
                 var files;
                 (function (files) {
-                    var io = phasereditor2d.core.io;
+                    var core = colibri.core;
                     class FileTreeContentProvider {
                         getRoots(input) {
-                            if (input instanceof io.FilePath) {
+                            if (input instanceof core.io.FilePath) {
                                 return [input];
                             }
                             if (input instanceof Array) {
@@ -4966,12 +4994,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_7) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
-                    var viewers = phasereditor2d.ui.controls.viewers;
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
+                    var viewers = colibri.ui.controls.viewers;
                     class FilesView extends ide.ViewerView {
                         constructor() {
                             super("filesView");
@@ -4994,17 +5024,17 @@ var phasereditor2d;
                             viewer.setCellRendererProvider(new files.FileCellRendererProvider());
                             viewer.setInput(root);
                             viewer.repaint();
-                            viewer.addEventListener(ui.controls.viewers.EVENT_OPEN_ITEM, (e) => {
+                            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
                                 ide.Workbench.getWorkbench().openEditor(e.detail);
                             });
                         }
                         getIcon() {
-                            return ui.controls.Controls.getIcon(ide.ICON_FOLDER);
+                            return controls.Controls.getIcon(ide.ICON_FOLDER);
                         }
                     }
                     files.FilesView = FilesView;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_7.views || (ide_7.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5013,19 +5043,22 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_8) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
-                    class ImageFileSection extends ui.controls.properties.PropertySection {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
+                    var core = colibri.core;
+                    class ImageFileSection extends controls.properties.PropertySection {
                         constructor(page) {
                             super(page, "files.ImagePreviewSection", "Image", true);
                         }
                         createForm(parent) {
                             parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
-                            const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
-                            this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                            const imgControl = new controls.ImageControl(ide.IMG_SECTION_PADDING);
+                            this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e) => {
                                 imgControl.resizeTo();
                             });
                             parent.appendChild(imgControl.getElement());
@@ -5038,7 +5071,7 @@ var phasereditor2d;
                             });
                         }
                         canEdit(obj) {
-                            if (obj instanceof phasereditor2d.core.io.FilePath) {
+                            if (obj instanceof core.io.FilePath) {
                                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
                                 return ct === ide.CONTENT_TYPE_IMAGE;
                             }
@@ -5050,7 +5083,7 @@ var phasereditor2d;
                     }
                     files.ImageFileSection = ImageFileSection;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_8.views || (ide_8.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5059,22 +5092,25 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_9) {
             var views;
             (function (views) {
                 var files;
                 (function (files) {
-                    class GridImageFileViewer extends ui.controls.viewers.TreeViewer {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
+                    var core = colibri.core;
+                    class GridImageFileViewer extends controls.viewers.TreeViewer {
                         constructor(...classList) {
                             super("PreviewBackground", ...classList);
-                            this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                            this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                             this.setLabelProvider(new files.FileLabelProvider());
                             this.setCellRendererProvider(new files.FileCellRendererProvider());
-                            this.setTreeRenderer(new ui.controls.viewers.GridTreeViewerRenderer(this, true));
+                            this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, true));
                             this.getCanvas().classList.add("PreviewBackground");
                         }
                     }
-                    class ManyImageFileSection extends ui.controls.properties.PropertySection {
+                    class ManyImageFileSection extends controls.properties.PropertySection {
                         constructor(page) {
                             super(page, "files.ManyImageFileSection", "Images", true);
                         }
@@ -5092,7 +5128,7 @@ var phasereditor2d;
                             });
                         }
                         canEdit(obj) {
-                            if (obj instanceof phasereditor2d.core.io.FilePath) {
+                            if (obj instanceof core.io.FilePath) {
                                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
                                 return ct === ide.CONTENT_TYPE_IMAGE;
                             }
@@ -5104,7 +5140,7 @@ var phasereditor2d;
                     }
                     files.ManyImageFileSection = ManyImageFileSection;
                 })(files = views.files || (views.files = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_9.views || (ide_9.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5113,11 +5149,13 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_10) {
             var views;
             (function (views) {
                 var inspector;
                 (function (inspector) {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
                     class InspectorView extends ide.ViewPart {
                         constructor() {
                             super("InspectorView");
@@ -5128,7 +5166,7 @@ var phasereditor2d;
                             this._propertyPage.dispatchLayoutEvent();
                         }
                         createPart() {
-                            this._propertyPage = new ui.controls.properties.PropertyPage();
+                            this._propertyPage = new controls.properties.PropertyPage();
                             this.add(this._propertyPage);
                             this._selectionListener = (e) => this.onPartSelection();
                             ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => this.onWorkbenchPartActivate());
@@ -5137,11 +5175,11 @@ var phasereditor2d;
                             const part = ide.Workbench.getWorkbench().getActivePart();
                             if (part !== this && part !== this._currentPart) {
                                 if (this._currentPart) {
-                                    this._currentPart.removeEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                                    this._currentPart.removeEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                                 }
                                 this._currentPart = part;
                                 if (part) {
-                                    part.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, this._selectionListener);
+                                    part.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                                     this.onPartSelection();
                                 }
                                 else {
@@ -5158,7 +5196,7 @@ var phasereditor2d;
                     }
                     inspector.InspectorView = InspectorView;
                 })(inspector = views.inspector || (views.inspector = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_10.views || (ide_10.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5167,11 +5205,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_11) {
             var views;
             (function (views) {
                 var outline;
                 (function (outline) {
+                    var ide = colibri.ui.ide;
                     class OutlineView extends ide.EditorViewerView {
                         constructor() {
                             super("OutlineView");
@@ -5185,7 +5224,7 @@ var phasereditor2d;
                     OutlineView.EDITOR_VIEWER_PROVIDER_KEY = "Outline";
                     outline.OutlineView = OutlineView;
                 })(outline = views.outline || (views.outline = {}));
-            })(views = ide.views || (ide.views = {}));
+            })(views = ide_11.views || (ide_11.views = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5194,11 +5233,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_12) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    var ide = colibri.ui.ide;
                     pack.IMAGE_TYPE = "image";
                     pack.ATLAS_TYPE = "atlas";
                     pack.ATLAS_XML_TYPE = "atlasXML";
@@ -5242,7 +5282,7 @@ var phasereditor2d;
                     }
                     pack.AssetPack = AssetPack;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_12.editors || (ide_12.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5251,11 +5291,13 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_13) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    var ide = colibri.ui.ide;
+                    var core = colibri.core;
                     pack.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
                     class AssetPackContentTypeResolver {
                         async computeContentType(file) {
@@ -5273,12 +5315,12 @@ var phasereditor2d;
                                     }
                                 }
                             }
-                            return phasereditor2d.core.CONTENT_TYPE_ANY;
+                            return core.CONTENT_TYPE_ANY;
                         }
                     }
                     pack.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_13.editors || (ide_13.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5287,12 +5329,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_14) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
-                    var io = phasereditor2d.core.io;
+                    var ide = colibri.ui.ide;
+                    var core = colibri.core;
+                    var io = core.io;
                     class AssetPackEditorFactory extends ide.EditorFactory {
                         constructor() {
                             super("phasereditor2d.AssetPackEditorFactory");
@@ -5335,7 +5379,7 @@ var phasereditor2d;
                     }
                     pack.AssetPackEditor = AssetPackEditor;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_14.editors || (ide_14.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5344,11 +5388,13 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_15) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
                     pack.ICON_ASSET_PACK = "asset-pack";
                     class AssetPackEditorPlugin extends ide.Plugin {
                         constructor() {
@@ -5371,13 +5417,13 @@ var phasereditor2d;
                             registry.registerFactory(editors.pack.AssetPackEditor.getFactory());
                         }
                         getIcon(icon) {
-                            return ui.controls.Controls.getIcon(icon, "plugins/phasereditor2d.ui.ide.editors.pack/icons");
+                            return controls.Controls.getIcon(icon, "plugins/phasereditor2d.ui.ide.editors.pack/icons");
                         }
                     }
                     AssetPackEditorPlugin._instance = new AssetPackEditorPlugin();
                     pack.AssetPackEditorPlugin = AssetPackEditorPlugin;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_15.editors || (ide_15.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5391,7 +5437,8 @@ var phasereditor2d;
             (function (editors) {
                 var pack;
                 (function (pack) {
-                    class AssetPackImageFrame extends ui.controls.ImageFrame {
+                    var controls = colibri.ui.controls;
+                    class AssetPackImageFrame extends controls.ImageFrame {
                         constructor(packItem, name, frameImage, frameData) {
                             super(name, frameImage, frameData);
                             this._packItem = packItem;
@@ -5449,11 +5496,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_16) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack_2) {
+                    var ide = colibri.ui.ide;
                     const IMAGE_FRAME_CONTAINER_TYPES = new Set([
                         pack_2.IMAGE_TYPE,
                         pack_2.MULTI_ATLAS_TYPE,
@@ -5545,7 +5593,7 @@ var phasereditor2d;
                     }
                     pack_2.AssetPackUtils = AssetPackUtils;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_16.editors || (ide_16.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5554,22 +5602,23 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_17) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack_3) {
+                    var controls = colibri.ui.controls;
                     class PackFinder {
                         constructor() {
                         }
                         static async preload() {
                             if (this._loaded) {
-                                return ui.controls.Controls.resolveNothingLoaded();
+                                return controls.Controls.resolveNothingLoaded();
                             }
                             this._packs = await pack_3.AssetPackUtils.getAllPacks();
                             const items = this._packs.flatMap(pack => pack.getItems());
                             await pack_3.AssetPackUtils.preloadAssetPackItems(items);
-                            return ui.controls.Controls.resolveResourceLoaded();
+                            return controls.Controls.resolveResourceLoaded();
                         }
                         static getPacks() {
                             return this._packs;
@@ -5605,14 +5654,14 @@ var phasereditor2d;
                             else if (asset instanceof pack.AssetPackImageFrame) {
                                 return asset;
                             }
-                            return new ui.controls.ImageWrapper(null);
+                            return new controls.ImageWrapper(null);
                         }
                     }
                     PackFinder._packs = [];
                     PackFinder._loaded = false;
                     pack_3.PackFinder = PackFinder;
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_17.editors || (ide_17.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5628,6 +5677,7 @@ var phasereditor2d;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
                         class ImageFrameParser {
                             constructor(packItem) {
                                 this._packItem = packItem;
@@ -5646,7 +5696,7 @@ var phasereditor2d;
                             }
                             async preload() {
                                 if (this.hasCachedFrames()) {
-                                    return ui.controls.Controls.resolveNothingLoaded();
+                                    return controls.Controls.resolveNothingLoaded();
                                 }
                                 return this.preloadFrames();
                             }
@@ -5672,13 +5722,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_18) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var ide = colibri.ui.ide;
                         class BaseAtlasParser extends parsers.ImageFrameParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -5726,7 +5777,7 @@ var phasereditor2d;
                         parsers.BaseAtlasParser = BaseAtlasParser;
                     })(parsers = pack.parsers || (pack.parsers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_18.editors || (ide_18.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5743,6 +5794,7 @@ var phasereditor2d;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
                         class AtlasParser extends parsers.BaseAtlasParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -5770,10 +5822,10 @@ var phasereditor2d;
                                 }
                             }
                             static buildFrameData(packItem, image, frame, index) {
-                                const src = new ui.controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
-                                const dst = new ui.controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
-                                const srcSize = new ui.controls.Point(frame.sourceSize.w, frame.sourceSize.h);
-                                const frameData = new ui.controls.FrameData(index, src, dst, srcSize);
+                                const src = new controls.Rect(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+                                const dst = new controls.Rect(frame.spriteSourceSize.x, frame.spriteSourceSize.y, frame.spriteSourceSize.w, frame.spriteSourceSize.h);
+                                const srcSize = new controls.Point(frame.sourceSize.w, frame.sourceSize.h);
+                                const frameData = new controls.FrameData(index, src, dst, srcSize);
                                 return new pack.AssetPackImageFrame(packItem, frame.filename, image, frameData);
                             }
                         }
@@ -5790,13 +5842,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_19) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
                         class AtlasXMLParser extends parsers.BaseAtlasParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -5833,7 +5886,7 @@ var phasereditor2d;
                                             spriteW = Number.parseInt(elem.getAttribute("frameWidth"));
                                             spriteH = Number.parseInt(elem.getAttribute("frameHeight"));
                                         }
-                                        const fd = new ui.controls.FrameData(i, new ui.controls.Rect(frameX, frameY, frameW, frameH), new ui.controls.Rect(spriteX, spriteY, spriteW, spriteH), new ui.controls.Point(frameW, frameH));
+                                        const fd = new controls.FrameData(i, new controls.Rect(frameX, frameY, frameW, frameH), new controls.Rect(spriteX, spriteY, spriteW, spriteH), new controls.Point(frameW, frameH));
                                         imageFrames.push(new pack.AssetPackImageFrame(this.getPackItem(), name, image, fd));
                                     }
                                 }
@@ -5845,7 +5898,7 @@ var phasereditor2d;
                         parsers.AtlasXMLParser = AtlasXMLParser;
                     })(parsers = pack.parsers || (pack.parsers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_19.editors || (ide_19.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5861,6 +5914,7 @@ var phasereditor2d;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
                         class ImageParser extends parsers.ImageFrameParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -5881,7 +5935,7 @@ var phasereditor2d;
                             parseFrames() {
                                 const url = this.getPackItem().getData().url;
                                 const img = pack.AssetPackUtils.getImageFromPackUrl(url);
-                                const fd = new ui.controls.FrameData(0, new ui.controls.Rect(0, 0, img.getWidth(), img.getHeight()), new ui.controls.Rect(0, 0, img.getWidth(), img.getHeight()), new ui.controls.Point(img.getWidth(), img.getWidth()));
+                                const fd = new controls.FrameData(0, new controls.Rect(0, 0, img.getWidth(), img.getHeight()), new controls.Rect(0, 0, img.getWidth(), img.getHeight()), new controls.Point(img.getWidth(), img.getWidth()));
                                 return [new pack.AssetPackImageFrame(this.getPackItem(), this.getPackItem().getKey(), img, fd)];
                             }
                         }
@@ -5897,13 +5951,15 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_20) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
                         class MultiAtlasParser extends parsers.ImageFrameParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -5950,7 +6006,7 @@ var phasereditor2d;
                                     }
                                     return result;
                                 }
-                                return ui.controls.Controls.resolveNothingLoaded();
+                                return controls.Controls.resolveNothingLoaded();
                             }
                             parseFrames() {
                                 const list = [];
@@ -5982,7 +6038,7 @@ var phasereditor2d;
                         parsers.MultiAtlasParser = MultiAtlasParser;
                     })(parsers = pack.parsers || (pack.parsers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_20.editors || (ide_20.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5992,13 +6048,15 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_21) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
                         class SpriteSheetParser extends parsers.ImageFrameParser {
                             constructor(packItem) {
                                 super(packItem);
@@ -6047,7 +6105,7 @@ var phasereditor2d;
                                         if (x + w <= image.getWidth() && y + h <= image.getHeight()) {
                                             // FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
                                             // list.add(frame);
-                                            const fd = new ui.controls.FrameData(i, new ui.controls.Rect(x, y, w, h), new ui.controls.Rect(0, 0, w, h), new ui.controls.Point(w, h));
+                                            const fd = new controls.FrameData(i, new controls.Rect(x, y, w, h), new controls.Rect(0, 0, w, h), new controls.Point(w, h));
                                             frames.push(new pack.AssetPackImageFrame(this.getPackItem(), i.toString(), image, fd));
                                         }
                                     }
@@ -6067,7 +6125,7 @@ var phasereditor2d;
                         parsers.SpriteSheetParser = SpriteSheetParser;
                     })(parsers = pack.parsers || (pack.parsers = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_21.editors || (ide_21.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -6083,6 +6141,7 @@ var phasereditor2d;
                 (function (pack) {
                     var parsers;
                     (function (parsers) {
+                        var controls = colibri.ui.controls;
                         class UnityAtlasParser extends parsers.BaseAtlasParser {
                             addToPhaserCache(game) {
                                 const item = this.getPackItem();
@@ -6143,11 +6202,11 @@ var phasereditor2d;
                                 }
                             }
                             addFrame(image, imageFrames, spriteName, rect) {
-                                const src = new ui.controls.Rect(rect.x, rect.y, rect.width, rect.height);
+                                const src = new controls.Rect(rect.x, rect.y, rect.width, rect.height);
                                 src.y = image.getHeight() - src.y - src.h;
-                                const dst = new ui.controls.Rect(0, 0, rect.width, rect.height);
-                                const srcSize = new ui.controls.Point(rect.width, rect.height);
-                                const fd = new ui.controls.FrameData(imageFrames.length, src, dst, srcSize);
+                                const dst = new controls.Rect(0, 0, rect.width, rect.height);
+                                const srcSize = new controls.Point(rect.width, rect.height);
+                                const fd = new controls.FrameData(imageFrames.length, src, dst, srcSize);
                                 imageFrames.push(new pack.AssetPackImageFrame(this.getPackItem(), spriteName, image, fd));
                             }
                         }
@@ -6201,7 +6260,8 @@ var phasereditor2d;
                 (function (pack) {
                     var properties;
                     (function (properties) {
-                        class AssetPackItemSection extends ui.controls.properties.PropertySection {
+                        var controls = colibri.ui.controls;
+                        class AssetPackItemSection extends controls.properties.PropertySection {
                             constructor(page) {
                                 super(page, "AssetPackItemPropertySection", "File Key", false);
                             }
@@ -6235,21 +6295,23 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_22) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var properties;
                     (function (properties) {
-                        class ImageSection extends ui.controls.properties.PropertySection {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
+                        class ImageSection extends controls.properties.PropertySection {
                             constructor(page) {
                                 super(page, "pack.ImageSection", "Image", true);
                             }
                             createForm(parent) {
                                 parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
-                                const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
-                                this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                                const imgControl = new controls.ImageControl(ide.IMG_SECTION_PADDING);
+                                this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e) => {
                                     imgControl.resizeTo();
                                 });
                                 parent.appendChild(imgControl.getElement());
@@ -6268,7 +6330,7 @@ var phasereditor2d;
                                 });
                             }
                             canEdit(obj) {
-                                return obj instanceof pack.AssetPackItem && obj.getType() === "image" || obj instanceof ui.controls.ImageFrame;
+                                return obj instanceof pack.AssetPackItem && obj.getType() === "image" || obj instanceof controls.ImageFrame;
                             }
                             canEditNumber(n) {
                                 return n === 1;
@@ -6277,7 +6339,7 @@ var phasereditor2d;
                         properties.ImageSection = ImageSection;
                     })(properties = pack.properties || (pack.properties = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_22.editors || (ide_22.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -6286,22 +6348,24 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_23) {
             var editors;
             (function (editors) {
                 var pack;
                 (function (pack) {
                     var properties;
                     (function (properties) {
-                        class ManyImageSection extends ui.controls.properties.PropertySection {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
+                        class ManyImageSection extends controls.properties.PropertySection {
                             constructor(page) {
                                 super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageSection", "Images", true);
                             }
                             createForm(parent) {
                                 parent.classList.add("ManyImagePreviewFormArea");
-                                const viewer = new ui.controls.viewers.TreeViewer("PreviewBackground");
-                                viewer.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
-                                viewer.setTreeRenderer(new ui.controls.viewers.GridTreeViewerRenderer(viewer, true));
+                                const viewer = new controls.viewers.TreeViewer("PreviewBackground");
+                                viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+                                viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, true));
                                 viewer.setLabelProvider(new pack.viewers.AssetPackLabelProvider());
                                 viewer.setCellRendererProvider(new pack.viewers.AssetPackCellRendererProvider());
                                 const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
@@ -6328,7 +6392,7 @@ var phasereditor2d;
                                 if (n === 1) {
                                     return obj instanceof pack.AssetPackItem && obj.getType() !== pack.IMAGE_TYPE && pack.AssetPackUtils.isImageFrameContainer(obj);
                                 }
-                                return obj instanceof ui.controls.ImageFrame || obj instanceof pack.AssetPackItem && pack.AssetPackUtils.isImageFrameContainer(obj);
+                                return obj instanceof controls.ImageFrame || obj instanceof pack.AssetPackItem && pack.AssetPackUtils.isImageFrameContainer(obj);
                             }
                             canEditNumber(n) {
                                 return n > 0;
@@ -6337,7 +6401,7 @@ var phasereditor2d;
                         properties.ManyImageSection = ManyImageSection;
                     })(properties = pack.properties || (pack.properties = {}));
                 })(pack = editors.pack || (editors.pack = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_23.editors || (ide_23.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -6353,7 +6417,8 @@ var phasereditor2d;
                 (function (pack) {
                     var viewers;
                     (function (viewers) {
-                        class AssetPackBlocksTreeViewerRenderer extends ui.controls.viewers.GridTreeViewerRenderer {
+                        var controls = colibri.ui.controls;
+                        class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
                             constructor(viewer) {
                                 super(viewer, false);
                                 viewer.setCellSize(64);
@@ -6368,23 +6433,23 @@ var phasereditor2d;
                                     ctx.save();
                                     ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
                                     if (expanded) {
-                                        ui.controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
+                                        controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
                                     }
                                     else {
-                                        ui.controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
+                                        controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
                                     }
                                     ctx.restore();
                                 }
                                 else if (isChild) {
-                                    const margin = ui.controls.viewers.TREE_RENDERER_GRID_PADDING;
+                                    const margin = controls.viewers.TREE_RENDERER_GRID_PADDING;
                                     const ctx = args.canvasContext;
                                     ctx.save();
                                     ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
                                     if (isLastChild) {
-                                        ui.controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
+                                        controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
                                     }
                                     else {
-                                        ui.controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
+                                        controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
                                     }
                                     ctx.restore();
                                 }
@@ -6405,7 +6470,7 @@ var phasereditor2d;
                                 return false;
                             }
                             isChild(obj) {
-                                return obj instanceof ui.controls.ImageFrame;
+                                return obj instanceof controls.ImageFrame;
                             }
                         }
                         viewers.AssetPackBlocksTreeViewerRenderer = AssetPackBlocksTreeViewerRenderer;
@@ -6427,6 +6492,7 @@ var phasereditor2d;
                 (function (pack) {
                     var viewers;
                     (function (viewers) {
+                        var controls = colibri.ui.controls;
                         class AssetPackCellRendererProvider {
                             getCellRenderer(element) {
                                 if (element instanceof pack.AssetPackItem) {
@@ -6439,18 +6505,18 @@ var phasereditor2d;
                                         case pack.UNITY_ATLAS_TYPE:
                                         case pack.ATLAS_XML_TYPE:
                                         case pack.SPRITESHEET_TYPE:
-                                            return new ui.controls.viewers.FolderCellRenderer();
+                                            return new controls.viewers.FolderCellRenderer();
                                         default:
                                             break;
                                     }
                                 }
-                                else if (element instanceof ui.controls.ImageFrame) {
-                                    return new ui.controls.viewers.ImageCellRenderer();
+                                else if (element instanceof controls.ImageFrame) {
+                                    return new controls.viewers.ImageCellRenderer();
                                 }
-                                return new ui.controls.viewers.EmptyCellRenderer();
+                                return new controls.viewers.EmptyCellRenderer();
                             }
                             preload(element) {
-                                return ui.controls.Controls.resolveNothingLoaded();
+                                return controls.Controls.resolveNothingLoaded();
                             }
                         }
                         viewers.AssetPackCellRendererProvider = AssetPackCellRendererProvider;
@@ -6507,6 +6573,7 @@ var phasereditor2d;
                 (function (pack) {
                     var viewers;
                     (function (viewers) {
+                        var controls = colibri.ui.controls;
                         class AssetPackLabelProvider {
                             getLabel(obj) {
                                 if (obj instanceof pack.AssetPack) {
@@ -6515,7 +6582,7 @@ var phasereditor2d;
                                 if (obj instanceof pack.AssetPackItem) {
                                     return obj.getKey();
                                 }
-                                if (obj instanceof ui.controls.ImageFrame) {
+                                if (obj instanceof controls.ImageFrame) {
                                     return obj.getName();
                                 }
                                 if (typeof (obj) === "string") {
@@ -6535,27 +6602,6 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var ui;
     (function (ui) {
-        var controls;
-        (function (controls) {
-            var viewers;
-            (function (viewers) {
-                class EmptyTreeContentProvider {
-                    getRoots(input) {
-                        return viewers.EMPTY_ARRAY;
-                    }
-                    getChildren(parent) {
-                        return viewers.EMPTY_ARRAY;
-                    }
-                }
-                viewers.EmptyTreeContentProvider = EmptyTreeContentProvider;
-            })(viewers = controls.viewers || (controls.viewers = {}));
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ui;
-    (function (ui) {
         var ide;
         (function (ide) {
             var editors;
@@ -6564,7 +6610,8 @@ var phasereditor2d;
                 (function (pack) {
                     var viewers;
                     (function (viewers) {
-                        class ImageAssetPackItemCellRenderer extends ui.controls.viewers.ImageCellRenderer {
+                        var controls = colibri.ui.controls;
+                        class ImageAssetPackItemCellRenderer extends controls.viewers.ImageCellRenderer {
                             getImage(obj) {
                                 const item = obj;
                                 const data = item.getData();
@@ -6716,7 +6763,7 @@ Phaser.GameObjects.DisplayList.prototype.visit = function (visitor) {
     }
 };
 Phaser.GameObjects.DisplayList.prototype.makeNewName = function (baseName) {
-    const nameMaker = new phasereditor2d.ui.ide.utils.NameMaker((obj) => {
+    const nameMaker = new colibri.ui.ide.utils.NameMaker((obj) => {
         return obj.getEditorLabel();
     });
     this.visit(obj => nameMaker.update([obj]));
@@ -6766,11 +6813,13 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_24) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
                     class DropManager {
                         constructor(editor) {
                             this._editor = editor;
@@ -6779,7 +6828,7 @@ var phasereditor2d;
                             canvas.addEventListener("drop", e => this.onDragDrop_async(e));
                         }
                         async onDragDrop_async(e) {
-                            const dataArray = ui.controls.Controls.getApplicationDragDataAndClean();
+                            const dataArray = controls.Controls.getApplicationDragDataAndClean();
                             if (this.acceptsDropDataArray(dataArray)) {
                                 e.preventDefault();
                                 const sprites = await this._editor.getSceneMaker().createWithDropEvent_async(e, dataArray);
@@ -6792,7 +6841,7 @@ var phasereditor2d;
                             }
                         }
                         onDragOver(e) {
-                            if (this.acceptsDropDataArray(ui.controls.Controls.getApplicationDragData())) {
+                            if (this.acceptsDropDataArray(controls.Controls.getApplicationDragData())) {
                                 e.preventDefault();
                             }
                         }
@@ -6821,7 +6870,7 @@ var phasereditor2d;
                     }
                     scene.DropManager = DropManager;
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_24.editors || (ide_24.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7179,13 +7228,14 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
+                    var core = colibri.core;
                     scene.CONTENT_TYPE_SCENE = "Scene";
                     class SceneContentTypeResolver {
                         async computeContentType(file) {
                             if (file.getExtension() === "scene") {
                                 return scene.CONTENT_TYPE_SCENE;
                             }
-                            return phasereditor2d.core.CONTENT_TYPE_ANY;
+                            return core.CONTENT_TYPE_ANY;
                         }
                     }
                     scene.SceneContentTypeResolver = SceneContentTypeResolver;
@@ -7204,14 +7254,14 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene) {
-                    var io = phasereditor2d.core.io;
-                    class SceneEditorFactory extends ide.EditorFactory {
+                    var io = colibri.core.io;
+                    class SceneEditorFactory extends colibri.ui.ide.EditorFactory {
                         constructor() {
                             super("phasereditor2d.SceneEditorFactory");
                         }
                         acceptInput(input) {
                             if (input instanceof io.FilePath) {
-                                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                                const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                                 return contentType === scene.CONTENT_TYPE_SCENE;
                             }
                             return false;
@@ -7220,7 +7270,7 @@ var phasereditor2d;
                             return new SceneEditor();
                         }
                     }
-                    class SceneEditor extends ide.FileEditor {
+                    class SceneEditor extends colibri.ui.ide.FileEditor {
                         constructor() {
                             super("phasereditor2d.SceneEditor");
                             this._blocksProvider = new scene.blocks.SceneEditorBlocksProvider();
@@ -7235,7 +7285,7 @@ var phasereditor2d;
                             const data = writer.toJSON();
                             const content = JSON.stringify(data, null, 4);
                             try {
-                                await ide.FileUtils.setFileString_async(this.getInput(), content);
+                                await colibri.ui.ide.FileUtils.setFileString_async(this.getInput(), content);
                                 this.setDirty(false);
                             }
                             catch (e) {
@@ -7288,8 +7338,8 @@ var phasereditor2d;
                             this._sceneRead = true;
                             try {
                                 const file = this.getInput();
-                                await ide.FileUtils.preloadFileString(file);
-                                const content = ide.FileUtils.getFileString(file);
+                                await colibri.ui.ide.FileUtils.preloadFileString(file);
+                                const content = colibri.ui.ide.FileUtils.getFileString(file);
                                 const data = JSON.parse(content);
                                 if (scene.json.SceneParser.isValidSceneDataFormat(data)) {
                                     const parser = new scene.json.SceneParser(this.getGameScene());
@@ -7394,11 +7444,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_25) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
+                    var ide = colibri.ui.ide;
                     class SceneEditorPlugin extends ide.Plugin {
                         constructor() {
                             super("phasereditor2d.ui.ide.editors.scene.SceneEditorPlugin");
@@ -7419,7 +7470,7 @@ var phasereditor2d;
                     SceneEditorPlugin._instance = new SceneEditorPlugin();
                     scene.SceneEditorPlugin = SceneEditorPlugin;
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_25.editors || (ide_25.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7428,11 +7479,12 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_26) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene_2) {
+                    var ide = colibri.ui.ide;
                     class SceneMaker {
                         constructor(scene) {
                             this._scene = scene;
@@ -7490,7 +7542,7 @@ var phasereditor2d;
                     }
                     scene_2.SceneMaker = SceneMaker;
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_26.editors || (ide_26.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7499,11 +7551,13 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_27) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene_3) {
+                    var controls = colibri.ui.controls;
+                    var ide = colibri.ui.ide;
                     class ThumbnailScene extends scene_3.GameScene {
                         constructor(data, callback) {
                             super(false);
@@ -7550,13 +7604,13 @@ var phasereditor2d;
                                 this._promise = ide.FileUtils.preloadFileString(this._file)
                                     .then(() => this.createImageElement())
                                     .then(imageElement => {
-                                    this._image = new ui.controls.ImageWrapper(imageElement);
+                                    this._image = new controls.ImageWrapper(imageElement);
                                     this._promise = null;
-                                    return ui.controls.PreloadResult.RESOURCES_LOADED;
+                                    return controls.PreloadResult.RESOURCES_LOADED;
                                 });
                                 return this._promise;
                             }
-                            return ui.controls.Controls.resolveNothingLoaded();
+                            return controls.Controls.resolveNothingLoaded();
                         }
                         createImageElement() {
                             return new Promise((resolve, reject) => {
@@ -7599,7 +7653,7 @@ var phasereditor2d;
                     }
                     scene_3.SceneThumbnail = SceneThumbnail;
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_27.editors || (ide_27.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7613,12 +7667,13 @@ var phasereditor2d;
             (function (editors) {
                 var scene;
                 (function (scene_4) {
+                    var controls = colibri.ui.controls;
                     class SelectionManager {
                         constructor(editor) {
                             this._editor = editor;
                             const canvas = this._editor.getOverlayLayer().getCanvas();
                             canvas.addEventListener("click", e => this.onMouseClick(e));
-                            this._editor.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
+                            this._editor.addEventListener(controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
                         }
                         cleanSelection() {
                             this._editor.setSelection(this._editor.getSelection().filter(obj => {
@@ -7719,7 +7774,7 @@ var phasereditor2d;
                     (function (blocks) {
                         class SceneEditorBlocksCellRendererProvider extends editors.pack.viewers.AssetPackCellRendererProvider {
                             getCellRenderer(element) {
-                                if (element instanceof phasereditor2d.core.io.FilePath) {
+                                if (element instanceof colibri.core.io.FilePath) {
                                     return new blocks.SceneCellRenderer();
                                 }
                                 return super.getCellRenderer(element);
@@ -7737,13 +7792,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_28) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
+                        var ide = colibri.ui.ide;
                         const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
                         class SceneEditorBlocksContentProvider extends editors.pack.viewers.AssetPackContentProvider {
                             getPackItems() {
@@ -7781,7 +7837,7 @@ var phasereditor2d;
                         blocks.SceneEditorBlocksContentProvider = SceneEditorBlocksContentProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_28.editors || (ide_28.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7797,9 +7853,10 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
+                        var core = colibri.core;
                         class SceneEditorBlocksLabelProvider extends editors.pack.viewers.AssetPackLabelProvider {
                             getLabel(obj) {
-                                if (obj instanceof phasereditor2d.core.io.FilePath) {
+                                if (obj instanceof core.io.FilePath) {
                                     return obj.getName();
                                 }
                                 return super.getLabel(obj);
@@ -7824,7 +7881,8 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
-                        class SceneEditorBlocksPropertyProvider extends ui.controls.properties.PropertySectionProvider {
+                        var controls = colibri.ui.controls;
+                        class SceneEditorBlocksPropertyProvider extends controls.properties.PropertySectionProvider {
                             addSections(page, sections) {
                                 sections.push(new editors.pack.properties.AssetPackItemSection(page));
                                 sections.push(new editors.pack.properties.ImageSection(page));
@@ -7843,13 +7901,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_29) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
+                        var ide = colibri.ui.ide;
                         class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
                             async preload() {
                                 editors.pack.PackFinder.preload();
@@ -7876,7 +7935,7 @@ var phasereditor2d;
                         blocks.SceneEditorBlocksProvider = SceneEditorBlocksProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_29.editors || (ide_29.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7885,7 +7944,7 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_30) {
             var editors;
             (function (editors) {
                 var scene;
@@ -7907,7 +7966,7 @@ var phasereditor2d;
                         blocks.SceneEditorBlocksTreeRendererProvider = SceneEditorBlocksTreeRendererProvider;
                     })(blocks = scene.blocks || (scene.blocks = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_30.editors || (ide_30.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -7923,7 +7982,8 @@ var phasereditor2d;
                 (function (scene) {
                     var blocks;
                     (function (blocks) {
-                        class SceneThumbnailCache extends phasereditor2d.core.io.FileContentCache {
+                        var core = colibri.core;
+                        class SceneThumbnailCache extends core.io.FileContentCache {
                             constructor() {
                                 super(async (file) => {
                                     const image = new scene.SceneThumbnail(file);
@@ -7963,7 +8023,7 @@ var phasereditor2d;
                     class SceneEditorCommands {
                         static registerCommands(manager) {
                             // delete 
-                            manager.addHandlerHelper(ide.CMD_DELETE, args => isSceneScope(args), args => {
+                            manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE, args => isSceneScope(args), args => {
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
                             });
@@ -7973,7 +8033,7 @@ var phasereditor2d;
                                 const editor = args.activeEditor;
                                 editor.getActionManager().joinObjectsInContainer();
                             });
-                            manager.addKeyBinding(CMD_JOIN_IN_CONTAINER, new ide.commands.KeyMatcher({
+                            manager.addKeyBinding(CMD_JOIN_IN_CONTAINER, new colibri.ui.ide.commands.KeyMatcher({
                                 key: "j"
                             }));
                         }
@@ -8074,8 +8134,8 @@ var phasereditor2d;
                 (function (scene) {
                     var json;
                     (function (json) {
-                        var write = phasereditor2d.core.json.write;
-                        var read = phasereditor2d.core.json.read;
+                        var write = colibri.core.json.write;
+                        var read = colibri.core.json.read;
                         class ObjectComponent {
                             static write(sprite, data) {
                                 write(data, "id", sprite.getEditorId());
@@ -8262,8 +8322,8 @@ var phasereditor2d;
                 (function (scene) {
                     var json;
                     (function (json) {
-                        var write = phasereditor2d.core.json.write;
-                        var read = phasereditor2d.core.json.read;
+                        var write = colibri.core.json.write;
+                        var read = colibri.core.json.read;
                         class TextureComponent {
                             static write(sprite, data) {
                                 const texture = sprite.getEditorTexture();
@@ -8298,8 +8358,8 @@ var phasereditor2d;
                 (function (scene) {
                     var json;
                     (function (json) {
-                        var write = phasereditor2d.core.json.write;
-                        var read = phasereditor2d.core.json.read;
+                        var write = colibri.core.json.write;
+                        var read = colibri.core.json.read;
                         class TransformComponent {
                             static write(sprite, data) {
                                 write(data, "x", sprite.x, 0);
@@ -8335,8 +8395,8 @@ var phasereditor2d;
                 (function (scene) {
                     var json;
                     (function (json) {
-                        var write = phasereditor2d.core.json.write;
-                        var read = phasereditor2d.core.json.read;
+                        var write = colibri.core.json.write;
+                        var read = colibri.core.json.read;
                         class VariableComponent {
                             static write(sprite, data) {
                                 write(data, "label", sprite.getEditorLabel());
@@ -8364,6 +8424,7 @@ var phasereditor2d;
                 (function (scene) {
                     var outline;
                     (function (outline) {
+                        var controls = colibri.ui.controls;
                         class GameObjectCellRenderer {
                             renderCell(args) {
                                 const sprite = args.obj;
@@ -8379,10 +8440,10 @@ var phasereditor2d;
                                 if (args.obj instanceof Phaser.GameObjects.Image) {
                                     return args.viewer.getCellSize();
                                 }
-                                return ui.controls.ROW_HEIGHT;
+                                return colibri.ui.controls.ROW_HEIGHT;
                             }
                             preload(obj) {
-                                return ui.controls.Controls.resolveNothingLoaded();
+                                return controls.Controls.resolveNothingLoaded();
                             }
                         }
                         outline.GameObjectCellRenderer = GameObjectCellRenderer;
@@ -8465,13 +8526,15 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_31) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var outline;
                     (function (outline) {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
                         class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
                             constructor(editor) {
                                 super();
@@ -8487,7 +8550,7 @@ var phasereditor2d;
                                 return new outline.SceneEditorOutlineRendererProvider(this._editor);
                             }
                             getTreeViewerRenderer(viewer) {
-                                return new ui.controls.viewers.TreeViewerRenderer(viewer, 48);
+                                return new controls.viewers.TreeViewerRenderer(viewer, 48);
                             }
                             getPropertySectionProvider() {
                                 return this._editor.getPropertyProvider();
@@ -8506,7 +8569,7 @@ var phasereditor2d;
                         outline.SceneEditorOutlineProvider = SceneEditorOutlineProvider;
                     })(outline = scene.outline || (scene.outline = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_31.editors || (ide_31.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -8515,13 +8578,15 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_32) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var outline;
                     (function (outline) {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
                         class SceneEditorOutlineRendererProvider {
                             constructor(editor) {
                                 this._editor = editor;
@@ -8532,21 +8597,21 @@ var phasereditor2d;
                                     return new outline.GameObjectCellRenderer();
                                 }
                                 else if (element instanceof Phaser.GameObjects.Container) {
-                                    return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_GROUP));
+                                    return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_GROUP));
                                 }
                                 else if (element instanceof Phaser.GameObjects.DisplayList) {
-                                    return new ui.controls.viewers.IconImageCellRenderer(ui.controls.Controls.getIcon(ide.ICON_FOLDER));
+                                    return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_FOLDER));
                                 }
-                                return new ui.controls.viewers.EmptyCellRenderer(false);
+                                return new controls.viewers.EmptyCellRenderer(false);
                             }
                             async preload(element) {
-                                return ui.controls.Controls.resolveNothingLoaded();
+                                return controls.Controls.resolveNothingLoaded();
                             }
                         }
                         outline.SceneEditorOutlineRendererProvider = SceneEditorOutlineRendererProvider;
                     })(outline = scene.outline || (scene.outline = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_32.editors || (ide_32.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -8562,7 +8627,7 @@ var phasereditor2d;
                 (function (scene) {
                     var properties;
                     (function (properties) {
-                        class SceneSection extends ui.controls.properties.PropertySection {
+                        class SceneSection extends colibri.ui.controls.properties.PropertySection {
                         }
                         properties.SceneSection = SceneSection;
                     })(properties = scene.properties || (scene.properties = {}));
@@ -8577,7 +8642,7 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_33) {
             var editors;
             (function (editors) {
                 var scene;
@@ -8621,7 +8686,7 @@ var phasereditor2d;
                         properties.OriginSection = OriginSection;
                     })(properties = scene.properties || (scene.properties = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_33.editors || (ide_33.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -8637,7 +8702,8 @@ var phasereditor2d;
                 (function (scene) {
                     var properties;
                     (function (properties) {
-                        class SceneEditorSectionProvider extends ui.controls.properties.PropertySectionProvider {
+                        var controls = colibri.ui.controls;
+                        class SceneEditorSectionProvider extends controls.properties.PropertySectionProvider {
                             addSections(page, sections) {
                                 sections.push(new properties.VariableSection(page));
                                 sections.push(new properties.TransformSection(page));
@@ -8657,21 +8723,23 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_34) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var properties;
                     (function (properties) {
+                        var controls = colibri.ui.controls;
+                        var ide = colibri.ui.ide;
                         class TextureSection extends properties.SceneSection {
                             constructor(page) {
                                 super(page, "SceneEditor.TextureSection", "Texture", true);
                             }
                             createForm(parent) {
                                 parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
-                                const imgControl = new ui.controls.ImageControl(ide.IMG_SECTION_PADDING);
-                                this.getPage().addEventListener(ui.controls.EVENT_CONTROL_LAYOUT, (e) => {
+                                const imgControl = new controls.ImageControl(ide.IMG_SECTION_PADDING);
+                                this.getPage().addEventListener(controls.EVENT_CONTROL_LAYOUT, (e) => {
                                     imgControl.resizeTo();
                                 });
                                 parent.appendChild(imgControl.getElement());
@@ -8694,7 +8762,7 @@ var phasereditor2d;
                         properties.TextureSection = TextureSection;
                     })(properties = scene.properties || (scene.properties = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_34.editors || (ide_34.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -8827,13 +8895,14 @@ var phasereditor2d;
     var ui;
     (function (ui) {
         var ide;
-        (function (ide) {
+        (function (ide_35) {
             var editors;
             (function (editors) {
                 var scene;
                 (function (scene) {
                     var undo;
                     (function (undo) {
+                        var ide = colibri.ui.ide;
                         class SceneEditorOperation extends ide.undo.Operation {
                             constructor(editor) {
                                 super();
@@ -8843,7 +8912,7 @@ var phasereditor2d;
                         undo.SceneEditorOperation = SceneEditorOperation;
                     })(undo = scene.undo || (scene.undo = {}));
                 })(scene = editors.scene || (editors.scene = {}));
-            })(editors = ide.editors || (ide.editors = {}));
+            })(editors = ide_35.editors || (ide_35.editors = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = phasereditor2d.ui || (phasereditor2d.ui = {}));
 })(phasereditor2d || (phasereditor2d = {}));

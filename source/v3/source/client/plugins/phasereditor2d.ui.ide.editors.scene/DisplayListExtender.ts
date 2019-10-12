@@ -35,7 +35,7 @@ Phaser.GameObjects.DisplayList.prototype.visit = function (visitor: (obj: Phaser
 
 Phaser.GameObjects.DisplayList.prototype.makeNewName = function (baseName: string) {
 
-    const nameMaker = new phasereditor2d.ui.ide.utils.NameMaker((obj: Phaser.GameObjects.GameObject) => {
+    const nameMaker = new colibri.ui.ide.utils.NameMaker((obj: Phaser.GameObjects.GameObject) => {
         return obj.getEditorLabel();
     });
 

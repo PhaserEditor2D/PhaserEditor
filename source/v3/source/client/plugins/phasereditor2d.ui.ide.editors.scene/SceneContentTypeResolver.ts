@@ -1,4 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.scene {
+    
+    import core = colibri.core;
 
     export const CONTENT_TYPE_SCENE = "Scene";
 

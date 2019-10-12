@@ -1,5 +1,8 @@
 namespace phasereditor2d.ui.ide.editors.pack {
 
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export const IMAGE_TYPE = "image";
     export const ATLAS_TYPE = "atlas";
     export const ATLAS_XML_TYPE = "atlasXML";
@@ -36,7 +39,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         }
 
         static async createFromFile(file: core.io.FilePath) {
-            const content = await FileUtils.preloadAndGetFileString(file);
+            const content = await ide.FileUtils.preloadAndGetFileString(file);
             return new AssetPack(file, content);
         }
 

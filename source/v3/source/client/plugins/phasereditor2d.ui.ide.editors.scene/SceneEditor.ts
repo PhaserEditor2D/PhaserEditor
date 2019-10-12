@@ -1,9 +1,9 @@
 
 namespace phasereditor2d.ui.ide.editors.scene {
 
-    import io = core.io;
+    import io = colibri.core.io;
 
-    class SceneEditorFactory extends EditorFactory {
+    class SceneEditorFactory extends colibri.ui.ide.EditorFactory {
 
         constructor() {
             super("phasereditor2d.SceneEditorFactory");
@@ -12,21 +12,21 @@ namespace phasereditor2d.ui.ide.editors.scene {
         acceptInput(input: any): boolean {
 
             if (input instanceof io.FilePath) {
-                const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                 return contentType === CONTENT_TYPE_SCENE;
             }
 
             return false;
         }
 
-        createEditor(): EditorPart {
+        createEditor(): colibri.ui.ide.EditorPart {
             return new SceneEditor();
         }
 
 
     }
 
-    export class SceneEditor extends FileEditor {
+    export class SceneEditor extends colibri.ui.ide.FileEditor {
 
         private _blocksProvider: blocks.SceneEditorBlocksProvider;
         private _outlineProvider: outline.SceneEditorOutlineProvider;
@@ -43,7 +43,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
         private _gameBooted: boolean;
         private _sceneRead: boolean;
 
-        static getFactory(): EditorFactory {
+        static getFactory(): colibri.ui.ide.EditorFactory {
             return new SceneEditorFactory();
         }
 
@@ -66,7 +66,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             try {
 
-                await FileUtils.setFileString_async(this.getInput(), content);
+                await colibri.ui.ide.FileUtils.setFileString_async(this.getInput(), content);
 
                 this.setDirty(false);
 
@@ -125,7 +125,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         }
 
-        async setInput(file: core.io.FilePath) {
+        async setInput(file: colibri.core.io.FilePath) {
             super.setInput(file);
 
             if (this._gameBooted) {
@@ -141,9 +141,9 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 const file = this.getInput();
 
-                await FileUtils.preloadFileString(file);
+                await colibri.ui.ide.FileUtils.preloadFileString(file);
 
-                const content = FileUtils.getFileString(file);
+                const content = colibri.ui.ide.FileUtils.getFileString(file);
 
                 const data = JSON.parse(content);
 

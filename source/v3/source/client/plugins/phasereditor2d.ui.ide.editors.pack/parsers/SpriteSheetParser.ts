@@ -1,6 +1,10 @@
 /// <reference path="./BaseAtlasParser.ts" />
 
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
+    
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
 
     export class SpriteSheetParser extends ImageFrameParser {
 
@@ -9,8 +13,11 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
         }
 
         addToPhaserCache(game: Phaser.Game) {
+
             const item = this.getPackItem();
+
             if (!game.textures.exists(item.getKey())) {
+
                 const data = item.getData();
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(data.url);
                 game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
@@ -23,7 +30,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
-            const image = FileUtils.getImage(imageFile);
+            const image = ide.FileUtils.getImage(imageFile);
 
             return await image.preload();
         }
@@ -35,7 +42,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
             const data = this.getPackItem().getData();
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
-            const image = FileUtils.getImage(imageFile);
+            const image = ide.FileUtils.getImage(imageFile);
 
             const w = data.frameConfig.frameWidth;
             const h = data.frameConfig.frameHeight;

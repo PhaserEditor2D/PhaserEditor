@@ -1,4 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.pack {
+    
+    import controls = colibri.ui.controls;
 
     export class AssetPackImageFrame extends controls.ImageFrame {
 

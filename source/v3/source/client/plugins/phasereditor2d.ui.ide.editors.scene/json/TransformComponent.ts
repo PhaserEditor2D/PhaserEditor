@@ -1,7 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.scene.json {
 
-    import write = core.json.write;
-    import read = core.json.read;
+    import write = colibri.core.json.write;
+    import read = colibri.core.json.read;
 
     export class TransformComponent {
 

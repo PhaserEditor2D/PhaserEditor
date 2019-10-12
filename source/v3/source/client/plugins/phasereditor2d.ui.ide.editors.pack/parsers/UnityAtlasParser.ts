@@ -1,4 +1,6 @@
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
+    
+    import controls = colibri.ui.controls;
 
     export class UnityAtlasParser extends BaseAtlasParser {
 

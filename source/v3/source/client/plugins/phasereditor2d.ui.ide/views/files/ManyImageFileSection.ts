@@ -1,6 +1,10 @@
 
 namespace phasereditor2d.ui.ide.views.files {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     class GridImageFileViewer extends controls.viewers.TreeViewer {
 
         constructor(...classList: string[]) {
@@ -26,7 +30,7 @@ namespace phasereditor2d.ui.ide.views.files {
 
             const viewer = new GridImageFileViewer();
 
-            const filteredViewer = new properties.FilteredViewerInPropertySection(this.getPage(), viewer);
+            const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
             parent.appendChild(filteredViewer.getElement());
 
             this.addUpdater(() => {
@@ -43,8 +47,8 @@ namespace phasereditor2d.ui.ide.views.files {
 
         canEdit(obj: any): boolean {
             if (obj instanceof core.io.FilePath) {
-                const ct = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                return ct === CONTENT_TYPE_IMAGE;
+                const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
+                return ct === ide.CONTENT_TYPE_IMAGE;
             }
             return false;
         }

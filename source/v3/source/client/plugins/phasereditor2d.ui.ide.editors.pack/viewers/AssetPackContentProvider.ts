@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
+    import controls = colibri.ui.controls;
+
     export abstract class AssetPackContentProvider implements controls.viewers.ITreeContentProvider {
 
         abstract getRoots(input: any): any[];

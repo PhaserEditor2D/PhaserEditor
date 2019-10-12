@@ -1,5 +1,7 @@
 namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
+    import controls = colibri.ui.controls;
+
     export class AssetPackCellRendererProvider implements controls.viewers.ICellRendererProvider {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {

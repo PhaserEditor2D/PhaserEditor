@@ -1,8 +1,11 @@
 namespace phasereditor2d.ui.ide.editors.pack {
     
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
     import io = core.io
 
-    export class AssetPackEditorFactory extends EditorFactory {
+    export class AssetPackEditorFactory extends ide.EditorFactory {
 
         constructor() {
             super("phasereditor2d.AssetPackEditorFactory");
@@ -10,19 +13,19 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
         acceptInput(input: any): boolean {
             if (input instanceof io.FilePath) {
-                const contentType = Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                 return contentType === CONTENT_TYPE_ASSET_PACK;
             }
             return false;
         }        
         
-        createEditor(): EditorPart {
+        createEditor(): ide.EditorPart {
             return new AssetPackEditor();
         }   
 
     }
 
-    export class AssetPackEditor extends FileEditor {
+    export class AssetPackEditor extends ide.FileEditor {
 
         constructor() {
             super("phasereditor2d.AssetPackEditor");
@@ -43,7 +46,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
                 return;
             }
 
-            const content = await FileUtils.preloadAndGetFileString(file);
+            const content = await ide.FileUtils.preloadAndGetFileString(file);
             
             this.getElement().innerHTML = content;
         }

@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     class ThumbnailScene extends GameScene {
 
         private _data: json.SceneData;
@@ -69,7 +73,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
                     return this._promise;
                 }
 
-                this._promise = FileUtils.preloadFileString(this._file)
+                this._promise = ide.FileUtils.preloadFileString(this._file)
 
                     .then(() => this.createImageElement())
 
@@ -92,7 +96,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             return new Promise<HTMLImageElement>((resolve, reject) => {
 
-                const content = FileUtils.getFileString(this._file);
+                const content = ide.FileUtils.getFileString(this._file);
 
                 const data: json.SceneData = JSON.parse(content);
 

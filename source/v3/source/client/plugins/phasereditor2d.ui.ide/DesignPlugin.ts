@@ -1,10 +1,14 @@
 namespace phasereditor2d.ui.ide {
 
-    export class DesignPlugin extends Plugin {
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
+    export class DesignPlugin extends ide.Plugin {
 
         private static _instance = new DesignPlugin();
 
-        static getInstance(): Plugin {
+        static getInstance() {
             return this._instance;
         }
 
@@ -12,7 +16,7 @@ namespace phasereditor2d.ui.ide {
             super("phasereditor2d.ui.ide.DesignPlugin");
         }
 
-        createWindow(windows: ui.ide.WorkbenchWindow[]): void {
+        createWindow(windows: ide.WorkbenchWindow[]): void {
             windows.push(new DesignWindow());
         }
 

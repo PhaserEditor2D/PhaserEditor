@@ -1,16 +1,17 @@
 namespace phasereditor2d.ui.ide.views.files {
 
-    import io = phasereditor2d.core.io;
-    import viewers = phasereditor2d.ui.controls.viewers;
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
 
-    export class FileImageRenderer extends viewers.ImageCellRenderer {
+    export class FileImageRenderer extends controls.viewers.ImageCellRenderer {
 
-        getLabel(file: io.FilePath): string {
+        getLabel(file: core.io.FilePath): string {
             return file.getName();
         }
 
-        getImage(file: io.FilePath): controls.IImage {
-            return Workbench.getWorkbench().getFileImage(file);
+        getImage(file: core.io.FilePath): controls.IImage {
+            return ide.Workbench.getWorkbench().getFileImage(file);
         }
     }
 }

@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export class MultiAtlasParser extends ImageFrameParser {
 
         constructor(packItem: AssetPackItem) {
@@ -20,7 +24,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
                 for (const textureData of atlasData.textures) {
                     const imageName = textureData.image;
                     const imageFile = atlasDataFile.getSibling(imageName);
-                    const image = <controls.DefaultImage>FileUtils.getImage(imageFile);
+                    const image = <controls.DefaultImage> ide.FileUtils.getImage(imageFile);
                     images.push(image.getImageElement());
                     jsonArrayData.push(textureData);
                 }
@@ -36,9 +40,9 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             if (dataFile) {
 
-                let result = await FileUtils.preloadFileString(dataFile);
+                let result = await ide.FileUtils.preloadFileString(dataFile);
 
-                const str = FileUtils.getFileString(dataFile);
+                const str = ide.FileUtils.getFileString(dataFile);
 
                 try {
 
@@ -53,7 +57,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
                             if (imageFile) {
 
-                                const image = Workbench.getWorkbench().getFileImage(imageFile);
+                                const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
                                 const result2 = await image.preload();
                                 result = Math.max(result, result2);
 
@@ -78,7 +82,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             if (dataFile) {
 
-                const str = FileUtils.getFileString(dataFile);
+                const str = ide.FileUtils.getFileString(dataFile);
 
                 try {
 
@@ -90,7 +94,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
                             const imageName = textureData.image;
                             const imageFile = dataFile.getSibling(imageName);
-                            const image = FileUtils.getImage(imageFile);
+                            const image = ide.FileUtils.getImage(imageFile);
 
                             for (const frame of textureData.frames) {
                                 const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, list.length);

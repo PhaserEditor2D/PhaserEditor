@@ -1,5 +1,9 @@
 namespace phasereditor2d.ui.ide.editors.scene {
 
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
+
     export class DropManager {
 
         private _editor: SceneEditor;
@@ -32,7 +36,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                 this._editor.repaint();
 
-                Workbench.getWorkbench().setActivePart(this._editor);
+                ide.Workbench.getWorkbench().setActivePart(this._editor);
             }
         }
 

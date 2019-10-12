@@ -1,10 +1,14 @@
 namespace phasereditor2d.ui.ide.editors.scene {
+    
+    import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
+    import core = colibri.core;
 
-    export class SceneEditorPlugin extends Plugin {
+    export class SceneEditorPlugin extends ide.Plugin {
 
         private static _instance = new SceneEditorPlugin();
 
-        static getInstance(): Plugin {
+        static getInstance(): ide.Plugin {
             return this._instance;
         }
 
@@ -16,11 +20,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
             registry.registerResolver(new editors.scene.SceneContentTypeResolver());
         }
 
-        registerEditor(registry: EditorRegistry) {
+        registerEditor(registry: ide.EditorRegistry) {
             registry.registerFactory(editors.scene.SceneEditor.getFactory());
         }
 
-        registerCommands(manager: commands.CommandManager) {
+        registerCommands(manager: ide.commands.CommandManager) {
             SceneEditorCommands.registerCommands(manager);
         }
     }
