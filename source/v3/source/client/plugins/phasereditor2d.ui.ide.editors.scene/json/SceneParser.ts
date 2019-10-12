@@ -38,7 +38,7 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
 
                     const key = objData[TextureComponent.textureKey];
 
-                    const item = pack.PackFinder.findAssetPackItem(key);
+                    const item = pack.core.PackFinder.findAssetPackItem(key);
 
                     if (item) {
                         await this.addToCache_async(item);
@@ -57,23 +57,23 @@ namespace phasereditor2d.ui.ide.editors.scene.json {
             }
         }
 
-        async addToCache_async(data: pack.AssetPackItem | pack.AssetPackImageFrame) {
+        async addToCache_async(data: pack.core.AssetPackItem | pack.core.AssetPackImageFrame) {
 
-            let imageFrameContainerPackItem: pack.AssetPackItem = null;
+            let imageFrameContainerPackItem: pack.core.AssetPackItem = null;
 
-            if (data instanceof pack.AssetPackItem) {
-                if (data.getType() === pack.IMAGE_TYPE) {
+            if (data instanceof pack.core.AssetPackItem) {
+                if (data.getType() === pack.core.IMAGE_TYPE) {
                     imageFrameContainerPackItem = data;
-                } else if (pack.AssetPackUtils.isImageFrameContainer(data)) {
+                } else if (pack.core.AssetPackUtils.isImageFrameContainer(data)) {
                     imageFrameContainerPackItem = data;
                 }
-            } else if (data instanceof pack.AssetPackImageFrame) {
+            } else if (data instanceof pack.core.AssetPackImageFrame) {
                 imageFrameContainerPackItem = data.getPackItem();
             }
 
             if (imageFrameContainerPackItem !== null) {
 
-                const parser = pack.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
+                const parser = pack.core.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
 
                 await parser.preload();
 

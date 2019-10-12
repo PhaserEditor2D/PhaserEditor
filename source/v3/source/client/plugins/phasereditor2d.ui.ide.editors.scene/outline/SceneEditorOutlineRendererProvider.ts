@@ -6,11 +6,11 @@ namespace phasereditor2d.ui.ide.editors.scene.outline {
     export class SceneEditorOutlineRendererProvider implements controls.viewers.ICellRendererProvider {
 
         private _editor: SceneEditor;
-        private _assetRendererProvider: pack.viewers.AssetPackCellRendererProvider;
+        private _assetRendererProvider: pack.ui.viewers.AssetPackCellRendererProvider;
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
-            this._assetRendererProvider = new pack.viewers.AssetPackCellRendererProvider();
+            this._assetRendererProvider = new pack.ui.viewers.AssetPackCellRendererProvider();
         }
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {

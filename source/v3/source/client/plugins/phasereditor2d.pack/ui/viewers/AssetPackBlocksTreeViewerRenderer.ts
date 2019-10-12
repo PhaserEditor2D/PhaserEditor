@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.viewers {
+namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
 
@@ -60,14 +60,14 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
         protected isParent(obj: any) {
 
-            if (obj instanceof pack.AssetPackItem) {
+            if (obj instanceof core.AssetPackItem) {
 
                 switch (obj.getType()) {
-                    case pack.ATLAS_TYPE:
-                    case pack.MULTI_ATLAS_TYPE:
-                    case pack.ATLAS_XML_TYPE:
-                    case pack.UNITY_ATLAS_TYPE:
-                    case pack.SPRITESHEET_TYPE:
+                    case core.ATLAS_TYPE:
+                    case core.MULTI_ATLAS_TYPE:
+                    case core.ATLAS_XML_TYPE:
+                    case core.UNITY_ATLAS_TYPE:
+                    case core.SPRITESHEET_TYPE:
                         return true;
                     default:
                         return false;

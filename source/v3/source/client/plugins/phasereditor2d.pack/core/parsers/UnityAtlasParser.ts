@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.parsers {
+namespace phasereditor2d.pack.core.parsers {
     
     import controls = colibri.ui.controls;
 
@@ -9,7 +9,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             if (!game.textures.exists(item.getKey())) {
                 const atlasURL = item.getData().atlasURL;
-                const atlasData = pack.AssetPackUtils.getFileStringFromPackUrl(atlasURL);
+                const atlasData = AssetPackUtils.getFileStringFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
                 game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any> atlasData);

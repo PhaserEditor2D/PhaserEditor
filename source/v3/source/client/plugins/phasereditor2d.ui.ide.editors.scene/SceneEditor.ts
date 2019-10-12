@@ -229,8 +229,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
             switch (key) {
                 case views.blocks.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._blocksProvider;
+
                 case views.outline.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._outlineProvider;
+
                 default:
                     break;
             }

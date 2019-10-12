@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.viewers {
+namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
 
@@ -7,19 +7,19 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
         abstract getRoots(input: any): any[];
 
         getChildren(parent: any): any[] {
-            if (parent instanceof AssetPack) {
+            if (parent instanceof core.AssetPack) {
                 return parent.getItems();
             }
 
 
-            if (parent instanceof AssetPackItem) {
+            if (parent instanceof core.AssetPackItem) {
                 
-                if (parent.getType() === IMAGE_TYPE) {
+                if (parent.getType() === core.IMAGE_TYPE) {
                     return [];
                 }
 
-                if (AssetPackUtils.isImageFrameContainer(parent)) {
-                    return AssetPackUtils.getImageFrames(parent);
+                if (core.AssetPackUtils.isImageFrameContainer(parent)) {
+                    return core.AssetPackUtils.getImageFrames(parent);
                 }
             }
 

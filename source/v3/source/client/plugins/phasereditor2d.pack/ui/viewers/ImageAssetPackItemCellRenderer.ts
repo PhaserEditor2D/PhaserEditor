@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.viewers {
+namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
 
@@ -6,10 +6,10 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
         getImage(obj: any): controls.IImage {
 
-            const item = <AssetPackItem>obj;
+            const item = <core.AssetPackItem>obj;
             const data = item.getData();
 
-            return AssetPackUtils.getImageFromPackUrl(data.url);
+            return core.AssetPackUtils.getImageFromPackUrl(data.url);
         }
 
     }

@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.properties {
+namespace phasereditor2d.pack.ui.properties {
     
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
@@ -36,8 +36,8 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
         private async getImageFrames() {
             const frames = this.getSelection().flatMap(obj => {
 
-                if (obj instanceof AssetPackItem) {
-                    return AssetPackUtils.getImageFrames(obj);
+                if (obj instanceof core.AssetPackItem) {
+                    return core.AssetPackUtils.getImageFrames(obj);
                 }
 
                 return [(<controls.ImageFrame>obj)]
@@ -48,9 +48,9 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
 
         canEdit(obj: any, n: number): boolean {
             if (n === 1) {
-                return obj instanceof AssetPackItem && obj.getType() !== IMAGE_TYPE && AssetPackUtils.isImageFrameContainer(obj);
+                return obj instanceof core.AssetPackItem && obj.getType() !== core.IMAGE_TYPE && core.AssetPackUtils.isImageFrameContainer(obj);
             }
-            return obj instanceof controls.ImageFrame || obj instanceof AssetPackItem && AssetPackUtils.isImageFrameContainer(obj);
+            return obj instanceof controls.ImageFrame || obj instanceof core.AssetPackItem && core.AssetPackUtils.isImageFrameContainer(obj);
         }
 
         canEditNumber(n: number): boolean {

@@ -6,7 +6,7 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
     export class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
 
         async preload() {
-            pack.PackFinder.preload();
+            pack.core.PackFinder.preload();
         }
 
         getContentProvider(): controls.viewers.ITreeContentProvider {

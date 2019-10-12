@@ -1,6 +1,6 @@
 /// <reference path="./BaseAtlasParser.ts" />
 
-namespace phasereditor2d.ui.ide.editors.pack.parsers {
+namespace phasereditor2d.pack.core.parsers {
 
     import controls = colibri.ui.controls;
 

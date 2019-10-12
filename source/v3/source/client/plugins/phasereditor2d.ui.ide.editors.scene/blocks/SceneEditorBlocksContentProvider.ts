@@ -1,3 +1,4 @@
+/// <reference path="../../phasereditor2d.pack/ui/viewers/AssetPackContentProvider.ts" />
 
 namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
@@ -5,10 +6,10 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
 
     const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
 
-    export class SceneEditorBlocksContentProvider extends pack.viewers.AssetPackContentProvider {
+    export class SceneEditorBlocksContentProvider extends pack.ui.viewers.AssetPackContentProvider {
 
         getPackItems() {
-            return pack.PackFinder
+            return pack.core.PackFinder
 
                 .getPacks()
 
@@ -36,9 +37,9 @@ namespace phasereditor2d.ui.ide.editors.scene.blocks {
             if (typeof (parent) === "string") {
 
                 switch (parent) {
-                    case pack.ATLAS_TYPE:
+                    case pack.core.ATLAS_TYPE:
                         return this.getPackItems()
-                            .filter(item => pack.AssetPackUtils.isAtlasPackItem(item));
+                            .filter(item => pack.core.AssetPackUtils.isAtlasPackItem(item));
 
                     case PREFAB_SECTION:
                         //TODO: we need to implement the PrefabFinder

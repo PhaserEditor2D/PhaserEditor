@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.pack.core {
     
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
@@ -72,11 +72,11 @@ namespace phasereditor2d.ui.ide.editors.pack {
 
             const asset = this.getAssetPackItemOrFrame(key, frame);
 
-            if (asset instanceof pack.AssetPackItem && asset.getType() === pack.IMAGE_TYPE) {
+            if (asset instanceof AssetPackItem && asset.getType() === IMAGE_TYPE) {
 
-                return pack.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
+                return AssetPackUtils.getImageFromPackUrl(asset.getData().url);
 
-            } else if (asset instanceof pack.AssetPackImageFrame) {
+            } else if (asset instanceof AssetPackImageFrame) {
 
                 return asset;
 

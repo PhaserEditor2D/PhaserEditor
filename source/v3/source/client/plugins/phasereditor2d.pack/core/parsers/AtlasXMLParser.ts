@@ -1,6 +1,6 @@
 /// <reference path="./BaseAtlasParser.ts" />
 
-namespace phasereditor2d.ui.ide.editors.pack.parsers {
+namespace phasereditor2d.pack.core.parsers {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
@@ -17,7 +17,7 @@ namespace phasereditor2d.ui.ide.editors.pack.parsers {
 
             if (!game.textures.exists(item.getKey())) {
                 const atlasURL = item.getData().atlasURL;
-                const atlasData = pack.AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
+                const atlasData = AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
                 game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);

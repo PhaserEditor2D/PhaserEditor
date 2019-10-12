@@ -1,8 +1,8 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.pack.core {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
+    import io = colibri.core.io;
 
     const IMAGE_FRAME_CONTAINER_TYPES = new Set([
         IMAGE_TYPE,
@@ -41,17 +41,17 @@ namespace phasereditor2d.ui.ide.editors.pack {
         static getImageFrameParser(packItem: AssetPackItem) {
             switch (packItem.getType()) {
                 case IMAGE_TYPE:
-                    return new pack.parsers.ImageParser(packItem);
+                    return new parsers.ImageParser(packItem);
                 case ATLAS_TYPE:
-                    return new pack.parsers.AtlasParser(packItem);
+                    return new parsers.AtlasParser(packItem);
                 case ATLAS_XML_TYPE:
-                    return new pack.parsers.AtlasXMLParser(packItem);
+                    return new parsers.AtlasXMLParser(packItem);
                 case UNITY_ATLAS_TYPE:
-                    return new pack.parsers.UnityAtlasParser(packItem);
+                    return new parsers.UnityAtlasParser(packItem);
                 case MULTI_ATLAS_TYPE:
-                    return new pack.parsers.MultiAtlasParser(packItem);
+                    return new parsers.MultiAtlasParser(packItem);
                 case SPRITESHEET_TYPE:
-                    return new pack.parsers.SpriteSheetParser(packItem);
+                    return new parsers.SpriteSheetParser(packItem);
                 default:
                     break;
             }
@@ -80,9 +80,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
             return packs;
         }
 
-
-
-        static getFileFromPackUrl(url: string): core.io.FilePath {
+        static getFileFromPackUrl(url: string): io.FilePath {
             return ide.FileUtils.getFileFromPath(url);
         }
 

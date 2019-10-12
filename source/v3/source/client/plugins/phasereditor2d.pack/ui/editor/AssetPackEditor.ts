@@ -1,9 +1,7 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.pack.ui.editor {
     
-    import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
-    import io = core.io
+    import io = colibri.core.io;
 
     export class AssetPackEditorFactory extends ide.EditorFactory {
 
@@ -14,7 +12,7 @@ namespace phasereditor2d.ui.ide.editors.pack {
         acceptInput(input: any): boolean {
             if (input instanceof io.FilePath) {
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                return contentType === CONTENT_TYPE_ASSET_PACK;
+                return contentType === pack.core.CONTENT_TYPE_ASSET_PACK;
             }
             return false;
         }        

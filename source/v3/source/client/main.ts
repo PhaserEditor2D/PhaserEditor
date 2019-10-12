@@ -19,7 +19,7 @@ namespace phasereditor2d {
 
                 ui.ide.editors.scene.SceneEditorPlugin.getInstance(),
 
-                ui.ide.editors.pack.AssetPackEditorPlugin.getInstance(),
+                pack.AssetPackEditorPlugin.getInstance(),
 
                 ui.ide.DesignPlugin.getInstance()
 

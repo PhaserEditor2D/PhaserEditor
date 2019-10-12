@@ -28,7 +28,7 @@ namespace phasereditor2d.ui.ide.editors.scene.properties {
                 
                 const { key, frame } = obj.getEditorTexture();
 
-                const img = pack.PackFinder.getAssetPackItemImage(key, frame);
+                const img = pack.core.PackFinder.getAssetPackItemImage(key, frame);
 
                 imgControl.setImage(img);
 

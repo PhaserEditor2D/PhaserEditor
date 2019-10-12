@@ -1,8 +1,8 @@
-namespace phasereditor2d.ui.ide.editors.pack.properties {
+namespace phasereditor2d.pack.ui.properties {
 
     import controls = colibri.ui.controls;
     
-    export class AssetPackItemSection extends controls.properties.PropertySection<AssetPackItem> {
+    export class AssetPackItemSection extends controls.properties.PropertySection<core.AssetPackItem> {
 
         constructor(page : controls.properties.PropertyPage) {
             super(page, "AssetPackItemPropertySection", "File Key", false)
@@ -23,7 +23,7 @@ namespace phasereditor2d.ui.ide.editors.pack.properties {
         }
 
         canEdit(obj: any): boolean {
-            return obj instanceof AssetPackItem;
+            return obj instanceof core.AssetPackItem;
         }
 
         canEditNumber(n: number): boolean {

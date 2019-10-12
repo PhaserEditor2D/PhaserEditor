@@ -50,11 +50,11 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
         private acceptsDropData(data: any): boolean {
 
-            if (data instanceof pack.AssetPackItem) {
-                if (data.getType() === pack.IMAGE_TYPE) {
+            if (data instanceof pack.core.AssetPackItem) {
+                if (data.getType() === pack.core.IMAGE_TYPE) {
                     return true;
                 }
-            } else if (data instanceof pack.AssetPackImageFrame) {
+            } else if (data instanceof pack.core.AssetPackImageFrame) {
                 return true;
             }
 

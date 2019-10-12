@@ -55,7 +55,7 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
             for (const data of dropDataArray) {
 
-                if (data instanceof pack.AssetPackImageFrame) {
+                if (data instanceof pack.core.AssetPackImageFrame) {
 
                     const sprite = this._scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
 
@@ -64,10 +64,10 @@ namespace phasereditor2d.ui.ide.editors.scene {
 
                     sprites.push(sprite);
 
-                } else if (data instanceof pack.AssetPackItem) {
+                } else if (data instanceof pack.core.AssetPackItem) {
 
                     switch (data.getType()) {
-                        case pack.IMAGE_TYPE: {
+                        case pack.core.IMAGE_TYPE: {
 
                             const sprite = this._scene.add.image(x, y, data.getKey());
 

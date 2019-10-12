@@ -1,4 +1,4 @@
-namespace phasereditor2d.ui.ide.editors.pack.viewers {
+namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
 
@@ -6,18 +6,18 @@ namespace phasereditor2d.ui.ide.editors.pack.viewers {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
-            if (element instanceof AssetPackItem) {
+            if (element instanceof core.AssetPackItem) {
 
                 const type = element.getType();
 
                 switch (type) {
-                    case pack.IMAGE_TYPE:
+                    case core.IMAGE_TYPE:
                         return new ImageAssetPackItemCellRenderer();
-                    case pack.MULTI_ATLAS_TYPE:
-                    case pack.ATLAS_TYPE:
-                    case pack.UNITY_ATLAS_TYPE:
-                    case pack.ATLAS_XML_TYPE:
-                    case pack.SPRITESHEET_TYPE:
+                    case core.MULTI_ATLAS_TYPE:
+                    case core.ATLAS_TYPE:
+                    case core.UNITY_ATLAS_TYPE:
+                    case core.ATLAS_XML_TYPE:
+                    case core.SPRITESHEET_TYPE:
                         return new controls.viewers.FolderCellRenderer();
                     default:
                         break;

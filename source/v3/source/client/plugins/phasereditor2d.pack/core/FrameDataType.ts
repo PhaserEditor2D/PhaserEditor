@@ -1,4 +1,5 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.pack.core {
+    
     export type FrameDataType = {
         "filename": string,
         "trimmed": boolean,

@@ -1,8 +1,7 @@
-namespace phasereditor2d.ui.ide.editors.pack {
+namespace phasereditor2d.pack {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
 
     export const ICON_ASSET_PACK = "asset-pack";
 
@@ -18,27 +17,27 @@ namespace phasereditor2d.ui.ide.editors.pack {
             super("phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin");
         }
 
-        registerContentTypes(registry: core.ContentTypeRegistry): void {
-            registry.registerResolver(new editors.pack.AssetPackContentTypeResolver());
+        registerContentTypes(registry: colibri.core.ContentTypeRegistry): void {
+            registry.registerResolver(new pack.core.AssetPackContentTypeResolver());
         }
 
         async preloadProjectResources() {
-            await editors.pack.PackFinder.preload();
+            await pack.core.PackFinder.preload();
         }
 
         async preloadIcons(contentTypeIconMap: Map<string, controls.IImage>): Promise<void> {
 
             await this.getIcon(ICON_ASSET_PACK).preload();
 
-            contentTypeIconMap.set(CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
+            contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
         }
 
         registerEditor(registry: ide.EditorRegistry) {
-            registry.registerFactory(editors.pack.AssetPackEditor.getFactory());
+            registry.registerFactory(ui.editor.AssetPackEditor.getFactory());
         }
 
         getIcon(icon: string) {
-            return controls.Controls.getIcon(icon, "plugins/phasereditor2d.ui.ide.editors.pack/icons");
+            return controls.Controls.getIcon(icon, "plugins/phasereditor2d.pack/ui/icons");
         }
 
     }
