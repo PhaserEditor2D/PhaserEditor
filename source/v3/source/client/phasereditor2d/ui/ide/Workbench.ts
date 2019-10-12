@@ -20,7 +20,7 @@ namespace phasereditor2d.ui.ide {
     export const ICON_FILE_SCRIPT = "file-script";
     export const ICON_FILE_SOUND = "file-sound";
     export const ICON_FILE_TEXT = "file-text";
-    export const ICON_ASSET_PACK = "asset-pack";
+    
     export const ICON_OUTLINE = "outline";
     export const ICON_INSPECTOR = "inspector";
     export const ICON_BLOCKS = "blocks";
@@ -35,7 +35,6 @@ namespace phasereditor2d.ui.ide {
         ICON_FILE_SCRIPT,
         ICON_FILE_SOUND,
         ICON_FILE_TEXT,
-        ICON_ASSET_PACK,
         ICON_OUTLINE,
         ICON_INSPECTOR,
         ICON_BLOCKS,
@@ -149,10 +148,9 @@ namespace phasereditor2d.ui.ide {
             this._contentType_icon_Map.set(CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ICON_FILE_VIDEO));
             this._contentType_icon_Map.set(CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ICON_FILE_SCRIPT));
             this._contentType_icon_Map.set(CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ICON_FILE_TEXT));
-            this._contentType_icon_Map.set(editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ICON_ASSET_PACK));
 
             for (const plugin of plugins) {
-                await plugin.preloadIcons();
+                await plugin.preloadIcons(this._contentType_icon_Map);
             }
 
             return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));

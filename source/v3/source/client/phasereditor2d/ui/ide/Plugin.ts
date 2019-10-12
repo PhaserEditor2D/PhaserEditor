@@ -12,7 +12,7 @@ namespace phasereditor2d.ui.ide {
             return this._id;
         }
 
-        preloadIcons(): Promise<void> {
+        preloadIcons(contentTypeIconMap : Map<string, controls.IImage>): Promise<void> {
             return Promise.resolve();
         }
 

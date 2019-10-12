@@ -1794,7 +1794,7 @@ var phasereditor2d;
                 getId() {
                     return this._id;
                 }
-                preloadIcons() {
+                preloadIcons(contentTypeIconMap) {
                     return Promise.resolve();
                 }
                 registerContentTypes(registry) {
@@ -2031,7 +2031,6 @@ var phasereditor2d;
             ide.ICON_FILE_SCRIPT = "file-script";
             ide.ICON_FILE_SOUND = "file-sound";
             ide.ICON_FILE_TEXT = "file-text";
-            ide.ICON_ASSET_PACK = "asset-pack";
             ide.ICON_OUTLINE = "outline";
             ide.ICON_INSPECTOR = "inspector";
             ide.ICON_BLOCKS = "blocks";
@@ -2045,7 +2044,6 @@ var phasereditor2d;
                 ide.ICON_FILE_SCRIPT,
                 ide.ICON_FILE_SOUND,
                 ide.ICON_FILE_TEXT,
-                ide.ICON_ASSET_PACK,
                 ide.ICON_OUTLINE,
                 ide.ICON_INSPECTOR,
                 ide.ICON_BLOCKS,
@@ -2107,9 +2105,8 @@ var phasereditor2d;
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_VIDEO, this.getWorkbenchIcon(ide.ICON_FILE_VIDEO));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_SCRIPT, this.getWorkbenchIcon(ide.ICON_FILE_SCRIPT));
                     this._contentType_icon_Map.set(ide.CONTENT_TYPE_TEXT, this.getWorkbenchIcon(ide.ICON_FILE_TEXT));
-                    this._contentType_icon_Map.set(ide.editors.pack.CONTENT_TYPE_ASSET_PACK, this.getWorkbenchIcon(ide.ICON_ASSET_PACK));
                     for (const plugin of plugins) {
-                        await plugin.preloadIcons();
+                        await plugin.preloadIcons(this._contentType_icon_Map);
                     }
                     return Promise.all(ICONS.map(icon => this.getWorkbenchIcon(icon).preload()));
                 }
@@ -5397,6 +5394,7 @@ var phasereditor2d;
             (function (editors) {
                 var pack;
                 (function (pack) {
+                    pack.ICON_ASSET_PACK = "asset-pack";
                     class AssetPackEditorPlugin extends ide.Plugin {
                         constructor() {
                             super("phasereditor2d.ui.ide.editors.pack.AssetPackEditorPlugin");
@@ -5410,8 +5408,15 @@ var phasereditor2d;
                         async preloadProjectResources() {
                             await editors.pack.PackFinder.preload();
                         }
+                        async preloadIcons(contentTypeIconMap) {
+                            await this.getIcon(pack.ICON_ASSET_PACK).preload();
+                            contentTypeIconMap.set(pack.CONTENT_TYPE_ASSET_PACK, this.getIcon(pack.ICON_ASSET_PACK));
+                        }
                         registerEditor(registry) {
                             registry.registerFactory(editors.pack.AssetPackEditor.getFactory());
+                        }
+                        getIcon(icon) {
+                            return ui.controls.Controls.getIcon(icon, "plugins/phasereditor2d.ui.ide.editors.pack/icons");
                         }
                     }
                     AssetPackEditorPlugin._instance = new AssetPackEditorPlugin();
