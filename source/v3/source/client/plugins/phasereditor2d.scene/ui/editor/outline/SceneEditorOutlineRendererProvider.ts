@@ -21,7 +21,7 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
             } else if (element instanceof Phaser.GameObjects.Container) {
 
-                return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_GROUP));
+                return new controls.viewers.IconImageCellRenderer(ScenePlugin.getInstance().getIcon(ICON_GROUP));
 
             } else if (element instanceof Phaser.GameObjects.DisplayList) {
 

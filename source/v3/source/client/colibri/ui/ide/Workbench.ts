@@ -17,11 +17,6 @@ namespace colibri.ui.ide {
     export const ICON_FILE_SOUND = "file-sound";
     export const ICON_FILE_TEXT = "file-text";
 
-    export const ICON_OUTLINE = "outline";
-    export const ICON_INSPECTOR = "inspector";
-    export const ICON_BLOCKS = "blocks";
-    export const ICON_GROUP = "group";
-
     const ICONS = [
         ICON_FILE,
         ICON_FOLDER,
@@ -30,11 +25,7 @@ namespace colibri.ui.ide {
         ICON_FILE_VIDEO,
         ICON_FILE_SCRIPT,
         ICON_FILE_SOUND,
-        ICON_FILE_TEXT,
-        ICON_OUTLINE,
-        ICON_INSPECTOR,
-        ICON_BLOCKS,
-        ICON_GROUP
+        ICON_FILE_TEXT
     ];
 
     export class Workbench extends EventTarget {

@@ -11,7 +11,7 @@ namespace phasereditor2d.blocks.ui.views {
             super("BlocksView");
 
             this.setTitle("Blocks");
-            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
+            this.setIcon(BlocksPlugin.getInstance().getIcon(ICON_BLOCKS));
 
         }
 

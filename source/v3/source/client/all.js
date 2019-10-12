@@ -5,6 +5,9 @@ var phasereditor2d;
         console.log(`%c %c Phaser Editor 2D %c v${phasereditor2d.VER} %c %c https://phasereditor2d.com `, "background-color:red", "background-color:#3f3f3f;color:whitesmoke", "background-color:orange;color:black", "background-color:red", "background-color:silver");
         await colibri.ui.ide.Workbench.getWorkbench()
             .launch([
+            phasereditor2d.blocks.BlocksPlugin.getInstance(),
+            phasereditor2d.inspector.InspectorPlugin.getInstance(),
+            phasereditor2d.outline.OutlinePlugin.getInstance(),
             phasereditor2d.pack.AssetPackPlugin.getInstance(),
             phasereditor2d.scene.ScenePlugin.getInstance(),
             phasereditor2d.ide.IDEPlugin.getInstance()
@@ -4010,10 +4013,6 @@ var colibri;
             ide.ICON_FILE_SCRIPT = "file-script";
             ide.ICON_FILE_SOUND = "file-sound";
             ide.ICON_FILE_TEXT = "file-text";
-            ide.ICON_OUTLINE = "outline";
-            ide.ICON_INSPECTOR = "inspector";
-            ide.ICON_BLOCKS = "blocks";
-            ide.ICON_GROUP = "group";
             const ICONS = [
                 ide.ICON_FILE,
                 ide.ICON_FOLDER,
@@ -4022,11 +4021,7 @@ var colibri;
                 ide.ICON_FILE_VIDEO,
                 ide.ICON_FILE_SCRIPT,
                 ide.ICON_FILE_SOUND,
-                ide.ICON_FILE_TEXT,
-                ide.ICON_OUTLINE,
-                ide.ICON_INSPECTOR,
-                ide.ICON_BLOCKS,
-                ide.ICON_GROUP
+                ide.ICON_FILE_TEXT
             ];
             class Workbench extends EventTarget {
                 constructor() {
@@ -4678,6 +4673,31 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var blocks;
     (function (blocks) {
+        var ide = colibri.ui.ide;
+        var controls = colibri.ui.controls;
+        blocks.ICON_BLOCKS = "blocks";
+        class BlocksPlugin extends ide.Plugin {
+            constructor() {
+                super("phasereditor.blocks.BlocksPlugin");
+            }
+            static getInstance() {
+                return this._instance;
+            }
+            async preloadIcons(contentTypeIconMap) {
+                await this.getIcon(blocks.ICON_BLOCKS).preload();
+            }
+            getIcon(name) {
+                return controls.Controls.getIcon(name, "plugins/phasereditor2d.blocks/ui/icons");
+            }
+        }
+        BlocksPlugin._instance = new BlocksPlugin();
+        blocks.BlocksPlugin = BlocksPlugin;
+    })(blocks = phasereditor2d.blocks || (phasereditor2d.blocks = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var blocks;
+    (function (blocks) {
         var ui;
         (function (ui) {
             var views;
@@ -4687,7 +4707,7 @@ var phasereditor2d;
                     constructor() {
                         super("BlocksView");
                         this.setTitle("Blocks");
-                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_BLOCKS));
+                        this.setIcon(blocks.BlocksPlugin.getInstance().getIcon(blocks.ICON_BLOCKS));
                     }
                     getViewerProvider(editor) {
                         return editor.getEditorViewerProvider(BlocksView.EDITOR_VIEWER_PROVIDER_KEY);
@@ -5125,6 +5145,31 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var inspector;
     (function (inspector) {
+        var ide = colibri.ui.ide;
+        var controls = colibri.ui.controls;
+        inspector.ICON_INSPECTOR = "inspector";
+        class InspectorPlugin extends ide.Plugin {
+            constructor() {
+                super("phasereditor2d.inspector.InspectorPlugin");
+            }
+            static getInstance() {
+                return this._instance;
+            }
+            async preloadIcons(contentTypeIconMap) {
+                await this.getIcon(inspector.ICON_INSPECTOR).preload();
+            }
+            getIcon(name) {
+                return controls.Controls.getIcon(name, "plugins/phasereditor2d.inspector/ui/icons");
+            }
+        }
+        InspectorPlugin._instance = new InspectorPlugin();
+        inspector.InspectorPlugin = InspectorPlugin;
+    })(inspector = phasereditor2d.inspector || (phasereditor2d.inspector = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var inspector;
+    (function (inspector) {
         var ui;
         (function (ui) {
             var views;
@@ -5135,7 +5180,7 @@ var phasereditor2d;
                     constructor() {
                         super("InspectorView");
                         this.setTitle("Inspector");
-                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
+                        this.setIcon(inspector.InspectorPlugin.getInstance().getIcon(inspector.ICON_INSPECTOR));
                     }
                     layout() {
                         this._propertyPage.dispatchLayoutEvent();
@@ -5178,6 +5223,31 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var outline;
     (function (outline) {
+        var ide = colibri.ui.ide;
+        var controls = colibri.ui.controls;
+        outline.ICON_OUTLINE = "outline";
+        class OutlinePlugin extends ide.Plugin {
+            constructor() {
+                super("phasereditor2d.outline.OutlinePlugin");
+            }
+            static getInstance() {
+                return this._instance;
+            }
+            async preloadIcons(contentTypeIconMap) {
+                await this.getIcon(outline.ICON_OUTLINE).preload();
+            }
+            getIcon(name) {
+                return controls.Controls.getIcon(name, "plugins/phasereditor2d.outline/ui/icons");
+            }
+        }
+        OutlinePlugin._instance = new OutlinePlugin();
+        outline.OutlinePlugin = OutlinePlugin;
+    })(outline = phasereditor2d.outline || (phasereditor2d.outline = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var outline;
+    (function (outline) {
         var ui;
         (function (ui) {
             var views;
@@ -5187,7 +5257,7 @@ var phasereditor2d;
                     constructor() {
                         super("OutlineView");
                         this.setTitle("Outline");
-                        this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
+                        this.setIcon(outline.OutlinePlugin.getInstance().getIcon(outline.ICON_OUTLINE));
                     }
                     getViewerProvider(editor) {
                         return editor.getEditorViewerProvider(OutlineView.EDITOR_VIEWER_PROVIDER_KEY);
@@ -6455,7 +6525,9 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
     (function (scene) {
+        var controls = colibri.ui.controls;
         var ide = colibri.ui.ide;
+        scene.ICON_GROUP = "group";
         class ScenePlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.scene.ScenePlugin");
@@ -6465,6 +6537,12 @@ var phasereditor2d;
             }
             registerContentTypes(registry) {
                 registry.registerResolver(new scene.core.SceneContentTypeResolver());
+            }
+            async preloadIcons(contentTypeIconMap) {
+                await this.getIcon(scene.ICON_GROUP).preload();
+            }
+            getIcon(name) {
+                return controls.Controls.getIcon(name, "plugins/phasereditor2d.scene/ui/icons");
             }
             registerEditor(registry) {
                 registry.registerFactory(scene.ui.editor.SceneEditor.getFactory());
@@ -7933,7 +8011,7 @@ var phasereditor2d;
                                 return new outline.GameObjectCellRenderer();
                             }
                             else if (element instanceof Phaser.GameObjects.Container) {
-                                return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_GROUP));
+                                return new controls.viewers.IconImageCellRenderer(scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP));
                             }
                             else if (element instanceof Phaser.GameObjects.DisplayList) {
                                 return new controls.viewers.IconImageCellRenderer(controls.Controls.getIcon(ide.ICON_FOLDER));

@@ -14,7 +14,7 @@ namespace phasereditor2d.inspector.ui.views {
             super("InspectorView");
 
             this.setTitle("Inspector");
-            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_INSPECTOR));
+            this.setIcon(InspectorPlugin.getInstance().getIcon(ICON_INSPECTOR));
         }
 
         layout() {

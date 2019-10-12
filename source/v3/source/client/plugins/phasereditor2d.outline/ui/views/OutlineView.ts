@@ -10,7 +10,7 @@ namespace phasereditor2d.outline.ui.views {
             super("OutlineView");
 
             this.setTitle("Outline");
-            this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_OUTLINE));
+            this.setIcon(OutlinePlugin.getInstance().getIcon(ICON_OUTLINE));
         }
 
         getViewerProvider(editor: ide.EditorPart): ide.EditorViewerProvider {
