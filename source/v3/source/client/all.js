@@ -4909,8 +4909,8 @@ var phasereditor2d;
                             .getWorkbench()
                             .getExtensionRegistry()
                             .getExtensions(viewers_2.ContentTypeCellRendererExtension.POINT);
-                        if (extensions.length > 0) {
-                            const provider = extensions[0].getRendererProvider(contentType);
+                        for (const extension of extensions) {
+                            const provider = extension.getRendererProvider(contentType);
                             if (provider !== null) {
                                 return provider.getCellRenderer(file);
                             }
