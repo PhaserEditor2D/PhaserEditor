@@ -160,6 +160,63 @@ var colibri;
 (function (colibri) {
     var core;
     (function (core) {
+        var extensions;
+        (function (extensions) {
+            class Extension {
+                constructor(id, priority = 10) {
+                    this._id = id;
+                    this._priority = priority;
+                }
+                getId() {
+                    return this._id;
+                }
+                getPriority() {
+                    return this._priority;
+                }
+            }
+            extensions.Extension = Extension;
+        })(extensions = core.extensions || (core.extensions = {}));
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
+        var extensions;
+        (function (extensions) {
+            class ExtensionRegistry {
+                constructor() {
+                    this._map = new Map();
+                }
+                addExtension(point, ...extension) {
+                    let list = this._map.get(point);
+                    if (!list) {
+                        this._map.set(point, list = []);
+                    }
+                    list.push(...extension);
+                }
+                getExtensions(point, sorted = false) {
+                    let list = this._map.get(point);
+                    if (list) {
+                        if (sorted) {
+                            list = list.slice();
+                            list = list.sort((a, b) => a.getPriority() - b.getPriority());
+                        }
+                    }
+                    else {
+                        list = [];
+                    }
+                    return list;
+                }
+            }
+            extensions.ExtensionRegistry = ExtensionRegistry;
+        })(extensions = core.extensions || (core.extensions = {}));
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
         var io;
         (function (io) {
             const EMPTY_FILES = [];
@@ -4865,6 +4922,34 @@ var phasereditor2d;
         (function (ui) {
             var views;
             (function (views) {
+                var core = colibri.core;
+                class FileTreeContentProvider {
+                    getRoots(input) {
+                        if (input instanceof core.io.FilePath) {
+                            return [input];
+                        }
+                        if (input instanceof Array) {
+                            return input;
+                        }
+                        return this.getChildren(input);
+                    }
+                    getChildren(parent) {
+                        return parent.getFiles();
+                    }
+                }
+                views.FileTreeContentProvider = FileTreeContentProvider;
+            })(views = ui.views || (ui.views = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var views;
+            (function (views) {
                 var controls = colibri.ui.controls;
                 class FilePropertySectionProvider extends controls.properties.PropertySectionProvider {
                     addSections(page, sections) {
@@ -4930,34 +5015,6 @@ var phasereditor2d;
                     }
                 }
                 views.FileSection = FileSection;
-            })(views = ui.views || (ui.views = {}));
-        })(ui = files.ui || (files.ui = {}));
-    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var files;
-    (function (files) {
-        var ui;
-        (function (ui) {
-            var views;
-            (function (views) {
-                var core = colibri.core;
-                class FileTreeContentProvider {
-                    getRoots(input) {
-                        if (input instanceof core.io.FilePath) {
-                            return [input];
-                        }
-                        if (input instanceof Array) {
-                            return input;
-                        }
-                        return this.getChildren(input);
-                    }
-                    getChildren(parent) {
-                        return parent.getFiles();
-                    }
-                }
-                views.FileTreeContentProvider = FileTreeContentProvider;
             })(views = ui.views || (ui.views = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));

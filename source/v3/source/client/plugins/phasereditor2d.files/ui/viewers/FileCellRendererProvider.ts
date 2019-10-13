@@ -2,7 +2,6 @@ namespace phasereditor2d.files.ui.views {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
     import io = colibri.core.io;
     import viewers = colibri.ui.controls.viewers;
 
