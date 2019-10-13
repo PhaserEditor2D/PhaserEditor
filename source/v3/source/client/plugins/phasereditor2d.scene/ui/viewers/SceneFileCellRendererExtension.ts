@@ -2,7 +2,7 @@ namespace phasereditor2d.scene.ui.viewers {
 
     import controls = colibri.ui.controls;
 
-    class SceneFileCellRendererProvider implements controls.viewers.ICellRendererProvider {
+    class Provider implements controls.viewers.ICellRendererProvider {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
             return new SceneFileCellRenderer();
@@ -22,7 +22,7 @@ namespace phasereditor2d.scene.ui.viewers {
         getRendererProvider(contentType: string): colibri.ui.controls.viewers.ICellRendererProvider {
 
             if (contentType === scene.core.CONTENT_TYPE_SCENE) {
-                return new SceneFileCellRendererProvider();
+                return new Provider();
             }
 
             return null;

@@ -15,6 +15,13 @@ namespace phasereditor2d.images {
             super("phasereditor2d.images.ImagesPlugin");
         }
 
+        registerExtensions(registry : colibri.core.extensions.ExtensionRegistry) {
+            registry
+                .addExtension(
+                    files.ui.viewers.ContentTypeCellRendererExtension.POINT,
+                    new ui.viewers.ImageFileCellRendererExtension());
+        }
+
         registerCSSUrls(urls: string[]) {
 
             urls.push(

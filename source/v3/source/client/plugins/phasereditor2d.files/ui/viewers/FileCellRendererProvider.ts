@@ -19,21 +19,11 @@ namespace phasereditor2d.files.ui.viewers {
             if (extensions.length > 0) {
 
                 const provider = extensions[0].getRendererProvider(contentType);
-                
+
                 if (provider !== null) {
                     return provider.getCellRenderer(file);
                 }
             }
-
-
-            /*switch (contentType) {
-
-                case files.core.CONTENT_TYPE_IMAGE:
-                    return new FileImageRenderer();
-
-                case scene.core.CONTENT_TYPE_SCENE:
-                    return new scene.ui.blocks.SceneCellRenderer();
-            }*/
 
             return new FileCellRenderer();
         }

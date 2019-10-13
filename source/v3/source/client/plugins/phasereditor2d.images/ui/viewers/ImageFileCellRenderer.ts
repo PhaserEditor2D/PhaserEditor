@@ -1,10 +1,10 @@
-namespace phasereditor2d.files.ui.viewers {
+namespace phasereditor2d.images.ui.viewers {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
     import core = colibri.core;
 
-    export class FileImageRenderer extends controls.viewers.ImageCellRenderer {
+    export class ImageFileCellRenderer extends controls.viewers.ImageCellRenderer {
 
         getLabel(file: core.io.FilePath): string {
             return file.getName();

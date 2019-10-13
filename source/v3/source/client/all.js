@@ -4894,14 +4894,6 @@ var phasereditor2d;
                                 return provider.getCellRenderer(file);
                             }
                         }
-                        /*switch (contentType) {
-            
-                            case files.core.CONTENT_TYPE_IMAGE:
-                                return new FileImageRenderer();
-            
-                            case scene.core.CONTENT_TYPE_SCENE:
-                                return new scene.ui.blocks.SceneCellRenderer();
-                        }*/
                         return new viewers_2.FileCellRenderer();
                     }
                     preload(file) {
@@ -4909,29 +4901,6 @@ var phasereditor2d;
                     }
                 }
                 viewers_2.FileCellRendererProvider = FileCellRendererProvider;
-            })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = files.ui || (files.ui = {}));
-    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var files;
-    (function (files) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
-                var controls = colibri.ui.controls;
-                var ide = colibri.ui.ide;
-                class FileImageRenderer extends controls.viewers.ImageCellRenderer {
-                    getLabel(file) {
-                        return file.getName();
-                    }
-                    getImage(file) {
-                        return ide.Workbench.getWorkbench().getFileImage(file);
-                    }
-                }
-                viewers.FileImageRenderer = FileImageRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
@@ -5278,6 +5247,10 @@ var phasereditor2d;
             static getInstance() {
                 return this._instance;
             }
+            registerExtensions(registry) {
+                registry
+                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new images.ui.viewers.ImageFileCellRendererExtension());
+            }
             registerCSSUrls(urls) {
                 urls.push("plugins/phasereditor2d.images/ui/css/ImageEditor.css", "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css", "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css");
             }
@@ -5370,6 +5343,62 @@ var phasereditor2d;
                 }
                 editors.ImageEditor = ImageEditor;
             })(editors = ui.editors || (ui.editors = {}));
+        })(ui = images.ui || (images.ui = {}));
+    })(images = phasereditor2d.images || (phasereditor2d.images = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var images;
+    (function (images) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                var ide = colibri.ui.ide;
+                class ImageFileCellRenderer extends controls.viewers.ImageCellRenderer {
+                    getLabel(file) {
+                        return file.getName();
+                    }
+                    getImage(file) {
+                        return ide.Workbench.getWorkbench().getFileImage(file);
+                    }
+                }
+                viewers.ImageFileCellRenderer = ImageFileCellRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = images.ui || (images.ui = {}));
+    })(images = phasereditor2d.images || (phasereditor2d.images = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var images;
+    (function (images) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class Provider {
+                    getCellRenderer(element) {
+                        return new viewers.ImageFileCellRenderer();
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                class ImageFileCellRendererExtension extends phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension {
+                    constructor() {
+                        super("phasereditor2d.images.ui.viewers.ImageFileCellRendererExtension");
+                    }
+                    getRendererProvider(contentType) {
+                        if (contentType === phasereditor2d.files.core.CONTENT_TYPE_IMAGE) {
+                            return new Provider();
+                        }
+                        return null;
+                    }
+                }
+                viewers.ImageFileCellRendererExtension = ImageFileCellRendererExtension;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = images.ui || (images.ui = {}));
     })(images = phasereditor2d.images || (phasereditor2d.images = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -9041,7 +9070,7 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 var controls = colibri.ui.controls;
-                class SceneFileCellRendererProvider {
+                class Provider {
                     getCellRenderer(element) {
                         return new viewers.SceneFileCellRenderer();
                     }
@@ -9055,7 +9084,7 @@ var phasereditor2d;
                     }
                     getRendererProvider(contentType) {
                         if (contentType === scene.core.CONTENT_TYPE_SCENE) {
-                            return new SceneFileCellRendererProvider();
+                            return new Provider();
                         }
                         return null;
                     }
