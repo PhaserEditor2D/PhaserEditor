@@ -17,6 +17,14 @@ namespace phasereditor2d.scene {
             super("phasereditor2d.scene.ScenePlugin");
         }
 
+        registerExtensions(registry: colibri.core.extensions.ExtensionRegistry) {
+
+            registry.addExtension(
+                files.ui.viewers.ContentTypeCellRendererExtension.POINT,
+                new ui.viewers.SceneFileCellRendererExtension());
+
+        }
+
         registerContentTypes(registry: colibri.core.ContentTypeRegistry) {
             registry.registerResolver(new core.SceneContentTypeResolver());
         }

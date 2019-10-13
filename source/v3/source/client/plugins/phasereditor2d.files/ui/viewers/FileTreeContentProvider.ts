@@ -1,10 +1,9 @@
-namespace phasereditor2d.files.ui.views {
+namespace phasereditor2d.files.ui.viewers {
 
     import controls = colibri.ui.controls;
-    import viewers = controls.viewers;
     import core = colibri.core;
 
-    export class FileTreeContentProvider implements viewers.ITreeContentProvider {
+    export class FileTreeContentProvider implements controls.viewers.ITreeContentProvider {
 
         getRoots(input: any): any[] {
 

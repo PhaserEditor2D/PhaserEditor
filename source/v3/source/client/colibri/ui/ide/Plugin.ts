@@ -21,6 +21,10 @@ namespace colibri.ui.ide {
             return Promise.resolve();
         }
 
+        registerExtensions(registry : core.extensions.ExtensionRegistry) : void {
+
+        }
+
         preloadIcons() : Promise<void> {
             return Promise.resolve();
         }

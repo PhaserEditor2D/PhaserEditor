@@ -7,7 +7,7 @@ namespace phasereditor2d.scene.ui.blocks {
 
             if (element instanceof colibri.core.io.FilePath) {
 
-                return new SceneCellRenderer();
+                return new viewers.SceneFileCellRenderer();
 
             }
 

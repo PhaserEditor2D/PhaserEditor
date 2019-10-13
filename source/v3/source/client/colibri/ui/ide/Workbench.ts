@@ -36,6 +36,7 @@ namespace colibri.ui.ide {
         private _activeEditor: EditorPart;
         private _activeElement: HTMLElement;
         private _editorRegistry: EditorRegistry;
+        private _extensionRegistry: core.extensions.ExtensionRegistry;
         private _commandManager: commands.CommandManager;
 
         private constructor() {
@@ -49,11 +50,17 @@ namespace colibri.ui.ide {
             this._activeElement = null;
 
             this._fileImageCache = new ImageFileCache();
+
+            this._extensionRegistry = new core.extensions.ExtensionRegistry();
         }
 
         async launch(plugins: Plugin[]) {
 
             console.log("Workbench: starting.");
+
+            for (const plugin of plugins) {
+                plugin.registerExtensions(this._extensionRegistry);
+            }
 
             for (const plugin of plugins) {
                 console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
@@ -162,7 +169,7 @@ namespace colibri.ui.ide {
                     console.error(e.message);
                 }
             }
-        }
+        } Extension
 
         private registerWindow(plugins: Plugin[]) {
 
@@ -379,6 +386,10 @@ namespace colibri.ui.ide {
 
         getContentTypeRegistry() {
             return this._contentTypeRegistry;
+        }
+
+        getExtensionRegistry() {
+            return this._extensionRegistry;
         }
 
         getProjectRoot(): core.io.FilePath {

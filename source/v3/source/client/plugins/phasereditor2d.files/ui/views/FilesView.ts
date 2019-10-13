@@ -3,8 +3,6 @@ namespace phasereditor2d.files.ui.views {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
-    import viewers = colibri.ui.controls.viewers;
 
     export class FilesView extends ide.ViewerView {
 
@@ -17,7 +15,7 @@ namespace phasereditor2d.files.ui.views {
         }
 
         protected createViewer() {
-            return new viewers.TreeViewer();
+            return new controls.viewers.TreeViewer();
         }
 
         getPropertyProvider() {
@@ -30,9 +28,9 @@ namespace phasereditor2d.files.ui.views {
             const root = ide.Workbench.getWorkbench().getProjectRoot();
 
             const viewer = this._viewer;
-            viewer.setLabelProvider(new FileLabelProvider());
-            viewer.setContentProvider(new FileTreeContentProvider());
-            viewer.setCellRendererProvider(new FileCellRendererProvider());
+            viewer.setLabelProvider(new viewers.FileLabelProvider());
+            viewer.setContentProvider(new viewers.FileTreeContentProvider());
+            viewer.setCellRendererProvider(new viewers.FileCellRendererProvider());
             viewer.setInput(root);
 
             viewer.repaint();

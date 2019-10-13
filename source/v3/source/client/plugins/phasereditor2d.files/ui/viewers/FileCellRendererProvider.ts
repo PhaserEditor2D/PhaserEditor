@@ -1,4 +1,4 @@
-namespace phasereditor2d.files.ui.views {
+namespace phasereditor2d.files.ui.viewers {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
@@ -11,14 +11,29 @@ namespace phasereditor2d.files.ui.views {
 
             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
 
-            switch (contentType) {
+            const extensions = ide.Workbench
+                .getWorkbench()
+                .getExtensionRegistry()
+                .getExtensions<ContentTypeCellRendererExtension>(ContentTypeCellRendererExtension.POINT);
+
+            if (extensions.length > 0) {
+
+                const provider = extensions[0].getRendererProvider(contentType);
+                
+                if (provider !== null) {
+                    return provider.getCellRenderer(file);
+                }
+            }
+
+
+            /*switch (contentType) {
 
                 case files.core.CONTENT_TYPE_IMAGE:
                     return new FileImageRenderer();
 
                 case scene.core.CONTENT_TYPE_SCENE:
                     return new scene.ui.blocks.SceneCellRenderer();
-            }
+            }*/
 
             return new FileCellRenderer();
         }

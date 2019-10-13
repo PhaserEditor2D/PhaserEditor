@@ -11,8 +11,8 @@ namespace phasereditor2d.files.ui.views {
             super("PreviewBackground", ...classList);
 
             this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-            this.setLabelProvider(new FileLabelProvider());
-            this.setCellRendererProvider(new FileCellRendererProvider());
+            this.setLabelProvider(new viewers.FileLabelProvider());
+            this.setCellRendererProvider(new viewers.FileCellRendererProvider());
             this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, true));
 
             this.getCanvas().classList.add("PreviewBackground");
@@ -34,7 +34,7 @@ namespace phasereditor2d.files.ui.views {
             parent.appendChild(filteredViewer.getElement());
 
             this.addUpdater(() => {
-                
+
                 // clean the viewer first
                 viewer.setInput([]);
                 viewer.repaint();

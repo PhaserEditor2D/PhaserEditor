@@ -1,9 +1,9 @@
-namespace phasereditor2d.scene.ui.blocks {
+namespace phasereditor2d.scene.ui.viewers {
     
     import controls = colibri.ui.controls;
     import core = colibri.core;
 
-    export class SceneCellRenderer implements controls.viewers.ICellRenderer {
+    export class SceneFileCellRenderer implements controls.viewers.ICellRenderer {
 
         renderCell(args: controls.viewers.RenderCellArgs): void {
 

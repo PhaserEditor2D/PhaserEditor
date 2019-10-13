@@ -3953,6 +3953,8 @@ var colibri;
                 started() {
                     return Promise.resolve();
                 }
+                registerExtensions(registry) {
+                }
                 preloadIcons() {
                     return Promise.resolve();
                 }
@@ -4040,6 +4042,7 @@ var colibri;
                     this._activeEditor = null;
                     this._activeElement = null;
                     this._fileImageCache = new ide.ImageFileCache();
+                    this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -4049,6 +4052,9 @@ var colibri;
                 }
                 async launch(plugins) {
                     console.log("Workbench: starting.");
+                    for (const plugin of plugins) {
+                        plugin.registerExtensions(this._extensionRegistry);
+                    }
                     for (const plugin of plugins) {
                         console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
                         await plugin.starting();
@@ -4275,6 +4281,9 @@ var colibri;
                 }
                 getContentTypeRegistry() {
                     return this._contentTypeRegistry;
+                }
+                getExtensionRegistry() {
+                    return this._extensionRegistry;
                 }
                 getProjectRoot() {
                     return this._fileStorage.getRoot();
@@ -4811,8 +4820,27 @@ var phasereditor2d;
     (function (files) {
         var ui;
         (function (ui) {
-            var views;
-            (function (views) {
+            var viewers;
+            (function (viewers) {
+                class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+                    constructor(id) {
+                        super(id);
+                    }
+                }
+                ContentTypeCellRendererExtension.POINT = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
+                viewers.ContentTypeCellRendererExtension = ContentTypeCellRendererExtension;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers_1) {
                 var viewers = colibri.ui.controls.viewers;
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
@@ -4839,8 +4867,8 @@ var phasereditor2d;
                         return super.preload(obj);
                     }
                 }
-                views.FileCellRenderer = FileCellRenderer;
-            })(views = ui.views || (ui.views = {}));
+                viewers_1.FileCellRenderer = FileCellRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4850,26 +4878,38 @@ var phasereditor2d;
     (function (files) {
         var ui;
         (function (ui) {
-            var views;
-            (function (views) {
+            var viewers;
+            (function (viewers_2) {
                 var ide = colibri.ui.ide;
                 class FileCellRendererProvider {
                     getCellRenderer(file) {
                         const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                        switch (contentType) {
-                            case files.core.CONTENT_TYPE_IMAGE:
-                                return new views.FileImageRenderer();
-                            case phasereditor2d.scene.core.CONTENT_TYPE_SCENE:
-                                return new phasereditor2d.scene.ui.blocks.SceneCellRenderer();
+                        const extensions = ide.Workbench
+                            .getWorkbench()
+                            .getExtensionRegistry()
+                            .getExtensions(viewers_2.ContentTypeCellRendererExtension.POINT);
+                        if (extensions.length > 0) {
+                            const provider = extensions[0].getRendererProvider(contentType);
+                            if (provider !== null) {
+                                return provider.getCellRenderer(file);
+                            }
                         }
-                        return new views.FileCellRenderer();
+                        /*switch (contentType) {
+            
+                            case files.core.CONTENT_TYPE_IMAGE:
+                                return new FileImageRenderer();
+            
+                            case scene.core.CONTENT_TYPE_SCENE:
+                                return new scene.ui.blocks.SceneCellRenderer();
+                        }*/
+                        return new viewers_2.FileCellRenderer();
                     }
                     preload(file) {
                         return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
                     }
                 }
-                views.FileCellRendererProvider = FileCellRendererProvider;
-            })(views = ui.views || (ui.views = {}));
+                viewers_2.FileCellRendererProvider = FileCellRendererProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4879,8 +4919,8 @@ var phasereditor2d;
     (function (files) {
         var ui;
         (function (ui) {
-            var views;
-            (function (views) {
+            var viewers;
+            (function (viewers) {
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
                 class FileImageRenderer extends controls.viewers.ImageCellRenderer {
@@ -4891,8 +4931,8 @@ var phasereditor2d;
                         return ide.Workbench.getWorkbench().getFileImage(file);
                     }
                 }
-                views.FileImageRenderer = FileImageRenderer;
-            })(views = ui.views || (ui.views = {}));
+                viewers.FileImageRenderer = FileImageRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4902,15 +4942,15 @@ var phasereditor2d;
     (function (files) {
         var ui;
         (function (ui) {
-            var views;
-            (function (views) {
+            var viewers;
+            (function (viewers_3) {
                 class FileLabelProvider {
                     getLabel(obj) {
                         return obj.getName();
                     }
                 }
-                views.FileLabelProvider = FileLabelProvider;
-            })(views = ui.views || (ui.views = {}));
+                viewers_3.FileLabelProvider = FileLabelProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -4920,8 +4960,8 @@ var phasereditor2d;
     (function (files) {
         var ui;
         (function (ui) {
-            var views;
-            (function (views) {
+            var viewers;
+            (function (viewers) {
                 var core = colibri.core;
                 class FileTreeContentProvider {
                     getRoots(input) {
@@ -4937,8 +4977,8 @@ var phasereditor2d;
                         return parent.getFiles();
                     }
                 }
-                views.FileTreeContentProvider = FileTreeContentProvider;
-            })(views = ui.views || (ui.views = {}));
+                viewers.FileTreeContentProvider = FileTreeContentProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -5029,7 +5069,6 @@ var phasereditor2d;
             (function (views) {
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
-                var viewers = colibri.ui.controls.viewers;
                 class FilesView extends ide.ViewerView {
                     constructor() {
                         super("filesView");
@@ -5038,7 +5077,7 @@ var phasereditor2d;
                         this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
                     }
                     createViewer() {
-                        return new viewers.TreeViewer();
+                        return new controls.viewers.TreeViewer();
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;
@@ -5047,9 +5086,9 @@ var phasereditor2d;
                         super.createPart();
                         const root = ide.Workbench.getWorkbench().getProjectRoot();
                         const viewer = this._viewer;
-                        viewer.setLabelProvider(new views.FileLabelProvider());
-                        viewer.setContentProvider(new views.FileTreeContentProvider());
-                        viewer.setCellRendererProvider(new views.FileCellRendererProvider());
+                        viewer.setLabelProvider(new ui.viewers.FileLabelProvider());
+                        viewer.setContentProvider(new ui.viewers.FileTreeContentProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
                         viewer.setInput(root);
                         viewer.repaint();
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
@@ -5126,8 +5165,8 @@ var phasereditor2d;
                     constructor(...classList) {
                         super("PreviewBackground", ...classList);
                         this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-                        this.setLabelProvider(new views.FileLabelProvider());
-                        this.setCellRendererProvider(new views.FileCellRendererProvider());
+                        this.setLabelProvider(new ui.viewers.FileLabelProvider());
+                        this.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
                         this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, true));
                         this.getCanvas().classList.add("PreviewBackground");
                     }
@@ -6753,6 +6792,9 @@ var phasereditor2d;
             static getInstance() {
                 return this._instance;
             }
+            registerExtensions(registry) {
+                registry.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new scene.ui.viewers.SceneFileCellRendererExtension());
+            }
             registerContentTypes(registry) {
                 registry.registerResolver(new scene.core.SceneContentTypeResolver());
             }
@@ -7208,37 +7250,10 @@ var phasereditor2d;
         (function (ui) {
             var blocks;
             (function (blocks) {
-                class SceneCellRenderer {
-                    renderCell(args) {
-                        const file = args.obj;
-                        const image = ui.SceneThumbnailCache.getInstance().getContent(file);
-                        image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
-                    }
-                    cellHeight(args) {
-                        return args.viewer.getCellSize();
-                    }
-                    async preload(obj) {
-                        const file = obj;
-                        return ui.SceneThumbnailCache.getInstance().preload(file);
-                    }
-                }
-                blocks.SceneCellRenderer = SceneCellRenderer;
-            })(blocks = ui.blocks || (ui.blocks = {}));
-        })(ui = scene.ui || (scene.ui = {}));
-    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var scene;
-    (function (scene) {
-        var ui;
-        (function (ui) {
-            var blocks;
-            (function (blocks) {
                 class SceneEditorBlocksCellRendererProvider extends phasereditor2d.pack.ui.viewers.AssetPackCellRendererProvider {
                     getCellRenderer(element) {
                         if (element instanceof colibri.core.io.FilePath) {
-                            return new blocks.SceneCellRenderer();
+                            return new ui.viewers.SceneFileCellRenderer();
                         }
                         return super.getCellRenderer(element);
                     }
@@ -8987,6 +9002,66 @@ var phasereditor2d;
                 }
                 json.VariableComponent = VariableComponent;
             })(json = ui.json || (ui.json = {}));
+        })(ui = scene.ui || (scene.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                class SceneFileCellRenderer {
+                    renderCell(args) {
+                        const file = args.obj;
+                        const image = ui.SceneThumbnailCache.getInstance().getContent(file);
+                        image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    async preload(obj) {
+                        const file = obj;
+                        return ui.SceneThumbnailCache.getInstance().preload(file);
+                    }
+                }
+                viewers.SceneFileCellRenderer = SceneFileCellRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = scene.ui || (scene.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class SceneFileCellRendererProvider {
+                    getCellRenderer(element) {
+                        return new viewers.SceneFileCellRenderer();
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                class SceneFileCellRendererExtension extends phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension {
+                    constructor() {
+                        super("phasereditor2d.scene.ui.viewers.SceneFileCellRendererExtension");
+                    }
+                    getRendererProvider(contentType) {
+                        if (contentType === scene.core.CONTENT_TYPE_SCENE) {
+                            return new SceneFileCellRendererProvider();
+                        }
+                        return null;
+                    }
+                }
+                viewers.SceneFileCellRendererExtension = SceneFileCellRendererExtension;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));

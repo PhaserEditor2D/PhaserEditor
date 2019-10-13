@@ -1,10 +1,9 @@
-namespace phasereditor2d.files.ui.views {
+namespace phasereditor2d.files.ui.viewers {
 
     import io = colibri.core.io;
     import viewers = colibri.ui.controls.viewers;
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
 
     export class FileCellRenderer extends viewers.LabelCellRenderer {
 
