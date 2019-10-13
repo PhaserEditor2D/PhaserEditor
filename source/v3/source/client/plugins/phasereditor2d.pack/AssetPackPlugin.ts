@@ -14,7 +14,7 @@ namespace phasereditor2d.pack {
         }
 
         private constructor() {
-            super("phasereditor2d.pack.AssetPackPlugin");
+            super("phasereditor2d.pack");
         }
 
         registerContentTypes(registry: colibri.core.ContentTypeRegistry): void {
@@ -25,23 +25,23 @@ namespace phasereditor2d.pack {
             await pack.core.PackFinder.preload();
         }
 
-        async preloadIcons(): Promise<void> {
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-            await this.getIcon(ICON_ASSET_PACK).preload();
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_ASSET_PACK
+                ])
+            );
+
         }
 
         async registerContentTypeIcons(contentTypeIconMap: Map<string, controls.IImage>): Promise<void> {
-
             contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
-
         }
 
         registerEditor(registry: ide.EditorRegistry) {
             registry.registerFactory(ui.editor.AssetPackEditor.getFactory());
-        }
-
-        getIcon(icon: string) {
-            return controls.Controls.getIcon(icon, "plugins/phasereditor2d.pack/ui/icons");
         }
 
     }

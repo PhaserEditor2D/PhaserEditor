@@ -3277,6 +3277,26 @@ var colibri;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class CSSFileLoaderExtension extends colibri.core.extensions.Extension {
+                constructor(id, cssUrls, priority = 10) {
+                    super(id, priority);
+                    this._cssUrls = cssUrls;
+                }
+                getCSSUrls() {
+                    return this._cssUrls;
+                }
+            }
+            CSSFileLoaderExtension.POINT_ID = "colibri.ui.ide.CSSFileLoaderExtension";
+            ide.CSSFileLoaderExtension = CSSFileLoaderExtension;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="../controls/Controls.ts"/>
 var colibri;
 (function (colibri) {
@@ -3902,6 +3922,31 @@ var colibri;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class IconLoaderExtension extends colibri.core.extensions.Extension {
+                constructor(id, icons) {
+                    super(id);
+                    this._icons = icons;
+                }
+                static withPluginFiles(plugin, iconNames) {
+                    const id = `${plugin.getId()}.IconLoaderExtension`;
+                    const icons = iconNames.map(name => plugin.getIcon(name));
+                    return new IconLoaderExtension(id, icons);
+                }
+                getIcons() {
+                    return this._icons;
+                }
+            }
+            IconLoaderExtension.POINT_ID = "colibri.ui.ide.IconLoaderExtension";
+            ide.IconLoaderExtension = IconLoaderExtension;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="../../core/io/SyncFileContentCache.ts" />
 var colibri;
 (function (colibri) {
@@ -3955,13 +4000,6 @@ var colibri;
                 }
                 registerExtensions(registry) {
                 }
-                preloadIcons() {
-                    return Promise.resolve();
-                }
-                registerCSSUrls(urls) {
-                }
-                registerScriptFiles(urls) {
-                }
                 registerContentTypeIcons(contentTypeIconMap) {
                 }
                 registerContentTypes(registry) {
@@ -3974,6 +4012,9 @@ var colibri;
                 registerEditor(registry) {
                 }
                 createWindow(windows) {
+                }
+                getIcon(name) {
+                    return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
                 }
             }
             ide.Plugin = Plugin;
@@ -4062,8 +4103,6 @@ var colibri;
                     await ui.controls.Controls.preload();
                     console.log("Workbench: fetching CSS files.");
                     await this.preloadCSSFiles(plugins);
-                    console.log("Workbench: fetching script files.");
-                    await this.preloadScriptFiles(plugins);
                     console.log("Workbench: fetching UI icons.");
                     await this.preloadIcons(plugins);
                     console.log("Workbench: fetching project metadata.");
@@ -4087,8 +4126,9 @@ var colibri;
                         "colibri/css/dark.css",
                         "colibri/css/light.css"
                     ];
-                    for (const plugin of plugins) {
-                        plugin.registerCSSUrls(urls);
+                    const extensions = this.getExtensionRegistry().getExtensions(ide.CSSFileLoaderExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        urls.push(...extension.getCSSUrls());
                     }
                     for (const url of urls) {
                         try {
@@ -4096,26 +4136,6 @@ var colibri;
                             const text = await resp.text();
                             const element = document.createElement("style");
                             element.innerHTML = text;
-                            document.head.appendChild(element);
-                        }
-                        catch (e) {
-                            console.error(`Workbench: Error fetching CSS url ${url}`);
-                            console.error(e.message);
-                        }
-                    }
-                }
-                async preloadScriptFiles(plugins) {
-                    const urls = [];
-                    for (const plugin of plugins) {
-                        plugin.registerScriptFiles(urls);
-                    }
-                    for (const url of urls) {
-                        try {
-                            const resp = await fetch(url);
-                            const text = await resp.text();
-                            const element = document.createElement("script");
-                            element.type = "text/javascript";
-                            element.text = text;
                             document.head.appendChild(element);
                         }
                         catch (e) {
@@ -4145,8 +4165,13 @@ var colibri;
                 async preloadIcons(plugins) {
                     await this.getWorkbenchIcon(ide.ICON_FILE).preload();
                     await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
-                    for (const plugin of plugins) {
-                        await plugin.preloadIcons();
+                    const extensions = this._extensionRegistry
+                        .getExtensions(ide.IconLoaderExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        const icons = extension.getIcons();
+                        for (const icon of icons) {
+                            await icon.preload();
+                        }
                     }
                 }
                 registerContentTypeIcons(plugins) {
@@ -4657,20 +4682,18 @@ var phasereditor2d;
     var blocks;
     (function (blocks) {
         var ide = colibri.ui.ide;
-        var controls = colibri.ui.controls;
         blocks.ICON_BLOCKS = "blocks";
         class BlocksPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor.blocks.BlocksPlugin");
+                super("phasereditor2d.blocks");
             }
             static getInstance() {
                 return this._instance;
             }
-            async preloadIcons() {
-                await this.getIcon(blocks.ICON_BLOCKS).preload();
-            }
-            getIcon(name) {
-                return controls.Controls.getIcon(name, "plugins/phasereditor2d.blocks/ui/icons");
+            registerExtensions(reg) {
+                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                    blocks.ICON_BLOCKS
+                ]));
             }
         }
         BlocksPlugin._instance = new BlocksPlugin();
@@ -4707,7 +4730,6 @@ var phasereditor2d;
     var files;
     (function (files) {
         var ide = colibri.ui.ide;
-        var controls = colibri.ui.controls;
         files.ICON_FILE_FONT = "file-font";
         files.ICON_FILE_IMAGE = "file-image";
         files.ICON_FILE_VIDEO = "file-movie";
@@ -4716,20 +4738,22 @@ var phasereditor2d;
         files.ICON_FILE_TEXT = "file-text";
         class FilesPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.files.FilesPlugin");
+                super("phasereditor2d.files");
             }
             static getInstance() {
                 return this._instance;
             }
+            registerExtensions(reg) {
+                reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
+                    files.ICON_FILE_IMAGE,
+                    files.ICON_FILE_SOUND,
+                    files.ICON_FILE_VIDEO,
+                    files.ICON_FILE_SCRIPT,
+                    files.ICON_FILE_TEXT
+                ]));
+            }
             registerContentTypes(registry) {
                 registry.registerResolver(new files.core.DefaultExtensionTypeResolver());
-            }
-            async preloadIcons() {
-                await this.getIcon(files.ICON_FILE_IMAGE).preload();
-                await this.getIcon(files.ICON_FILE_SOUND).preload();
-                await this.getIcon(files.ICON_FILE_VIDEO).preload();
-                await this.getIcon(files.ICON_FILE_SCRIPT).preload();
-                await this.getIcon(files.ICON_FILE_TEXT).preload();
             }
             registerContentTypeIcons(contentTypeIconMap) {
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_IMAGE, this.getIcon(files.ICON_FILE_IMAGE));
@@ -4737,9 +4761,6 @@ var phasereditor2d;
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_VIDEO, this.getIcon(files.ICON_FILE_VIDEO));
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_SCRIPT, this.getIcon(files.ICON_FILE_SCRIPT));
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_TEXT, this.getIcon(files.ICON_FILE_TEXT));
-            }
-            getIcon(name) {
-                return controls.Controls.getIcon(name, "plugins/phasereditor2d.files/ui/icons");
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -4947,6 +4968,44 @@ var phasereditor2d;
                     }
                 }
                 viewers.FileTreeContentProvider = FileTreeContentProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class Provider {
+                    constructor(_renderer) {
+                        this._renderer = _renderer;
+                    }
+                    getCellRenderer(element) {
+                        return this._renderer;
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+                    constructor(contentType, cellRenderer) {
+                        super("phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension");
+                        this._contentType = contentType;
+                        this._cellRenderer = cellRenderer;
+                    }
+                    getRendererProvider(contentType) {
+                        if (contentType === this._contentType) {
+                            return new Provider(this._cellRenderer);
+                        }
+                        return null;
+                    }
+                }
+                viewers.SimpleContentTypeCellRendererExtension = SimpleContentTypeCellRendererExtension;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
@@ -5180,7 +5239,7 @@ var phasereditor2d;
         var ide = colibri.ui.ide;
         class IDEPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.ide.IDEPlugin");
+                super("phasereditor2d.ide");
             }
             static getInstance() {
                 return this._instance;
@@ -5242,17 +5301,19 @@ var phasereditor2d;
         var ide = colibri.ui.ide;
         class ImagesPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.images.ImagesPlugin");
+                super("phasereditor2d.images");
             }
             static getInstance() {
                 return this._instance;
             }
             registerExtensions(registry) {
                 registry
-                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new images.ui.viewers.ImageFileCellRendererExtension());
-            }
-            registerCSSUrls(urls) {
-                urls.push("plugins/phasereditor2d.images/ui/css/ImageEditor.css", "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css", "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css");
+                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, new images.ui.viewers.ImageFileCellRenderer()));
+                registry.addExtension(colibri.ui.ide.CSSFileLoaderExtension.POINT_ID, new colibri.ui.ide.CSSFileLoaderExtension("phasereditor2d.images.CSSFileLoaderExtension", [
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
+                ]));
             }
             registerEditor(registry) {
                 registry.registerFactory(images.ui.editors.ImageEditor.getFactory());
@@ -5371,59 +5432,29 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
-    var images;
-    (function (images) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
-                var controls = colibri.ui.controls;
-                class Provider {
-                    getCellRenderer(element) {
-                        return new viewers.ImageFileCellRenderer();
-                    }
-                    preload(element) {
-                        return controls.Controls.resolveNothingLoaded();
-                    }
-                }
-                class ImageFileCellRendererExtension extends phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension {
-                    constructor() {
-                        super("phasereditor2d.images.ui.viewers.ImageFileCellRendererExtension");
-                    }
-                    getRendererProvider(contentType) {
-                        if (contentType === phasereditor2d.files.core.CONTENT_TYPE_IMAGE) {
-                            return new Provider();
-                        }
-                        return null;
-                    }
-                }
-                viewers.ImageFileCellRendererExtension = ImageFileCellRendererExtension;
-            })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = images.ui || (images.ui = {}));
-    })(images = phasereditor2d.images || (phasereditor2d.images = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
     var inspector;
     (function (inspector) {
         var ide = colibri.ui.ide;
-        var controls = colibri.ui.controls;
         inspector.ICON_INSPECTOR = "inspector";
         class InspectorPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.inspector.InspectorPlugin");
+                super("phasereditor2d.inspector");
             }
             static getInstance() {
                 return this._instance;
             }
-            async preloadIcons() {
-                await this.getIcon(inspector.ICON_INSPECTOR).preload();
-            }
-            registerCSSUrls(urls) {
-                urls.push("plugins/phasereditor2d.inspector/ui/css/InspectorView.css");
-            }
-            getIcon(name) {
-                return controls.Controls.getIcon(name, "plugins/phasereditor2d.inspector/ui/icons");
+            registerExtensions(reg) {
+                reg.addExtension(ide.CSSFileLoaderExtension.POINT_ID, new ide.CSSFileLoaderExtension("phasereditor2d.inspector.CSSFileLoaderExtension", [
+                    "plugins/phasereditor2d.inspector/ui/css/InspectorView.css"
+                ]));
+                reg.addExtension(ide.CSSFileLoaderExtension.POINT_ID, new ide.CSSFileLoaderExtension("phasereditor2d.images.ui.CSSFileLoaderExtension", [
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
+                    "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
+                ]));
+                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                    inspector.ICON_INSPECTOR
+                ]));
             }
         }
         InspectorPlugin._instance = new InspectorPlugin();
@@ -5488,20 +5519,18 @@ var phasereditor2d;
     var outline;
     (function (outline) {
         var ide = colibri.ui.ide;
-        var controls = colibri.ui.controls;
         outline.ICON_OUTLINE = "outline";
         class OutlinePlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.outline.OutlinePlugin");
+                super("phasereditor2d.outline");
             }
             static getInstance() {
                 return this._instance;
             }
-            async preloadIcons() {
-                await this.getIcon(outline.ICON_OUTLINE).preload();
-            }
-            getIcon(name) {
-                return controls.Controls.getIcon(name, "plugins/phasereditor2d.outline/ui/icons");
+            registerExtensions(reg) {
+                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                    outline.ICON_OUTLINE
+                ]));
             }
         }
         OutlinePlugin._instance = new OutlinePlugin();
@@ -5537,12 +5566,11 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack) {
-        var controls = colibri.ui.controls;
         var ide = colibri.ui.ide;
         pack.ICON_ASSET_PACK = "asset-pack";
         class AssetPackPlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.pack.AssetPackPlugin");
+                super("phasereditor2d.pack");
             }
             static getInstance() {
                 return this._instance;
@@ -5553,17 +5581,16 @@ var phasereditor2d;
             async preloadProjectResources() {
                 await pack.core.PackFinder.preload();
             }
-            async preloadIcons() {
-                await this.getIcon(pack.ICON_ASSET_PACK).preload();
+            registerExtensions(reg) {
+                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                    pack.ICON_ASSET_PACK
+                ]));
             }
             async registerContentTypeIcons(contentTypeIconMap) {
                 contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(pack.ICON_ASSET_PACK));
             }
             registerEditor(registry) {
                 registry.registerFactory(pack.ui.editor.AssetPackEditor.getFactory());
-            }
-            getIcon(icon) {
-                return controls.Controls.getIcon(icon, "plugins/phasereditor2d.pack/ui/icons");
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -6811,27 +6838,23 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
     (function (scene) {
-        var controls = colibri.ui.controls;
         var ide = colibri.ui.ide;
         scene.ICON_GROUP = "group";
         class ScenePlugin extends ide.Plugin {
             constructor() {
-                super("phasereditor2d.scene.ScenePlugin");
+                super("phasereditor2d.scene");
             }
             static getInstance() {
                 return this._instance;
             }
-            registerExtensions(registry) {
-                registry.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new scene.ui.viewers.SceneFileCellRendererExtension());
+            registerExtensions(reg) {
+                reg.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
+                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                    scene.ICON_GROUP
+                ]));
             }
             registerContentTypes(registry) {
                 registry.registerResolver(new scene.core.SceneContentTypeResolver());
-            }
-            async preloadIcons() {
-                await this.getIcon(scene.ICON_GROUP).preload();
-            }
-            getIcon(name) {
-                return controls.Controls.getIcon(name, "plugins/phasereditor2d.scene/ui/icons");
             }
             registerEditor(registry) {
                 registry.registerFactory(scene.ui.editor.SceneEditor.getFactory());
@@ -9057,39 +9080,6 @@ var phasereditor2d;
                     }
                 }
                 viewers.SceneFileCellRenderer = SceneFileCellRenderer;
-            })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = scene.ui || (scene.ui = {}));
-    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var scene;
-    (function (scene) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
-                var controls = colibri.ui.controls;
-                class Provider {
-                    getCellRenderer(element) {
-                        return new viewers.SceneFileCellRenderer();
-                    }
-                    preload(element) {
-                        return controls.Controls.resolveNothingLoaded();
-                    }
-                }
-                class SceneFileCellRendererExtension extends phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension {
-                    constructor() {
-                        super("phasereditor2d.scene.ui.viewers.SceneFileCellRendererExtension");
-                    }
-                    getRendererProvider(contentType) {
-                        if (contentType === scene.core.CONTENT_TYPE_SCENE) {
-                            return new Provider();
-                        }
-                        return null;
-                    }
-                }
-                viewers.SceneFileCellRendererExtension = SceneFileCellRendererExtension;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));

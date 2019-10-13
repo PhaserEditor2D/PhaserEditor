@@ -73,10 +73,6 @@ namespace colibri.ui.ide {
 
             await this.preloadCSSFiles(plugins);
 
-            console.log("Workbench: fetching script files.");
-
-            await this.preloadScriptFiles(plugins);
-
             console.log("Workbench: fetching UI icons.");
 
             await this.preloadIcons(plugins);
@@ -120,8 +116,10 @@ namespace colibri.ui.ide {
 
             ];
 
-            for (const plugin of plugins) {
-                plugin.registerCSSUrls(urls);
+            const extensions = this.getExtensionRegistry().getExtensions<CSSFileLoaderExtension>(CSSFileLoaderExtension.POINT_ID);
+
+            for (const extension of extensions) {
+                urls.push(...extension.getCSSUrls());
             }
 
             for (const url of urls) {
@@ -142,34 +140,6 @@ namespace colibri.ui.ide {
                 }
             }
         }
-
-        private async preloadScriptFiles(plugins: Plugin[]) {
-
-            const urls: string[] = [];
-
-            for (const plugin of plugins) {
-                plugin.registerScriptFiles(urls);
-            }
-
-            for (const url of urls) {
-
-                try {
-
-                    const resp = await fetch(url);
-                    const text = await resp.text();
-
-                    const element = document.createElement("script");
-                    element.type = "text/javascript";
-                    element.text = text;
-
-                    document.head.appendChild(element);
-
-                } catch (e) {
-                    console.error(`Workbench: Error fetching CSS url ${url}`);
-                    console.error(e.message);
-                }
-            }
-        } Extension
 
         private registerWindow(plugins: Plugin[]) {
 
@@ -202,8 +172,16 @@ namespace colibri.ui.ide {
             await this.getWorkbenchIcon(ICON_FILE).preload();
             await this.getWorkbenchIcon(ICON_FOLDER).preload();
 
-            for (const plugin of plugins) {
-                await plugin.preloadIcons();
+            const extensions = this._extensionRegistry
+                .getExtensions<IconLoaderExtension>(IconLoaderExtension.POINT_ID);
+
+            for (const extension of extensions) {
+
+                const icons = extension.getIcons();
+
+                for (const icon of icons) {
+                    await icon.preload();
+                }
             }
 
         }

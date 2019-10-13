@@ -11,7 +11,7 @@ namespace phasereditor2d.ide {
         }
 
         private constructor() {
-            super("phasereditor2d.ide.IDEPlugin");
+            super("phasereditor2d.ide");
         }
 
         createWindow(windows: ide.WorkbenchWindow[]): void {

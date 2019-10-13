@@ -25,18 +25,6 @@ namespace colibri.ui.ide {
 
         }
 
-        preloadIcons() : Promise<void> {
-            return Promise.resolve();
-        }
-
-        registerCSSUrls(urls: string[]) {
-            
-        }
-
-        registerScriptFiles(urls: string[]) {
-            
-        }
-
         registerContentTypeIcons(contentTypeIconMap : Map<string, controls.IImage>): void {
             
         }
@@ -59,6 +47,10 @@ namespace colibri.ui.ide {
 
         createWindow(windows: ide.WorkbenchWindow[]): void {
 
+        }
+
+        getIcon(name : string) {
+            return controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
         }
 
     }

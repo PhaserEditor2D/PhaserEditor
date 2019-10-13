@@ -1,7 +1,6 @@
 namespace phasereditor2d.blocks {
 
     import ide = colibri.ui.ide;
-    import controls = colibri.ui.controls;
 
     export const ICON_BLOCKS = "blocks";
 
@@ -14,17 +13,19 @@ namespace phasereditor2d.blocks {
         }
 
         private constructor() {
-            super("phasereditor.blocks.BlocksPlugin");
+            super("phasereditor2d.blocks");
         }
 
-        async preloadIcons() {
-            await this.getIcon(ICON_BLOCKS).preload();
-        }
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-        getIcon(name: string) {
-            return controls.Controls.getIcon(name, "plugins/phasereditor2d.blocks/ui/icons");
-        }
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_BLOCKS
+                ])
+            );
 
+        }
     }
 
 }

@@ -14,18 +14,19 @@ namespace phasereditor2d.outline {
         }
 
         constructor() {
-            super("phasereditor2d.outline.OutlinePlugin");
+            super("phasereditor2d.outline");
         }
 
 
-        async preloadIcons() {
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-            await this.getIcon(ICON_OUTLINE).preload();
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_OUTLINE
+                ])
+            );
 
-        }
-
-        getIcon(name: string) {
-            return controls.Controls.getIcon(name, "plugins/phasereditor2d.outline/ui/icons");
         }
 
     }

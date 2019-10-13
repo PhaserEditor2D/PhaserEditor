@@ -19,22 +19,26 @@ namespace phasereditor2d.files {
         }
 
         private constructor() {
-            super("phasereditor2d.files.FilesPlugin");
+            super("phasereditor2d.files");
+        }
+
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+
+            reg.addExtension(
+                colibri.ui.ide.IconLoaderExtension.POINT_ID,
+                colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_FILE_IMAGE,
+                    ICON_FILE_SOUND,
+                    ICON_FILE_VIDEO,
+                    ICON_FILE_SCRIPT,
+                    ICON_FILE_TEXT
+                ])
+            );
         }
 
         registerContentTypes(registry: colibri.core.ContentTypeRegistry) {
 
             registry.registerResolver(new core.DefaultExtensionTypeResolver());
-
-        }
-
-        async preloadIcons() {
-
-            await this.getIcon(ICON_FILE_IMAGE).preload();
-            await this.getIcon(ICON_FILE_SOUND).preload();
-            await this.getIcon(ICON_FILE_VIDEO).preload();
-            await this.getIcon(ICON_FILE_SCRIPT).preload();
-            await this.getIcon(ICON_FILE_TEXT).preload();
 
         }
 
@@ -46,10 +50,6 @@ namespace phasereditor2d.files {
             contentTypeIconMap.set(core.CONTENT_TYPE_SCRIPT, this.getIcon(ICON_FILE_SCRIPT));
             contentTypeIconMap.set(core.CONTENT_TYPE_TEXT, this.getIcon(ICON_FILE_TEXT));
 
-        }
-
-        getIcon(name: string) {
-            return controls.Controls.getIcon(name, "plugins/phasereditor2d.files/ui/icons");
         }
 
     }

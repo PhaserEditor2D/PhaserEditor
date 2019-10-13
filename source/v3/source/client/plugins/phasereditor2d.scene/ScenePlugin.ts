@@ -1,6 +1,5 @@
 namespace phasereditor2d.scene {
 
-    import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
 
     export const ICON_GROUP = "group";
@@ -14,27 +13,30 @@ namespace phasereditor2d.scene {
         }
 
         private constructor() {
-            super("phasereditor2d.scene.ScenePlugin");
+            super("phasereditor2d.scene");
         }
 
-        registerExtensions(registry: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-            registry.addExtension(
+            reg.addExtension(
                 files.ui.viewers.ContentTypeCellRendererExtension.POINT,
-                new ui.viewers.SceneFileCellRendererExtension());
+                new files.ui.viewers.SimpleContentTypeCellRendererExtension(
+                    core.CONTENT_TYPE_SCENE,
+                    new ui.viewers.SceneFileCellRenderer()
+                )
+            );
 
+
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_GROUP
+                ])
+            );
         }
 
         registerContentTypes(registry: colibri.core.ContentTypeRegistry) {
             registry.registerResolver(new core.SceneContentTypeResolver());
-        }
-
-        async preloadIcons() {
-            await this.getIcon(ICON_GROUP).preload();
-        }
-
-        getIcon(name: string) {
-            return controls.Controls.getIcon(name, "plugins/phasereditor2d.scene/ui/icons");
         }
 
         registerEditor(registry: ide.EditorRegistry) {

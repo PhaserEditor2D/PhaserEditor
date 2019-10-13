@@ -1,7 +1,6 @@
 namespace phasereditor2d.inspector {
 
     import ide = colibri.ui.ide;
-    import controls = colibri.ui.controls;
 
     export const ICON_INSPECTOR = "inspector";
 
@@ -14,21 +13,38 @@ namespace phasereditor2d.inspector {
         }
 
         private constructor() {
-            super("phasereditor2d.inspector.InspectorPlugin");
+            super("phasereditor2d.inspector");
         }
 
-        async preloadIcons() {
-            await this.getIcon(ICON_INSPECTOR).preload();
-        }
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-        registerCSSUrls(urls: string[]) {
-            urls.push("plugins/phasereditor2d.inspector/ui/css/InspectorView.css");
-        }
+            reg.addExtension(
+                ide.CSSFileLoaderExtension.POINT_ID,
+                new ide.CSSFileLoaderExtension(
+                    "phasereditor2d.inspector.CSSFileLoaderExtension",
+                    [
+                        "plugins/phasereditor2d.inspector/ui/css/InspectorView.css"
+                    ])
+            );
 
-        getIcon(name: string) {
-            return controls.Controls.getIcon(name, "plugins/phasereditor2d.inspector/ui/icons");
-        }
+            reg.addExtension(
+                ide.CSSFileLoaderExtension.POINT_ID,
+                new ide.CSSFileLoaderExtension(
+                    "phasereditor2d.images.ui.CSSFileLoaderExtension",
+                    [
+                        "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
+                        "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
+                        "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
+                    ])
+            );
 
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_INSPECTOR
+                ])
+            );
+
+        }
     }
-
 }
