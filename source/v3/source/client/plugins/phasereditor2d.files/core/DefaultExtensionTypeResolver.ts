@@ -10,7 +10,7 @@ namespace phasereditor2d.files.core {
 
     export class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor() {
-            super([
+            super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
                 ["png", CONTENT_TYPE_IMAGE],
                 ["jpg", CONTENT_TYPE_IMAGE],
                 ["bmp", CONTENT_TYPE_IMAGE],

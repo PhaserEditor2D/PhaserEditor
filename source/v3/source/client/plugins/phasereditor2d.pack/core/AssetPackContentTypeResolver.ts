@@ -5,7 +5,11 @@ namespace phasereditor2d.pack.core {
 
     export const CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
 
-    export class AssetPackContentTypeResolver implements core.IContentTypeResolver {
+    export class AssetPackContentTypeResolver extends core.ContentTypeResolver {
+
+        constructor() {
+            super("phasereditor2d.pack.core.AssetPackContentTypeResolver");
+        }
 
         async computeContentType(file: core.io.FilePath): Promise<string> {
             if (file.getExtension() === "json") {

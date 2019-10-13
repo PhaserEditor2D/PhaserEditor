@@ -28,6 +28,16 @@ namespace phasereditor2d.files {
 
         }
 
+        async preloadIcons() {
+
+            await this.getIcon(ICON_FILE_IMAGE).preload();
+            await this.getIcon(ICON_FILE_SOUND).preload();
+            await this.getIcon(ICON_FILE_VIDEO).preload();
+            await this.getIcon(ICON_FILE_SCRIPT).preload();
+            await this.getIcon(ICON_FILE_TEXT).preload();
+
+        }
+
         registerContentTypeIcons(contentTypeIconMap: Map<string, controls.IImage>) {
 
             contentTypeIconMap.set(core.CONTENT_TYPE_IMAGE, this.getIcon(ICON_FILE_IMAGE));

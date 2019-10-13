@@ -4,7 +4,11 @@ namespace phasereditor2d.scene.core {
 
     export const CONTENT_TYPE_SCENE = "Scene";
 
-    export class SceneContentTypeResolver implements core.IContentTypeResolver {
+    export class SceneContentTypeResolver extends core.ContentTypeResolver {
+
+        constructor() {
+            super("phasereditor2d.scene.core.SceneContentTypeResolver");
+        }
 
         async computeContentType(file: core.io.FilePath): Promise<string> {
             

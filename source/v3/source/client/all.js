@@ -138,6 +138,21 @@ var colibri;
 (function (colibri) {
     var core;
     (function (core) {
+        class ContentTypeResolver {
+            constructor(id) {
+                this._id = id;
+            }
+            getId() {
+                return this._id;
+            }
+        }
+        core.ContentTypeResolver = ContentTypeResolver;
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
         core.CONTENT_TYPE_ANY = "any";
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
@@ -4643,6 +4658,13 @@ var phasereditor2d;
             registerContentTypes(registry) {
                 registry.registerResolver(new files.core.DefaultExtensionTypeResolver());
             }
+            async preloadIcons() {
+                await this.getIcon(files.ICON_FILE_IMAGE).preload();
+                await this.getIcon(files.ICON_FILE_SOUND).preload();
+                await this.getIcon(files.ICON_FILE_VIDEO).preload();
+                await this.getIcon(files.ICON_FILE_SCRIPT).preload();
+                await this.getIcon(files.ICON_FILE_TEXT).preload();
+            }
             registerContentTypeIcons(contentTypeIconMap) {
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_IMAGE, this.getIcon(files.ICON_FILE_IMAGE));
                 contentTypeIconMap.set(files.core.CONTENT_TYPE_AUDIO, this.getIcon(files.ICON_FILE_SOUND));
@@ -4658,14 +4680,16 @@ var phasereditor2d;
         files.FilesPlugin = FilesPlugin;
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../colibri/core/ContentTypeResolver.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
     (function (files) {
         var core;
         (function (core) {
-            class ExtensionContentTypeResolver {
-                constructor(defs) {
+            class ExtensionContentTypeResolver extends colibri.core.ContentTypeResolver {
+                constructor(id, defs) {
+                    super(id);
                     this._map = new Map();
                     for (const def of defs) {
                         this._map.set(def[0].toUpperCase(), def[1]);
@@ -4697,7 +4721,7 @@ var phasereditor2d;
             core.CONTENT_TYPE_TEXT = "text";
             class DefaultExtensionTypeResolver extends core.ExtensionContentTypeResolver {
                 constructor() {
-                    super([
+                    super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
                         ["png", core.CONTENT_TYPE_IMAGE],
                         ["jpg", core.CONTENT_TYPE_IMAGE],
                         ["bmp", core.CONTENT_TYPE_IMAGE],
@@ -5482,7 +5506,10 @@ var phasereditor2d;
             var ide = colibri.ui.ide;
             var core = colibri.core;
             core_2.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
-            class AssetPackContentTypeResolver {
+            class AssetPackContentTypeResolver extends core.ContentTypeResolver {
+                constructor() {
+                    super("phasereditor2d.pack.core.AssetPackContentTypeResolver");
+                }
                 async computeContentType(file) {
                     if (file.getExtension() === "json") {
                         const content = await ide.FileUtils.preloadAndGetFileString(file);
@@ -6697,7 +6724,10 @@ var phasereditor2d;
         (function (core_8) {
             var core = colibri.core;
             core_8.CONTENT_TYPE_SCENE = "Scene";
-            class SceneContentTypeResolver {
+            class SceneContentTypeResolver extends core.ContentTypeResolver {
+                constructor() {
+                    super("phasereditor2d.scene.core.SceneContentTypeResolver");
+                }
                 async computeContentType(file) {
                     if (file.getExtension() === "scene") {
                         return core_8.CONTENT_TYPE_SCENE;

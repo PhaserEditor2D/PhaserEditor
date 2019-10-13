@@ -1,12 +1,15 @@
+/// <reference path="../../../colibri/core/ContentTypeResolver.ts" />
+
 namespace phasereditor2d.files.core {
 
     import io = colibri.core.io;
 
-    export class ExtensionContentTypeResolver implements colibri.core.IContentTypeResolver {
+    export class ExtensionContentTypeResolver extends colibri.core.ContentTypeResolver {
 
         private _map: Map<string, string>;
 
-        constructor(defs: string[][]) {
+        constructor(id: string, defs: string[][]) {
+            super(id);
 
             this._map = new Map();
 

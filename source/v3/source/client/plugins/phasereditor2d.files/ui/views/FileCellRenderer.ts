@@ -15,6 +15,7 @@ namespace phasereditor2d.files.ui.views {
             if (file.isFile()) {
 
                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                
                 const icon = ide.Workbench.getWorkbench().getContentTypeIcon(ct);
 
                 if (icon) {
