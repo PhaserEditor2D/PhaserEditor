@@ -23,6 +23,46 @@ var colibri;
 (function (colibri) {
     var core;
     (function (core) {
+        var extensions;
+        (function (extensions) {
+            class Extension {
+                constructor(id, priority = 10) {
+                    this._id = id;
+                    this._priority = priority;
+                }
+                getId() {
+                    return this._id;
+                }
+                getPriority() {
+                    return this._priority;
+                }
+            }
+            extensions.Extension = Extension;
+        })(extensions = core.extensions || (core.extensions = {}));
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../core/extensions/Extension.ts" />
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
+        class ContentTypeExtension extends core.extensions.Extension {
+            constructor(id, resolvers, priority = 10) {
+                super(id, priority);
+                this._resolvers = resolvers;
+            }
+            getResolvers() {
+                return this._resolvers;
+            }
+        }
+        ContentTypeExtension.POINT_ID = "colibri.ContentTypeExtension";
+        core.ContentTypeExtension = ContentTypeExtension;
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
         var io;
         (function (io) {
             class FileContentCache {
@@ -154,28 +194,6 @@ var colibri;
     var core;
     (function (core) {
         core.CONTENT_TYPE_ANY = "any";
-    })(core = colibri.core || (colibri.core = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var core;
-    (function (core) {
-        var extensions;
-        (function (extensions) {
-            class Extension {
-                constructor(id, priority = 10) {
-                    this._id = id;
-                    this._priority = priority;
-                }
-                getId() {
-                    return this._id;
-                }
-                getPriority() {
-                    return this._priority;
-                }
-            }
-            extensions.Extension = Extension;
-        })(extensions = core.extensions || (core.extensions = {}));
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
 var colibri;
@@ -3297,6 +3315,34 @@ var colibri;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ContentTypeIconExtension extends colibri.core.extensions.Extension {
+                constructor(id, config) {
+                    super(id, 10);
+                    this._config = config;
+                }
+                static withPluginIcons(plugin, config) {
+                    return new ContentTypeIconExtension(`${plugin.getId()}.ContentTypeIconExtension`, config.map(item => {
+                        return {
+                            icon: plugin.getIcon(item.iconName),
+                            contentType: item.contentType
+                        };
+                    }));
+                }
+                getConfig() {
+                    return this._config;
+                }
+            }
+            ContentTypeIconExtension.POINT_ID = "colibri.ui.ide.ContentTypeIconExtension";
+            ide.ContentTypeIconExtension = ContentTypeIconExtension;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="../controls/Controls.ts"/>
 var colibri;
 (function (colibri) {
@@ -4002,8 +4048,6 @@ var colibri;
                 }
                 registerContentTypeIcons(contentTypeIconMap) {
                 }
-                registerContentTypes(registry) {
-                }
                 preloadProjectResources() {
                     return Promise.resolve();
                 }
@@ -4108,8 +4152,8 @@ var colibri;
                     console.log("Workbench: fetching project metadata.");
                     await this.preloadFileStorage();
                     console.log("Workbench: registering content types.");
-                    this.registerContentTypes(plugins);
-                    this.registerContentTypeIcons(plugins);
+                    this.registerContentTypes();
+                    this.registerContentTypeIcons();
                     console.log("Workbench: fetching required project resources.");
                     await this.preloadProjectResources(plugins);
                     console.log("Workbench: initializing UI.");
@@ -4174,10 +4218,13 @@ var colibri;
                         }
                     }
                 }
-                registerContentTypeIcons(plugins) {
+                registerContentTypeIcons() {
                     this._contentType_icon_Map = new Map();
-                    for (const plugin of plugins) {
-                        plugin.registerContentTypeIcons(this._contentType_icon_Map);
+                    const extensions = this._extensionRegistry.getExtensions(ide.ContentTypeIconExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        for (const item of extension.getConfig()) {
+                            this._contentType_icon_Map.set(item.contentType, item.icon);
+                        }
                     }
                 }
                 initCommands(plugins) {
@@ -4274,12 +4321,15 @@ var colibri;
                     this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
                     await this._fileStorage.reload();
                 }
-                registerContentTypes(plugins) {
-                    const reg = new colibri.core.ContentTypeRegistry();
-                    for (const plugin of plugins) {
-                        plugin.registerContentTypes(reg);
+                registerContentTypes() {
+                    const extensions = this._extensionRegistry
+                        .getExtensions(colibri.core.ContentTypeExtension.POINT_ID);
+                    this._contentTypeRegistry = new colibri.core.ContentTypeRegistry();
+                    for (const extension of extensions) {
+                        for (const resolver of extension.getResolvers()) {
+                            this._contentTypeRegistry.registerResolver(resolver);
+                        }
                     }
-                    this._contentTypeRegistry = reg;
                 }
                 findPart(element) {
                     if (ui.controls.TabPane.isTabLabel(element)) {
@@ -4744,6 +4794,7 @@ var phasereditor2d;
                 return this._instance;
             }
             registerExtensions(reg) {
+                // icons loader
                 reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     files.ICON_FILE_IMAGE,
                     files.ICON_FILE_SOUND,
@@ -4751,16 +4802,31 @@ var phasereditor2d;
                     files.ICON_FILE_SCRIPT,
                     files.ICON_FILE_TEXT
                 ]));
-            }
-            registerContentTypes(registry) {
-                registry.registerResolver(new files.core.DefaultExtensionTypeResolver());
-            }
-            registerContentTypeIcons(contentTypeIconMap) {
-                contentTypeIconMap.set(files.core.CONTENT_TYPE_IMAGE, this.getIcon(files.ICON_FILE_IMAGE));
-                contentTypeIconMap.set(files.core.CONTENT_TYPE_AUDIO, this.getIcon(files.ICON_FILE_SOUND));
-                contentTypeIconMap.set(files.core.CONTENT_TYPE_VIDEO, this.getIcon(files.ICON_FILE_VIDEO));
-                contentTypeIconMap.set(files.core.CONTENT_TYPE_SCRIPT, this.getIcon(files.ICON_FILE_SCRIPT));
-                contentTypeIconMap.set(files.core.CONTENT_TYPE_TEXT, this.getIcon(files.ICON_FILE_TEXT));
+                // content type resolvers
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()]));
+                // content type icons
+                reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
+                    {
+                        iconName: files.ICON_FILE_IMAGE,
+                        contentType: files.core.CONTENT_TYPE_IMAGE
+                    },
+                    {
+                        iconName: files.ICON_FILE_SOUND,
+                        contentType: files.core.CONTENT_TYPE_AUDIO
+                    },
+                    {
+                        iconName: files.ICON_FILE_VIDEO,
+                        contentType: files.core.CONTENT_TYPE_VIDEO
+                    },
+                    {
+                        iconName: files.ICON_FILE_SCRIPT,
+                        contentType: files.core.CONTENT_TYPE_SCRIPT
+                    },
+                    {
+                        iconName: files.ICON_FILE_TEXT,
+                        contentType: files.core.CONTENT_TYPE_TEXT
+                    }
+                ]));
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -5575,19 +5641,23 @@ var phasereditor2d;
             static getInstance() {
                 return this._instance;
             }
-            registerContentTypes(registry) {
-                registry.registerResolver(new pack.core.AssetPackContentTypeResolver());
-            }
             async preloadProjectResources() {
                 await pack.core.PackFinder.preload();
             }
             registerExtensions(reg) {
+                // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
                     pack.ICON_ASSET_PACK
                 ]));
-            }
-            async registerContentTypeIcons(contentTypeIconMap) {
-                contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(pack.ICON_ASSET_PACK));
+                // content type resolvers
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AssetPackContentTypeResolver", [new pack.core.AssetPackContentTypeResolver()], 5));
+                // content type icons
+                reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
+                    {
+                        iconName: pack.ICON_ASSET_PACK,
+                        contentType: pack.core.CONTENT_TYPE_ASSET_PACK
+                    }
+                ]));
             }
             registerEditor(registry) {
                 registry.registerFactory(pack.ui.editor.AssetPackEditor.getFactory());
@@ -6848,13 +6918,14 @@ var phasereditor2d;
                 return this._instance;
             }
             registerExtensions(reg) {
+                // content type resolvers
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.scene.core.SceneContentTypeResolver", [new scene.core.SceneContentTypeResolver()], 5));
+                // content type renderer
                 reg.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
+                // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
                     scene.ICON_GROUP
                 ]));
-            }
-            registerContentTypes(registry) {
-                registry.registerResolver(new scene.core.SceneContentTypeResolver());
             }
             registerEditor(registry) {
                 registry.registerFactory(scene.ui.editor.SceneEditor.getFactory());

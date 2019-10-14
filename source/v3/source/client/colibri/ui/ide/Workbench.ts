@@ -83,9 +83,9 @@ namespace colibri.ui.ide {
 
             console.log("Workbench: registering content types.");
 
-            this.registerContentTypes(plugins);
+            this.registerContentTypes();
 
-            this.registerContentTypeIcons(plugins);
+            this.registerContentTypeIcons();
 
             console.log("Workbench: fetching required project resources.");
 
@@ -186,14 +186,18 @@ namespace colibri.ui.ide {
 
         }
 
-        private registerContentTypeIcons(plugins: Plugin[]) {
+        private registerContentTypeIcons() {
 
             this._contentType_icon_Map = new Map();
 
-            for (const plugin of plugins) {
-                plugin.registerContentTypeIcons(this._contentType_icon_Map);
-            }
+            const extensions = this._extensionRegistry.getExtensions<ContentTypeIconExtension>(ContentTypeIconExtension.POINT_ID);
 
+            for (const extension of extensions) {
+
+                for (const item of extension.getConfig()) {
+                    this._contentType_icon_Map.set(item.contentType, item.icon);
+                }
+            }
         }
 
         private initCommands(plugins: Plugin[]) {
@@ -322,15 +326,18 @@ namespace colibri.ui.ide {
             await this._fileStorage.reload();
         }
 
-        private registerContentTypes(plugins: Plugin[]) {
+        private registerContentTypes() {
+            const extensions = this._extensionRegistry
+                .getExtensions<core.ContentTypeExtension>(core.ContentTypeExtension.POINT_ID);
 
-            const reg = new core.ContentTypeRegistry();
+            this._contentTypeRegistry = new core.ContentTypeRegistry();
 
-            for (const plugin of plugins) {
-                plugin.registerContentTypes(reg);
+            for (const extension of extensions) {
+
+                for (const resolver of extension.getResolvers()) {
+                    this._contentTypeRegistry.registerResolver(resolver);
+                }
             }
-
-            this._contentTypeRegistry = reg;
         }
 
         findPart(element: HTMLElement): Part {

@@ -17,15 +17,13 @@ namespace phasereditor2d.pack {
             super("phasereditor2d.pack");
         }
 
-        registerContentTypes(registry: colibri.core.ContentTypeRegistry): void {
-            registry.registerResolver(new pack.core.AssetPackContentTypeResolver());
-        }
-
         async preloadProjectResources() {
             await pack.core.PackFinder.preload();
         }
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+
+            // icons loader
 
             reg.addExtension(
                 ide.IconLoaderExtension.POINT_ID,
@@ -34,10 +32,25 @@ namespace phasereditor2d.pack {
                 ])
             );
 
-        }
+            // content type resolvers
 
-        async registerContentTypeIcons(contentTypeIconMap: Map<string, controls.IImage>): Promise<void> {
-            contentTypeIconMap.set(pack.core.CONTENT_TYPE_ASSET_PACK, this.getIcon(ICON_ASSET_PACK));
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AssetPackContentTypeResolver",
+                    [new pack.core.AssetPackContentTypeResolver()],
+                    5
+                ));
+
+            // content type icons
+
+            reg.addExtension(
+                ide.ContentTypeIconExtension.POINT_ID,
+                ide.ContentTypeIconExtension.withPluginIcons(this, [
+                    {
+                        iconName: ICON_ASSET_PACK,
+                        contentType: core.CONTENT_TYPE_ASSET_PACK
+                    }
+                ]));
         }
 
         registerEditor(registry: ide.EditorRegistry) {

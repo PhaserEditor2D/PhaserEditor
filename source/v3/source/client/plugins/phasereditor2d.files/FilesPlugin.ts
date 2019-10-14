@@ -24,6 +24,8 @@ namespace phasereditor2d.files {
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
+            // icons loader
+
             reg.addExtension(
                 colibri.ui.ide.IconLoaderExtension.POINT_ID,
                 colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
@@ -34,24 +36,42 @@ namespace phasereditor2d.files {
                     ICON_FILE_TEXT
                 ])
             );
+
+            // content type resolvers
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver",
+                    [new core.DefaultExtensionTypeResolver()]
+                ));
+
+            // content type icons
+
+            reg.addExtension(
+                ide.ContentTypeIconExtension.POINT_ID,
+                ide.ContentTypeIconExtension.withPluginIcons(this, [
+                    {
+                        iconName: ICON_FILE_IMAGE,
+                        contentType: core.CONTENT_TYPE_IMAGE
+                    },
+                    {
+                        iconName: ICON_FILE_SOUND,
+                        contentType: core.CONTENT_TYPE_AUDIO
+                    },
+                    {
+                        iconName: ICON_FILE_VIDEO,
+                        contentType: core.CONTENT_TYPE_VIDEO
+                    },
+                    {
+                        iconName: ICON_FILE_SCRIPT,
+                        contentType: core.CONTENT_TYPE_SCRIPT
+                    },
+                    {
+                        iconName: ICON_FILE_TEXT,
+                        contentType: core.CONTENT_TYPE_TEXT
+                    }
+                ]));
         }
-
-        registerContentTypes(registry: colibri.core.ContentTypeRegistry) {
-
-            registry.registerResolver(new core.DefaultExtensionTypeResolver());
-
-        }
-
-        registerContentTypeIcons(contentTypeIconMap: Map<string, controls.IImage>) {
-
-            contentTypeIconMap.set(core.CONTENT_TYPE_IMAGE, this.getIcon(ICON_FILE_IMAGE));
-            contentTypeIconMap.set(core.CONTENT_TYPE_AUDIO, this.getIcon(ICON_FILE_SOUND));
-            contentTypeIconMap.set(core.CONTENT_TYPE_VIDEO, this.getIcon(ICON_FILE_VIDEO));
-            contentTypeIconMap.set(core.CONTENT_TYPE_SCRIPT, this.getIcon(ICON_FILE_SCRIPT));
-            contentTypeIconMap.set(core.CONTENT_TYPE_TEXT, this.getIcon(ICON_FILE_TEXT));
-
-        }
-
     }
 
 }

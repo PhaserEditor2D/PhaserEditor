@@ -18,6 +18,17 @@ namespace phasereditor2d.scene {
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
+            // content type resolvers
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.scene.core.SceneContentTypeResolver",
+                    [new core.SceneContentTypeResolver()],
+                    5
+                ));
+
+            // content type renderer
+
             reg.addExtension(
                 files.ui.viewers.ContentTypeCellRendererExtension.POINT,
                 new files.ui.viewers.SimpleContentTypeCellRendererExtension(
@@ -26,6 +37,7 @@ namespace phasereditor2d.scene {
                 )
             );
 
+            // icons loader
 
             reg.addExtension(
                 ide.IconLoaderExtension.POINT_ID,
@@ -33,10 +45,6 @@ namespace phasereditor2d.scene {
                     ICON_GROUP
                 ])
             );
-        }
-
-        registerContentTypes(registry: colibri.core.ContentTypeRegistry) {
-            registry.registerResolver(new core.SceneContentTypeResolver());
         }
 
         registerEditor(registry: ide.EditorRegistry) {

@@ -29,10 +29,6 @@ namespace colibri.ui.ide {
             
         }
 
-        registerContentTypes(registry: core.ContentTypeRegistry): void {
-            
-        }
-
         preloadProjectResources(): Promise<void> {
             return Promise.resolve();
         }
