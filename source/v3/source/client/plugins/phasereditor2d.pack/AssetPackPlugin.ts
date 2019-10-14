@@ -17,10 +17,6 @@ namespace phasereditor2d.pack {
             super("phasereditor2d.pack");
         }
 
-        async preloadProjectResources() {
-            await pack.core.PackFinder.preload();
-        }
-
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
             // icons loader
@@ -51,12 +47,24 @@ namespace phasereditor2d.pack {
                         contentType: core.CONTENT_TYPE_ASSET_PACK
                     }
                 ]));
-        }
 
-        registerEditor(registry: ide.EditorRegistry) {
-            registry.registerFactory(ui.editor.AssetPackEditor.getFactory());
-        }
+            // project resources preloader
 
+
+            reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID,
+                new ide.PreloadProjectResourcesExtension(
+                    "phasereditor2d.pack.PreloadProjectResourcesExtension",
+                    () => pack.core.PackFinder.preload()
+                )
+            );
+
+            // editors
+
+            reg.addExtension(ide.EditorExtension.POINT_ID,
+                new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
+                    ui.editor.AssetPackEditor.getFactory()
+                ]));
+        }
     }
 
 }

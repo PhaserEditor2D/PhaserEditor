@@ -16,9 +16,11 @@ namespace phasereditor2d.images {
             super("phasereditor2d.images");
         }
 
-        registerExtensions(registry: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-            registry
+            // file cell renderers
+
+            reg
                 .addExtension(
                     files.ui.viewers.ContentTypeCellRendererExtension.POINT,
                     new files.ui.viewers.SimpleContentTypeCellRendererExtension(
@@ -26,9 +28,11 @@ namespace phasereditor2d.images {
                         new ui.viewers.ImageFileCellRenderer())
                 );
 
-            registry.addExtension(
-                colibri.ui.ide.CSSFileLoaderExtension.POINT_ID,
-                new colibri.ui.ide.CSSFileLoaderExtension(
+            // css loader
+
+            reg.addExtension(
+                ide.CSSFileLoaderExtension.POINT_ID,
+                new ide.CSSFileLoaderExtension(
                     "phasereditor2d.images.CSSFileLoaderExtension",
                     [
                         "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
@@ -36,10 +40,13 @@ namespace phasereditor2d.images {
                         "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
                     ])
             );
-        }
 
-        registerEditor(registry: ide.EditorRegistry) {
-            registry.registerFactory(ui.editors.ImageEditor.getFactory());
+
+            // editors
+
+            reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.images.EditorExtension", [
+                ui.editors.ImageEditor.getFactory()
+            ]));
         }
 
     }

@@ -89,11 +89,11 @@ namespace colibri.ui.ide {
 
             console.log("Workbench: fetching required project resources.");
 
-            await this.preloadProjectResources(plugins);
+            await this.preloadProjectResources();
 
             console.log("Workbench: initializing UI.");
 
-            this.initCommands(plugins);
+            this.initCommands();
 
             this.registerEditors(plugins);
 
@@ -160,10 +160,12 @@ namespace colibri.ui.ide {
             }
         }
 
-        private async preloadProjectResources(plugins: Plugin[]) {
+        private async preloadProjectResources() {
 
-            for (const plugin of plugins) {
-                await plugin.preloadProjectResources();
+            const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
+
+            for (const extension of extensions) {
+                await extension.getPreloadPromise();
             }
         }
 
@@ -200,13 +202,15 @@ namespace colibri.ui.ide {
             }
         }
 
-        private initCommands(plugins: Plugin[]) {
+        private initCommands() {
             this._commandManager = new commands.CommandManager();
 
             IDECommands.init();
 
-            for (const plugin of plugins) {
-                plugin.registerCommands(this._commandManager);
+            const extensions = this._extensionRegistry.getExtensions<commands.CommandExtension>(commands.CommandExtension.POINT_ID);
+
+            for (const extension of extensions) {
+                extension.getConfigurer()(this._commandManager);
             }
         }
 
@@ -220,11 +224,14 @@ namespace colibri.ui.ide {
         }
 
         private registerEditors(plugins: Plugin[]): void {
+            const extensions = this._extensionRegistry.getExtensions<EditorExtension>(EditorExtension.POINT_ID);
 
-            for (const plugin of plugins) {
-                plugin.registerEditor(this._editorRegistry);
+            for (const extension of extensions) {
+
+                for (const factory of extension.getFactories()) {
+                    this._editorRegistry.registerFactory(factory);
+                }
             }
-
         }
 
         getFileStringCache() {

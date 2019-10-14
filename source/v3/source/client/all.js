@@ -3543,6 +3543,26 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
+            class EditorExtension extends colibri.core.extensions.Extension {
+                constructor(id, factories) {
+                    super(id);
+                    this._factories = factories;
+                }
+                getFactories() {
+                    return this._factories;
+                }
+            }
+            EditorExtension.POINT_ID = "colibri.ui.ide.EditorExtension";
+            ide.EditorExtension = EditorExtension;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             class EditorFactory {
                 constructor(id) {
                     this._id = id;
@@ -4046,15 +4066,6 @@ var colibri;
                 }
                 registerExtensions(registry) {
                 }
-                registerContentTypeIcons(contentTypeIconMap) {
-                }
-                preloadProjectResources() {
-                    return Promise.resolve();
-                }
-                registerCommands(manager) {
-                }
-                registerEditor(registry) {
-                }
                 createWindow(windows) {
                 }
                 getIcon(name) {
@@ -4062,6 +4073,26 @@ var colibri;
                 }
             }
             ide.Plugin = Plugin;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class PreloadProjectResourcesExtension extends colibri.core.extensions.Extension {
+                constructor(id, getPreloadPromise) {
+                    super(id);
+                    this._getPreloadPromise = getPreloadPromise;
+                }
+                getPreloadPromise() {
+                    return this._getPreloadPromise();
+                }
+            }
+            PreloadProjectResourcesExtension.POINT_ID = "colibri.ui.ide.PreloadProjectResourcesExtension";
+            ide.PreloadProjectResourcesExtension = PreloadProjectResourcesExtension;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -4155,9 +4186,9 @@ var colibri;
                     this.registerContentTypes();
                     this.registerContentTypeIcons();
                     console.log("Workbench: fetching required project resources.");
-                    await this.preloadProjectResources(plugins);
+                    await this.preloadProjectResources();
                     console.log("Workbench: initializing UI.");
-                    this.initCommands(plugins);
+                    this.initCommands();
                     this.registerEditors(plugins);
                     this.registerWindow(plugins);
                     this.initEvents();
@@ -4201,9 +4232,10 @@ var colibri;
                         document.body.appendChild(this._activeWindow.getElement());
                     }
                 }
-                async preloadProjectResources(plugins) {
-                    for (const plugin of plugins) {
-                        await plugin.preloadProjectResources();
+                async preloadProjectResources() {
+                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        await extension.getPreloadPromise();
                     }
                 }
                 async preloadIcons(plugins) {
@@ -4227,11 +4259,12 @@ var colibri;
                         }
                     }
                 }
-                initCommands(plugins) {
+                initCommands() {
                     this._commandManager = new ide.commands.CommandManager();
                     ide.IDECommands.init();
-                    for (const plugin of plugins) {
-                        plugin.registerCommands(this._commandManager);
+                    const extensions = this._extensionRegistry.getExtensions(ide.commands.CommandExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        extension.getConfigurer()(this._commandManager);
                     }
                 }
                 initEvents() {
@@ -4242,8 +4275,11 @@ var colibri;
                     });
                 }
                 registerEditors(plugins) {
-                    for (const plugin of plugins) {
-                        plugin.registerEditor(this._editorRegistry);
+                    const extensions = this._extensionRegistry.getExtensions(ide.EditorExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        for (const factory of extension.getFactories()) {
+                            this._editorRegistry.registerFactory(factory);
+                        }
                     }
                 }
                 getFileStringCache() {
@@ -4486,6 +4522,29 @@ var colibri;
                     }
                 }
                 commands.CommandArgs = CommandArgs;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class CommandExtension extends colibri.core.extensions.Extension {
+                    constructor(id, configurer) {
+                        super(id);
+                        this._configurer = configurer;
+                    }
+                    getConfigurer() {
+                        return this._configurer;
+                    }
+                }
+                CommandExtension.POINT_ID = "colibri.ui.ide.commands";
+                commands.CommandExtension = CommandExtension;
             })(commands = ide.commands || (ide.commands = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -5372,17 +5431,20 @@ var phasereditor2d;
             static getInstance() {
                 return this._instance;
             }
-            registerExtensions(registry) {
-                registry
+            registerExtensions(reg) {
+                // file cell renderers
+                reg
                     .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, new images.ui.viewers.ImageFileCellRenderer()));
-                registry.addExtension(colibri.ui.ide.CSSFileLoaderExtension.POINT_ID, new colibri.ui.ide.CSSFileLoaderExtension("phasereditor2d.images.CSSFileLoaderExtension", [
+                // css loader
+                reg.addExtension(ide.CSSFileLoaderExtension.POINT_ID, new ide.CSSFileLoaderExtension("phasereditor2d.images.CSSFileLoaderExtension", [
                     "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
                     "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
                     "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
                 ]));
-            }
-            registerEditor(registry) {
-                registry.registerFactory(images.ui.editors.ImageEditor.getFactory());
+                // editors
+                reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.images.EditorExtension", [
+                    images.ui.editors.ImageEditor.getFactory()
+                ]));
             }
         }
         ImagesPlugin._instance = new ImagesPlugin();
@@ -5641,9 +5703,6 @@ var phasereditor2d;
             static getInstance() {
                 return this._instance;
             }
-            async preloadProjectResources() {
-                await pack.core.PackFinder.preload();
-            }
             registerExtensions(reg) {
                 // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
@@ -5658,9 +5717,12 @@ var phasereditor2d;
                         contentType: pack.core.CONTENT_TYPE_ASSET_PACK
                     }
                 ]));
-            }
-            registerEditor(registry) {
-                registry.registerFactory(pack.ui.editor.AssetPackEditor.getFactory());
+                // project resources preloader
+                reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID, new ide.PreloadProjectResourcesExtension("phasereditor2d.pack.PreloadProjectResourcesExtension", () => pack.core.PackFinder.preload()));
+                // editors
+                reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
+                    pack.ui.editor.AssetPackEditor.getFactory()
+                ]));
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -6926,12 +6988,12 @@ var phasereditor2d;
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
                     scene.ICON_GROUP
                 ]));
-            }
-            registerEditor(registry) {
-                registry.registerFactory(scene.ui.editor.SceneEditor.getFactory());
-            }
-            registerCommands(manager) {
-                scene.ui.editor.commands.SceneEditorCommands.registerCommands(manager);
+                // commands
+                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", scene.ui.editor.commands.SceneEditorCommands.registerCommands));
+                // editors
+                reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
+                    scene.ui.editor.SceneEditor.getFactory()
+                ]));
             }
         }
         ScenePlugin._instance = new ScenePlugin();

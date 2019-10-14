@@ -45,14 +45,19 @@ namespace phasereditor2d.scene {
                     ICON_GROUP
                 ])
             );
-        }
 
-        registerEditor(registry: ide.EditorRegistry) {
-            registry.registerFactory(ui.editor.SceneEditor.getFactory());
-        }
+            // commands
 
-        registerCommands(manager: ide.commands.CommandManager) {
-            ui.editor.commands.SceneEditorCommands.registerCommands(manager);
+            reg.addExtension(ide.commands.CommandExtension.POINT_ID,
+                new ide.commands.CommandExtension("phasereditor2d.scene.commands",
+                    ui.editor.commands.SceneEditorCommands.registerCommands));
+
+            // editors
+
+            reg.addExtension(ide.EditorExtension.POINT_ID,
+                new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
+                    ui.editor.SceneEditor.getFactory()
+                ]));
         }
 
     }

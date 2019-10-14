@@ -2,9 +2,6 @@ namespace phasereditor2d.scene.ui.editor.commands {
 
     const CMD_JOIN_IN_CONTAINER = "joinObjectsInContainer";
 
-    import controls = colibri.ui.controls;
-    import core = colibri.core;
-
     function isSceneScope(args: colibri.ui.ide.commands.CommandArgs) {
         return args.activePart instanceof SceneEditor ||
             args.activePart instanceof phasereditor2d.outline.ui.views.OutlineView && args.activeEditor instanceof SceneEditor

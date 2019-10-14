@@ -25,27 +25,11 @@ namespace colibri.ui.ide {
 
         }
 
-        registerContentTypeIcons(contentTypeIconMap : Map<string, controls.IImage>): void {
-            
-        }
-
-        preloadProjectResources(): Promise<void> {
-            return Promise.resolve();
-        }
-
-        registerCommands(manager: commands.CommandManager): void {
-
-        }
-
-        registerEditor(registry: EditorRegistry): void {
-
-        }
-
         createWindow(windows: ide.WorkbenchWindow[]): void {
 
         }
 
-        getIcon(name : string) {
+        getIcon(name : string) : controls.IImage {
             return controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
         }
 
