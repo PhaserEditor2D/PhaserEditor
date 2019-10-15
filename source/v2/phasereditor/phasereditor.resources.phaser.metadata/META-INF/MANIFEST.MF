@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Phaser Metadata Resources
 Bundle-SymbolicName: phasereditor.resources.phaser.metadata;singleton:=true
-Bundle-Version: 2.1.3.20190811
+Bundle-Version: 2.1.4.20191016
 Bundle-Vendor: Arian Fornaris
 Eclipse-BundleShape: dir
 Automatic-Module-Name: phasereditor.resources.phaser.metadata
