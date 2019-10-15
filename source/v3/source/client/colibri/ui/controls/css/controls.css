@@ -178,14 +178,6 @@ canvas {
     height: 16px;
 }
 
-.expandBtn.collapsed {
-    background-image: url("../images/16/tree-expand.png");
-}
-
-.expandBtn.expanded {
-    background-image: url("../images/16/tree-collapse.png");
-}
-
 .PropertyFormArea {
     display: grid;
 }
