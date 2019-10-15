@@ -77,6 +77,7 @@ var TransformMatrix = require('../components/TransformMatrix');
  * @param {number} [width=128] - The width of the Game Object.
  * @param {number} [height=128] - The height of the Game Object.
  * @param {string[]} [textures] - Optional array of texture keys to bind to the iChannel0...3 uniforms. The textures must already exist in the Texture Manager.
+ * @param {any} [textureData] - Additional texture data if you want to create shader with none NPOT textures.
  */
 var Shader = new Class({
 
@@ -96,7 +97,7 @@ var Shader = new Class({
 
     initialize:
 
-    function Shader (scene, key, x, y, width, height, textures)
+    function Shader (scene, key, x, y, width, height, textures, textureData)
     {
         if (x === undefined) { x = 0; }
         if (y === undefined) { y = 0; }
@@ -345,20 +346,10 @@ var Shader = new Class({
          */
         this.texture = null;
 
-        /**
-         * Internal saved texture key.
-         *
-         * @name Phaser.GameObjects.Shader#_savedKey
-         * @type {boolean}
-         * @private
-         * @since 3.19.0
-         */
-        this._savedKey = '';
-
         this.setPosition(x, y);
         this.setSize(width, height);
         this.setOrigin(0.5, 0.5);
-        this.setShader(key, textures);
+        this.setShader(key, textures, textureData);
     },
 
     /**
@@ -448,12 +439,24 @@ var Shader = new Class({
 
             if (key)
             {
-                this._savedKey = key;
-
                 this.texture = this.scene.sys.textures.addGLTexture(key, this.glTexture, width, height);
             }
         }
 
+        //  And now render at least once, so our texture isn't blank on the first update
+
+        if (this.shader)
+        {
+            var pipeline = renderer.currentPipeline;
+
+            renderer.clearPipeline();
+        
+            this.load();
+            this.flush();
+    
+            renderer.rebindPipeline(pipeline);
+        }
+    
         return this;
     },
 
@@ -467,10 +470,11 @@ var Shader = new Class({
      * 
      * @param {(string|Phaser.Display.BaseShader)} key - The key of the shader to use from the shader cache, or a BaseShader instance.
      * @param {string[]} [textures] - Optional array of texture keys to bind to the iChannel0...3 uniforms. The textures must already exist in the Texture Manager.
+     * @param {any} [textureData] - Additional texture data.
      * 
      * @return {this} This Shader instance.
      */
-    setShader: function (key, textures)
+    setShader: function (key, textures, textureData)
     {
         if (textures === undefined) { textures = []; }
 
@@ -536,7 +540,7 @@ var Shader = new Class({
         {
             if (textures[i])
             {
-                this.setSampler2D('iChannel' + i, textures[i], i);
+                this.setSampler2D('iChannel' + i, textures[i], i, textureData);
             }
         }
 
@@ -792,7 +796,7 @@ var Shader = new Class({
      * 
      * @param {string} key - The key of the uniform to return the value for.
      * 
-     * @return {this} This Shader instance.
+     * @return {any} A reference to the uniform object. This is not a copy, so modifying it will update the original object also.
      */
     getUniform: function (key)
     {

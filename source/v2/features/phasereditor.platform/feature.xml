@@ -5,7 +5,7 @@
       version="2.1.1.20190623"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
-      license-feature-version="2.0.1.v20180423-1114">
+      license-feature-version="2.0.2.v20181016-2210">
 
    <description url="https://phasereditor2d.com">
       Eclipse Platform plugins used by Phaser Editor 2D.

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Inspect Tests
 Bundle-SymbolicName: phasereditor.inspect.core.tests
-Bundle-Version: 2.1.4.20190812
+Bundle-Version: 2.1.4.20191016
 Bundle-Vendor: Arian Fornaris
 Require-Bundle: phasereditor.inspect.core,
  org.junit,

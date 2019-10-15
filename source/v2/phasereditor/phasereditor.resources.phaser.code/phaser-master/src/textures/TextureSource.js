@@ -12,7 +12,8 @@ var ScaleModes = require('../renderer/ScaleModes');
 /**
  * @classdesc
  * A Texture Source is the encapsulation of the actual source data for a Texture.
- * This is typically an Image Element, loaded from the file system or network, or a Canvas Element.
+ * 
+ * This is typically an Image Element, loaded from the file system or network, a Canvas Element or a Video Element.
  *
  * A Texture can contain multiple Texture Sources, which only happens when a multi-atlas is loaded.
  *
@@ -22,16 +23,19 @@ var ScaleModes = require('../renderer/ScaleModes');
  * @since 3.0.0
  *
  * @param {Phaser.Textures.Texture} texture - The Texture this TextureSource belongs to.
- * @param {(HTMLImageElement|HTMLCanvasElement|Phaser.GameObjects.RenderTexture|WebGLTexture)} source - The source image data.
+ * @param {(HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|Phaser.GameObjects.RenderTexture|WebGLTexture)} source - The source image data.
  * @param {integer} [width] - Optional width of the source image. If not given it's derived from the source itself.
  * @param {integer} [height] - Optional height of the source image. If not given it's derived from the source itself.
+ * @param {boolean} [flipY=false] - Sets the `UNPACK_FLIP_Y_WEBGL` flag the WebGL Texture uses during upload.
  */
 var TextureSource = new Class({
 
     initialize:
 
-    function TextureSource (texture, source, width, height)
+    function TextureSource (texture, source, width, height, flipY)
     {
+        if (flipY === undefined) { flipY = false; }
+
         var game = texture.manager.game;
 
         /**
@@ -54,20 +58,22 @@ var TextureSource = new Class({
 
         /**
          * The source of the image data.
-         * This is either an Image Element, a Canvas Element, a RenderTexture or a WebGLTexture.
+         * 
+         * This is either an Image Element, a Canvas Element, a Video Element, a RenderTexture or a WebGLTexture.
          *
          * @name Phaser.Textures.TextureSource#source
-         * @type {(HTMLImageElement|HTMLCanvasElement|Phaser.GameObjects.RenderTexture|WebGLTexture)}
+         * @type {(HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|Phaser.GameObjects.RenderTexture|WebGLTexture)}
          * @since 3.12.0
          */
         this.source = source;
 
         /**
          * The image data.
-         * This is either an Image element or a Canvas element.
+         * 
+         * This is either an Image element, Canvas element or a Video Element.
          *
          * @name Phaser.Textures.TextureSource#image
-         * @type {(HTMLImageElement|HTMLCanvasElement)}
+         * @type {(HTMLImageElement|HTMLCanvasElement|HTMLVideoElement)}
          * @since 3.0.0
          */
         this.image = source;
@@ -100,7 +106,7 @@ var TextureSource = new Class({
          * @type {integer}
          * @since 3.0.0
          */
-        this.width = width || source.naturalWidth || source.width || 0;
+        this.width = width || source.naturalWidth || source.videoWidth || source.width || 0;
 
         /**
          * The height of the source image. If not specified in the constructor it will check
@@ -110,7 +116,7 @@ var TextureSource = new Class({
          * @type {integer}
          * @since 3.0.0
          */
-        this.height = height || source.naturalHeight || source.height || 0;
+        this.height = height || source.naturalHeight || source.videoHeight || source.height || 0;
 
         /**
          * The Scale Mode the image will use when rendering.
@@ -132,6 +138,15 @@ var TextureSource = new Class({
         this.isCanvas = (source instanceof HTMLCanvasElement);
 
         /**
+         * Is the source image a Video Element?
+         *
+         * @name Phaser.Textures.TextureSource#isVideo
+         * @type {boolean}
+         * @since 3.20.0
+         */
+        this.isVideo = (source instanceof HTMLVideoElement);
+
+        /**
          * Is the source image a Render Texture?
          *
          * @name Phaser.Textures.TextureSource#isRenderTexture
@@ -147,7 +162,7 @@ var TextureSource = new Class({
          * @type {boolean}
          * @since 3.19.0
          */
-        this.isGLTexture = (source instanceof WebGLTexture);
+        this.isGLTexture = (window.hasOwnProperty('WebGLTexture') && source instanceof WebGLTexture);
 
         /**
          * Are the source image dimensions a power of two?
@@ -169,6 +184,15 @@ var TextureSource = new Class({
          */
         this.glTexture = null;
 
+        /**
+         * Sets the `UNPACK_FLIP_Y_WEBGL` flag the WebGL Texture uses during upload.
+         *
+         * @name Phaser.Textures.TextureSource#flipY
+         * @type {boolean}
+         * @since 3.20.0
+         */
+        this.flipY = flipY;
+
         this.init(game);
     },
 
@@ -188,7 +212,11 @@ var TextureSource = new Class({
             {
                 if (this.isCanvas)
                 {
-                    this.glTexture = this.renderer.canvasToTexture(this.image);
+                    this.glTexture = this.renderer.createCanvasTexture(this.image, false, this.flipY);
+                }
+                else if (this.isVideo)
+                {
+                    this.glTexture = this.renderer.createVideoTexture(this.image, false, this.flipY);
                 }
                 else if (this.isRenderTexture)
                 {
@@ -235,6 +263,25 @@ var TextureSource = new Class({
         {
             this.renderer.setTextureFilter(this.glTexture, filterMode);
         }
+
+        this.scaleMode = filterMode;
+    },
+
+    /**
+     * Sets the `UNPACK_FLIP_Y_WEBGL` flag for the WebGL Texture during texture upload.
+     *
+     * @method Phaser.Textures.TextureSource#setFlipY
+     * @since 3.20.0
+     *
+     * @param {boolean} [value=true] - Should the WebGL Texture be flipped on the Y axis on texture upload or not?
+     */
+    setFlipY: function (value)
+    {
+        if (value === undefined) { value = true; }
+
+        this.flipY = value;
+
+        return this;
     },
 
     /**
@@ -246,9 +293,15 @@ var TextureSource = new Class({
      */
     update: function ()
     {
-        if (this.renderer.gl && this.isCanvas)
+        var gl = this.renderer.gl;
+
+        if (gl && this.isCanvas)
         {
-            this.glTexture = this.renderer.canvasToTexture(this.image, this.glTexture);
+            this.glTexture = this.renderer.updateCanvasTexture(this.image, this.glTexture, this.flipY);
+        }
+        else if (gl && this.isVideo)
+        {
+            this.glTexture = this.renderer.updateVideoTexture(this.image, this.glTexture, this.flipY);
         }
     },
 

@@ -17,8 +17,6 @@ package phasereditor.ide.ui;
 
 import java.lang.reflect.Field;
 
-import javax.inject.Inject;
-
 import org.eclipse.e4.ui.internal.css.swt.ICTabRendering;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPlaceholder;
@@ -116,7 +114,6 @@ public class MyTabRendering extends CTabFolderRenderer implements ICTabRendering
 
 	private Color hotUnselectedTabsColorBackground;
 
-	@Inject
 	public MyTabRendering(CTabFolder parent) {
 		super(parent);
 		parentWrapper = new CTabFolderWrapper(parent);

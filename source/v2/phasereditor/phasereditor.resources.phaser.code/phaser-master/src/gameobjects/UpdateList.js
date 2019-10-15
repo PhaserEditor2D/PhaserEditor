@@ -5,6 +5,7 @@
  */
 
 var Class = require('../utils/Class');
+var ProcessQueue = require('../structs/ProcessQueue');
 var PluginCache = require('../plugins/PluginCache');
 var SceneEvents = require('../scene/events');
 
@@ -25,10 +26,14 @@ var SceneEvents = require('../scene/events');
  */
 var UpdateList = new Class({
 
+    Extends: ProcessQueue,
+
     initialize:
 
     function UpdateList (scene)
     {
+        ProcessQueue.call(this);
+
         /**
          * The Scene that the Update List belongs to.
          *
@@ -48,37 +53,44 @@ var UpdateList = new Class({
         this.systems = scene.sys;
 
         /**
-         * The list of Game Objects.
+         * The `pending` list is a selection of items which are due to be made 'active' in the next update.
          *
-         * @name Phaser.GameObjects.UpdateList#_list
-         * @type {array}
+         * @name Phaser.GameObjects.UpdateList#_pending
+         * @type {Array.<*>}
          * @private
          * @default []
-         * @since 3.0.0
+         * @since 3.20.0
          */
-        this._list = [];
 
         /**
-         * Game Objects that are pending insertion into the list.
+         * The `active` list is a selection of items which are considered active and should be updated.
          *
-         * @name Phaser.GameObjects.UpdateList#_pendingInsertion
-         * @type {array}
+         * @name Phaser.GameObjects.UpdateList#_active
+         * @type {Array.<*>}
          * @private
          * @default []
-         * @since 3.0.0
+         * @since 3.20.0
          */
-        this._pendingInsertion = [];
 
         /**
-         * Game Objects that are pending removal from the list.
+         * The `destroy` list is a selection of items that were active and are awaiting being destroyed in the next update.
          *
-         * @name Phaser.GameObjects.UpdateList#_pendingRemoval
-         * @type {array}
+         * @name Phaser.GameObjects.UpdateList#_destroy
+         * @type {Array.<*>}
          * @private
          * @default []
+         * @since 3.20.0
+         */
+
+        /**
+         * The total number of items awaiting processing.
+         *
+         * @name Phaser.GameObjects.UpdateList#_toProcess
+         * @type {integer}
+         * @private
+         * @default 0
          * @since 3.0.0
          */
-        this._pendingRemoval = [];
 
         scene.sys.events.once(SceneEvents.BOOT, this.boot, this);
         scene.sys.events.on(SceneEvents.START, this.start, this);
@@ -110,74 +122,9 @@ var UpdateList = new Class({
     {
         var eventEmitter = this.systems.events;
 
-        eventEmitter.on(SceneEvents.PRE_UPDATE, this.preUpdate, this);
-        eventEmitter.on(SceneEvents.UPDATE, this.update, this);
+        eventEmitter.on(SceneEvents.PRE_UPDATE, this.update, this);
+        eventEmitter.on(SceneEvents.UPDATE, this.sceneUpdate, this);
         eventEmitter.once(SceneEvents.SHUTDOWN, this.shutdown, this);
-    },
-
-    /**
-     * Add a Game Object to the Update List.
-     *
-     * @method Phaser.GameObjects.UpdateList#add
-     * @since 3.0.0
-     *
-     * @param {Phaser.GameObjects.GameObject} child - The Game Object to add.
-     *
-     * @return {Phaser.GameObjects.GameObject} The added Game Object.
-     */
-    add: function (child)
-    {
-        //  Is child already in this list?
-
-        if (this._list.indexOf(child) === -1 && this._pendingInsertion.indexOf(child) === -1)
-        {
-            this._pendingInsertion.push(child);
-        }
-
-        return child;
-    },
-
-    /**
-     * The pre-update step.
-     *
-     * Handles Game Objects that are pending insertion to and removal from the list.
-     *
-     * @method Phaser.GameObjects.UpdateList#preUpdate
-     * @since 3.0.0
-     */
-    preUpdate: function ()
-    {
-        var toRemove = this._pendingRemoval.length;
-        var toInsert = this._pendingInsertion.length;
-
-        if (toRemove === 0 && toInsert === 0)
-        {
-            //  Quick bail
-            return;
-        }
-
-        var i;
-        var gameObject;
-
-        //  Delete old gameObjects
-        for (i = 0; i < toRemove; i++)
-        {
-            gameObject = this._pendingRemoval[i];
-
-            var index = this._list.indexOf(gameObject);
-
-            if (index > -1)
-            {
-                this._list.splice(index, 1);
-            }
-        }
-
-        //  Move pending to active
-        this._list = this._list.concat(this._pendingInsertion.splice(0));
-
-        //  Clear the lists
-        this._pendingRemoval.length = 0;
-        this._pendingInsertion.length = 0;
     },
 
     /**
@@ -185,15 +132,15 @@ var UpdateList = new Class({
      *
      * Pre-updates every active Game Object in the list.
      *
-     * @method Phaser.GameObjects.UpdateList#update
-     * @since 3.0.0
+     * @method Phaser.GameObjects.UpdateList#sceneUpdate
+     * @since 3.20.0
      *
      * @param {number} time - The current timestamp.
      * @param {number} delta - The delta time elapsed since the last frame.
      */
-    update: function (time, delta)
+    sceneUpdate: function (time, delta)
     {
-        var list = this._list;
+        var list = this._active;
         var length = list.length;
 
         for (var i = 0; i < length; i++)
@@ -208,47 +155,8 @@ var UpdateList = new Class({
     },
 
     /**
-     * Remove a Game Object from the list.
-     *
-     * @method Phaser.GameObjects.UpdateList#remove
-     * @since 3.0.0
-     *
-     * @param {Phaser.GameObjects.GameObject} child - The Game Object to remove from the list.
-     *
-     * @return {Phaser.GameObjects.GameObject} The removed Game Object.
-     */
-    remove: function (child)
-    {
-        if (this._list.indexOf(child) !== -1 && this._pendingRemoval.indexOf(child) === -1)
-        {
-            this._pendingRemoval.push(child);
-        }
-
-        return child;
-    },
-
-    /**
-     * Remove all Game Objects from the list.
-     *
-     * @method Phaser.GameObjects.UpdateList#removeAll
-     * @since 3.0.0
-     *
-     * @return {Phaser.GameObjects.UpdateList} This UpdateList.
-     */
-    removeAll: function ()
-    {
-        var i = this._list.length;
-
-        while (i--)
-        {
-            this.remove(this._list[i]);
-        }
-
-        return this;
-    },
-
-    /**
      * The Scene that owns this plugin is shutting down.
+     * 
      * We need to kill and reset all internal properties as well as stop listening to Scene events.
      *
      * @method Phaser.GameObjects.UpdateList#shutdown
@@ -256,40 +164,45 @@ var UpdateList = new Class({
      */
     shutdown: function ()
     {
-        var i = this._list.length;
+        var i = this._active.length;
 
         while (i--)
         {
-            this._list[i].destroy(true);
+            this._active[i].destroy(true);
         }
 
-        i = this._pendingRemoval.length;
+        i = this._pending.length;
 
         while (i--)
         {
-            this._pendingRemoval[i].destroy(true);
+            this._pending[i].destroy(true);
         }
 
-        i = this._pendingInsertion.length;
+        i = this._destroy.length;
 
         while (i--)
         {
-            this._pendingInsertion[i].destroy(true);
+            this._destroy[i].destroy(true);
         }
 
-        this._list.length = 0;
-        this._pendingRemoval.length = 0;
-        this._pendingInsertion.length = 0;
+        this._toProcess = 0;
+
+        this._pending = [];
+        this._active = [];
+        this._destroy = [];
+
+        this.removeAllListeners();
 
         var eventEmitter = this.systems.events;
 
         eventEmitter.off(SceneEvents.PRE_UPDATE, this.preUpdate, this);
-        eventEmitter.off(SceneEvents.UPDATE, this.update, this);
+        eventEmitter.off(SceneEvents.UPDATE, this.sceneUpdate, this);
         eventEmitter.off(SceneEvents.SHUTDOWN, this.shutdown, this);
     },
 
     /**
      * The Scene that owns this plugin is being destroyed.
+     * 
      * We need to shutdown and then kill off all external references.
      *
      * @method Phaser.GameObjects.UpdateList#destroy
@@ -299,29 +212,81 @@ var UpdateList = new Class({
     {
         this.shutdown();
 
-        this.scene.sys.events.off(SceneEvents.START, this.start, this);
+        this.systems.events.off(SceneEvents.START, this.start, this);
 
         this.scene = null;
         this.systems = null;
-    },
+    }
 
     /**
-     * The length of the list.
+     * Adds a new item to the Update List.
+     * 
+     * The item is added to the pending list and made active in the next update.
+     *
+     * @method Phaser.GameObjects.UpdateList#add
+     * @since 3.0.0
+     *
+     * @param {*} item - The item to add to the queue.
+     *
+     * @return {*} The item that was added.
+     */
+
+    /**
+     * Removes an item from the Update List.
+     * 
+     * The item is added to the pending destroy and fully removed in the next update.
+     *
+     * @method Phaser.GameObjects.UpdateList#remove
+     * @since 3.0.0
+     *
+     * @param {*} item - The item to be removed from the queue.
+     *
+     * @return {*} The item that was removed.
+     */
+
+    /**
+     * Removes all active items from this Update List.
+     * 
+     * All the items are marked as 'pending destroy' and fully removed in the next update.
+     *
+     * @method Phaser.GameObjects.UpdateList#removeAll
+     * @since 3.20.0
+     *
+     * @return {this} This Update List object.
+     */
+
+    /**
+     * Update this queue. First it will process any items awaiting destruction, and remove them.
+     * 
+     * Then it will check to see if there are any items pending insertion, and move them to an
+     * active state. Finally, it will return a list of active items for further processing.
+     *
+     * @method Phaser.GameObjects.UpdateList#update
+     * @since 3.0.0
+     *
+     * @return {Array.<*>} A list of active items.
+     */
+
+    /**
+     * Returns the current list of active items.
+     * 
+     * This method returns a reference to the active list array, not a copy of it.
+     * Therefore, be careful to not modify this array outside of the ProcessQueue.
+     *
+     * @method Phaser.GameObjects.UpdateList#getActive
+     * @since 3.0.0
+     *
+     * @return {Array.<*>} A list of active items.
+     */
+
+    /**
+     * The number of entries in the active list.
      *
      * @name Phaser.GameObjects.UpdateList#length
      * @type {integer}
      * @readonly
-     * @since 3.10.0
+     * @since 3.20.0
      */
-    length: {
-
-        get: function ()
-        {
-            return this._list.length;
-        }
-
-    }
-
 });
 
 PluginCache.register('UpdateList', UpdateList, 'updateList');

@@ -91,9 +91,9 @@ var MultiAtlasFile = new Class({
                 var currentPath = loader.path;
                 var currentPrefix = loader.prefix;
 
-                var baseURL = GetFastValue(config, 'baseURL', currentBaseURL);
-                var path = GetFastValue(config, 'path', currentPath);
-                var prefix = GetFastValue(config, 'prefix', currentPrefix);
+                var baseURL = GetFastValue(config, 'baseURL', this.baseURL);
+                var path = GetFastValue(config, 'path', this.path);
+                var prefix = GetFastValue(config, 'prefix', this.prefix);
                 var textureXhrSettings = GetFastValue(config, 'textureXhrSettings');
 
                 loader.setBaseURL(baseURL);
@@ -105,7 +105,7 @@ var MultiAtlasFile = new Class({
                     //  "image": "texture-packer-multi-atlas-0.png",
                     var textureURL = textures[i].image;
 
-                    var key = '_MA_' + textureURL;
+                    var key = 'MA' + this.multiKeyIndex + '_' + textureURL;
 
                     var image = new ImageFile(loader, key, textureURL, textureXhrSettings);
 
@@ -148,8 +148,6 @@ var MultiAtlasFile = new Class({
         {
             var fileJSON = this.files[0];
 
-            fileJSON.addToCache();
-
             var data = [];
             var images = [];
             var normalMaps = [];
@@ -163,7 +161,9 @@ var MultiAtlasFile = new Class({
                     continue;
                 }
 
-                var key = file.key.substr(4);
+                var pos = file.key.indexOf('_');
+                var key = file.key.substr(pos + 1);
+
                 var image = file.data;
 
                 //  Now we need to find out which json entry this mapped to

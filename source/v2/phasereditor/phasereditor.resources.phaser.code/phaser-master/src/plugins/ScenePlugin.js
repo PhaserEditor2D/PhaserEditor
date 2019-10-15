@@ -33,7 +33,30 @@ var ScenePlugin = new Class({
     {
         BasePlugin.call(this, pluginManager);
 
+        /**
+         * A reference to the Scene that has installed this plugin.
+         * Only set if it's a Scene Plugin, otherwise `null`.
+         * This property is only set when the plugin is instantiated and added to the Scene, not before.
+         * You can use it during the `boot` method.
+         *
+         * @name Phaser.Plugins.ScenePlugin#scene
+         * @type {?Phaser.Scene}
+         * @protected
+         * @since 3.8.0
+         */
         this.scene = scene;
+
+        /**
+         * A reference to the Scene Systems of the Scene that has installed this plugin.
+         * Only set if it's a Scene Plugin, otherwise `null`.
+         * This property is only set when the plugin is instantiated and added to the Scene, not before.
+         * You can use it during the `boot` method.
+         *
+         * @name Phaser.Plugins.ScenePlugin#systems
+         * @type {?Phaser.Scenes.Systems}
+         * @protected
+         * @since 3.8.0
+         */
         this.systems = scene.sys;
 
         scene.sys.events.once(SceneEvents.BOOT, this.boot, this);
@@ -41,29 +64,29 @@ var ScenePlugin = new Class({
 
     /**
      * This method is called when the Scene boots. It is only ever called once.
-     * 
+     *
      * By this point the plugin properties `scene` and `systems` will have already been set.
-     * 
-     * In here you can listen for Scene events and set-up whatever you need for this plugin to run.
+     *
+     * In here you can listen for {@link Phaser.Scenes.Events Scene events} and set-up whatever you need for this plugin to run.
      * Here are the Scene events you can listen to:
-     * 
-     * start
-     * ready
-     * preupdate
-     * update
-     * postupdate
-     * resize
-     * pause
-     * resume
-     * sleep
-     * wake
-     * transitioninit
-     * transitionstart
-     * transitioncomplete
-     * transitionout
-     * shutdown
-     * destroy
-     * 
+     *
+     * - start
+     * - ready
+     * - preupdate
+     * - update
+     * - postupdate
+     * - resize
+     * - pause
+     * - resume
+     * - sleep
+     * - wake
+     * - transitioninit
+     * - transitionstart
+     * - transitioncomplete
+     * - transitionout
+     * - shutdown
+     * - destroy
+     *
      * At the very least you should offer a destroy handler for when the Scene closes down, i.e:
      *
      * ```javascript
@@ -76,6 +99,22 @@ var ScenePlugin = new Class({
      */
     boot: function ()
     {
+    },
+
+    /**
+     * Game instance has been destroyed.
+     * 
+     * You must release everything in here, all references, all objects, free it all up.
+     *
+     * @method Phaser.Plugins.ScenePlugin#destroy
+     * @since 3.8.0
+     */
+    destroy: function ()
+    {
+        this.pluginManager = null;
+        this.game = null;
+        this.scene = null;
+        this.systems = null;
     }
 
 });

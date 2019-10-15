@@ -344,17 +344,21 @@ var Tween = new Class({
         this.callbackScope;
     },
 
-    /**
-     * Returns the current value of the Tween.
+    /**	
+     * Returns the current value of the specified Tween Data.
      *
      * @method Phaser.Tweens.Tween#getValue
      * @since 3.0.0
+     * 
+     * @param {integer} [index=0] - The Tween Data to return the value from.
      *
-     * @return {number} The value of the Tween.
-     */
-    getValue: function ()
+     * @return {number} The value of the requested Tween Data.
+     */	
+    getValue: function (index)
     {
-        return this.data[0].current;
+        if (index === undefined) { index = 0; }
+
+        return this.data[index].current;
     },
 
     /**
@@ -429,8 +433,9 @@ var Tween = new Class({
     },
 
     /**
-     * Updates the value of a property of this Tween to a new value, without adjusting the
-     * Tween duration or current progress.
+     * Updates the 'end' value of the given property across all matching targets.
+     * 
+     * Calling this does not adjust the duration of the tween, or the current progress.
      * 
      * You can optionally tell it to set the 'start' value to be the current value (before the change).
      *
@@ -459,8 +464,6 @@ var Tween = new Class({
                 {
                     tweenData.start = tweenData.current;
                 }
-
-                break;
             }
         }
 

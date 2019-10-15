@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Phaser Editor - Project Wizards
 Bundle-SymbolicName: phasereditor.project.ui.wizards;singleton:=true
-Bundle-Version: 2.1.4.20190812
+Bundle-Version: 2.1.4.20191016
 Bundle-Vendor: Arian Fornaris
 Automatic-Module-Name: phasereditor.project.ui.wizards
 Bundle-RequiredExecutionEnvironment: JavaSE-11
