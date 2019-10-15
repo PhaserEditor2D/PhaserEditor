@@ -8,7 +8,7 @@
       <text>
          Phaser Editor 2D - 2.1.4.20191016
 
-Includes Phaser v3.19.0
+Includes Phaser v3.20.1
 
 Powered by:
 
@@ -195,8 +195,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
-      <property name="osgi.instance.area" value="@noDefault" />
       <property name="osgi.splashPath" value="platform:/base/plugins/phasereditor.ide" />
+      <property name="osgi.instance.area" value="@noDefault" />
    </configurations>
 
    <preferencesInfo>
