@@ -193,14 +193,14 @@
 <div class="section" id="search-for-chains">
 <h2>Search for chains<a class="headerlink" href="#search-for-chains" title="Permalink to this headline">¶</a></h2>
 <p>The main difference of this tool with a common documentation view is that you search for a method chain like:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>game.add.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>game.add.
 </pre></div>
 </div>
-<p>As you can see the Phaser API makes an extensive use of method/properties chains like <code class="docutils literal"><span class="pre">game.load.image()</span></code> or <code class="docutils literal"><span class="pre">sprite.animations.add</span></code>. So the Chains idea is that you type the chain you are interested to investigate and then it shows all the matching chains of the Phaser API.</p>
+<p>As you can see the Phaser API makes an extensive use of method/properties chains like <code class="docutils literal notranslate"><span class="pre">game.load.image()</span></code> or <code class="docutils literal notranslate"><span class="pre">sprite.animations.add</span></code>. So the Chains idea is that you type the chain you are interested to investigate and then it shows all the matching chains of the Phaser API.</p>
 <img alt="Query the Phaser API." src="_images/ChainsSearchAPI.png" />
 <p>In the screenshot you can see in the left panel it shows the matching chains. If you click it then it opens the documentation of the last element of the chain. This documentation is shown in the JSDoc tab that is next to the Search tab:</p>
 <img alt="The documentation of a method." src="_images/ChainsJSDocTab.png" />
-<p>In addition to the JSDoc, you can see the source code of a chain. Just right-click on a chain and select <code class="docutils literal"><span class="pre">Show</span> <span class="pre">Source</span> <span class="pre">Code</span></code>. It opens an editor with the source code of the chain.</p>
+<p>In addition to the JSDoc, you can see the source code of a chain. Just right-click on a chain and select <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">Source</span> <span class="pre">Code</span></code>. It opens an editor with the source code of the chain.</p>
 </div>
 <div class="section" id="search-examples">
 <h2>Search examples<a class="headerlink" href="#search-examples" title="Permalink to this headline">¶</a></h2>
@@ -211,14 +211,14 @@
 </div>
 <div class="section" id="using-wild-cards">
 <h2>Using wild-cards<a class="headerlink" href="#using-wild-cards" title="Permalink to this headline">¶</a></h2>
-<p>A powerful feature of Chains is that you can search using wild-cards <code class="docutils literal"><span class="pre">*</span></code>. This allows to you to find chains that you are not sure how they are writing but you remember some parts of it. For example, if in your game you need to listen for an input down event you can write a search pattern like this:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>game*down*add
+<p>A powerful feature of Chains is that you can search using wild-cards <code class="docutils literal notranslate"><span class="pre">*</span></code>. This allows to you to find chains that you are not sure how they are writing but you remember some parts of it. For example, if in your game you need to listen for an input down event you can write a search pattern like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>game*down*add
 </pre></div>
 </div>
 <p>It matches with:</p>
 <img alt="Chains: matches down signal" src="_images/ChainsWildcard.png" />
-<p>If you want to know what classes are extending the <code class="docutils literal"><span class="pre">Phaser.Sprite</span></code> class then you can search for:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>extends*Sprite
+<p>If you want to know what classes are extending the <code class="docutils literal notranslate"><span class="pre">Phaser.Sprite</span></code> class then you can search for:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>extends*Sprite
 </pre></div>
 </div>
 <img alt="Chains: matches Sprite inheritance." src="_images/ChainsExtends.png" />
@@ -278,6 +278,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

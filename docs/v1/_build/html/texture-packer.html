@@ -194,19 +194,19 @@
 <p>Our Atlas Editor uses the <a class="reference external" href="https://github.com/libgdx/libgdx/tree/master/extensions/gdx-tools">LibGDX Texture Packer</a>, it features the MaxRect algorithm and can be tuned to satisfy the requirements of the majority of the games.</p>
 <div class="section" id="create-the-atlas">
 <h2>Create the atlas<a class="headerlink" href="#create-the-atlas" title="Permalink to this headline">¶</a></h2>
-<p>To create an atlas click on <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Atlas</span> <span class="pre">Generator</span> <span class="pre">File</span></code>, it opens a dialog to set the name of the atlas and the container folder. This container folder should be a sub-folder of the <code class="docutils literal"><span class="pre">WebContent</span></code> folder.</p>
+<p>To create an atlas click on <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Atlas</span> <span class="pre">Generator</span> <span class="pre">File</span></code>, it opens a dialog to set the name of the atlas and the container folder. This container folder should be a sub-folder of the <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> folder.</p>
 <img alt="New texture map wizard." src="_images/NewAtlasWizard.png" />
-<p>When you press <strong>Finish</strong>, a file <code class="docutils literal"><span class="pre">myatlas.atlas</span></code> is created and opened in the Atlas Editor. This file does not contain any relation with Phaser, else it contains Phaser Editor related stuff, like the atlas settings and the path of the source images. So you should exclude it from a game build,  but keep it on your game development source.</p>
+<p>When you press <strong>Finish</strong>, a file <code class="docutils literal notranslate"><span class="pre">myatlas.atlas</span></code> is created and opened in the Atlas Editor. This file does not contain any relation with Phaser, else it contains Phaser Editor related stuff, like the atlas settings and the path of the source images. So you should exclude it from a game build,  but keep it on your game development source.</p>
 <p>One time the atlas file is created and the Atlas Editor is open to editing it then you can start adding images to the atlas.</p>
 <p>To add the image files to the atlas follow these steps:</p>
 <ul class="simple">
 <li>Select the image files in the Project Explorer.</li>
 <li>Drag the files and drop them into the atlas editor. You can also drop complete folders.</li>
-<li>Save the atlas file (<code class="docutils literal"><span class="pre">Ctrl+S</span></code> or <code class="docutils literal"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">Save</span></code>). It generates the Phaser atlas JSON file (with the JSON Hash format) and the texture image (PNG) file.</li>
+<li>Save the atlas file (<code class="docutils literal notranslate"><span class="pre">Ctrl+S</span></code> or <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">Save</span></code>). It generates the Phaser atlas JSON file (with the JSON Hash format) and the texture image (PNG) file.</li>
 </ul>
 <img alt="Drag and drop the source images into the editor." src="_images/AtlasImportImages.png" />
-<p>The last step, to save, is very important, remember <code class="docutils literal"><span class="pre">myatlas.atlas</span></code> file is an internal Phaser Editor file, it is a configuration file used to generate the final JSON atlas and PNG texture file to be used in the game. So when you save the editor a <code class="docutils literal"><span class="pre">myatlas.json</span></code> and <code class="docutils literal"><span class="pre">myatlas.png</span></code> files are generated. These are the files you should load in your game. Also, note the source images are not placed under the <code class="docutils literal"><span class="pre">WebContent</span></code> folder else under the <code class="docutils literal"><span class="pre">Design</span></code> folder. Phaser Editor creates the <code class="docutils literal"><span class="pre">Design</span></code> folder and encourages the developers to put there the files are not included in the game but are used to generate the game assets, like is the case of the atlas source images.</p>
-<p>To load the atlas in your game you can use the <code class="docutils literal"><span class="pre">Phaser.Loader.atlasJSONHash()</span></code> method or load the <a class="reference external" href="assets-manager.html">Asset Pack</a> file.</p>
+<p>The last step, to save, is very important, remember <code class="docutils literal notranslate"><span class="pre">myatlas.atlas</span></code> file is an internal Phaser Editor file, it is a configuration file used to generate the final JSON atlas and PNG texture file to be used in the game. So when you save the editor a <code class="docutils literal notranslate"><span class="pre">myatlas.json</span></code> and <code class="docutils literal notranslate"><span class="pre">myatlas.png</span></code> files are generated. These are the files you should load in your game. Also, note the source images are not placed under the <code class="docutils literal notranslate"><span class="pre">WebContent</span></code> folder else under the <code class="docutils literal notranslate"><span class="pre">Design</span></code> folder. Phaser Editor creates the <code class="docutils literal notranslate"><span class="pre">Design</span></code> folder and encourages the developers to put there the files are not included in the game but are used to generate the game assets, like is the case of the atlas source images.</p>
+<p>To load the atlas in your game you can use the <code class="docutils literal notranslate"><span class="pre">Phaser.Loader.atlasJSONHash()</span></code> method or load the <a class="reference external" href="assets-manager.html">Asset Pack</a> file.</p>
 <img alt="Save to generate the texture files." src="_images/AtlasSaveGenerateFiles.png" />
 </div>
 <div class="section" id="tuning-the-atlas-parameters">
@@ -226,29 +226,29 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">Min/Max</span> <span class="pre">Size</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Min/Max</span> <span class="pre">Size</span></code></td>
 <td>To change the size of the texture image. There are cases where the editor generates more than one Phaser (JSON) atlas files. It is because the texture has no space for all images so it creates another atlas to put there the remaining images. However you can change the max size of the texture to make space for all the sprites.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Size</span> <span class="pre">constraints</span></code></td>
-<td>You can select <code class="docutils literal"><span class="pre">Any</span> <span class="pre">Size</span></code> (default) or <code class="docutils literal"><span class="pre">POT</span> <span class="pre">(Power</span> <span class="pre">of</span> <span class="pre">2)</span></code>. In the second case the editor generates a texture with a size power of 2. In some platforms this kind of textures performs better.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Size</span> <span class="pre">constraints</span></code></td>
+<td>You can select <code class="docutils literal notranslate"><span class="pre">Any</span> <span class="pre">Size</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">POT</span> <span class="pre">(Power</span> <span class="pre">of</span> <span class="pre">2)</span></code>. In the second case the editor generates a texture with a size power of 2. In some platforms this kind of textures performs better.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">Padding</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Padding</span></code></td>
 <td>It controls the spacing between the sprites. It is useful to remove artifacts from sprites animations, tile sprites, in general when the source images has color pixels in the borders. By default it puts 2.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Strip</span> <span class="pre">white</span> <span class="pre">spaces</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Strip</span> <span class="pre">white</span> <span class="pre">spaces</span></code></td>
 <td>To remove the extra space of sprites. If your source images have extra space (transparent areas) around the picture, then activating these parameters the editor generates a texture that removes that spaces and a JSON file that specify to Phaser to render the sprites with the right spacing. By default these parameters are on.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">Use</span> <span class="pre">indexes</span></code></td>
-<td>To sort the sprites by using a <code class="docutils literal"><span class="pre">_01.png</span></code> suffix in the source files.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">indexes</span></code></td>
+<td>To sort the sprites by using a <code class="docutils literal notranslate"><span class="pre">_01.png</span></code> suffix in the source files.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Alias</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Alias</span></code></td>
 <td>Equal images are packed once.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">Grid</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Grid</span></code></td>
 <td>To pack the images in a uniform grid. You can use this together with the Indexes option to create spritesheets.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Use</span> <span class="pre">folders</span> <span class="pre">name</span></code></td>
-<td>Prepend the parent folders name to the frames name. Many times developers group the source images in different folders with a special meaning, for example, the images are grouped in an <code class="docutils literal"><span class="pre">Attacking</span></code> and <code class="docutils literal"><span class="pre">Idle</span></code> folders, so, by enabling this parameter, the names of the folders are prepended to the name of the frames: <code class="docutils literal"><span class="pre">Attacking_001</span></code> .. <code class="docutils literal"><span class="pre">Attacking_010</span></code>, <code class="docutils literal"><span class="pre">Idle_001</span></code> .. <code class="docutils literal"><span class="pre">Idle_010</span></code>.</td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">folders</span> <span class="pre">name</span></code></td>
+<td>Prepend the parent folders name to the frames name. Many times developers group the source images in different folders with a special meaning, for example, the images are grouped in an <code class="docutils literal notranslate"><span class="pre">Attacking</span></code> and <code class="docutils literal notranslate"><span class="pre">Idle</span></code> folders, so, by enabling this parameter, the names of the folders are prepended to the name of the frames: <code class="docutils literal notranslate"><span class="pre">Attacking_001</span></code> .. <code class="docutils literal notranslate"><span class="pre">Attacking_010</span></code>, <code class="docutils literal notranslate"><span class="pre">Idle_001</span></code> .. <code class="docutils literal notranslate"><span class="pre">Idle_010</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -327,6 +327,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

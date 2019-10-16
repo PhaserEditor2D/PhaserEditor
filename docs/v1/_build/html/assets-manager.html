@@ -206,21 +206,21 @@
 <p>In Phaser Editor we encourage to use the <a class="reference external" href="http://www.html5gamedevs.com/topic/6807-new-phaser-asset-pack-feature-please-test">Asset Pack JSON Format</a> to load the assets of your games, it allow a better organization and comprehension of the assets and we provide many features around this file, specially the scene maker.</p>
 <div class="section" id="the-asset-pack">
 <h2>The asset pack<a class="headerlink" href="#the-asset-pack" title="Permalink to this headline">¶</a></h2>
-<p>In the Phaser repository there is the file <code class="docutils literal"><span class="pre">resources/Asset</span> <span class="pre">Pack</span> <span class="pre">JSON</span> <span class="pre">Format/assetPack.json</span></code>. It is an example of how the assets can be loaded via the asset pack. We reproduce here the Phaser’s authors explanation of that file:</p>
+<p>In the Phaser repository there is the file <code class="docutils literal notranslate"><span class="pre">resources/Asset</span> <span class="pre">Pack</span> <span class="pre">JSON</span> <span class="pre">Format/assetPack.json</span></code>. It is an example of how the assets can be loaded via the asset pack. We reproduce here the Phaser’s authors explanation of that file:</p>
 <blockquote>
-<div><p>An Asset Pack is a means to control the loading of assets into Phaser via a JSON file. Use <code class="docutils literal"><span class="pre">Phaser.Loader.pack()</span></code> to load your data file.</p>
+<div><p>An Asset Pack is a means to control the loading of assets into Phaser via a JSON file. Use <code class="docutils literal notranslate"><span class="pre">Phaser.Loader.pack()</span></code> to load your data file.</p>
 <p>The file is split into sections (…) Sections are a way for you to control the splitting-up of asset loading, so you don’t have to load everything at once.</p>
-<p>The key you use for the sections is entirely up to you and is passed to the <code class="docutils literal"><span class="pre">Phaser.Loader.pack</span></code> call.</p>
-<p>Within each section is an Array of objects. Each object corresponds to a single file to be loaded. The “type” property controls the type of file. Note that lots of the file properties are optional. See the <code class="docutils literal"><span class="pre">Phaser.Loader</span></code> API Documentation to find out which ones, as they match the API calls exactly.</p>
-<p>Where a file type has a callback, such as “script”, the context in which the callback is run should be passed to the <code class="docutils literal"><span class="pre">Phaser.Loader.pack</span></code> method. See the examples for further details.</p>
+<p>The key you use for the sections is entirely up to you and is passed to the <code class="docutils literal notranslate"><span class="pre">Phaser.Loader.pack</span></code> call.</p>
+<p>Within each section is an Array of objects. Each object corresponds to a single file to be loaded. The “type” property controls the type of file. Note that lots of the file properties are optional. See the <code class="docutils literal notranslate"><span class="pre">Phaser.Loader</span></code> API Documentation to find out which ones, as they match the API calls exactly.</p>
+<p>Where a file type has a callback, such as “script”, the context in which the callback is run should be passed to the <code class="docutils literal notranslate"><span class="pre">Phaser.Loader.pack</span></code> method. See the examples for further details.</p>
 </div></blockquote>
 </div>
 <div class="section" id="create-the-pack-file">
 <h2>Create the pack file<a class="headerlink" href="#create-the-pack-file" title="Permalink to this headline">¶</a></h2>
-<p>If you create a project based on the built-in Phaser Editor templates then this file is created automatically. You can find it in the <code class="docutils literal"><span class="pre">WebContent/assets/assets-pack.json</span></code> path.</p>
-<p>To create the pack file manually, go to <code class="docutils literal"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Asset</span> <span class="pre">Pack</span> <span class="pre">File</span></code>:</p>
+<p>If you create a project based on the built-in Phaser Editor templates then this file is created automatically. You can find it in the <code class="docutils literal notranslate"><span class="pre">WebContent/assets/assets-pack.json</span></code> path.</p>
+<p>To create the pack file manually, go to <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">→</span> <span class="pre">New</span> <span class="pre">→</span> <span class="pre">Asset</span> <span class="pre">Pack</span> <span class="pre">File</span></code>:</p>
 <img alt="Asset pack file menu" src="_images/NewAssetPackMenu.png" />
-<p>It opens the Asset Pack File wizard. In this wizard, you should write the name of the file and select the folder where to create the pack. By default, it selects the <code class="docutils literal"><span class="pre">assets</span></code> folder, but you can select any folder in any project. Press Finish to create the file and it opens in the Asset Pack editor.</p>
+<p>It opens the Asset Pack File wizard. In this wizard, you should write the name of the file and select the folder where to create the pack. By default, it selects the <code class="docutils literal notranslate"><span class="pre">assets</span></code> folder, but you can select any folder in any project. Press Finish to create the file and it opens in the Asset Pack editor.</p>
 <img alt="Asset pack wizard" src="_images/NewAssetPackSelectFolder.png" />
 </div>
 <div class="section" id="the-pack-file-editor">
@@ -230,13 +230,13 @@
 <p>In the assets tree, you add, remove and rename the sections and the entries. The asset details panel shows the properties of the object selected in the tree.</p>
 <p>To modify an asset entry, you select it in the tree and change the values in the details panel.</p>
 <p>The details panel also shows the JSDoc of the different parameters, it is the same doc of the parameters of the loader method.</p>
-<p>For example, if you select an “image” object in the tree, the details panel shows the parameters of the <code class="docutils literal"><span class="pre">Phaser.Loader.image()</span></code> method. You can modify the values of the parameters and you can see the documentation of it (hover the mouse in the parameter’s name).</p>
+<p>For example, if you select an “image” object in the tree, the details panel shows the parameters of the <code class="docutils literal notranslate"><span class="pre">Phaser.Loader.image()</span></code> method. You can modify the values of the parameters and you can see the documentation of it (hover the mouse in the parameter’s name).</p>
 <img alt="Asset pack editor" src="_images/AssetPackEditor.png" />
 </div>
 <div class="section" id="load-the-assets-from-the-pack-file">
 <h2>Load the assets from the pack file<a class="headerlink" href="#load-the-assets-from-the-pack-file" title="Permalink to this headline">¶</a></h2>
 <p>In Phaser the assets are loaded in the preload method of the game state. The code to load them looks like this:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s2">&quot;dino&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/dino.png&quot;</span><span class="p">);</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s2">&quot;dino&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/dino.png&quot;</span><span class="p">);</span>
 <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">image</span><span class="p">(</span><span class="s2">&quot;montain&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/montain.png&quot;</span><span class="p">);</span>
 <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">spritesheet</span><span class="p">(</span><span class="s2">&quot;girl&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/mujer-trotando.png&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">);</span>
 <span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">audio</span><span class="p">(</span><span class="s2">&quot;music&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/guajira.ogg&quot;</span><span class="p">);</span>
@@ -245,10 +245,10 @@
 </div>
 <p>For each asset to load you have to write a loader’s method call.</p>
 <p>When you use an asset pack you only have to write a line to load a section from the asset pack:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/assets-pack.json&quot;</span><span class="p">);</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">game</span><span class="p">.</span><span class="nx">load</span><span class="p">.</span><span class="nx">pack</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/assets-pack.json&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>It automatically loads all the assets defined in the <code class="docutils literal"><span class="pre">&quot;level&quot;</span></code> section of the pack <code class="docutils literal"><span class="pre">assets-pack.json</span></code>.</p>
+<p>It automatically loads all the assets defined in the <code class="docutils literal notranslate"><span class="pre">&quot;level&quot;</span></code> section of the pack <code class="docutils literal notranslate"><span class="pre">assets-pack.json</span></code>.</p>
 </div>
 <div class="section" id="assets-explorer">
 <h2>Assets explorer<a class="headerlink" href="#assets-explorer" title="Permalink to this headline">¶</a></h2>
@@ -258,7 +258,7 @@
 <p>The Assets view show the hierarchy of the assets declared on the packs of the active project. The assets, as in the pack editor, are grouped in pack files and sections, but in addition, you can get access to the frames of spritesheets or texture atlases. For example, a texture atlas is a node that you can expand to see all the sprites of the texture.</p>
 <p>The visual scenes and prefabs (Canvas files) are also available in the Assets view, unser the Canvas section.</p>
 <img alt="Assets explorer" src="_images/AssetsView.png" />
-<p>To open the Assets view type <code class="docutils literal"><span class="pre">Ctrl+3</span></code> and write <code class="docutils literal"><span class="pre">assets</span></code>. It shows you a list of elements related to the word <code class="docutils literal"><span class="pre">assets</span></code>, just click the one that says <code class="docutils literal"><span class="pre">Assets</span> <span class="pre">View</span></code>.</p>
+<p>To open the Assets view type <code class="docutils literal notranslate"><span class="pre">Ctrl+3</span></code> and write <code class="docutils literal notranslate"><span class="pre">assets</span></code>. It shows you a list of elements related to the word <code class="docutils literal notranslate"><span class="pre">assets</span></code>, just click the one that says <code class="docutils literal notranslate"><span class="pre">Assets</span> <span class="pre">View</span></code>.</p>
 </div>
 <div class="section" id="quick-preview-of-the-assets">
 <h3>Quick preview of the assets<a class="headerlink" href="#quick-preview-of-the-assets" title="Permalink to this headline">¶</a></h3>
@@ -282,7 +282,7 @@
 <p>A nice new feature in Phaser Editor is the refactoring tools. These tools allow the user to change asset names, delete asset entries or replace asset textures by executing safe operations that can be undone.</p>
 <div class="section" id="delete-an-asset">
 <h4>Delete an asset<a class="headerlink" href="#delete-an-asset" title="Permalink to this headline">¶</a></h4>
-<p>To delete an asset entry right-click on it and select the <code class="docutils literal"><span class="pre">Refactoring</span> <span class="pre">→</span> <span class="pre">Delete</span></code> option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifying the <code class="docutils literal"><span class="pre">pack.json</span></code> file, the real file, like an image, is not touched.</p>
+<p>To delete an asset entry right-click on it and select the <code class="docutils literal notranslate"><span class="pre">Refactoring</span> <span class="pre">→</span> <span class="pre">Delete</span></code> option.  Please remember that an asset entry is just a definition, an entry, in the asset pack file. By deleting an asset entry you only are modifying the <code class="docutils literal notranslate"><span class="pre">pack.json</span></code> file, the real file, like an image, is not touched.</p>
 <img alt="Delete asset menu" src="_images/DeleteAssetMenu.png" />
 <p><em>Note that some elements shown in the Assets view cannot be deleted. For example you cannot delete a frame of a texture atlas, you only can delete a complete texture atlas.</em></p>
 <p>After select the option to delete an asset, it opens a confirmation dialog with the option of preview the list of files that will be affected by the deletion.</p>
@@ -294,7 +294,7 @@
 </div>
 <div class="section" id="move-asset">
 <h4>Move asset<a class="headerlink" href="#move-asset" title="Permalink to this headline">¶</a></h4>
-<p>Assets can be moved from one section to other. Just follow the same process of the rename, in the context menu select the <code class="docutils literal"><span class="pre">Refactoring</span> <span class="pre">→</span> <span class="pre">Move</span></code> option. It shows a dialog to select the new section for the asset and the option to preview the affected files. This operation can be undone and updates all the affected files so it does not introduce errors.</p>
+<p>Assets can be moved from one section to other. Just follow the same process of the rename, in the context menu select the <code class="docutils literal notranslate"><span class="pre">Refactoring</span> <span class="pre">→</span> <span class="pre">Move</span></code> option. It shows a dialog to select the new section for the asset and the option to preview the affected files. This operation can be undone and updates all the affected files so it does not introduce errors.</p>
 </div>
 <div class="section" id="global-replace-texture">
 <h4>Global replace texture<a class="headerlink" href="#global-replace-texture" title="Permalink to this headline">¶</a></h4>
@@ -307,7 +307,7 @@
 <li>Select the texture replacement and confirm.</li>
 </ul>
 <img alt="Select the new texture" src="_images/SelectNewTextureReplacement.png" />
-<p>All the objects that used <code class="docutils literal"><span class="pre">flor</span></code> as texture will be modified to use the texture <code class="docutils literal"><span class="pre">zombi-head</span></code>.</p>
+<p>All the objects that used <code class="docutils literal notranslate"><span class="pre">flor</span></code> as texture will be modified to use the texture <code class="docutils literal notranslate"><span class="pre">zombi-head</span></code>.</p>
 </div>
 </div>
 </div>
@@ -315,7 +315,7 @@
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <p>If you find that your assets are in an invalid state or you see a strange behavior then to fix it you can try by cleaning the projects.</p>
 <p>Internally Phaser Editor uses a memory model with all the assets and its properties. This memory model should be synchronized with the physical and real data, but it happens sometimes because of external changes or maybe bugs, the memory model is not in synchronization with the physical one. In this case, the best is to force the editor to create the memory model from scratch.</p>
-<p>To do this select in the main menu the option <code class="docutils literal"><span class="pre">Project</span> <span class="pre">→</span> <span class="pre">Clean...</span></code>, it opens a dialog with the list of your projects. Select those you want to re-build and press the <strong>OK</strong> button. After this operation all the visual editors and views should be updated to show the new fresh/fixed data.</p>
+<p>To do this select in the main menu the option <code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">→</span> <span class="pre">Clean...</span></code>, it opens a dialog with the list of your projects. Select those you want to re-build and press the <strong>OK</strong> button. After this operation all the visual editors and views should be updated to show the new fresh/fixed data.</p>
 <img alt="Clean projects." src="_images/CleanProjects.png" />
 <p>If the strange behavior continues please <a class="reference external" href="https://github.com/PhaserEditor2D/PhaserEditor/issues">open an issue</a>.</p>
 </div>
@@ -374,6 +374,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

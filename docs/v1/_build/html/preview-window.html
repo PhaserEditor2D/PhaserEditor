@@ -197,8 +197,8 @@
 <h1>The Preview Window<a class="headerlink" href="#the-preview-window" title="Permalink to this headline">¶</a></h1>
 <p>As the name suggests, in this window you can visualize different objects, especially the asset declarations of the <a class="reference external" href="assets-manager.html">asset pack</a> and media files (images, sounds, videos).</p>
 <p>This Preview window usually shows details of the previewed object like dimension, name, etc… In addition, in the case of textures, you can <a class="reference external" href="canvas.html#from-the-preview-window">drag the frames and drop them into a scene</a>, to create new objects.</p>
-<p>To preview an asset you can drag it from the Assets explorer or Project Explorer and drop it into the Preview window, or select an asset and press <code class="docutils literal"><span class="pre">Ctrl+Alt+V</span></code>.</p>
-<p>In the JavaScript editor, if you put the cursor on a string literal and press <code class="docutils literal"><span class="pre">Ctrl+Alt+V</span></code>, the asset of the same name will be opened in the Preview.</p>
+<p>To preview an asset you can drag it from the Assets explorer or Project Explorer and drop it into the Preview window, or select an asset and press <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+V</span></code>.</p>
+<p>In the JavaScript editor, if you put the cursor on a string literal and press <code class="docutils literal notranslate"><span class="pre">Ctrl+Alt+V</span></code>, the asset of the same name will be opened in the Preview.</p>
 <img alt="Drop asset into the preview." src="_images/DropAssetPreview.png" />
 <p>Note in the toolbar of the Preview window there are the following actions:</p>
 <img alt="_images/PreviewMenu.png" src="_images/PreviewMenu.png" />
@@ -211,7 +211,7 @@
 <tr class="row-odd"><td>Open New Window</td>
 <td>Opens a new Preview, so you can visualize many objects at the same time.</td>
 </tr>
-<tr class="row-even"><td>Refresh (<code class="docutils literal"><span class="pre">F5</span></code>)</td>
+<tr class="row-even"><td>Refresh (<code class="docutils literal notranslate"><span class="pre">F5</span></code>)</td>
 <td>To update the content. This is useful when the object was changed by an external tool.</td>
 </tr>
 <tr class="row-odd"><td>Clear</td>
@@ -221,7 +221,7 @@
 </table>
 <div class="section" id="the-sprite-sheet-preview">
 <h2>The sprite-sheet preview<a class="headerlink" href="#the-sprite-sheet-preview" title="Permalink to this headline">¶</a></h2>
-<p>When you open a sprite-sheet asset in the Preview window it shows a special control where you can play animations with the sprite-sheet frames. It is useful for quick animations preview. In addition, you can select a couple of frames and drop them into the scene. To select more than one frame keep the <code class="docutils literal"><span class="pre">Shift</span></code> key pressed and move the mouse over the frames.</p>
+<p>When you open a sprite-sheet asset in the Preview window it shows a special control where you can play animations with the sprite-sheet frames. It is useful for quick animations preview. In addition, you can select a couple of frames and drop them into the scene. To select more than one frame keep the <code class="docutils literal notranslate"><span class="pre">Shift</span></code> key pressed and move the mouse over the frames.</p>
 <img alt="You can play animations in the sprite-sheet preview." src="_images/SpritesheetPreviewAnimation.gif" />
 </div>
 <div class="section" id="the-textures-atlas-preview">
@@ -236,7 +236,7 @@
 </div>
 <div class="section" id="bitmap-font-preview">
 <h2>Bitmap Font preview<a class="headerlink" href="#bitmap-font-preview" title="Permalink to this headline">¶</a></h2>
-<p>To preview bitmap font just drop it into the window. By default it shows the name of the font. You can change the text by pressing the <code class="docutils literal"><span class="pre">Set</span> <span class="pre">text</span></code> command, it opens a text input dialog.</p>
+<p>To preview bitmap font just drop it into the window. By default it shows the name of the font. You can change the text by pressing the <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">text</span></code> command, it opens a text input dialog.</p>
 <img alt="Preview a bitmap text." src="_images/BitmapFontPreview.png" />
 </div>
 <div class="section" id="csv-tilemap-preview">
@@ -244,7 +244,7 @@
 <p>To preview a CSV tilemap, drag it from the Assets view and drop it in the Preview window. The CSV format does not provide any information about the tile size or tilset image of he tilemap, so you have to enters it manually. By default, the tileset image is simulated by assigning a different color to each tile ID, and the tile size is set to 32x32.</p>
 <p>This is how looks a tilemap preview by default:</p>
 <img alt="A default rendering of tilemap." src="_images/TilemapPreviewDefault.png" />
-<p>To set the tile size, press the “settings” toolbar icon and set the right values in the format <code class="docutils literal"><span class="pre">&lt;width&gt;x&lt;height&gt;</span></code>:</p>
+<p>To set the tile size, press the “settings” toolbar icon and set the right values in the format <code class="docutils literal notranslate"><span class="pre">&lt;width&gt;x&lt;height&gt;</span></code>:</p>
 <img alt="Set the size." src="_images/TilemapPreviewSetSize.png" />
 <p>To set the tileset image, press the “image” toolbar icon and select the right image asset:</p>
 <img alt="Set the tileset image." src="_images/TilemapPreviewSetTilesetImage.png" />
@@ -252,7 +252,7 @@
 <img alt="The final tilemap." src="_images/TilemapPreviewFinal.png" />
 <div class="section" id="indexes-selection">
 <h3>Indexes selection<a class="headerlink" href="#indexes-selection" title="Permalink to this headline">¶</a></h3>
-<p>A nice feature of the tilemap preview is the indexes selection. Note when you move the mouse over the tilemap it shows a label with the ID of the tile behind it. If you click it, that tile is selected, and the ID added to the set of selected IDs, in the text field at the bottom of the window. If you double click a tile (or press the <code class="docutils literal"><span class="pre">SPACE</span></code> key), all the tiles with the same ID are selected and that ID is added to the selection set:</p>
+<p>A nice feature of the tilemap preview is the indexes selection. Note when you move the mouse over the tilemap it shows a label with the ID of the tile behind it. If you click it, that tile is selected, and the ID added to the set of selected IDs, in the text field at the bottom of the window. If you double click a tile (or press the <code class="docutils literal notranslate"><span class="pre">SPACE</span></code> key), all the tiles with the same ID are selected and that ID is added to the selection set:</p>
 <img alt="How to select tilemap indexes (tile IDs)." src="_images/TilemapPreviewSelectIndexes.png" />
 <p>Note the list of the selected IDs has a JavaScript array like syntax, so it is very easy for you to use it in your code, create a list in the preview window and paste it in your code, or get the list of IDs from your code and paste it in the preview window.</p>
 </div>
@@ -327,6 +327,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

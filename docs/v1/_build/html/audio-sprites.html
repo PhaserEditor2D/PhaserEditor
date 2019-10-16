@@ -185,11 +185,11 @@
 <blockquote>
 <div>Audio Sprites are generally a ‘hang over’ from pre-Web Audio days, where they were literally the only way to have multiple sound effects / music in a game. However they’re still pretty useful even for web audio playback, as it means less http requests and mostly retains compatibility with older devices that still don’t support Web Audio, or browsers like IE that don’t at all either. – <a class="reference external" href="http://www.html5gamedevs.com/topic/6582-advantages-audio-sprites/#entry39190">Richard Davey</a> .</div></blockquote>
 <p>Audio Sprites are a combination of audio files and a JSON configuration. The JSON follows the format of that created by <a class="reference external" href="https://github.com/tonistiigi/audiosprite">tonistiigi</a>. In Phaser Editor we provide an editor to easy create and edit audio sprites.</p>
-<p>To create audio sprites go to the <code class="docutils literal"><span class="pre">File</span></code> menu and select <code class="docutils literal"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Audio</span> <span class="pre">Sprites</span> <span class="pre">File</span></code> and it opens a dialog to select the container folder and set the file name.</p>
+<p>To create audio sprites go to the <code class="docutils literal notranslate"><span class="pre">File</span></code> menu and select <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Audio</span> <span class="pre">Sprites</span> <span class="pre">File</span></code> and it opens a dialog to select the container folder and set the file name.</p>
 <img alt="New audio sprites wizard." src="_images/AudioSpriteWizard.png" />
 <p>When you press <strong>Finish</strong>, it creates a JSON file with the sprites definitions. This file is opened in the Audio Sprite Editor, then you can drag some audio files from the Project Explorer and drop them into the editor. When you drop the audio files into the editor they are appended to a single audio file. Remember that audio sprites contain a “big” audio file formed by the concatenation of the different sounds spaced by a little time of silence.</p>
-<p>For example, if your audio sprites JSON is <code class="docutils literal"><span class="pre">sounds.json</span></code>, then when you add audio files to the editor, these audio files are appended to a <code class="docutils literal"><span class="pre">sounds.wav</span></code> file new sprites entries are created with default values.</p>
-<p>This resultant <code class="docutils literal"><span class="pre">sounds.wav</span></code> file is transcoded to MP3 and OGG formats, so at the end, you get two other <code class="docutils literal"><span class="pre">sounds.mp3</span></code> and <code class="docutils literal"><span class="pre">sounds.ogg</span></code> files.</p>
+<p>For example, if your audio sprites JSON is <code class="docutils literal notranslate"><span class="pre">sounds.json</span></code>, then when you add audio files to the editor, these audio files are appended to a <code class="docutils literal notranslate"><span class="pre">sounds.wav</span></code> file new sprites entries are created with default values.</p>
+<p>This resultant <code class="docutils literal notranslate"><span class="pre">sounds.wav</span></code> file is transcoded to MP3 and OGG formats, so at the end, you get two other <code class="docutils literal notranslate"><span class="pre">sounds.mp3</span></code> and <code class="docutils literal notranslate"><span class="pre">sounds.ogg</span></code> files.</p>
 <p>All the audio manipulation is done using the <a class="reference external" href="https://www.ffmpeg.org/">FFmpeg</a> tool.</p>
 <img alt="Create and edit the audio sprites." src="_images/AudioSpritesEditor.png" />
 <p>As you can see in the above image, the editor has two panels, the top panel show the audio waves and the range of the sprites. When you move the mouse over this panel a vertical line indicates the time at the cursor’s position.</p>
@@ -251,6 +251,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
 
   
 

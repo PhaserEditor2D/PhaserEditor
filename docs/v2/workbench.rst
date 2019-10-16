@@ -305,15 +305,18 @@ Phaser Editor preferences
 
 The **Phaser Editor** category in the **Preferences Dialog** provides the settings related to the specific tools introduced by |PhaserEditor|_:
 
-.. topic:: External Code Editor preferences
+External Code Editor preferences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Configures the |ExternalEditor|_.
 
-.. topic:: Optimize PNG preferences
+Optimize PNG preferences
+~~~~~~~~~~~~~~~~~~~~~~~~
 
    Configures the `PNG images optimizer <misc.html#optimize-png-images>`_.
 
-.. topic:: Preview preferences
+Preview preferences
+~~~~~~~~~~~~~~~~~~~
 
    Configures how images and other visual resources are shown in the IDE.
 
@@ -322,18 +325,21 @@ The **Phaser Editor** category in the **Preferences Dialog** provides the settin
 
    Note there are other two subcategories, **Spritesheet**, and **Tilemap**.
 
-.. topic:: Project preferences
+Project preferences
+~~~~~~~~~~~~~~~~~~~
 
    Some default values for every project in the workspace. When you open a `Phaser Project Wizard`_, it will use these default values. The same when you open a `Scene File Wizard <scene-editor.html#create-new-scene-file>`_.
 
    .. image:: images/workbench/preferences-project.png
       :alt: The default project settings.
 
-.. topic:: Scene Editor preferences
+Scene Editor preferences
+~~~~~~~~~~~~~~~~~~~~~~~~
 
    Configures `the Scene Editor preferences <scene-editor.html#scene-editor-preferences>`_.
 
-.. topic:: WebView preferences
+WebView preferences
+~~~~~~~~~~~~~~~~~~~
 
    There are a couple of components that use a WebView or embedded browser. |PhaserEditor|_ provides two WebView implementations:
 
