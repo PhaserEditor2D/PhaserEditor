@@ -173,11 +173,6 @@ canvas {
     border-radius: 3px 3px 0 0;
 }
 
-.expandBtn {
-    width: 16px;
-    height: 16px;
-}
-
 .PropertyFormArea {
     display: grid;
 }

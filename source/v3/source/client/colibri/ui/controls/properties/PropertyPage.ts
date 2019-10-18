@@ -4,7 +4,8 @@ namespace colibri.ui.controls.properties {
 
         private _section: PropertySection<any>;
         private _titleArea: HTMLDivElement;
-        private _expandBtn: HTMLElement;
+        private _expandIconElement: HTMLCanvasElement;
+        private _expandIconContext: CanvasRenderingContext2D;
         private _formArea: HTMLDivElement;
         private _page: PropertyPage;
 
@@ -23,10 +24,16 @@ namespace colibri.ui.controls.properties {
                 this._titleArea = document.createElement("div");
                 this._titleArea.classList.add("PropertyTitleArea");
 
-                this._expandBtn = document.createElement("div");
-                this._expandBtn.classList.add("expandBtn", "expanded");
-                this._expandBtn.addEventListener("mouseup", () => this.toggleSection());
-                this._titleArea.appendChild(this._expandBtn);
+                this._expandIconElement = document.createElement("canvas");
+                this._expandIconElement.classList.add("expanded");
+                this._expandIconElement.style.width = (this._expandIconElement.width = controls.ICON_SIZE) + "px";
+                this._expandIconElement.style.height = (this._expandIconElement.height = controls.ICON_SIZE) + "px";
+                this._expandIconElement.addEventListener("mouseup", () => this.toggleSection());
+
+                this._titleArea.appendChild(this._expandIconElement);
+
+                this._expandIconContext = this._expandIconElement.getContext("2d");
+                this._expandIconContext.imageSmoothingEnabled = false;
 
                 const label = document.createElement("label");
                 label.innerText = this._section.getTitle();
@@ -40,27 +47,46 @@ namespace colibri.ui.controls.properties {
 
                 this.getElement().appendChild(this._titleArea);
                 this.getElement().appendChild(this._formArea);
+
+                this.updateExpandIcon();
             }
 
             this._section.updateWithSelection();
         }
 
         isExpanded() {
-            return this._expandBtn.classList.contains("expanded");
+            return this._expandIconElement.classList.contains("expanded");
         }
 
         private toggleSection(): void {
+
             if (this.isExpanded()) {
-                this._expandBtn.classList.remove("expanded");
-                this._expandBtn.classList.add("collapsed");
                 this._formArea.style.display = "none";
+                this._expandIconElement.classList.remove("expanded");
             } else {
-                this._expandBtn.classList.add("expanded");
-                this._expandBtn.classList.remove("collapsed");
                 this._formArea.style.display = "initial";
+                this._expandIconElement.classList.add("expanded");
             }
+
             this._page.updateExpandStatus();
+
             this.getContainer().dispatchLayoutEvent();
+
+            this.updateExpandIcon();
+        }
+
+        private updateExpandIcon() {
+
+            const w = this._expandIconElement.width;
+            const h = this._expandIconElement.height;
+
+            this._expandIconContext.clearRect(0, 0, w, h);
+
+            const icon = this.isExpanded() ? controls.ICON_CONTROL_TREE_COLLAPSE : controls.ICON_CONTROL_TREE_EXPAND;
+            const image = controls.Controls.getIcon(icon);
+
+            image.paint(this._expandIconContext, 0, 0, w, h, false);
+
         }
 
         getSection() {
@@ -109,10 +135,10 @@ namespace colibri.ui.controls.properties {
 
             } else {
 
-                for(const pane of this._sectionPanes) {
+                for (const pane of this._sectionPanes) {
                     pane.getElement().style.display = "none";
                 }
-                
+
             }
         }
 
