@@ -1,15 +1,15 @@
+/// <reference path="../../../phasereditor2d.pack/ui/viewers/AssetPackTreeViewerRenderer.ts" />
+
 namespace phasereditor2d.scene.ui.blocks {
 
     import controls = colibri.ui.controls;
-    import ide = colibri.ui.ide;
-    import core = colibri.core;
 
     export const PREFAB_SECTION = "prefab";
 
-    export class SceneEditorBlocksTreeRendererProvider extends pack.ui.viewers.AssetPackBlocksTreeViewerRenderer {
+    export class SceneEditorBlocksTreeRendererProvider extends pack.ui.viewers.AssetPackTreeViewerRenderer {
 
         constructor(viewer: controls.viewers.TreeViewer) {
-            super(viewer);
+            super(viewer, false);
 
             this.setSections([
 

@@ -2444,11 +2444,15 @@ var colibri;
             (function (viewers) {
                 viewers.TREE_RENDERER_GRID_PADDING = 5;
                 class GridTreeViewerRenderer extends viewers.TreeViewerRenderer {
-                    constructor(viewer, center = false) {
+                    constructor(viewer, flat = false, center = false) {
                         super(viewer);
                         viewer.setCellSize(128);
                         this._center = center;
+                        this._flat = flat;
                         this._sections = [];
+                    }
+                    isFlat() {
+                        return this._flat;
                     }
                     setSections(sections) {
                         this._sections = sections;
@@ -2458,9 +2462,17 @@ var colibri;
                     }
                     paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this.getViewer();
-                        const cellSize = viewer.getCellSize();
-                        if (cellSize <= 48) {
-                            return super.paintItems(objects, treeIconList, paintItems, null, x, y);
+                        let cellSize = viewer.getCellSize();
+                        if (this._flat) {
+                            if (cellSize < 64) {
+                                cellSize = 64;
+                                viewer.setCellSize(cellSize);
+                            }
+                        }
+                        else {
+                            if (cellSize <= 48) {
+                                return super.paintItems(objects, treeIconList, paintItems, null, x, y);
+                            }
                         }
                         const b = viewer.getBounds();
                         if (this._sections.length > 0) {
@@ -2524,7 +2536,7 @@ var colibri;
                                 this.renderGridCell(args, renderer, depth, obj === lastObj);
                                 if (y > -cellSize && y < b.height) {
                                     // render tree icon
-                                    if (children.length > 0) {
+                                    if (children.length > 0 && !this._flat) {
                                         const iconY = y + (cellSize - viewers.TREE_ICON_SIZE) / 2;
                                         const icon = controls.Controls.getIcon(expanded ? controls.ICON_CONTROL_TREE_COLLAPSE : controls.ICON_CONTROL_TREE_EXPAND);
                                         icon.paint(context, x + 5, iconY, controls.ICON_SIZE, controls.ICON_SIZE, false);
@@ -2544,7 +2556,7 @@ var colibri;
                                     x = 0 + offset;
                                 }
                             }
-                            if (expanded) {
+                            if (expanded && !this._flat) {
                                 const result = this.paintItems2(children, treeIconList, paintItems, newParentPaintItem, x, y, offset, depth + 1);
                                 y = result.y;
                                 x = result.x;
@@ -3291,9 +3303,6 @@ var colibri;
                     getContentProvider() {
                         return super.getContentProvider();
                     }
-                    setContentProvider(contentProvider) {
-                        super.setContentProvider(contentProvider);
-                    }
                     expandCollapseBranch(obj) {
                         if (this.getContentProvider().getChildren(obj).length > 0) {
                             this.setExpanded(obj, !this.isExpanded(obj));
@@ -3681,7 +3690,7 @@ var colibri;
                 }
                 createPart() {
                     this._viewer = this.createViewer();
-                    this.addClass("ViewerView");
+                    this.addClass("ViewerPart");
                     this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
                     this.add(this._filteredViewer);
                     this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
@@ -4146,6 +4155,39 @@ var colibri;
                 }
             }
             ide.ViewFolder = ViewFolder;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./ViewPart.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ViewerFileEditor extends ide.FileEditor {
+                constructor(id) {
+                    super(id);
+                }
+                createPart() {
+                    this._viewer = this.createViewer();
+                    this.addClass("ViewerPart");
+                    this._filteredViewer = new ui.controls.viewers.FilteredViewer(this._viewer);
+                    this.add(this._filteredViewer);
+                    this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
+                        this.setSelection(e.detail);
+                    });
+                }
+                getViewer() {
+                    return this._viewer;
+                }
+                layout() {
+                    if (this._filteredViewer) {
+                        this._filteredViewer.layout();
+                    }
+                }
+            }
+            ide.ViewerFileEditor = ViewerFileEditor;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -5332,7 +5374,7 @@ var phasereditor2d;
                         this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         this.setLabelProvider(new ui.viewers.FileLabelProvider());
                         this.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
-                        this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, true));
+                        this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, false, true));
                         this.getCanvas().classList.add("PreviewBackground");
                     }
                 }
@@ -6580,12 +6622,13 @@ TextureImporter:
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack) {
+    (function (pack_4) {
         var ui;
         (function (ui) {
             var editor;
             (function (editor) {
                 var ide = colibri.ui.ide;
+                var controls = colibri.ui.controls;
                 var io = colibri.core.io;
                 class AssetPackEditorFactory extends ide.EditorFactory {
                     constructor() {
@@ -6603,7 +6646,7 @@ var phasereditor2d;
                     }
                 }
                 editor.AssetPackEditorFactory = AssetPackEditorFactory;
-                class AssetPackEditor extends ide.FileEditor {
+                class AssetPackEditor extends ide.ViewerFileEditor {
                     constructor() {
                         super("phasereditor2d.AssetPackEditor");
                         this.addClass("AssetPackEditor");
@@ -6611,8 +6654,14 @@ var phasereditor2d;
                     static getFactory() {
                         return new AssetPackEditorFactory();
                     }
-                    createPart() {
+                    createViewer() {
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setContentProvider(new editor.AssetPackEditorContentProvider());
+                        viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider());
+                        viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
                         this.updateContent();
+                        return viewer;
                     }
                     async updateContent() {
                         const file = this.getInput();
@@ -6620,7 +6669,10 @@ var phasereditor2d;
                             return;
                         }
                         const content = await ide.FileUtils.preloadAndGetFileString(file);
-                        this.getElement().innerHTML = content;
+                        const pack = new pack_4.core.AssetPack(file, content);
+                        this.getViewer().setContentProvider(new editor.AssetPackEditorContentProvider(pack));
+                        this.getViewer().setInput(pack);
+                        this.getViewer().repaint();
                     }
                     setInput(file) {
                         super.setInput(file);
@@ -6629,7 +6681,73 @@ var phasereditor2d;
                 }
                 editor.AssetPackEditor = AssetPackEditor;
             })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack_4.ui || (pack_4.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                class AssetPackContentProvider {
+                    getChildren(parent) {
+                        if (parent instanceof pack.core.AssetPack) {
+                            return parent.getItems();
+                        }
+                        if (parent instanceof pack.core.AssetPackItem) {
+                            if (parent.getType() === pack.core.IMAGE_TYPE) {
+                                return [];
+                            }
+                            if (pack.core.AssetPackUtils.isImageFrameContainer(parent)) {
+                                return pack.core.AssetPackUtils.getImageFrames(parent);
+                            }
+                        }
+                        return [];
+                    }
+                }
+                viewers.AssetPackContentProvider = AssetPackContentProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../viewers/AssetPackContentProvider.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_5) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                class AssetPackEditorContentProvider extends ui.viewers.AssetPackContentProvider {
+                    constructor(pack = null) {
+                        super();
+                        this._pack = pack;
+                    }
+                    getRoots(input) {
+                        if (this._pack === null) {
+                            return [];
+                        }
+                        return this._pack.getItems();
+                    }
+                    getChildren(parent) {
+                        if (typeof (parent) === "string") {
+                            const type = parent;
+                            if (this._pack) {
+                                const children = this._pack.getItems()
+                                    .filter(item => item.getType() === type);
+                                return children;
+                            }
+                        }
+                        return super.getChildren(parent);
+                    }
+                }
+                editor.AssetPackEditorContentProvider = AssetPackEditorContentProvider;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack_5.ui || (pack_5.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -6733,7 +6851,7 @@ var phasereditor2d;
                         parent.classList.add("ManyImagePreviewFormArea");
                         const viewer = new controls.viewers.TreeViewer("PreviewBackground");
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-                        viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, true));
+                        viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, false, true));
                         viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
                         viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider());
                         const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
@@ -6768,75 +6886,6 @@ var phasereditor2d;
                 }
                 properties.ManyImageSection = ManyImageSection;
             })(properties = ui.properties || (ui.properties = {}));
-        })(ui = pack.ui || (pack.ui = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
-                var controls = colibri.ui.controls;
-                class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
-                    constructor(viewer) {
-                        super(viewer, false);
-                        viewer.setCellSize(64);
-                    }
-                    renderCellBack(args, selected, isLastChild) {
-                        super.renderCellBack(args, selected, isLastChild);
-                        const isParent = this.isParent(args.obj);
-                        const isChild = this.isChild(args.obj);
-                        const expanded = args.viewer.isExpanded(args.obj);
-                        if (isParent) {
-                            const ctx = args.canvasContext;
-                            ctx.save();
-                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                            if (expanded) {
-                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
-                            }
-                            else {
-                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
-                            }
-                            ctx.restore();
-                        }
-                        else if (isChild) {
-                            const margin = controls.viewers.TREE_RENDERER_GRID_PADDING;
-                            const ctx = args.canvasContext;
-                            ctx.save();
-                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                            if (isLastChild) {
-                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
-                            }
-                            else {
-                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
-                            }
-                            ctx.restore();
-                        }
-                    }
-                    isParent(obj) {
-                        if (obj instanceof pack.core.AssetPackItem) {
-                            switch (obj.getType()) {
-                                case pack.core.ATLAS_TYPE:
-                                case pack.core.MULTI_ATLAS_TYPE:
-                                case pack.core.ATLAS_XML_TYPE:
-                                case pack.core.UNITY_ATLAS_TYPE:
-                                case pack.core.SPRITESHEET_TYPE:
-                                    return true;
-                                default:
-                                    return false;
-                            }
-                        }
-                        return false;
-                    }
-                    isChild(obj) {
-                        return obj instanceof controls.ImageFrame;
-                    }
-                }
-                viewers.AssetPackBlocksTreeViewerRenderer = AssetPackBlocksTreeViewerRenderer;
-            })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -6888,35 +6937,6 @@ var phasereditor2d;
         (function (ui) {
             var viewers;
             (function (viewers) {
-                class AssetPackContentProvider {
-                    getChildren(parent) {
-                        if (parent instanceof pack.core.AssetPack) {
-                            return parent.getItems();
-                        }
-                        if (parent instanceof pack.core.AssetPackItem) {
-                            if (parent.getType() === pack.core.IMAGE_TYPE) {
-                                return [];
-                            }
-                            if (pack.core.AssetPackUtils.isImageFrameContainer(parent)) {
-                                return pack.core.AssetPackUtils.getImageFrames(parent);
-                            }
-                        }
-                        return [];
-                    }
-                }
-                viewers.AssetPackContentProvider = AssetPackContentProvider;
-            })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = pack.ui || (pack.ui = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
                 var controls = colibri.ui.controls;
                 class AssetPackLabelProvider {
                     getLabel(obj) {
@@ -6936,6 +6956,80 @@ var phasereditor2d;
                     }
                 }
                 viewers.AssetPackLabelProvider = AssetPackLabelProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
+                    constructor(viewer, flat) {
+                        super(viewer, flat, false);
+                        viewer.setCellSize(64);
+                        this.setSections([
+                            pack.core.IMAGE_TYPE,
+                            pack.core.ATLAS_TYPE,
+                            pack.core.SPRITESHEET_TYPE
+                        ]);
+                    }
+                    renderCellBack(args, selected, isLastChild) {
+                        super.renderCellBack(args, selected, isLastChild);
+                        const isParent = this.isParent(args.obj);
+                        const isChild = this.isChild(args.obj);
+                        const expanded = args.viewer.isExpanded(args.obj);
+                        if (isParent && !this.isFlat()) {
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                            if (expanded) {
+                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
+                            }
+                            else {
+                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
+                            }
+                            ctx.restore();
+                        }
+                        else if (isChild) {
+                            const margin = controls.viewers.TREE_RENDERER_GRID_PADDING;
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                            if (isLastChild) {
+                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
+                            }
+                            else {
+                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
+                            }
+                            ctx.restore();
+                        }
+                    }
+                    isParent(obj) {
+                        if (obj instanceof pack.core.AssetPackItem) {
+                            switch (obj.getType()) {
+                                case pack.core.ATLAS_TYPE:
+                                case pack.core.MULTI_ATLAS_TYPE:
+                                case pack.core.ATLAS_XML_TYPE:
+                                case pack.core.UNITY_ATLAS_TYPE:
+                                case pack.core.SPRITESHEET_TYPE:
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                        return false;
+                    }
+                    isChild(obj) {
+                        return obj instanceof controls.ImageFrame;
+                    }
+                }
+                viewers.AssetPackTreeViewerRenderer = AssetPackTreeViewerRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -7588,6 +7682,7 @@ var phasereditor2d;
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../../../phasereditor2d.pack/ui/viewers/AssetPackTreeViewerRenderer.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
@@ -7597,9 +7692,9 @@ var phasereditor2d;
             var blocks;
             (function (blocks) {
                 blocks.PREFAB_SECTION = "prefab";
-                class SceneEditorBlocksTreeRendererProvider extends phasereditor2d.pack.ui.viewers.AssetPackBlocksTreeViewerRenderer {
+                class SceneEditorBlocksTreeRendererProvider extends phasereditor2d.pack.ui.viewers.AssetPackTreeViewerRenderer {
                     constructor(viewer) {
-                        super(viewer);
+                        super(viewer, false);
                         this.setSections([
                             blocks.PREFAB_SECTION,
                             phasereditor2d.pack.core.IMAGE_TYPE,

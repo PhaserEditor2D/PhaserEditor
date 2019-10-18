@@ -7,6 +7,7 @@ namespace phasereditor2d.pack.ui.viewers {
         abstract getRoots(input: any): any[];
 
         getChildren(parent: any): any[] {
+            
             if (parent instanceof core.AssetPack) {
                 return parent.getItems();
             }

@@ -7,13 +7,19 @@ namespace colibri.ui.controls.viewers {
     export class GridTreeViewerRenderer extends TreeViewerRenderer {
 
         private _center: boolean;
+        private _flat: boolean;
         private _sections: any[];
 
-        constructor(viewer: TreeViewer, center: boolean = false) {
+        constructor(viewer: TreeViewer, flat: boolean = false, center: boolean = false) {
             super(viewer);
             viewer.setCellSize(128);
             this._center = center;
+            this._flat = flat;
             this._sections = [];
+        }
+
+        isFlat() {
+            return this._flat;
         }
 
         setSections(sections: any[]) {
@@ -27,10 +33,17 @@ namespace colibri.ui.controls.viewers {
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
             const viewer = this.getViewer();
 
-            const cellSize = viewer.getCellSize();
+            let cellSize = viewer.getCellSize();
 
-            if (cellSize <= 48) {
-                return super.paintItems(objects, treeIconList, paintItems, null, x, y);
+            if (this._flat) {
+                if (cellSize < 64) {
+                    cellSize = 64;
+                    viewer.setCellSize(cellSize);
+                }
+            } else {
+                if (cellSize <= 48) {
+                    return super.paintItems(objects, treeIconList, paintItems, null, x, y);
+                }
             }
 
             const b = viewer.getBounds();
@@ -127,8 +140,9 @@ namespace colibri.ui.controls.viewers {
                     this.renderGridCell(args, renderer, depth, obj === lastObj);
 
                     if (y > -cellSize && y < b.height) {
+
                         // render tree icon
-                        if (children.length > 0) {
+                        if (children.length > 0 && !this._flat) {
                             const iconY = y + (cellSize - TREE_ICON_SIZE) / 2;
 
                             const icon = Controls.getIcon(expanded ? ICON_CONTROL_TREE_COLLAPSE : ICON_CONTROL_TREE_EXPAND);
@@ -156,7 +170,7 @@ namespace colibri.ui.controls.viewers {
                     }
                 }
 
-                if (expanded) {
+                if (expanded && !this._flat) {
                     const result = this.paintItems2(children, treeIconList, paintItems, newParentPaintItem, x, y, offset, depth + 1);
                     y = result.y;
                     x = result.x;

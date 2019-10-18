@@ -178,7 +178,7 @@ namespace colibri.ui.controls.viewers {
             }
         }
 
-        protected buildFilterIncludeMap() {
+        buildFilterIncludeMap() {
             const provider = this.getContentProvider();
             const roots = provider ? provider.getRoots(this.getInput()) : [];
             this.buildFilterIncludeMap2(roots);
@@ -206,10 +206,6 @@ namespace colibri.ui.controls.viewers {
 
         getContentProvider(): ITreeContentProvider {
             return <ITreeContentProvider>super.getContentProvider();
-        }
-
-        setContentProvider(contentProvider: ITreeContentProvider): void {
-            super.setContentProvider(contentProvider);
         }
 
         expandCollapseBranch(obj: any) {

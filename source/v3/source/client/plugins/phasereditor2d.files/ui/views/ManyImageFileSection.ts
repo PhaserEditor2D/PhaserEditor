@@ -13,7 +13,7 @@ namespace phasereditor2d.files.ui.views {
             this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             this.setLabelProvider(new viewers.FileLabelProvider());
             this.setCellRendererProvider(new viewers.FileCellRendererProvider());
-            this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, true));
+            this.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(this, false, true));
 
             this.getCanvas().classList.add("PreviewBackground");
         }

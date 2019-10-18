@@ -2,12 +2,20 @@ namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
 
-    export class AssetPackBlocksTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
+    export class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
 
-        constructor(viewer: controls.viewers.TreeViewer) {
-            super(viewer, false);
+        constructor(viewer: controls.viewers.TreeViewer, flat : boolean) {
+            super(viewer, flat, false);
             
             viewer.setCellSize(64);
+
+            this.setSections([
+
+                pack.core.IMAGE_TYPE,
+                pack.core.ATLAS_TYPE,
+                pack.core.SPRITESHEET_TYPE
+
+            ]);
         }
 
         renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, isLastChild: boolean) {
@@ -18,7 +26,7 @@ namespace phasereditor2d.pack.ui.viewers {
             const isChild = this.isChild(args.obj);
             const expanded = args.viewer.isExpanded(args.obj);
 
-            if (isParent) {
+            if (isParent && !this.isFlat()) {
 
                 const ctx = args.canvasContext;
 
@@ -81,5 +89,6 @@ namespace phasereditor2d.pack.ui.viewers {
         protected isChild(obj: any) {
             return obj instanceof controls.ImageFrame;
         }
+
     }
 }

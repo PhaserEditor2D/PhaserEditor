@@ -40,13 +40,13 @@ label {
     height: 100%;
 }
 
-.ViewerView {
+.ViewerPart {
     display: grid;
     grid-template-columns: 5px 1fr 5px;
     grid-template-rows: 5px 1fr 5px;
 }
 
-.ViewerView .FilteredViewer {
+.ViewerPart .FilteredViewer {
     grid-column-start: 2;
     grid-row-start: 2;
     border-radius: 3px;

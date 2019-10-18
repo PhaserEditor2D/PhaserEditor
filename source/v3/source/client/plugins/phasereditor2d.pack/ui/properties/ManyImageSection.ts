@@ -14,7 +14,7 @@ namespace phasereditor2d.pack.ui.properties {
 
             const viewer = new controls.viewers.TreeViewer("PreviewBackground");
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-            viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, true));
+            viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, false, true));
             viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
             viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider());
 

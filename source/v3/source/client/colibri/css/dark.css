@@ -48,11 +48,11 @@ Important:
     background: #6e6e6e;
 }
 
-.dark .ViewerView .FilteredViewer {
+.dark .ViewerPart .FilteredViewer {
     background: #3f3f3f;
 }
 
-.dark .ViewerView {
+.dark .ViewerPart {
     color: orange;
 }
 

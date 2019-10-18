@@ -2,8 +2,8 @@
 
 namespace colibri.ui.ide {
 
-    export abstract class ViewerView extends ViewPart {
-
+    export abstract class ViewerFileEditor extends FileEditor {
+        
         protected _filteredViewer: controls.viewers.FilteredViewer<any>;
         protected _viewer : controls.viewers.TreeViewer;
 
