@@ -25,9 +25,13 @@ namespace phasereditor2d.pack.ui.editor {
     }
 
     export class AssetPackEditor extends ide.ViewerFileEditor {
+        private _pack: core.AssetPack;
+        private _contentProvider : AssetPackEditorContentProvider;
+        private _outlineProvider = new AssetPackEditorOutlineProvider(this);
 
         constructor() {
             super("phasereditor2d.AssetPackEditor");
+
             this.addClass("AssetPackEditor");
         }
 
@@ -38,10 +42,11 @@ namespace phasereditor2d.pack.ui.editor {
         protected createViewer(): controls.viewers.TreeViewer {
             const viewer = new controls.viewers.TreeViewer();
 
-            viewer.setContentProvider(new AssetPackEditorContentProvider());
+            viewer.setContentProvider(this._contentProvider = new AssetPackEditorContentProvider(this));
             viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
             viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider());
             viewer.setTreeRenderer(new viewers.AssetPackTreeViewerRenderer(viewer, true));
+            viewer.setInput(this);
 
             this.updateContent();
 
@@ -56,17 +61,30 @@ namespace phasereditor2d.pack.ui.editor {
             }
 
             const content = await ide.FileUtils.preloadAndGetFileString(file);
-            const pack = new core.AssetPack(file, content);
-
-            this.getViewer().setContentProvider(new AssetPackEditorContentProvider(pack));
-            this.getViewer().setInput(pack);
+            this._pack = new core.AssetPack(file, content);
 
             this.getViewer().repaint();
+
+            this._outlineProvider.repaint();
+        }
+
+        getPack() {
+            return this._pack;
         }
 
         setInput(file: io.FilePath): void {
             super.setInput(file);
             this.updateContent();
+        }
+
+        getEditorViewerProvider(key: string): ide.EditorViewerProvider {
+
+            switch (key) {
+                case outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
+                    return this._outlineProvider;
+            }
+
+            return null;
         }
     }
 }

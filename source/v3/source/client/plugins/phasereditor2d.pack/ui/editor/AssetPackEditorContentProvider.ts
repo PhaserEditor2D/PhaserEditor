@@ -2,25 +2,28 @@
 
 namespace phasereditor2d.pack.ui.editor {
 
-    import controls = colibri.ui.controls;
-
     export class AssetPackEditorContentProvider extends viewers.AssetPackContentProvider {
 
-        private _pack: core.AssetPack;
+        private _editor: AssetPackEditor;
 
-        constructor(pack: core.AssetPack = null) {
+        constructor(editor: AssetPackEditor) {
             super();
 
-            this._pack = pack;
+            this._editor = editor;
+        }
+
+
+        getPack() {
+            return this._editor.getPack();
         }
 
         getRoots(input: any): any[] {
 
-            if (this._pack === null) {
-                return [];
+            if (this.getPack()) {
+                return this.getPack().getItems();
             }
-
-            return this._pack.getItems();
+            
+            return [];
         }
 
         getChildren(parent: any): any[] {
@@ -28,10 +31,10 @@ namespace phasereditor2d.pack.ui.editor {
             if (typeof (parent) === "string") {
                 const type = parent;
 
-                if (this._pack) {
+                if (this.getPack()) {
 
                     const children =
-                        this._pack.getItems()
+                        this.getPack().getItems()
                             .filter(item => item.getType() === type);
 
                     return children;

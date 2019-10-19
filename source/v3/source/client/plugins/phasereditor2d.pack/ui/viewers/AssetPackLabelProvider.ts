@@ -5,6 +5,7 @@ namespace phasereditor2d.pack.ui.viewers {
     export class AssetPackLabelProvider implements controls.viewers.ILabelProvider {
 
         getLabel(obj: any): string {
+            
             if (obj instanceof core.AssetPack) {
                 return obj.getFile().getName();
             }

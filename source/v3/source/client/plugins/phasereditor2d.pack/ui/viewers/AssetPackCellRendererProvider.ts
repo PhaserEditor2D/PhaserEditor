@@ -1,12 +1,17 @@
 namespace phasereditor2d.pack.ui.viewers {
 
     import controls = colibri.ui.controls;
+    import ide = colibri.ui.ide;
 
     export class AssetPackCellRendererProvider implements controls.viewers.ICellRendererProvider {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
-            if (element instanceof core.AssetPackItem) {
+            if (typeof (element) === "string") {
+
+                return new controls.viewers.IconImageCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
+
+            } else if (element instanceof core.AssetPackItem) {
 
                 const type = element.getType();
 
