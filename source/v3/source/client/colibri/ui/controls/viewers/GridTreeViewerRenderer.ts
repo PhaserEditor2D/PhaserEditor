@@ -30,6 +30,27 @@ namespace colibri.ui.controls.viewers {
             return this._sections;
         }
 
+        private static formatSectionLabel(label: string) {
+            let s = "";
+
+            let lastUpperCase = false;
+
+            for (const c of label) {
+
+                const upperCase = c === c.toUpperCase();
+
+                if (upperCase !== lastUpperCase) {
+                    s += " " + c;
+                } else {
+                    s += c;
+                }
+
+                lastUpperCase = upperCase;
+            }
+
+            return s;
+        }
+
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
             const viewer = this.getViewer();
 
@@ -66,10 +87,10 @@ namespace colibri.ui.controls.viewers {
                         continue;
                     }
 
-                    const label = viewer
-                        .getLabelProvider()
-                        .getLabel(section)
-                        .toUpperCase();
+                    const label = GridTreeViewerRenderer.formatSectionLabel(
+                        viewer
+                            .getLabelProvider()
+                            .getLabel(section));
 
                     ctx.save();
 

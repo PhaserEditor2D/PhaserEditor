@@ -4,18 +4,14 @@ namespace phasereditor2d.pack.ui.viewers {
 
     export class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
 
-        constructor(viewer: controls.viewers.TreeViewer, flat : boolean) {
+        constructor(viewer: controls.viewers.TreeViewer, flat: boolean) {
             super(viewer, flat, false);
-            
+
             viewer.setCellSize(64);
 
-            this.setSections([
+            const types = core.TYPES.filter(type => type === core.ATLAS_TYPE || type.toLowerCase().indexOf("atlas") < 0);
 
-                pack.core.IMAGE_TYPE,
-                pack.core.ATLAS_TYPE,
-                pack.core.SPRITESHEET_TYPE
-
-            ]);
+            this.setSections(types);
         }
 
         renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, isLastChild: boolean) {
