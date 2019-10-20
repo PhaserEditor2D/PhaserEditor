@@ -11,7 +11,7 @@ namespace phasereditor2d.phaser {
         }
 
         private constructor() {
-            super("phasereditor2d.phaser.PhaserPlugin");
+            super("phasereditor2d.phaser");
         }
 
     }
