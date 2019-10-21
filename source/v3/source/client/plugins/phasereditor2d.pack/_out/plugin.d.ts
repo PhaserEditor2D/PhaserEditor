@@ -247,7 +247,7 @@ declare namespace phasereditor2d.pack.ui.editor {
 declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditorOutlineContentProvider extends AssetPackEditorContentProvider {
         constructor(editor: AssetPackEditor);
-        getRoots(): any[];
+        getRoots(): string[];
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
@@ -298,6 +298,7 @@ declare namespace phasereditor2d.pack.ui.viewers {
         private _layout;
         constructor(layout: "grid" | "tree");
         getCellRenderer(element: any): controls.viewers.ICellRenderer;
+        private getIconRenderer;
         preload(element: any): Promise<controls.PreloadResult>;
     }
 }
@@ -314,6 +315,14 @@ declare namespace phasereditor2d.pack.ui.viewers {
         renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, isLastChild: boolean): void;
         protected isParent(obj: any): boolean;
         protected isChild(obj: any): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.viewers {
+    import controls = colibri.ui.controls;
+    class ImageFrameContainerIconCellRenderer implements controls.viewers.ICellRenderer {
+        renderCell(args: controls.viewers.RenderCellArgs): void;
+        cellHeight(args: controls.viewers.RenderCellArgs): number;
+        preload(obj: any): Promise<controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {

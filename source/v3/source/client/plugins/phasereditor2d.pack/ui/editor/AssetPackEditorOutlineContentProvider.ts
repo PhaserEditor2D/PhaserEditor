@@ -15,11 +15,7 @@ namespace phasereditor2d.pack.ui.editor {
 
                 const set = new Set(types);
 
-                const result = [];
-
-                for (const type of set) {
-                    result.push(type);
-                }
+                const result = pack.core.TYPES.filter(type => set.has(type));
 
                 return result;
             }

@@ -33,7 +33,8 @@ namespace phasereditor2d.files {
                     ICON_FILE_SOUND,
                     ICON_FILE_VIDEO,
                     ICON_FILE_SCRIPT,
-                    ICON_FILE_TEXT
+                    ICON_FILE_TEXT,
+                    ICON_FILE_FONT
                 ])
             );
 

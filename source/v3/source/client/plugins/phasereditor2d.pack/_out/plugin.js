@@ -1085,10 +1085,7 @@ var phasereditor2d;
                         if (this.getPack()) {
                             const types = this.getPack().getItems().map(item => item.getType());
                             const set = new Set(types);
-                            const result = [];
-                            for (const type of set) {
-                                result.push(type);
-                            }
+                            const result = pack.core.TYPES.filter(type => set.has(type));
                             return result;
                         }
                         return [];
@@ -1300,15 +1297,41 @@ var phasereditor2d;
                         }
                         else if (element instanceof pack.core.AssetPackItem) {
                             const type = element.getType();
+                            const filesPlugin = phasereditor2d.files.FilesPlugin.getInstance();
                             switch (type) {
                                 case pack.core.IMAGE_TYPE:
                                     return new viewers.ImageAssetPackItemCellRenderer();
                                 case pack.core.MULTI_ATLAS_TYPE:
                                 case pack.core.ATLAS_TYPE:
                                 case pack.core.UNITY_ATLAS_TYPE:
-                                case pack.core.ATLAS_XML_TYPE:
+                                case pack.core.ATLAS_XML_TYPE: {
+                                    if (this._layout === "grid") {
+                                        return new controls.viewers.FolderCellRenderer();
+                                    }
+                                    return new viewers.ImageFrameContainerIconCellRenderer();
+                                }
                                 case pack.core.SPRITESHEET_TYPE:
-                                    return new controls.viewers.FolderCellRenderer();
+                                    return new viewers.ImageFrameContainerIconCellRenderer();
+                                case pack.core.AUDIO_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_SOUND));
+                                case pack.core.SCRIPT_TYPE:
+                                case pack.core.SCENE_FILE_TYPE:
+                                case pack.core.SCENE_PLUGIN_TYPE:
+                                case pack.core.PLUGIN_TYPE:
+                                case pack.core.CSS_TYPE:
+                                case pack.core.GLSL_TYPE:
+                                case pack.core.XML_TYPE:
+                                case pack.core.HTML_TYPE:
+                                case pack.core.JSON_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_SCRIPT));
+                                case pack.core.TEXT_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_TEXT));
+                                case pack.core.HTML_TEXTURE_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_IMAGE));
+                                case pack.core.BITMAP_FONT_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_FONT));
+                                case pack.core.VIDEO_TYPE:
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_VIDEO));
                                 default:
                                     break;
                             }
@@ -1316,10 +1339,13 @@ var phasereditor2d;
                         else if (element instanceof controls.ImageFrame) {
                             return new controls.viewers.ImageCellRenderer();
                         }
+                        return this.getIconRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
+                    }
+                    getIconRenderer(icon) {
                         if (this._layout === "grid") {
-                            return new controls.viewers.IconGridCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
+                            return new controls.viewers.IconGridCellRenderer(icon);
                         }
-                        return new controls.viewers.IconImageCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
+                        return new controls.viewers.IconImageCellRenderer(icon);
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();
@@ -1428,6 +1454,38 @@ var phasereditor2d;
                     }
                 }
                 viewers.AssetPackTreeViewerRenderer = AssetPackTreeViewerRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class ImageFrameContainerIconCellRenderer {
+                    renderCell(args) {
+                        const packItem = args.obj;
+                        if (pack.core.AssetPackUtils.isImageFrameContainer(packItem)) {
+                            const frames = pack.core.AssetPackUtils.getImageFrames(packItem);
+                            if (frames.length > 0) {
+                                const img = frames[0].getImage();
+                                img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                            }
+                        }
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    preload(obj) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                viewers.ImageFrameContainerIconCellRenderer = ImageFrameContainerIconCellRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

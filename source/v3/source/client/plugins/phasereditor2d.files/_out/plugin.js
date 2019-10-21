@@ -23,7 +23,8 @@ var phasereditor2d;
                     files.ICON_FILE_SOUND,
                     files.ICON_FILE_VIDEO,
                     files.ICON_FILE_SCRIPT,
-                    files.ICON_FILE_TEXT
+                    files.ICON_FILE_TEXT,
+                    files.ICON_FILE_FONT
                 ]));
                 // content type resolvers
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()], 1000));

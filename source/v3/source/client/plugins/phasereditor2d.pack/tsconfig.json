@@ -15,6 +15,9 @@
         },
         {
             "path": "../phasereditor2d.phaser"
+        },
+        {
+            "path": "../phasereditor2d.files"
         }
     ],
     "exclude": ["_out/plugin.d.ts"]
