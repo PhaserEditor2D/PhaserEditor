@@ -1,5 +1,3 @@
-/// <reference path="../../../colibri/core/ContentTypeResolver.ts" />
-
 namespace phasereditor2d.files.core {
 
     import io = colibri.core.io;

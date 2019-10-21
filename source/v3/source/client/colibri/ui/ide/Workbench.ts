@@ -122,7 +122,9 @@ namespace colibri.ui.ide {
                 urls.push(...extension.getCSSUrls());
             }
 
-            for (const url of urls) {
+            for (let url of urls) {
+
+                url = `static/${url}`;
 
                 try {
 

@@ -1,5 +1,3 @@
-/// <reference path="../../../phasereditor2d.pack/ui/viewers/AssetPackTreeViewerRenderer.ts" />
-
 namespace phasereditor2d.scene.ui.blocks {
 
     import controls = colibri.ui.controls;

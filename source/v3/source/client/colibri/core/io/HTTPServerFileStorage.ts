@@ -3,7 +3,7 @@ namespace colibri.core.io {
     async function apiRequest(method: string, body?: any) {
         try {
 
-            const resp = await fetch("../api", {
+            const resp = await fetch("api", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

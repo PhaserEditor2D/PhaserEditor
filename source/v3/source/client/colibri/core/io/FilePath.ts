@@ -80,7 +80,7 @@ namespace colibri.core.io {
                 return this._parent.getUrl() + "/" + this._name;
             }
 
-            return "../project";
+            return "./project";
         }
 
         getSibling(name: string) {

@@ -1,0 +1,1237 @@
+declare namespace colibri.core.extensions {
+    class Extension {
+        private _id;
+        private _priority;
+        constructor(id: string, priority?: number);
+        getId(): string;
+        getPriority(): number;
+    }
+}
+declare namespace colibri.core {
+    class ContentTypeExtension extends extensions.Extension {
+        static POINT_ID: string;
+        private _resolvers;
+        constructor(id: string, resolvers: core.IContentTypeResolver[], priority?: number);
+        getResolvers(): IContentTypeResolver[];
+    }
+}
+declare namespace colibri.core.io {
+    type GetFileContent<T> = (file: FilePath) => Promise<T>;
+    type SetFileContent<T> = (file: FilePath, content: T) => Promise<void>;
+    class FileContentCache<T> {
+        private _backendGetContent;
+        private _backendSetContent;
+        private _map;
+        constructor(getContent: GetFileContent<T>, setContent?: SetFileContent<T>);
+        private _preloadMap;
+        preload(file: FilePath): Promise<ui.controls.PreloadResult>;
+        getContent(file: FilePath): T;
+        setContent(file: FilePath, content: T): Promise<void>;
+        hasFile(file: FilePath): boolean;
+    }
+    class ContentEntry<T> {
+        content: T;
+        modTime: number;
+        constructor(content: T, modTime: number);
+    }
+}
+declare namespace colibri.core {
+    class ContentTypeRegistry {
+        private _resolvers;
+        private _cache;
+        constructor();
+        registerResolver(resolver: IContentTypeResolver): void;
+        getResolvers(): IContentTypeResolver[];
+        getCachedContentType(file: io.FilePath): string;
+        preload(file: io.FilePath): Promise<ui.controls.PreloadResult>;
+    }
+}
+declare namespace colibri.core {
+    abstract class ContentTypeResolver implements IContentTypeResolver {
+        private _id;
+        constructor(id: string);
+        getId(): string;
+        abstract computeContentType(file: io.FilePath): Promise<string>;
+    }
+}
+declare namespace colibri.core {
+    const CONTENT_TYPE_ANY = "any";
+    interface IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
+    }
+}
+declare namespace colibri.core.extensions {
+    class ExtensionRegistry {
+        private _map;
+        constructor();
+        addExtension(point: string, ...extension: Extension[]): void;
+        getExtensions<T extends Extension>(point: string, sorted?: boolean): T[];
+    }
+}
+declare namespace colibri.core.io {
+    type FileData = {
+        name: string;
+        isFile: boolean;
+        size: number;
+        modTime: number;
+        children?: FileData[];
+    };
+}
+declare namespace colibri.core.io {
+    class FilePath {
+        private _parent;
+        private _name;
+        private _isFile;
+        private _files;
+        private _ext;
+        private _id;
+        private _modTime;
+        private _fileSize;
+        constructor(parent: FilePath, fileData: FileData);
+        getExtension(): string;
+        getSize(): number;
+        getName(): string;
+        getModTime(): number;
+        getFullName(): any;
+        getUrl(): any;
+        getSibling(name: string): FilePath;
+        getFile(name: string): FilePath;
+        getParent(): FilePath;
+        isFile(): boolean;
+        isFolder(): boolean;
+        getFiles(): FilePath[];
+        flatTree(files: FilePath[], includeFolders: boolean): FilePath[];
+        toString(): any;
+        toStringTree(): string;
+        private toStringTree2;
+    }
+}
+declare namespace colibri.core.io {
+    class FileStorageChange {
+        private _modified;
+        private _modifiedFileNameSet;
+        private _added;
+        private _deleted;
+        private _deletedFileNameSet;
+        constructor(modified: FilePath[], added: FilePath[], deleted: FilePath[]);
+        isModified(file: FilePath): boolean;
+        isDeleted(file: FilePath): boolean;
+        getAddedFiles(): FilePath[];
+        getModifiedFiles(): FilePath[];
+        getDeletedFiles(): FilePath[];
+    }
+}
+declare namespace colibri.core.io {
+    class FileStringCache extends FileContentCache<string> {
+        constructor(storage: IFileStorage);
+    }
+}
+declare namespace colibri.core.io {
+    class FileStorage_HTTPServer implements IFileStorage {
+        private _root;
+        private _changeListeners;
+        constructor();
+        addChangeListener(listener: ChangeListenerFunc): void;
+        getRoot(): FilePath;
+        reload(): Promise<void>;
+        private fireChange;
+        private static compare;
+        getFileString(file: FilePath): Promise<string>;
+        setFileString(file: FilePath, content: string): Promise<void>;
+    }
+}
+declare namespace colibri.core.io {
+    type ChangeListenerFunc = (change: FileStorageChange) => void;
+    interface IFileStorage {
+        reload(): Promise<void>;
+        getRoot(): FilePath;
+        getFileString(file: FilePath): Promise<string>;
+        setFileString(file: FilePath, content: string): Promise<void>;
+        addChangeListener(listener: ChangeListenerFunc): any;
+    }
+}
+declare namespace colibri.core.io {
+    type SyncFileContentBuilder<T> = (file: FilePath) => T;
+    class SyncFileContentCache<T> {
+        private _getContent;
+        private _map;
+        constructor(builder: SyncFileContentBuilder<T>);
+        getContent(file: FilePath): T;
+        hasFile(file: FilePath): boolean;
+    }
+}
+declare namespace colibri.core.json {
+    function write(data: any, name: string, value: any, defaultValue?: any): void;
+    function read(data: any, name: string, defaultValue?: any): any;
+}
+declare namespace colibri.ui.controls {
+    class Action {
+    }
+}
+declare namespace colibri.ui.controls {
+    const EVENT_CONTROL_LAYOUT = "controlLayout";
+    class Control extends EventTarget {
+        private _bounds;
+        private _element;
+        private _children;
+        private _layout;
+        private _container;
+        private _scrollY;
+        private _layoutChildren;
+        private _handlePosition;
+        constructor(tagName?: string, ...classList: string[]);
+        static getControlOf(element: HTMLElement): Control;
+        isHandlePosition(): boolean;
+        setHandlePosition(_handlePosition: boolean): void;
+        readonly style: CSSStyleDeclaration;
+        isLayoutChildren(): boolean;
+        setLayoutChildren(layout: boolean): void;
+        getScrollY(): number;
+        setScrollY(scrollY: number): void;
+        getContainer(): Control;
+        getLayout(): ILayout;
+        setLayout(layout: ILayout): void;
+        addClass(...tokens: string[]): void;
+        removeClass(...tokens: string[]): void;
+        containsClass(className: string): boolean;
+        getElement(): HTMLElement;
+        getControlPosition(windowX: number, windowY: number): {
+            x: number;
+            y: number;
+        };
+        containsLocalPoint(x: number, y: number): boolean;
+        setBounds(bounds: Bounds): void;
+        setBoundsValues(x: number, y: number, w: number, h: number): void;
+        getBounds(): Bounds;
+        setLocation(x: number, y: number): void;
+        layout(): void;
+        dispatchLayoutEvent(): void;
+        add(control: Control): void;
+        protected onControlAdded(): void;
+        getChildren(): Control[];
+    }
+}
+declare namespace colibri.ui.controls {
+    class ActionButton extends Control {
+        private _action;
+        constructor(action: Action);
+        getAction(): Action;
+    }
+}
+declare namespace colibri.ui.controls {
+    type Bounds = {
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+    };
+}
+declare namespace colibri.ui.controls {
+    abstract class CanvasControl extends Control {
+        protected _canvas: HTMLCanvasElement;
+        protected _context: CanvasRenderingContext2D;
+        private _padding;
+        constructor(padding?: number, ...classList: string[]);
+        getCanvas(): HTMLCanvasElement;
+        resizeTo(parent?: HTMLElement): void;
+        getPadding(): number;
+        protected ensureCanvasSize(): void;
+        clear(): void;
+        repaint(): void;
+        private initContext;
+        protected abstract paint(): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    const EVENT_SELECTION_CHANGED = "selectionChanged";
+    const EVENT_THEME_CHANGED = "themeChanged";
+    enum PreloadResult {
+        NOTHING_LOADED = 0,
+        RESOURCES_LOADED = 1
+    }
+    const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
+    const ICON_CONTROL_TREE_EXPAND = "tree-expand";
+    const ICON_CONTROL_CLOSE = "close";
+    const ICON_CONTROL_DIRTY = "dirty";
+    const ICON_SIZE = 16;
+    class Controls {
+        private static _images;
+        private static _applicationDragData;
+        static setDragEventImage(e: DragEvent, render: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): void;
+        static getApplicationDragData(): any[];
+        static getApplicationDragDataAndClean(): any[];
+        static setApplicationDragData(data: any[]): void;
+        static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult>;
+        static resolveResourceLoaded(): Promise<PreloadResult>;
+        static resolveNothingLoaded(): Promise<PreloadResult>;
+        static preload(): Promise<PreloadResult[]>;
+        private static getImage;
+        static getIcon(name: string, baseUrl?: string): IImage;
+        static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
+        private static LIGHT_THEME;
+        private static DARK_THEME;
+        static theme: Theme;
+        static switchTheme(): void;
+        static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft?: number, topRight?: number, bottomRight?: number, bottomLeft?: number): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    class DefaultImage implements IImage {
+        private _ready;
+        private _error;
+        private _url;
+        private _imageElement;
+        private _requestPromise;
+        constructor(img: HTMLImageElement, url: string);
+        getImageElement(): HTMLImageElement;
+        preload(): Promise<PreloadResult>;
+        getWidth(): number;
+        getHeight(): number;
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void;
+        static paintImageElement(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, w: number, h: number, center: boolean): void;
+        static paintEmpty(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void;
+        static paintImageElementFrame(context: CanvasRenderingContext2D, image: HTMLImageElement, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    class FillLayout implements ILayout {
+        private _padding;
+        constructor(padding?: number);
+        getPadding(): number;
+        setPadding(padding: number): void;
+        layout(parent: Control): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    class FrameData {
+        index: number;
+        src: controls.Rect;
+        dst: controls.Rect;
+        srcSize: controls.Point;
+        constructor(index: number, src: controls.Rect, dst: controls.Rect, srcSize: controls.Point);
+        static fromRect(index: number, rect: Rect): FrameData;
+    }
+}
+declare namespace colibri.ui.controls {
+    interface IImage {
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void;
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
+        preload(): Promise<PreloadResult>;
+        getWidth(): number;
+        getHeight(): number;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface ILabelProvider {
+        getLabel(obj: any): string;
+    }
+}
+declare namespace colibri.ui.controls {
+    interface ILayout {
+        layout(parent: Control): any;
+    }
+}
+declare namespace colibri.ui.controls {
+    interface IToolbar {
+        addAction(action: Action): any;
+        getActions(): Action[];
+    }
+}
+declare namespace colibri.ui.controls {
+    class ImageControl extends CanvasControl {
+        private _image;
+        constructor(padding?: number, ...classList: string[]);
+        setImage(image: IImage): void;
+        getImage(): IImage;
+        protected paint(): Promise<void>;
+        private paint2;
+    }
+}
+declare namespace colibri.ui.controls {
+    class ImageFrame implements IImage {
+        private _name;
+        private _image;
+        private _frameData;
+        constructor(name: string, image: controls.IImage, frameData: FrameData);
+        getName(): string;
+        getImage(): IImage;
+        getFrameData(): FrameData;
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void;
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
+        preload(): Promise<PreloadResult>;
+        getWidth(): number;
+        getHeight(): number;
+    }
+}
+declare namespace colibri.ui.controls {
+    class ImageWrapper implements IImage {
+        private _imageElement;
+        constructor(imageElement: HTMLImageElement);
+        paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void;
+        paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, srcW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
+        preload(): Promise<PreloadResult>;
+        getWidth(): number;
+        getHeight(): number;
+    }
+}
+declare namespace colibri.ui.controls {
+    class Point {
+        x: number;
+        y: number;
+        constructor(x: number, y: number);
+    }
+}
+declare namespace colibri.ui.controls {
+    class Rect {
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        constructor(x?: number, y?: number, w?: number, h?: number);
+        set(x: number, y: number, w: number, h: number): void;
+        contains(x: number, y: number): boolean;
+        clone(): Rect;
+    }
+}
+declare namespace colibri.ui.controls {
+    class ScrollPane extends Control {
+        private _clientControl;
+        private _scrollBar;
+        private _scrollHandler;
+        private _clientContentHeight;
+        constructor(clientControl: Control);
+        getViewer(): Control;
+        updateScroll(clientContentHeight: number): void;
+        private onBarMouseDown;
+        private onClientWheel;
+        private setClientScrollY;
+        private _startDragY;
+        private _startScrollY;
+        private onMouseDown;
+        private onMouseMove;
+        private onMouseUp;
+        getBounds(): {
+            x: number;
+            y: number;
+            width: number;
+            height: number;
+        };
+        layout(): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    class SplitPanel extends Control {
+        private _leftControl;
+        private _rightControl;
+        private _horizontal;
+        private _splitPosition;
+        private _splitFactor;
+        private _splitWidth;
+        private _startDrag;
+        private _startPos;
+        constructor(left?: Control, right?: Control, horizontal?: boolean);
+        private onMouseDown;
+        private onMouseUp;
+        private onMouseMove;
+        private onMouseLeave;
+        setHorizontal(horizontal?: boolean): void;
+        setVertical(vertical?: boolean): void;
+        getSplitFactor(): number;
+        private getSize;
+        setSplitFactor(factor: number): void;
+        setLeftControl(control: Control): void;
+        getLeftControl(): Control;
+        setRightControl(control: Control): void;
+        getRightControl(): Control;
+        layout(): void;
+    }
+}
+declare namespace colibri.ui.controls {
+    const EVENT_TAB_CLOSED = "tabClosed";
+    const EVENT_TAB_SELECTED = "tabSelected";
+    class TabPane extends Control {
+        private _selectionHistoryLabelElement;
+        private _titleBarElement;
+        private _contentAreaElement;
+        constructor(...classList: string[]);
+        addTab(label: string, icon: IImage, content: Control, closeable?: boolean): void;
+        private makeLabel;
+        setTabCloseIcons(labelElement: HTMLElement, icon: IImage, overIcon: IImage): void;
+        closeTab(content: controls.Control): void;
+        private closeTabLabel;
+        setTabTitle(content: Control, title: string, icon?: IImage): void;
+        static isTabLabel(element: HTMLElement): boolean;
+        getLabelFromContent(content: Control): HTMLElement;
+        private static getContentAreaFromLabel;
+        static getContentFromLabel(labelElement: HTMLElement): Control;
+        selectTabWithContent(content: Control): void;
+        private selectTab;
+        getSelectedTabContent(): Control;
+        getContentList(): controls.Control[];
+        private getSelectedLabelElement;
+    }
+}
+declare namespace colibri.ui.controls {
+    type Theme = {
+        treeItemSelectionBackground: string;
+        treeItemSelectionForeground: string;
+        treeItemForeground: string;
+    };
+}
+declare namespace colibri.ui.controls {
+    const CONTROL_PADDING = 3;
+    const ROW_HEIGHT = 20;
+    const FONT_HEIGHT = 14;
+    const FONT_OFFSET = 2;
+    const ACTION_WIDTH = 20;
+    const PANEL_BORDER_SIZE = 5;
+    const PANEL_TITLE_HEIGHT = 22;
+    const FILTERED_VIEWER_FILTER_HEIGHT = 30;
+    const SPLIT_OVER_ZONE_WIDTH = 6;
+    function setElementBounds(elem: HTMLElement, bounds: Bounds): void;
+    function getElementBounds(elem: HTMLElement): Bounds;
+}
+declare namespace colibri.ui.controls.properties {
+    class PropertyPage extends Control {
+        private _sectionProvider;
+        private _sectionPanes;
+        private _sectionPaneMap;
+        private _selection;
+        constructor();
+        private build;
+        private updateWithSelection;
+        updateExpandStatus(): void;
+        getSelection(): any[];
+        setSelection(sel: any[]): any;
+        setSectionProvider(provider: PropertySectionProvider): void;
+        getSectionProvider(): PropertySectionProvider;
+    }
+}
+declare namespace colibri.ui.controls.properties {
+    type Updater = () => void;
+    abstract class PropertySection<T> {
+        private _id;
+        private _title;
+        private _page;
+        private _updaters;
+        private _fillSpace;
+        constructor(page: PropertyPage, id: string, title: string, fillSpace?: boolean);
+        protected abstract createForm(parent: HTMLDivElement): any;
+        abstract canEdit(obj: any, n: number): boolean;
+        abstract canEditNumber(n: number): boolean;
+        updateWithSelection(): void;
+        addUpdater(updater: Updater): void;
+        isFillSpace(): boolean;
+        getPage(): PropertyPage;
+        getSelection(): T[];
+        getId(): string;
+        getTitle(): string;
+        create(parent: HTMLDivElement): void;
+        flatValues_Number(values: number[]): string;
+        flatValues_StringJoin(values: string[]): string;
+        protected createGridElement(parent: HTMLElement, cols?: number, simpleProps?: boolean): HTMLDivElement;
+        protected createLabel(parent: HTMLElement, text?: string): HTMLLabelElement;
+        protected createText(parent: HTMLElement, readOnly?: boolean): HTMLInputElement;
+    }
+}
+declare namespace colibri.ui.controls.properties {
+    abstract class PropertySectionProvider {
+        abstract addSections(page: PropertyPage, sections: PropertySection<any>[]): void;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    const EMPTY_ARRAY: any[];
+    class ArrayTreeContentProvider implements ITreeContentProvider {
+        getRoots(input: any): any[];
+        getChildren(parent: any): any[];
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class EmptyCellRenderer implements ICellRenderer {
+        private _variableSize;
+        constructor(variableSize?: boolean);
+        renderCell(args: RenderCellArgs): void;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<PreloadResult>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class EmptyTreeContentProvider implements ITreeContentProvider {
+        getRoots(input: any): any[];
+        getChildren(parent: any): any[];
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class ViewerContainer extends controls.Control {
+        private _viewer;
+        constructor(viewer: Viewer);
+        getViewer(): Viewer;
+        layout(): void;
+    }
+    class FilteredViewer<T extends Viewer> extends Control {
+        private _viewer;
+        private _viewerContainer;
+        private _filterControl;
+        private _scrollPane;
+        constructor(viewer: T, ...classList: string[]);
+        private onFilterInput;
+        getViewer(): T;
+        layout(): void;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class FolderCellRenderer implements ICellRenderer {
+        private _maxCount;
+        constructor(maxCount?: number);
+        renderCell(args: RenderCellArgs): void;
+        private renderFolder;
+        protected renderGrid(args: RenderCellArgs): void;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<PreloadResult>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class TreeViewerRenderer {
+        private _viewer;
+        constructor(viewer: TreeViewer, cellSize?: number);
+        getViewer(): TreeViewer;
+        paint(): {
+            contentHeight: number;
+            paintItems: PaintItem[];
+            treeIconList: TreeIconInfo[];
+        };
+        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number): {
+            x: number;
+            y: number;
+        };
+        private renderTreeCell;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    const TREE_RENDERER_GRID_PADDING = 5;
+    class GridTreeViewerRenderer extends TreeViewerRenderer {
+        private _center;
+        private _flat;
+        private _sections;
+        constructor(viewer: TreeViewer, flat?: boolean, center?: boolean);
+        isFlat(): boolean;
+        setSections(sections: any[]): void;
+        getSections(): any[];
+        private static formatSectionLabel;
+        protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number): {
+            x: number;
+            y: number;
+        };
+        private paintItems2;
+        private renderGridCell;
+        protected renderCellBack(args: RenderCellArgs, selected: boolean, isLastChild: boolean): void;
+        protected renderCellFront(args: RenderCellArgs, selected: boolean, isLastChild: boolean): void;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface ICellRenderer {
+        renderCell(args: RenderCellArgs): void;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<PreloadResult>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface ICellRendererProvider {
+        getCellRenderer(element: any): ICellRenderer;
+        preload(element: any): Promise<PreloadResult>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface IContentProvider {
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    abstract class LabelCellRenderer implements ICellRenderer {
+        renderCell(args: RenderCellArgs): void;
+        abstract getImage(obj: any): controls.IImage;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<any>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class ImageCellRenderer implements ICellRenderer {
+        getImage(obj: any): IImage;
+        renderCell(args: RenderCellArgs): void;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<any>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    const EVENT_OPEN_ITEM = "itemOpened";
+    abstract class Viewer extends Control {
+        private _contentProvider;
+        private _cellRendererProvider;
+        private _labelProvider;
+        private _input;
+        private _cellSize;
+        protected _expandedObjects: Set<any>;
+        private _selectedObjects;
+        protected _context: CanvasRenderingContext2D;
+        protected _paintItems: PaintItem[];
+        private _lastSelectedItemIndex;
+        protected _contentHeight: number;
+        private _filterText;
+        protected _filterIncludeSet: Set<any>;
+        constructor(...classList: string[]);
+        private initListeners;
+        private onDragStart;
+        getLabelProvider(): ILabelProvider;
+        setLabelProvider(labelProvider: ILabelProvider): void;
+        setFilterText(filterText: string): void;
+        getFilterText(): string;
+        private prepareFiltering;
+        isFilterIncluded(obj: any): boolean;
+        protected abstract buildFilterIncludeMap(): any;
+        protected matches(obj: any): boolean;
+        protected getPaintItemAt(e: MouseEvent): PaintItem;
+        getSelection(): any[];
+        setSelection(selection: any[], notify?: boolean): void;
+        abstract reveal(obj: any): void;
+        private fireSelectionChanged;
+        private onKeyDown;
+        private onWheel;
+        private onDoubleClick;
+        protected abstract canSelectAtPoint(e: MouseEvent): boolean;
+        private onMouseUp;
+        private initContext;
+        setExpanded(obj: any, expanded: boolean): void;
+        isExpanded(obj: any): boolean;
+        getExpandedObjects(): Set<any>;
+        isCollapsed(obj: any): boolean;
+        collapseAll(): void;
+        expandCollapseBranch(obj: any): any[];
+        isSelected(obj: any): boolean;
+        protected paintTreeHandler(x: number, y: number, collapsed: boolean): void;
+        repaint(): Promise<void>;
+        updateScrollPane(): void;
+        private repaint2;
+        protected abstract preload(): Promise<PreloadResult>;
+        paintItemBackground(obj: any, x: number, y: number, w: number, h: number, radius?: number): void;
+        setScrollY(scrollY: number): void;
+        layout(): void;
+        protected abstract paint(): void;
+        getCanvas(): HTMLCanvasElement;
+        getContext(): CanvasRenderingContext2D;
+        getCellSize(): number;
+        setCellSize(cellSize: number): void;
+        getContentProvider(): IContentProvider;
+        setContentProvider(contentProvider: IContentProvider): void;
+        getCellRendererProvider(): ICellRendererProvider;
+        setCellRendererProvider(cellRendererProvider: ICellRendererProvider): void;
+        getInput(): any;
+        setInput(input: any): void;
+        getState(): any;
+        setState(state: any): void;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface ITreeContentProvider {
+        getRoots(input: any): any[];
+        getChildren(parent: any): any[];
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class IconImageCellRenderer extends ImageCellRenderer {
+        private _icon;
+        constructor(icon: IImage);
+        getImage(): IImage;
+        cellHeight(args: RenderCellArgs): number;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class PaintItem extends controls.Rect {
+        index: number;
+        data: any;
+        parent: PaintItem;
+        constructor(index: number, data: any, parent?: PaintItem);
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class RenderCellArgs {
+        canvasContext: CanvasRenderingContext2D;
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        obj: any;
+        viewer: Viewer;
+        center: boolean;
+        constructor(canvasContext: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, obj: any, viewer: Viewer, center?: boolean);
+        clone(): RenderCellArgs;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    const TREE_ICON_SIZE = 16;
+    const LABEL_MARGIN: number;
+    type TreeIconInfo = {
+        rect: Rect;
+        obj: any;
+    };
+    class TreeViewer extends Viewer {
+        private _treeRenderer;
+        private _treeIconList;
+        constructor(...classList: string[]);
+        getTreeRenderer(): TreeViewerRenderer;
+        setTreeRenderer(treeRenderer: TreeViewerRenderer): void;
+        canSelectAtPoint(e: MouseEvent): boolean;
+        reveal(...objects: any[]): void;
+        revealPath(path: any[]): void;
+        getObjectPath(obj: any): any[];
+        private getObjectPath2;
+        private getTreeIconAtPoint;
+        private onClick;
+        visitObjects(visitor: Function): void;
+        private visitObjects2;
+        preload(): Promise<PreloadResult>;
+        protected paint(): void;
+        setFilterText(filter: string): void;
+        private expandFilteredParents;
+        buildFilterIncludeMap(): void;
+        private buildFilterIncludeMap2;
+        getContentProvider(): ITreeContentProvider;
+        expandCollapseBranch(obj: any): any[];
+    }
+}
+declare namespace colibri.ui.ide {
+    class CSSFileLoaderExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _cssUrls;
+        constructor(id: any, cssUrls: string[], priority?: number);
+        getCSSUrls(): string[];
+    }
+}
+declare namespace colibri.ui.ide {
+    type ContentTypeIconExtensionConfig = {
+        icon: controls.IImage;
+        contentType: string;
+    }[];
+    class ContentTypeIconExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _config;
+        static withPluginIcons(plugin: ide.Plugin, config: {
+            iconName: string;
+            contentType: string;
+        }[]): ContentTypeIconExtension;
+        constructor(id: string, config: ContentTypeIconExtensionConfig);
+        getConfig(): {
+            icon: controls.IImage;
+            contentType: string;
+        }[];
+    }
+}
+declare namespace colibri.ui.ide {
+    const EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
+    abstract class Part extends controls.Control {
+        private _id;
+        private _title;
+        private _selection;
+        private _partCreated;
+        private _icon;
+        private _folder;
+        private _undoManager;
+        constructor(id: string);
+        getUndoManager(): undo.UndoManager;
+        getPartFolder(): PartFolder;
+        setPartFolder(folder: PartFolder): void;
+        getTitle(): string;
+        setTitle(title: string): void;
+        setIcon(icon: controls.IImage): void;
+        protected dispatchTitleUpdatedEvent(): void;
+        getIcon(): controls.IImage;
+        getId(): string;
+        setSelection(selection: any[], notify?: boolean): void;
+        getSelection(): any[];
+        getPropertyProvider(): controls.properties.PropertySectionProvider;
+        layout(): void;
+        onPartClosed(): boolean;
+        onPartShown(): void;
+        protected abstract createPart(): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class EditorPart extends Part {
+        private _input;
+        private _dirty;
+        constructor(id: string);
+        setDirty(dirty: boolean): void;
+        isDirty(): boolean;
+        save(): void;
+        onPartClosed(): boolean;
+        getInput(): any;
+        setInput(input: any): void;
+        getEditorViewerProvider(key: string): EditorViewerProvider;
+    }
+}
+declare namespace colibri.ui.ide {
+    class PartFolder extends controls.TabPane {
+        constructor(...classList: string[]);
+        addPart(part: Part, closeable?: boolean): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    class EditorArea extends PartFolder {
+        constructor();
+        activateEditor(editor: EditorPart): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    class EditorExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _factories;
+        constructor(id: string, factories: EditorFactory[]);
+        getFactories(): EditorFactory[];
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class EditorFactory {
+        private _id;
+        constructor(id: string);
+        getId(): string;
+        abstract acceptInput(input: any): boolean;
+        abstract createEditor(): EditorPart;
+    }
+}
+declare namespace colibri.ui.ide {
+    class EditorRegistry {
+        private _map;
+        constructor();
+        registerFactory(factory: EditorFactory): void;
+        getFactoryForInput(input: any): EditorFactory;
+    }
+}
+declare namespace colibri.ui.ide {
+    import viewers = controls.viewers;
+    abstract class EditorViewerProvider {
+        private _viewer;
+        private _initialSelection;
+        constructor();
+        setViewer(viewer: controls.viewers.TreeViewer): void;
+        setSelection(selection: any[], reveal: boolean, notify: boolean): void;
+        onViewerSelectionChanged(selection: any[]): void;
+        repaint(): void;
+        abstract getContentProvider(): viewers.ITreeContentProvider;
+        abstract getLabelProvider(): viewers.ILabelProvider;
+        abstract getCellRendererProvider(): viewers.ICellRendererProvider;
+        abstract getTreeViewerRenderer(viewer: controls.viewers.TreeViewer): viewers.TreeViewerRenderer;
+        abstract getPropertySectionProvider(): controls.properties.PropertySectionProvider;
+        abstract getInput(): any;
+        abstract preload(): Promise<void>;
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class ViewPart extends Part {
+        constructor(id: string);
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class ViewerView extends ViewPart {
+        protected _filteredViewer: controls.viewers.FilteredViewer<any>;
+        protected _viewer: controls.viewers.TreeViewer;
+        constructor(id: string);
+        protected abstract createViewer(): controls.viewers.TreeViewer;
+        protected createPart(): void;
+        getViewer(): controls.viewers.TreeViewer;
+        layout(): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    import viewers = controls.viewers;
+    abstract class EditorViewerView extends ide.ViewerView {
+        private _currentEditor;
+        private _currentViewerProvider;
+        private _viewerMap;
+        constructor(id: string);
+        protected createViewer(): viewers.TreeViewer;
+        protected createPart(): void;
+        abstract getViewerProvider(editor: EditorPart): EditorViewerProvider;
+        private onWorkbenchEditorActivated;
+        getPropertyProvider(): controls.properties.PropertySectionProvider;
+    }
+}
+declare namespace colibri.ui.ide {
+    import io = core.io;
+    abstract class FileEditor extends EditorPart {
+        constructor(id: string);
+        setInput(file: io.FilePath): void;
+        getInput(): core.io.FilePath;
+        getIcon(): controls.IImage;
+    }
+}
+declare namespace colibri.ui.ide {
+    class FileUtils {
+        static getImage(file: core.io.FilePath): controls.IImage;
+        static preloadAndGetFileString(file: core.io.FilePath): Promise<string>;
+        static getFileString(file: core.io.FilePath): string;
+        static setFileString_async(file: core.io.FilePath, content: string): Promise<void>;
+        static preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult>;
+        static getFileFromPath(path: string): core.io.FilePath;
+        static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;
+        static getAllFiles(): core.io.FilePath[];
+    }
+}
+declare namespace colibri.ui.ide.commands {
+    class KeyMatcher {
+        private _control;
+        private _shift;
+        private _alt;
+        private _meta;
+        private _key;
+        private _filterInputElements;
+        constructor(config: {
+            control?: boolean;
+            shift?: boolean;
+            alt?: boolean;
+            meta?: boolean;
+            key?: string;
+            filterInputElements?: boolean;
+        });
+        matchesKeys(event: KeyboardEvent): boolean;
+        matchesTarget(element: EventTarget): boolean;
+    }
+}
+declare namespace colibri.ui.ide {
+    const CMD_SAVE = "save";
+    const CMD_DELETE = "delete";
+    const CMD_RENAME = "rename";
+    const CMD_UNDO = "undo";
+    const CMD_REDO = "redo";
+    const CMD_SWITCH_THEME = "switchTheme";
+    const CMD_COLLAPSE_ALL = "collapseAll";
+    const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
+    class IDECommands {
+        static init(): void;
+        private static initViewer;
+        private static initTheme;
+        private static initUndo;
+        private static initEdit;
+    }
+}
+declare namespace colibri.ui.ide {
+    class IconLoaderExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        static withPluginFiles(plugin: ide.Plugin, iconNames: string[]): IconLoaderExtension;
+        private _icons;
+        constructor(id: string, icons: controls.IImage[]);
+        getIcons(): controls.IImage[];
+    }
+}
+declare namespace colibri.ui.ide {
+    class ImageFileCache extends core.io.SyncFileContentCache<controls.IImage> {
+        constructor();
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class OutlineProvider extends EventTarget {
+        private _editor;
+        constructor(editor: EditorPart);
+        abstract getContentProvider(): controls.viewers.ITreeContentProvider;
+        abstract getLabelProvider(): controls.viewers.ILabelProvider;
+        abstract getCellRendererProvider(): controls.viewers.ICellRendererProvider;
+        abstract getTreeViewerRenderer(viewer: controls.viewers.TreeViewer): controls.viewers.TreeViewerRenderer;
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class Plugin {
+        private _id;
+        constructor(id: string);
+        getId(): string;
+        starting(): Promise<void>;
+        started(): Promise<void>;
+        registerExtensions(registry: core.extensions.ExtensionRegistry): void;
+        createWindow(windows: ide.WorkbenchWindow[]): void;
+        getIcon(name: string): controls.IImage;
+    }
+}
+declare namespace colibri.ui.ide {
+    class PreloadProjectResourcesExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _getPreloadPromise;
+        constructor(id: string, getPreloadPromise: () => Promise<any>);
+        getPreloadPromise(): Promise<any>;
+    }
+}
+declare namespace colibri.ui.toolbar {
+    class Toolbar {
+        private _toolbarElement;
+        constructor();
+        getElement(): HTMLDivElement;
+    }
+}
+declare namespace colibri.ui.ide {
+    class ViewFolder extends PartFolder {
+        constructor(...classList: string[]);
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class ViewerFileEditor extends FileEditor {
+        protected _filteredViewer: controls.viewers.FilteredViewer<any>;
+        protected _viewer: controls.viewers.TreeViewer;
+        constructor(id: string);
+        protected abstract createViewer(): controls.viewers.TreeViewer;
+        protected createPart(): void;
+        getViewer(): controls.viewers.TreeViewer;
+        layout(): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    const EVENT_PART_DEACTIVATED = "partDeactivated";
+    const EVENT_PART_ACTIVATED = "partActivated";
+    const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+    const EVENT_EDITOR_ACTIVATED = "editorActivated";
+    const ICON_FILE = "file";
+    const ICON_FOLDER = "folder";
+    class Workbench extends EventTarget {
+        private static _workbench;
+        static getWorkbench(): Workbench;
+        private _fileStringCache;
+        private _fileImageCache;
+        private _activeWindow;
+        private _contentType_icon_Map;
+        private _fileStorage;
+        private _contentTypeRegistry;
+        private _activePart;
+        private _activeEditor;
+        private _activeElement;
+        private _editorRegistry;
+        private _extensionRegistry;
+        private _commandManager;
+        private constructor();
+        launch(plugins: Plugin[]): Promise<void>;
+        private preloadCSSFiles;
+        private registerWindow;
+        private preloadProjectResources;
+        private preloadIcons;
+        private registerContentTypeIcons;
+        private initCommands;
+        private initEvents;
+        private registerEditors;
+        getFileStringCache(): core.io.FileStringCache;
+        getCommandManager(): commands.CommandManager;
+        getActiveWindow(): WorkbenchWindow;
+        getActiveElement(): HTMLElement;
+        getActivePart(): Part;
+        getActiveEditor(): EditorPart;
+        setActiveEditor(editor: EditorPart): void;
+        /**
+         * Users may not call this method. This is public only for convenience.
+         */
+        setActivePart(part: Part): void;
+        private toggleActivePartClass;
+        private findTabPane;
+        private preloadFileStorage;
+        private registerContentTypes;
+        findPart(element: HTMLElement): Part;
+        getContentTypeRegistry(): core.ContentTypeRegistry;
+        getExtensionRegistry(): core.extensions.ExtensionRegistry;
+        getProjectRoot(): core.io.FilePath;
+        getContentTypeIcon(contentType: string): controls.IImage;
+        getFileImage(file: core.io.FilePath): controls.IImage;
+        getWorkbenchIcon(name: string): controls.IImage;
+        getEditorRegistry(): EditorRegistry;
+        getEditors(): EditorPart[];
+        openEditor(input: any): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    abstract class WorkbenchWindow extends controls.Control {
+        constructor();
+        protected createViewFolder(...parts: Part[]): ViewFolder;
+        abstract getEditorArea(): EditorArea;
+    }
+}
+declare namespace colibri.ui.ide {
+    const IMG_SECTION_PADDING = 10;
+}
+declare namespace colibri.ui.ide.commands {
+    class Command {
+        private _id;
+        constructor(id: string);
+        getId(): string;
+    }
+}
+declare namespace colibri.ui.ide.commands {
+    class CommandArgs {
+        readonly activePart: Part;
+        readonly activeEditor: EditorPart;
+        readonly activeElement: HTMLElement;
+        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement);
+    }
+}
+declare namespace colibri.ui.ide.commands {
+    class CommandExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _configurer;
+        constructor(id: string, configurer: (manager: CommandManager) => void);
+        getConfigurer(): (manager: CommandManager) => void;
+    }
+}
+declare namespace colibri.ui.ide.commands {
+    class CommandHandler {
+        private _testFunc;
+        private _executeFunc;
+        constructor(config: {
+            testFunc?: (args: CommandArgs) => boolean;
+            executeFunc?: (args: CommandArgs) => void;
+        });
+        test(args: CommandArgs): boolean;
+        execute(args: CommandArgs): void;
+    }
+}
+declare namespace colibri.ui.ide.commands {
+    class CommandManager {
+        private _commandIdMap;
+        private _commands;
+        private _commandMatcherMap;
+        private _commandHandlerMap;
+        constructor();
+        private onKeyDown;
+        addCommand(cmd: Command): void;
+        addCommandHelper(id: string): void;
+        private makeArgs;
+        getCommand(id: string): Command;
+        addKeyBinding(commandId: string, matcher: KeyMatcher): void;
+        addHandler(commandId: string, handler: CommandHandler): void;
+        addHandlerHelper(commandId: string, testFunc: (args: CommandArgs) => boolean, executeFunc: (args: CommandArgs) => void): void;
+    }
+}
+declare namespace colibri.ui.ide.properties {
+    class FilteredViewerInPropertySection<T extends controls.viewers.Viewer> extends controls.viewers.FilteredViewer<T> {
+        constructor(page: controls.properties.PropertyPage, viewer: T, ...classList: string[]);
+        resizeTo(): void;
+    }
+}
+declare namespace colibri.ui.ide.undo {
+    abstract class Operation {
+        abstract undo(): void;
+        abstract redo(): void;
+    }
+}
+declare namespace colibri.ui.ide.undo {
+    class UndoManager {
+        private _undoList;
+        private _redoList;
+        constructor();
+        add(op: Operation): void;
+        undo(): void;
+        redo(): void;
+    }
+}
+declare namespace colibri.ui.ide.utils {
+    type GetName = (obj: any) => string;
+    export class NameMaker {
+        private _getName;
+        private _nameSet;
+        constructor(getName: GetName);
+        update(objects: any[]): void;
+        makeName(baseName: string): string;
+    }
+    export {};
+}
+//# sourceMappingURL=colibri.d.ts.map

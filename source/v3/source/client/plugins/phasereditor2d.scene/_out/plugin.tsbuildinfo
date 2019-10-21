@@ -1,0 +1,74 @@
+{
+  "bundle": {
+    "commonSourceDirectory": "..",
+    "sourceFiles": [
+      "../ScenePlugin.ts",
+      "../core/SceneContentTypeResolver.ts",
+      "../ui/CameraExtender.ts",
+      "../ui/DisplayListExtender.ts",
+      "../ui/GameObjectExtenders.ts",
+      "../ui/GameScene.ts",
+      "../ui/SceneMaker.ts",
+      "../ui/SceneThumbnail.ts",
+      "../ui/SceneThumbnailCache.ts",
+      "../ui/blocks/SceneEditorBlocksCellRendererProvider.ts",
+      "../ui/blocks/SceneEditorBlocksContentProvider.ts",
+      "../ui/blocks/SceneEditorBlocksLabelProvider.ts",
+      "../ui/blocks/SceneEditorBlocksPropertyProvider.ts",
+      "../ui/blocks/SceneEditorBlocksProvider.ts",
+      "../ui/blocks/SceneEditorBlocksTreeRendererProvider.ts",
+      "../ui/editor/ActionManager.ts",
+      "../ui/editor/CameraManager.ts",
+      "../ui/editor/DropManager.ts",
+      "../ui/editor/OverlayLayer.ts",
+      "../ui/editor/SceneEditor.ts",
+      "../ui/editor/SelectionManager.ts",
+      "../ui/editor/commands/SceneEditorCommands.ts",
+      "../ui/editor/outline/GameObjectCellRenderer.ts",
+      "../ui/editor/outline/SceneEditorOutlineContentProvider.ts",
+      "../ui/editor/outline/SceneEditorOutlineLabelProvider.ts",
+      "../ui/editor/outline/SceneEditorOutlineProvider.ts",
+      "../ui/editor/outline/SceneEditorOutlineRendererProvider.ts",
+      "../ui/editor/properties/SceneSection.ts",
+      "../ui/editor/properties/OriginSection.ts",
+      "../ui/editor/properties/SceneEditorPopertyProvider.ts",
+      "../ui/editor/properties/TextureSection.ts",
+      "../ui/editor/properties/TransformSection.ts",
+      "../ui/editor/properties/VariableSection.ts",
+      "../ui/editor/undo/SceneEditorOperation.ts",
+      "../ui/editor/undo/AddObjectsOperation.ts",
+      "../ui/editor/undo/JoinObjectsInContainerOperation.ts",
+      "../ui/editor/undo/RemoveObjectsOperation.ts",
+      "../ui/json/ContainerComponent.ts",
+      "../ui/json/ImageComponent.ts",
+      "../ui/json/ObjectComponent.ts",
+      "../ui/json/ObjectSerializationExtenders.ts",
+      "../ui/json/SceneData.ts",
+      "../ui/json/SceneParser.ts",
+      "../ui/json/SceneWriter.ts",
+      "../ui/json/TextureComponent.ts",
+      "../ui/json/TransformComponent.ts",
+      "../ui/json/VariableComponent.ts",
+      "../ui/viewers/SceneFileCellRenderer.ts"
+    ],
+    "js": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 105947,
+          "kind": "text"
+        }
+      ]
+    },
+    "dts": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 17917,
+          "kind": "text"
+        }
+      ]
+    }
+  },
+  "version": "3.6.2"
+}
