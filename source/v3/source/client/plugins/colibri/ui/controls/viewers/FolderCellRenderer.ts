@@ -24,13 +24,19 @@ namespace colibri.ui.controls.viewers {
             const contentProvider = <ITreeContentProvider>args.viewer.getContentProvider();
             const children = contentProvider.getChildren(args.obj);
 
-            const width = args.w - 20;
+            const width = args.w;
             const height = args.h - 2;
 
             if (children) {
 
                 const realCount = children.length;
+
+                if (realCount === 0) {
+                    return;
+                }
+
                 let frameCount = realCount;
+
                 if (frameCount == 0) {
                     return;
                 }
@@ -42,7 +48,15 @@ namespace colibri.ui.controls.viewers {
                     frameCount = this._maxCount;
                 }
 
+                if (frameCount === 0) {
+                    frameCount = 1;
+                }
+
                 var size = Math.floor(Math.sqrt(width * height / frameCount) * 0.8) + 1;
+
+                if (frameCount === 1) {
+                    size = Math.min(width, height);
+                }
 
                 var cols = width / size;
                 var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
@@ -52,7 +66,7 @@ namespace colibri.ui.controls.viewers {
                 var itemX = 0;
                 var itemY = 0;
 
-                const startX = 20 + args.x + marginX;
+                const startX = args.x + marginX;
                 const startY = 2 + args.y + marginY;
 
 
