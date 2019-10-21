@@ -14,12 +14,6 @@ var phasereditor2d;
                 // file cell renderers
                 reg
                     .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, new images.ui.viewers.ImageFileCellRenderer()));
-                // css loader
-                reg.addExtension(ide.CSSFileLoaderExtension.POINT_ID, new ide.CSSFileLoaderExtension("phasereditor2d.images.CSSFileLoaderExtension", [
-                    "plugins/phasereditor2d.images/ui/css/ImageEditor.css",
-                    "plugins/phasereditor2d.images/ui/css/ImageEditor-dark.css",
-                    "plugins/phasereditor2d.images/ui/css/ImageEditor-light.css"
-                ]));
                 // editors
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.images.EditorExtension", [
                     images.ui.editors.ImageEditor.getFactory()
