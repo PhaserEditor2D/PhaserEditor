@@ -28,4 +28,5 @@ namespace phasereditor2d.blocks {
         }
     }
 
+    ide.Workbench.getWorkbench().addPlugin(BlocksPlugin.getInstance());
 }

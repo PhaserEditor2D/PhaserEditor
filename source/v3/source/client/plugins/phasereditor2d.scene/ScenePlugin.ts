@@ -62,4 +62,5 @@ namespace phasereditor2d.scene {
 
     }
 
+    ide.Workbench.getWorkbench().addPlugin(ScenePlugin.getInstance());
 }

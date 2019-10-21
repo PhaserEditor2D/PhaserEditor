@@ -35,6 +35,7 @@ var phasereditor2d;
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
         pack.AssetPackPlugin = AssetPackPlugin;
+        ide.Workbench.getWorkbench().addPlugin(AssetPackPlugin.getInstance());
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

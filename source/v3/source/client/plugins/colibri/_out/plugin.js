@@ -191,17 +191,12 @@ var colibri;
                         this._map.set(point, list = []);
                     }
                     list.push(...extension);
+                    list.sort((a, b) => a.getPriority() - b.getPriority());
                 }
-                getExtensions(point, sorted = false) {
+                getExtensions(point) {
                     let list = this._map.get(point);
-                    if (list) {
-                        if (sorted) {
-                            list = list.slice();
-                            list = list.sort((a, b) => a.getPriority() - b.getPriority());
-                        }
-                    }
-                    else {
-                        list = [];
+                    if (!list) {
+                        return [];
                     }
                     return list;
                 }
@@ -3315,26 +3310,6 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class CSSFileLoaderExtension extends colibri.core.extensions.Extension {
-                constructor(id, cssUrls, priority = 10) {
-                    super(id, priority);
-                    this._cssUrls = cssUrls;
-                }
-                getCSSUrls() {
-                    return this._cssUrls;
-                }
-            }
-            CSSFileLoaderExtension.POINT_ID = "colibri.ui.ide.CSSFileLoaderExtension";
-            ide.CSSFileLoaderExtension = CSSFileLoaderExtension;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
             class ContentTypeIconExtension extends colibri.core.extensions.Extension {
                 constructor(id, config) {
                     super(id, 10);
@@ -4200,6 +4175,7 @@ var colibri;
             class Workbench extends EventTarget {
                 constructor() {
                     super();
+                    this._plugins = [];
                     this._editorRegistry = new ide.EditorRegistry();
                     this._activePart = null;
                     this._activeEditor = null;
@@ -4213,7 +4189,14 @@ var colibri;
                     }
                     return this._workbench;
                 }
-                async launch(plugins) {
+                addPlugin(plugin) {
+                    this._plugins.push(plugin);
+                }
+                getPlugins() {
+                    return this._plugins;
+                }
+                async launch() {
+                    const plugins = this._plugins;
                     console.log("Workbench: starting.");
                     for (const plugin of plugins) {
                         plugin.registerExtensions(this._extensionRegistry);
@@ -4223,8 +4206,6 @@ var colibri;
                         await plugin.starting();
                     }
                     await ui.controls.Controls.preload();
-                    console.log("Workbench: fetching CSS files.");
-                    await this.preloadCSSFiles(plugins);
                     console.log("Workbench: fetching UI icons.");
                     await this.preloadIcons(plugins);
                     console.log("Workbench: fetching project metadata.");
@@ -4240,32 +4221,6 @@ var colibri;
                     this.registerWindow(plugins);
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
-                }
-                async preloadCSSFiles(plugins) {
-                    const urls = [
-                        "colibri/ui/controls/css/controls.css",
-                        "colibri/css/workbench.css",
-                        "colibri/css/dark.css",
-                        "colibri/css/light.css"
-                    ];
-                    const extensions = this.getExtensionRegistry().getExtensions(ide.CSSFileLoaderExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        urls.push(...extension.getCSSUrls());
-                    }
-                    for (let url of urls) {
-                        url = `static/${url}`;
-                        try {
-                            const resp = await fetch(url);
-                            const text = await resp.text();
-                            const element = document.createElement("style");
-                            element.innerHTML = text;
-                            document.head.appendChild(element);
-                        }
-                        catch (e) {
-                            console.error(`Workbench: Error fetching CSS url ${url}`);
-                            console.error(e.message);
-                        }
-                    }
                 }
                 registerWindow(plugins) {
                     const windows = [];

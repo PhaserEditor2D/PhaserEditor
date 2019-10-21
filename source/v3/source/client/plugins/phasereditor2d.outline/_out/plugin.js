@@ -19,6 +19,7 @@ var phasereditor2d;
         }
         OutlinePlugin._instance = new OutlinePlugin();
         outline.OutlinePlugin = OutlinePlugin;
+        ide.Workbench.getWorkbench().addPlugin(OutlinePlugin.getInstance());
     })(outline = phasereditor2d.outline || (phasereditor2d.outline = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

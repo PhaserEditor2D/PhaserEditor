@@ -13,5 +13,6 @@ var phasereditor2d;
         }
         PhaserPlugin._instance = new PhaserPlugin();
         phaser.PhaserPlugin = PhaserPlugin;
+        ide.Workbench.getWorkbench().addPlugin(PhaserPlugin.getInstance());
     })(phaser = phasereditor2d.phaser || (phasereditor2d.phaser = {}));
 })(phasereditor2d || (phasereditor2d = {}));

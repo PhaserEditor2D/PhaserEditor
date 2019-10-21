@@ -37,4 +37,5 @@ namespace phasereditor2d.images {
 
     }
 
+    ide.Workbench.getWorkbench().addPlugin(ImagesPlugin.getInstance());
 }

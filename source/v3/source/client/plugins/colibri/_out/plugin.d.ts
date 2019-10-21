@@ -66,7 +66,7 @@ declare namespace colibri.core.extensions {
         private _map;
         constructor();
         addExtension(point: string, ...extension: Extension[]): void;
-        getExtensions<T extends Extension>(point: string, sorted?: boolean): T[];
+        getExtensions<T extends Extension>(point: string): T[];
     }
 }
 declare namespace colibri.core.io {
@@ -800,14 +800,6 @@ declare namespace colibri.ui.controls.viewers {
     }
 }
 declare namespace colibri.ui.ide {
-    class CSSFileLoaderExtension extends core.extensions.Extension {
-        static POINT_ID: string;
-        private _cssUrls;
-        constructor(id: any, cssUrls: string[], priority?: number);
-        getCSSUrls(): string[];
-    }
-}
-declare namespace colibri.ui.ide {
     type ContentTypeIconExtensionConfig = {
         icon: controls.IImage;
         contentType: string;
@@ -1089,6 +1081,7 @@ declare namespace colibri.ui.ide {
     const ICON_FOLDER = "folder";
     class Workbench extends EventTarget {
         private static _workbench;
+        private _plugins;
         static getWorkbench(): Workbench;
         private _fileStringCache;
         private _fileImageCache;
@@ -1103,8 +1096,9 @@ declare namespace colibri.ui.ide {
         private _extensionRegistry;
         private _commandManager;
         private constructor();
-        launch(plugins: Plugin[]): Promise<void>;
-        private preloadCSSFiles;
+        addPlugin(plugin: ide.Plugin): void;
+        getPlugins(): Plugin[];
+        launch(): Promise<void>;
         private registerWindow;
         private preloadProjectResources;
         private preloadIcons;

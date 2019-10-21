@@ -30,6 +30,7 @@ var phasereditor2d;
         }
         ScenePlugin._instance = new ScenePlugin();
         scene.ScenePlugin = ScenePlugin;
+        ide.Workbench.getWorkbench().addPlugin(ScenePlugin.getInstance());
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

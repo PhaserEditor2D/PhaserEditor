@@ -27,4 +27,6 @@ namespace phasereditor2d.inspector {
 
         }
     }
+
+    ide.Workbench.getWorkbench().addPlugin(InspectorPlugin.getInstance());
 }

@@ -17,22 +17,16 @@ namespace colibri.core.extensions {
             }
 
             list.push(...extension);
+            
+            list.sort((a, b) => a.getPriority() - b.getPriority());
         }
 
-        getExtensions<T extends Extension>(point: string, sorted = false): T[] {
+        getExtensions<T extends Extension>(point: string): T[] {
 
             let list = this._map.get(point);
 
-            if (list) {
-
-                if (sorted) {
-
-                    list = list.slice();
-                    list = list.sort((a, b) => a.getPriority() - b.getPriority());
-                }
-
-            } else {
-                list = [];
+            if (!list) {
+                return [];
             }
 
             return <any>list;

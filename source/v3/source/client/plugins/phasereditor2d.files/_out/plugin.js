@@ -26,7 +26,7 @@ var phasereditor2d;
                     files.ICON_FILE_TEXT
                 ]));
                 // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()]));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()], 1000));
                 // content type icons
                 reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
@@ -54,6 +54,7 @@ var phasereditor2d;
         }
         FilesPlugin._instance = new FilesPlugin();
         files.FilesPlugin = FilesPlugin;
+        ide.Workbench.getWorkbench().addPlugin(FilesPlugin.getInstance());
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

@@ -22,6 +22,7 @@ var phasereditor2d;
         }
         ImagesPlugin._instance = new ImagesPlugin();
         images.ImagesPlugin = ImagesPlugin;
+        ide.Workbench.getWorkbench().addPlugin(ImagesPlugin.getInstance());
     })(images = phasereditor2d.images || (phasereditor2d.images = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

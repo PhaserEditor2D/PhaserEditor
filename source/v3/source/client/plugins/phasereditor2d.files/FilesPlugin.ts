@@ -42,7 +42,8 @@ namespace phasereditor2d.files {
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
                 new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver",
-                    [new core.DefaultExtensionTypeResolver()]
+                    [new core.DefaultExtensionTypeResolver()],
+                    1000
                 ));
 
             // content type icons
@@ -74,4 +75,5 @@ namespace phasereditor2d.files {
         }
     }
 
+    ide.Workbench.getWorkbench().addPlugin(FilesPlugin.getInstance());
 }

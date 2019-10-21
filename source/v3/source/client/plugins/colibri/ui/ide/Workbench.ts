@@ -14,6 +14,7 @@ namespace colibri.ui.ide {
     export class Workbench extends EventTarget {
 
         private static _workbench: Workbench;
+        private _plugins : ide.Plugin[];
 
         static getWorkbench() {
 
@@ -43,6 +44,8 @@ namespace colibri.ui.ide {
 
             super();
 
+            this._plugins = [];
+
             this._editorRegistry = new EditorRegistry();
 
             this._activePart = null;
@@ -54,7 +57,17 @@ namespace colibri.ui.ide {
             this._extensionRegistry = new core.extensions.ExtensionRegistry();
         }
 
-        async launch(plugins: Plugin[]) {
+        addPlugin(plugin : ide.Plugin) {
+            this._plugins.push(plugin);
+        }
+
+        getPlugins() {
+            return this._plugins;
+        }
+
+        async launch() {
+
+            const plugins = this._plugins;
 
             console.log("Workbench: starting.");
 
@@ -68,10 +81,6 @@ namespace colibri.ui.ide {
             }
 
             await ui.controls.Controls.preload();
-
-            console.log("Workbench: fetching CSS files.");
-
-            await this.preloadCSSFiles(plugins);
 
             console.log("Workbench: fetching UI icons.");
 
@@ -103,44 +112,6 @@ namespace colibri.ui.ide {
 
             console.log("%cWorkbench: started.", "color:green");
 
-        }
-
-        private async preloadCSSFiles(plugins: Plugin[]) {
-
-            const urls: string[] = [
-
-                "colibri/ui/controls/css/controls.css",
-                "colibri/css/workbench.css",
-                "colibri/css/dark.css",
-                "colibri/css/light.css"
-
-            ];
-
-            const extensions = this.getExtensionRegistry().getExtensions<CSSFileLoaderExtension>(CSSFileLoaderExtension.POINT_ID);
-
-            for (const extension of extensions) {
-                urls.push(...extension.getCSSUrls());
-            }
-
-            for (let url of urls) {
-
-                url = `static/${url}`;
-
-                try {
-
-                    const resp = await fetch(url);
-                    const text = await resp.text();
-
-                    const element = document.createElement("style");
-                    element.innerHTML = text;
-
-                    document.head.appendChild(element);
-
-                } catch (e) {
-                    console.error(`Workbench: Error fetching CSS url ${url}`);
-                    console.error(e.message);
-                }
-            }
         }
 
         private registerWindow(plugins: Plugin[]) {

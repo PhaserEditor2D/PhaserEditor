@@ -67,4 +67,5 @@ namespace phasereditor2d.pack {
         }
     }
 
+    ide.Workbench.getWorkbench().addPlugin(AssetPackPlugin.getInstance());
 }

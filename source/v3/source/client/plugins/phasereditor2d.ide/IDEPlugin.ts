@@ -19,4 +19,6 @@ namespace phasereditor2d.ide {
         }
 
     }
+
+    ide.Workbench.getWorkbench().addPlugin(IDEPlugin.getInstance());
 }

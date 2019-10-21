@@ -5,5 +5,6 @@
     },
     "references": [{
         "path": "../colibri"
-    }]
+    }],
+    "exclude": ["_out/plugin.d.ts"]
 }

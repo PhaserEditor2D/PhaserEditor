@@ -19,6 +19,7 @@ var phasereditor2d;
         }
         BlocksPlugin._instance = new BlocksPlugin();
         blocks.BlocksPlugin = BlocksPlugin;
+        ide.Workbench.getWorkbench().addPlugin(BlocksPlugin.getInstance());
     })(blocks = phasereditor2d.blocks || (phasereditor2d.blocks = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

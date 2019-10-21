@@ -31,4 +31,5 @@ namespace phasereditor2d.outline {
 
     }
 
+    ide.Workbench.getWorkbench().addPlugin(OutlinePlugin.getInstance());
 }
