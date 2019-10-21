@@ -20,7 +20,7 @@ var colibri;
         })(extensions = core.extensions || (core.extensions = {}));
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
-/// <reference path="../core/extensions/Extension.ts" />
+/// <reference path="./extensions/Extension.ts" />
 var colibri;
 (function (colibri) {
     var core;
@@ -709,7 +709,7 @@ var colibri;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
-/// <reference path="../controls/Control.ts" />
+/// <reference path="./Control.ts" />
 var colibri;
 (function (colibri) {
     var ui;
@@ -863,7 +863,7 @@ var colibri;
                     Controls._images.set(id, img);
                     return img;
                 }
-                static getIcon(name, baseUrl = "colibri/ui/controls/images") {
+                static getIcon(name, baseUrl = "plugins/colibri/ui/controls/images") {
                     const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);
                 }
@@ -2633,7 +2633,7 @@ var colibri;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
-/// <reference path="../../controls/Controls.ts" />
+/// <reference path="../Controls.ts" />
 var colibri;
 (function (colibri) {
     var ui;
@@ -4457,7 +4457,7 @@ var colibri;
                     return this._fileImageCache.getContent(file);
                 }
                 getWorkbenchIcon(name) {
-                    return ui.controls.Controls.getIcon(name, "colibri/ui/icons");
+                    return ui.controls.Controls.getIcon(name, "plugins/colibri/ui/icons");
                 }
                 getEditorRegistry() {
                     return this._editorRegistry;

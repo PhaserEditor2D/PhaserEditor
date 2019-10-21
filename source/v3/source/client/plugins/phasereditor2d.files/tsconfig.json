@@ -4,6 +4,6 @@
         "outFile": "_out/plugin.js"
     },
     "references": [{
-        "path": "../../colibri"
+        "path": "../colibri"
     }]
 }

@@ -1,4 +1,4 @@
-/// <reference path="../core/extensions/Extension.ts" />
+/// <reference path="./extensions/Extension.ts" />
 
 namespace colibri.core {
 

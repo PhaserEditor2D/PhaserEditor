@@ -2,10 +2,5 @@
     "extends": "../../tsconfig-base.json",
     "compilerOptions": {
         "outFile": "_out/plugin.js"
-    },
-    "references": [
-        {
-            "path": "../colibri"
-        }
-    ]
+    }
 }

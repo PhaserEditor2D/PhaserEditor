@@ -5,7 +5,7 @@
     },
     "references": [
         {
-            "path": "../../colibri"
+            "path": "../colibri"
         },
         {
             "path": "../phasereditor2d.files"

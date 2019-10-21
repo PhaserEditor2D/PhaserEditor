@@ -1,4 +1,4 @@
-/// <reference path="../../controls/Controls.ts" />
+/// <reference path="../Controls.ts" />
 
 namespace colibri.ui.controls.viewers {
 

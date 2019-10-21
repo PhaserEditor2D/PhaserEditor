@@ -1,7 +1,7 @@
 {
     "references": [
         {
-            "path": "./colibri"
+            "path": "./plugins/colibri"
         },
         {
             "path": "./plugins/phasereditor2d.blocks"
