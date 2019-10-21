@@ -6,6 +6,7 @@ declare namespace phasereditor2d.ide {
         private constructor();
         createWindow(windows: ide.WorkbenchWindow[]): void;
     }
+    const VER = "3.0.0";
 }
 declare namespace phasereditor2d.ide.ui.windows {
     import ide = colibri.ui.ide;
