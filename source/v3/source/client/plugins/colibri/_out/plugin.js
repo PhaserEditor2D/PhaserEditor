@@ -2446,17 +2446,17 @@ var colibri;
                     static formatSectionLabel(label) {
                         let s = "";
                         let lastUpperCase = false;
-                        for (const c of label) {
+                        for (let c of label) {
                             const upperCase = c === c.toUpperCase();
                             if (upperCase !== lastUpperCase) {
-                                s += " " + c;
+                                if (upperCase) {
+                                    s += " ";
+                                }
                             }
-                            else {
-                                s += c;
-                            }
+                            s += c;
                             lastUpperCase = upperCase;
                         }
-                        return s;
+                        return s.toUpperCase();
                     }
                     paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this.getViewer();

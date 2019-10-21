@@ -35,20 +35,22 @@ namespace colibri.ui.controls.viewers {
 
             let lastUpperCase = false;
 
-            for (const c of label) {
+            for (let c of label) {
 
                 const upperCase = c === c.toUpperCase();
 
                 if (upperCase !== lastUpperCase) {
-                    s += " " + c;
-                } else {
-                    s += c;
+                    if (upperCase) {
+                        s += " ";
+                    }
                 }
+
+                s += c;
 
                 lastUpperCase = upperCase;
             }
 
-            return s;
+            return s.toUpperCase();
         }
 
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
