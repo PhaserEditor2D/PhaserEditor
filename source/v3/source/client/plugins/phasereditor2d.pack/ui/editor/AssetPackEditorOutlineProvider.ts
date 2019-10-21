@@ -22,7 +22,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         getCellRendererProvider(): colibri.ui.controls.viewers.ICellRendererProvider {
-            return this._editor.getViewer().getCellRendererProvider();
+            return new viewers.AssetPackCellRendererProvider("tree");
         }
 
         getTreeViewerRenderer(viewer: colibri.ui.controls.viewers.TreeViewer): colibri.ui.controls.viewers.TreeViewerRenderer {

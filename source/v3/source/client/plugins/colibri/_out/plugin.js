@@ -3101,6 +3101,48 @@ var colibri;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
+/// <reference path="./IconImageCellRenderer.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class IconGridCellRenderer {
+                    constructor(icon) {
+                        this._icon = icon;
+                    }
+                    renderCell(args) {
+                        if (!this._icon) {
+                            controls.DefaultImage.paintEmpty(args.canvasContext, args.x, args.y, args.w, args.h);
+                        }
+                        else {
+                            const x2 = (args.w - controls.ICON_SIZE) / 2;
+                            const y2 = (args.h - controls.ICON_SIZE) / 2;
+                            this._icon.paint(args.canvasContext, args.x + x2, args.y + y2, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        }
+                        const ctx = args.canvasContext;
+                        ctx.save();
+                        ctx.lineWidth = 1;
+                        ctx.globalAlpha = 0.5;
+                        ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
+                        ctx.strokeRect(args.x, args.y, args.w, args.h);
+                        ctx.restore();
+                    }
+                    cellHeight(args) {
+                        return args.viewer.getCellSize();
+                    }
+                    preload(obj) {
+                        return this._icon.preload();
+                    }
+                }
+                viewers.IconGridCellRenderer = IconGridCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
     var ui;

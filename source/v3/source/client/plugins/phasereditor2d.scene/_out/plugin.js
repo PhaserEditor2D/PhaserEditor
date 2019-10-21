@@ -469,6 +469,9 @@ var phasereditor2d;
             var blocks;
             (function (blocks) {
                 class SceneEditorBlocksCellRendererProvider extends phasereditor2d.pack.ui.viewers.AssetPackCellRendererProvider {
+                    constructor() {
+                        super("grid");
+                    }
                     getCellRenderer(element) {
                         if (element instanceof colibri.core.io.FilePath) {
                             return new ui.viewers.SceneFileCellRenderer();
@@ -1459,7 +1462,7 @@ var phasereditor2d;
                     class SceneEditorOutlineRendererProvider {
                         constructor(editor) {
                             this._editor = editor;
-                            this._assetRendererProvider = new phasereditor2d.pack.ui.viewers.AssetPackCellRendererProvider();
+                            this._assetRendererProvider = new phasereditor2d.pack.ui.viewers.AssetPackCellRendererProvider("tree");
                         }
                         getCellRenderer(element) {
                             if (element instanceof Phaser.GameObjects.Image) {

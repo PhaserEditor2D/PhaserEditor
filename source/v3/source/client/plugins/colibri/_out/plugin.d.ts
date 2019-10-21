@@ -746,6 +746,15 @@ declare namespace colibri.ui.controls.viewers {
     }
 }
 declare namespace colibri.ui.controls.viewers {
+    class IconGridCellRenderer implements ICellRenderer {
+        private _icon;
+        constructor(icon: IImage);
+        renderCell(args: RenderCellArgs): void;
+        cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<any>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
     class PaintItem extends controls.Rect {
         index: number;
         data: any;

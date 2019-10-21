@@ -964,7 +964,7 @@ var phasereditor2d;
                         const viewer = new controls.viewers.TreeViewer();
                         viewer.setContentProvider(this._contentProvider = new editor.AssetPackEditorContentProvider(this));
                         viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
-                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("grid"));
                         viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
                         viewer.setInput(this);
                         this.updateContent();
@@ -1121,7 +1121,7 @@ var phasereditor2d;
                         return this._editor.getViewer().getLabelProvider();
                     }
                     getCellRendererProvider() {
-                        return this._editor.getViewer().getCellRendererProvider();
+                        return new ui.viewers.AssetPackCellRendererProvider("tree");
                     }
                     getTreeViewerRenderer(viewer) {
                         return new controls.viewers.TreeViewerRenderer(viewer);
@@ -1244,7 +1244,7 @@ var phasereditor2d;
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         viewer.setTreeRenderer(new controls.viewers.GridTreeViewerRenderer(viewer, false, true));
                         viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
-                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("grid"));
                         const filteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), viewer);
                         parent.appendChild(filteredViewer.getElement());
                         this.addUpdater(async () => {
@@ -1291,6 +1291,9 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
                 class AssetPackCellRendererProvider {
+                    constructor(layout) {
+                        this._layout = layout;
+                    }
                     getCellRenderer(element) {
                         if (typeof (element) === "string") {
                             return new controls.viewers.IconImageCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
@@ -1313,7 +1316,10 @@ var phasereditor2d;
                         else if (element instanceof controls.ImageFrame) {
                             return new controls.viewers.ImageCellRenderer();
                         }
-                        return new controls.viewers.EmptyCellRenderer();
+                        if (this._layout === "grid") {
+                            return new controls.viewers.IconGridCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
+                        }
+                        return new controls.viewers.IconImageCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();

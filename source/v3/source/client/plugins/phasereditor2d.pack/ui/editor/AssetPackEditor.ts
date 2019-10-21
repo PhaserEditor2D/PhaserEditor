@@ -44,7 +44,7 @@ namespace phasereditor2d.pack.ui.editor {
 
             viewer.setContentProvider(this._contentProvider = new AssetPackEditorContentProvider(this));
             viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
-            viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider());
+            viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider("grid"));
             viewer.setTreeRenderer(new viewers.AssetPackTreeViewerRenderer(viewer, true));
             viewer.setInput(this);
 

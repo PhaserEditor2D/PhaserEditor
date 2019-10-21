@@ -295,6 +295,8 @@ declare namespace phasereditor2d.pack.ui.properties {
 declare namespace phasereditor2d.pack.ui.viewers {
     import controls = colibri.ui.controls;
     class AssetPackCellRendererProvider implements controls.viewers.ICellRendererProvider {
+        private _layout;
+        constructor(layout: "grid" | "tree");
         getCellRenderer(element: any): controls.viewers.ICellRenderer;
         preload(element: any): Promise<controls.PreloadResult>;
     }

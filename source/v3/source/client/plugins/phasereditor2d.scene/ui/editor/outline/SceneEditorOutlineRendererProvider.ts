@@ -10,7 +10,7 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
         constructor(editor: SceneEditor) {
             this._editor = editor;
-            this._assetRendererProvider = new pack.ui.viewers.AssetPackCellRendererProvider();
+            this._assetRendererProvider = new pack.ui.viewers.AssetPackCellRendererProvider("tree");
         }
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {

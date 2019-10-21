@@ -105,6 +105,7 @@ declare namespace phasereditor2d.scene.ui {
 }
 declare namespace phasereditor2d.scene.ui.blocks {
     class SceneEditorBlocksCellRendererProvider extends pack.ui.viewers.AssetPackCellRendererProvider {
+        constructor();
         getCellRenderer(element: any): colibri.ui.controls.viewers.ICellRenderer;
     }
 }

@@ -5,6 +5,12 @@ namespace phasereditor2d.pack.ui.viewers {
 
     export class AssetPackCellRendererProvider implements controls.viewers.ICellRendererProvider {
 
+        private _layout: "grid" | "tree";
+
+        constructor(layout: "grid" | "tree") {
+            this._layout = layout;
+        }
+
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
             if (typeof (element) === "string") {
@@ -34,7 +40,11 @@ namespace phasereditor2d.pack.ui.viewers {
 
             }
 
-            return new controls.viewers.EmptyCellRenderer();
+            if (this._layout === "grid") {
+                return new controls.viewers.IconGridCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
+            }
+
+            return new controls.viewers.IconImageCellRenderer(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FILE));
         }
 
         preload(element: any): Promise<controls.PreloadResult> {
