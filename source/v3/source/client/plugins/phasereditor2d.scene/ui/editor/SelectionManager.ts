@@ -26,7 +26,7 @@ namespace phasereditor2d.scene.ui.editor {
 
         private updateOutlineSelection(): void {
             const provider = this._editor.getOutlineProvider();
-            provider.setSelection(this._editor.getSelection(), true, false);
+            provider.setSelection(this._editor.getSelection(), true, true);
             provider.repaint();
         }
 

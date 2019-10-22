@@ -1218,7 +1218,7 @@ var phasereditor2d;
                     }
                     updateOutlineSelection() {
                         const provider = this._editor.getOutlineProvider();
-                        provider.setSelection(this._editor.getSelection(), true, false);
+                        provider.setSelection(this._editor.getSelection(), true, true);
                         provider.repaint();
                     }
                     onMouseClick(e) {
