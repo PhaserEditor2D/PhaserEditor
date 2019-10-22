@@ -47,19 +47,20 @@ var phasereditor2d;
                         this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
                         this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
                         this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
-                        this.add(this._split_OutlineEditorFilesBlocks_Inspector);
+                        this.getClientArea().add(this._split_OutlineEditorFilesBlocks_Inspector);
                         this.initialLayout();
                     }
                     getEditorArea() {
                         return this._editorArea;
                     }
                     initialLayout() {
-                        const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+                        //const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
                         this._split_Files_Blocks.setSplitFactor(0.2);
                         this._split_Editor_FilesBlocks.setSplitFactor(0.6);
                         this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
                         this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
-                        this.setBounds(b);
+                        //this.setBounds(b);
+                        this.layout();
                     }
                 }
                 windows.DesignWindow = DesignWindow;

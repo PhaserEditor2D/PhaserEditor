@@ -95,5 +95,20 @@ namespace phasereditor2d.pack.ui.editor {
         getPropertyProvider() {
             return this._propertySectionProvider;
         }
+
+        createEditorToolbar(parent: HTMLElement) {
+
+            const manager = new controls.ToolbarManager(parent);
+
+            manager.add(new controls.Action({
+                text: "Add File",
+                icon: ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_PLUS),
+                callback: () => {
+                    alert("Hello!");
+                }
+            }));
+
+            return manager;
+        }
     }
 }

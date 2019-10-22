@@ -228,6 +228,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;
         getPropertyProvider(): AssetPackEditorPropertySectionProvider;
+        createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {

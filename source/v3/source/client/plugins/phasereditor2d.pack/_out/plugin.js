@@ -1005,6 +1005,17 @@ var phasereditor2d;
                     getPropertyProvider() {
                         return this._propertySectionProvider;
                     }
+                    createEditorToolbar(parent) {
+                        const manager = new controls.ToolbarManager(parent);
+                        manager.add(new controls.Action({
+                            text: "Add File",
+                            icon: ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_PLUS),
+                            callback: () => {
+                                alert("Hello!");
+                            }
+                        }));
+                        return manager;
+                    }
                 }
                 editor.AssetPackEditor = AssetPackEditor;
             })(editor = ui.editor || (ui.editor = {}));

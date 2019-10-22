@@ -55,5 +55,9 @@ namespace colibri.ui.ide {
         getEditorViewerProvider(key: string): EditorViewerProvider {
             return null;
         }
+
+        createEditorToolbar(parent : HTMLElement) : controls.ToolbarManager {
+            return null;
+        }
     }
 }

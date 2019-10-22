@@ -561,7 +561,25 @@ var colibri;
     (function (ui) {
         var controls;
         (function (controls) {
-            class Action {
+            controls.EVENT_ACTION_CHANGED = "actionChanged";
+            class Action extends EventTarget {
+                constructor(config) {
+                    super();
+                    this._text = config.text || "";
+                    this._icon = config.icon || null;
+                    this._callback = config.callback || null;
+                }
+                getText() {
+                    return this._text;
+                }
+                getIcon() {
+                    return this._icon;
+                }
+                run() {
+                    if (this._callback) {
+                        this._callback();
+                    }
+                }
             }
             controls.Action = Action;
         })(controls = ui.controls || (ui.controls = {}));
@@ -705,26 +723,6 @@ var colibri;
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
 /// <reference path="./Control.ts" />
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            class ActionButton extends controls.Control {
-                constructor(action) {
-                    super("button");
-                    this._action = action;
-                    this.getElement().classList.add("actionButton");
-                }
-                getAction() {
-                    return this._action;
-                }
-            }
-            controls.ActionButton = ActionButton;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
     var ui;
@@ -1785,6 +1783,58 @@ var colibri;
                 }
             }
             controls.TabPane = TabPane;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class ToolbarManager {
+                constructor(toolbarElement) {
+                    this._toolbarElement = toolbarElement;
+                    this._actionDataMap = new Map();
+                }
+                add(action) {
+                    const btnElement = document.createElement("div");
+                    btnElement.classList.add("ToolbarItem");
+                    btnElement.addEventListener("click", e => {
+                        action.run();
+                    });
+                    if (action.getIcon()) {
+                        const iconElement = controls.Controls.createIconElement(action.getIcon());
+                        btnElement.appendChild(iconElement);
+                        btnElement["__icon"] = iconElement;
+                    }
+                    const textElement = document.createElement("div");
+                    btnElement.appendChild(textElement);
+                    btnElement["__text"] = textElement;
+                    if (action.getText() && action.getIcon()) {
+                        btnElement.classList.add("ToolbarItemHasTextAndIcon");
+                    }
+                    this._toolbarElement.appendChild(btnElement);
+                    const listener = e => this.updateButtonWithAction(btnElement, action);
+                    action.addEventListener(controls.EVENT_ACTION_CHANGED, listener);
+                    this.updateButtonWithAction(btnElement, action);
+                    this._actionDataMap.set(action, {
+                        btnElement: btnElement,
+                        listener: listener
+                    });
+                }
+                dispose() {
+                    for (const [action, data] of this._actionDataMap.entries()) {
+                        action.removeEventListener(controls.EVENT_ACTION_CHANGED, data.listener);
+                        data.btnElement.remove();
+                    }
+                }
+                updateButtonWithAction(btn, action) {
+                    const textElement = btn["__text"];
+                    textElement.innerText = action.getText();
+                }
+            }
+            controls.ToolbarManager = ToolbarManager;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -3503,6 +3553,9 @@ var colibri;
                 getEditorViewerProvider(key) {
                     return null;
                 }
+                createEditorToolbar(parent) {
+                    return null;
+                }
             }
             ide.EditorPart = EditorPart;
         })(ide = ui.ide || (ui.ide = {}));
@@ -4075,6 +4128,44 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
+            class MainToolbar extends ui.controls.Control {
+                constructor() {
+                    super("div", "MainToolbar");
+                    this._currentManager = null;
+                    const element = this.getElement();
+                    this._leftArea = document.createElement("div");
+                    this._leftArea.classList.add("MainToolbarLeftArea");
+                    element.appendChild(this._leftArea);
+                    this._centerArea = document.createElement("div");
+                    this._centerArea.classList.add("MainToolbarCenterArea");
+                    element.appendChild(this._centerArea);
+                    this._rightArea = document.createElement("div");
+                    this._rightArea.classList.add("MainToolbarRightArea");
+                    element.appendChild(this._rightArea);
+                    ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onEditorActivated());
+                }
+                onEditorActivated() {
+                    const editor = ide.Workbench.getWorkbench().getActiveEditor();
+                    if (this._currentManager) {
+                        this._currentManager.dispose();
+                        this._currentManager = null;
+                    }
+                    if (editor) {
+                        const manager = editor.createEditorToolbar(this._centerArea);
+                        this._currentManager = manager;
+                    }
+                }
+            }
+            ide.MainToolbar = MainToolbar;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             class OutlineProvider extends EventTarget {
                 constructor(editor) {
                     super();
@@ -4140,32 +4231,6 @@ var colibri;
 (function (colibri) {
     var ui;
     (function (ui) {
-        var toolbar;
-        (function (toolbar) {
-            class Toolbar {
-                constructor() {
-                    this._toolbarElement = document.createElement("div");
-                    this._toolbarElement.innerHTML = `
-
-            <button>Load</button>
-            <button>Play</button>
-
-            `;
-                    this._toolbarElement.classList.add("toolbar");
-                    document.getElementsByTagName("body")[0].appendChild(this._toolbarElement);
-                }
-                getElement() {
-                    return this._toolbarElement;
-                }
-            }
-            toolbar.Toolbar = Toolbar;
-        })(toolbar = ui.toolbar || (ui.toolbar = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
         var ide;
         (function (ide) {
             class ViewFolder extends ide.PartFolder {
@@ -4223,6 +4288,7 @@ var colibri;
             ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
             ide.ICON_FILE = "file";
             ide.ICON_FOLDER = "folder";
+            ide.ICON_PLUS = "plus";
             class Workbench extends EventTarget {
                 constructor() {
                     super();
@@ -4295,6 +4361,7 @@ var colibri;
                 async preloadIcons(plugins) {
                     await this.getWorkbenchIcon(ide.ICON_FILE).preload();
                     await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
+                    await this.getWorkbenchIcon(ide.ICON_PLUS).preload();
                     const extensions = this._extensionRegistry
                         .getExtensions(ide.IconLoaderExtension.POINT_ID);
                     for (const extension of extensions) {
@@ -4513,9 +4580,22 @@ var colibri;
                     super("div", "Window");
                     this.setLayout(new ui.controls.FillLayout(5));
                     window.addEventListener("resize", e => {
-                        this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
+                        //this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
+                        this.layout();
                     });
                     window.addEventListener(ui.controls.EVENT_THEME_CHANGED, e => this.layout());
+                    this._toolbar = new ide.MainToolbar();
+                    this._clientArea = new ui.controls.Control("div", "WindowClientArea");
+                    this._clientArea.setLayout(new ui.controls.FillLayout());
+                    this.add(this._toolbar);
+                    this.add(this._clientArea);
+                    this.setLayout(new ide.WorkbenchWindowLayout());
+                }
+                getToolbar() {
+                    return this._toolbar;
+                }
+                getClientArea() {
+                    return this._clientArea;
                 }
                 createViewFolder(...parts) {
                     const folder = new ide.ViewFolder();
@@ -4526,6 +4606,32 @@ var colibri;
                 }
             }
             ide.WorkbenchWindow = WorkbenchWindow;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            const TOOLBAR_HEIGHT = 40;
+            class WorkbenchWindowLayout {
+                layout(parent) {
+                    const win = parent;
+                    const toolbar = win.getToolbar();
+                    const clientArea = win.getClientArea();
+                    const b = win.getBounds();
+                    b.x = 0;
+                    b.y = 0;
+                    b.width = window.innerWidth;
+                    b.height = window.innerHeight;
+                    ui.controls.setElementBounds(win.getElement(), b);
+                    toolbar.setBoundsValues(0, 0, b.width, TOOLBAR_HEIGHT);
+                    clientArea.setBoundsValues(0, TOOLBAR_HEIGHT, b.width, b.height - TOOLBAR_HEIGHT);
+                }
+            }
+            ide.WorkbenchWindowLayout = WorkbenchWindowLayout;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));

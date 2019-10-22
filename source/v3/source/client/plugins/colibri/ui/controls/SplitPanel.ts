@@ -143,6 +143,7 @@ namespace colibri.ui.controls {
         }
 
         layout() {
+
             setElementBounds(this.getElement(), this.getBounds());
 
             if (!this._leftControl || !this._rightControl) {

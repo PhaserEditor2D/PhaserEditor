@@ -93,3 +93,19 @@ Important:
 .dark .PropertySectionPane {
     background: #3f3f3f;
 }
+
+/* Toolbar */
+
+.dark .ToolbarItem {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.05);
+    text-shadow: 1px 1px #0e0e0e;
+}
+
+.dark .ToolbarItem:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dark .ToolbarItem:active {
+    background: rgba(255, 255, 255, 0.3);
+}

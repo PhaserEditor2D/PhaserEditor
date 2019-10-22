@@ -166,8 +166,28 @@ declare namespace colibri.core.json {
     function read(data: any, name: string, defaultValue?: any): any;
 }
 declare namespace colibri.ui.controls {
-    class Action {
+    const EVENT_ACTION_CHANGED = "actionChanged";
+    class Action extends EventTarget {
+        private _text;
+        private _icon;
+        private _callback;
+        constructor(config: {
+            text?: string;
+            icon?: IImage;
+            callback?: () => void;
+        });
+        getText(): string;
+        getIcon(): IImage;
+        run(): void;
     }
+}
+declare namespace colibri.ui.controls {
+    type Bounds = {
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+    };
 }
 declare namespace colibri.ui.controls {
     const EVENT_CONTROL_LAYOUT = "controlLayout";
@@ -211,21 +231,6 @@ declare namespace colibri.ui.controls {
         protected onControlAdded(): void;
         getChildren(): Control[];
     }
-}
-declare namespace colibri.ui.controls {
-    class ActionButton extends Control {
-        private _action;
-        constructor(action: Action);
-        getAction(): Action;
-    }
-}
-declare namespace colibri.ui.controls {
-    type Bounds = {
-        x?: number;
-        y?: number;
-        width?: number;
-        height?: number;
-    };
 }
 declare namespace colibri.ui.controls {
     abstract class CanvasControl extends Control {
@@ -331,12 +336,6 @@ declare namespace colibri.ui.controls.viewers {
 declare namespace colibri.ui.controls {
     interface ILayout {
         layout(parent: Control): any;
-    }
-}
-declare namespace colibri.ui.controls {
-    interface IToolbar {
-        addAction(action: Action): any;
-        getActions(): Action[];
     }
 }
 declare namespace colibri.ui.controls {
@@ -479,6 +478,16 @@ declare namespace colibri.ui.controls {
         treeItemSelectionForeground: string;
         treeItemForeground: string;
     };
+}
+declare namespace colibri.ui.controls {
+    class ToolbarManager {
+        private _toolbarElement;
+        private _actionDataMap;
+        constructor(toolbarElement: HTMLElement);
+        add(action: Action): void;
+        dispose(): void;
+        private updateButtonWithAction;
+    }
 }
 declare namespace colibri.ui.controls {
     const CONTROL_PADDING = 3;
@@ -868,6 +877,7 @@ declare namespace colibri.ui.ide {
         getInput(): any;
         setInput(input: any): void;
         getEditorViewerProvider(key: string): EditorViewerProvider;
+        createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
     }
 }
 declare namespace colibri.ui.ide {
@@ -1029,6 +1039,16 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
+    class MainToolbar extends controls.Control {
+        private _leftArea;
+        private _centerArea;
+        private _rightArea;
+        private _currentManager;
+        constructor();
+        private onEditorActivated;
+    }
+}
+declare namespace colibri.ui.ide {
     abstract class OutlineProvider extends EventTarget {
         private _editor;
         constructor(editor: EditorPart);
@@ -1058,13 +1078,6 @@ declare namespace colibri.ui.ide {
         getPreloadPromise(): Promise<any>;
     }
 }
-declare namespace colibri.ui.toolbar {
-    class Toolbar {
-        private _toolbarElement;
-        constructor();
-        getElement(): HTMLDivElement;
-    }
-}
 declare namespace colibri.ui.ide {
     class ViewFolder extends PartFolder {
         constructor(...classList: string[]);
@@ -1088,6 +1101,7 @@ declare namespace colibri.ui.ide {
     const EVENT_EDITOR_ACTIVATED = "editorActivated";
     const ICON_FILE = "file";
     const ICON_FOLDER = "folder";
+    const ICON_PLUS = "plus";
     class Workbench extends EventTarget {
         private static _workbench;
         private _plugins;
@@ -1144,9 +1158,18 @@ declare namespace colibri.ui.ide {
 }
 declare namespace colibri.ui.ide {
     abstract class WorkbenchWindow extends controls.Control {
+        private _toolbar;
+        private _clientArea;
         constructor();
+        getToolbar(): MainToolbar;
+        getClientArea(): controls.Control;
         protected createViewFolder(...parts: Part[]): ViewFolder;
         abstract getEditorArea(): EditorArea;
+    }
+}
+declare namespace colibri.ui.ide {
+    class WorkbenchWindowLayout implements controls.ILayout {
+        layout(parent: controls.Control): void;
     }
 }
 declare namespace colibri.ui.ide {

@@ -90,3 +90,19 @@ Important:
 .light .PropertySectionPane {
     background: #d5d5d5;
 }
+
+/* Toolbar */
+
+.light .ToolbarItem {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.05);
+    text-shadow: 1px 1px #f0f0f0;
+}
+
+.light .ToolbarItem:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.light .ToolbarItem:active {
+    background: rgba(255, 255, 255, 0.7);
+}
