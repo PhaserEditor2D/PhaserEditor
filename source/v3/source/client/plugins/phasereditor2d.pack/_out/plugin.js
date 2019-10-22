@@ -249,8 +249,11 @@ var phasereditor2d;
                 core.ATLAS_XML_TYPE,
             ]);
             class AssetPackUtils {
+                static isAtlasType(type) {
+                    return ATLAS_TYPES.has(type);
+                }
                 static isAtlasPackItem(packItem) {
-                    return ATLAS_TYPES.has(packItem.getType());
+                    return this.isAtlasType(packItem.getType());
                 }
                 static isImageFrameContainer(packItem) {
                     return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
@@ -962,11 +965,15 @@ var phasereditor2d;
                     }
                     createViewer() {
                         const viewer = new controls.viewers.TreeViewer();
-                        viewer.setContentProvider(this._contentProvider = new editor.AssetPackEditorContentProvider(this));
+                        viewer.setContentProvider(new editor.AssetPackEditorContentProvider(this, true));
                         viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
                         viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("grid"));
                         viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
                         viewer.setInput(this);
+                        viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                            this._outlineProvider.setSelection(viewer.getSelection(), true, false);
+                            this._outlineProvider.repaint();
+                        });
                         this.updateContent();
                         return viewer;
                     }
@@ -1039,9 +1046,10 @@ var phasereditor2d;
             var editor;
             (function (editor_1) {
                 class AssetPackEditorContentProvider extends ui.viewers.AssetPackContentProvider {
-                    constructor(editor) {
+                    constructor(editor, groupAtlasItems) {
                         super();
                         this._editor = editor;
+                        this._groupAtlasItems = groupAtlasItems;
                     }
                     getPack() {
                         return this._editor.getPack();
@@ -1057,7 +1065,14 @@ var phasereditor2d;
                             const type = parent;
                             if (this.getPack()) {
                                 const children = this.getPack().getItems()
-                                    .filter(item => item.getType() === type);
+                                    .filter(item => {
+                                    if (this._groupAtlasItems) {
+                                        if (pack.core.AssetPackUtils.isAtlasType(type) && pack.core.AssetPackUtils.isAtlasType(item.getType())) {
+                                            return true;
+                                        }
+                                    }
+                                    return item.getType() === type;
+                                });
                                 return children;
                             }
                         }
@@ -1079,7 +1094,7 @@ var phasereditor2d;
             (function (editor_2) {
                 class AssetPackEditorOutlineContentProvider extends editor_2.AssetPackEditorContentProvider {
                     constructor(editor) {
-                        super(editor);
+                        super(editor, false);
                     }
                     getRoots() {
                         if (this.getPack()) {
@@ -1131,6 +1146,11 @@ var phasereditor2d;
                     }
                     preload() {
                         return Promise.resolve();
+                    }
+                    onViewerSelectionChanged(selection) {
+                        this._editor.getViewer().setSelection(selection, false);
+                        this._editor.getViewer().reveal(selection);
+                        this._editor.getViewer().repaint();
                     }
                 }
                 editor_3.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;

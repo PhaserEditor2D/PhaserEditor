@@ -41,10 +41,12 @@ namespace phasereditor2d.pack.ui.editor {
             return Promise.resolve();
         }
 
-
-
-
-
+        onViewerSelectionChanged(selection : any[]) {
+            
+            this._editor.getViewer().setSelection(selection, false);
+            this._editor.getViewer().reveal(selection);
+            this._editor.getViewer().repaint();
+        }
     }
 
 }

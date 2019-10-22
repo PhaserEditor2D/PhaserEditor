@@ -22,8 +22,12 @@ namespace phasereditor2d.pack.core {
 
     export class AssetPackUtils {
 
+        static isAtlasType(type : string) {
+            return ATLAS_TYPES.has(type);
+        }
+
         static isAtlasPackItem(packItem: AssetPackItem) {
-            return ATLAS_TYPES.has(packItem.getType());
+            return this.isAtlasType(packItem.getType());
         }
 
         static isImageFrameContainer(packItem: AssetPackItem) {

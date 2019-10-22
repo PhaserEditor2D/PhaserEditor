@@ -80,6 +80,7 @@ declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
     class AssetPackUtils {
+        static isAtlasType(type: string): boolean;
         static isAtlasPackItem(packItem: AssetPackItem): boolean;
         static isImageFrameContainer(packItem: AssetPackItem): boolean;
         static getImageFrames(packItem: AssetPackItem): AssetPackImageFrame[];
@@ -217,7 +218,6 @@ declare namespace phasereditor2d.pack.ui.editor {
     }
     class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack;
-        private _contentProvider;
         private _outlineProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
@@ -238,7 +238,8 @@ declare namespace phasereditor2d.pack.ui.viewers {
 declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditorContentProvider extends viewers.AssetPackContentProvider {
         private _editor;
-        constructor(editor: AssetPackEditor);
+        private _groupAtlasItems;
+        constructor(editor: AssetPackEditor, groupAtlasItems: boolean);
         getPack(): core.AssetPack;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
@@ -262,6 +263,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider;
         getInput(): any;
         preload(): Promise<void>;
+        onViewerSelectionChanged(selection: any[]): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {

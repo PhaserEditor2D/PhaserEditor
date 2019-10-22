@@ -50,7 +50,6 @@ namespace colibri.ui.controls.viewers {
                 const path = this.getObjectPath(obj);
                 this.revealPath(path);
             }
-
         }
 
 
@@ -59,7 +58,6 @@ namespace colibri.ui.controls.viewers {
             for (let i = 0; i < path.length - 1; i++) {
                 this.setExpanded(path[i], true);
             }
-
         }
 
         getObjectPath(obj: any) {

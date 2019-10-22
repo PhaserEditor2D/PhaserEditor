@@ -26,7 +26,6 @@ namespace phasereditor2d.pack.ui.editor {
 
     export class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack: core.AssetPack;
-        private _contentProvider : AssetPackEditorContentProvider;
         private _outlineProvider = new AssetPackEditorOutlineProvider(this);
 
         constructor() {
@@ -42,11 +41,16 @@ namespace phasereditor2d.pack.ui.editor {
         protected createViewer(): controls.viewers.TreeViewer {
             const viewer = new controls.viewers.TreeViewer();
 
-            viewer.setContentProvider(this._contentProvider = new AssetPackEditorContentProvider(this));
+            viewer.setContentProvider(new AssetPackEditorContentProvider(this, true));
             viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
             viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider("grid"));
             viewer.setTreeRenderer(new viewers.AssetPackTreeViewerRenderer(viewer, true));
             viewer.setInput(this);
+
+            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                this._outlineProvider.setSelection(viewer.getSelection(), true, false);
+                this._outlineProvider.repaint();
+            });
 
             this.updateContent();
 

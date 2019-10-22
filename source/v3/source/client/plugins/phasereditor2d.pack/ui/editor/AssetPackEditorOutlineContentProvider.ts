@@ -4,7 +4,7 @@ namespace phasereditor2d.pack.ui.editor {
 
 
         constructor(editor: AssetPackEditor) {
-            super(editor);
+            super(editor, false);
         }
 
         getRoots() {
