@@ -27,6 +27,7 @@ namespace phasereditor2d.pack.ui.editor {
     export class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack: core.AssetPack;
         private _outlineProvider = new AssetPackEditorOutlineProvider(this);
+        private _propertySectionProvider = new AssetPackEditorPropertySectionProvider();
 
         constructor() {
             super("phasereditor2d.AssetPackEditor");
@@ -48,7 +49,7 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.setInput(this);
 
             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
-                this._outlineProvider.setSelection(viewer.getSelection(), true, false);
+                this._outlineProvider.setSelection(viewer.getSelection(), true, true);
                 this._outlineProvider.repaint();
             });
 
@@ -89,6 +90,10 @@ namespace phasereditor2d.pack.ui.editor {
             }
 
             return null;
+        }
+
+        getPropertyProvider() {
+            return this._propertySectionProvider;
         }
     }
 }

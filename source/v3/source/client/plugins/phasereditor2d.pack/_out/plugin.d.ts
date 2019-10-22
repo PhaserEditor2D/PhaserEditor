@@ -219,6 +219,7 @@ declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack;
         private _outlineProvider;
+        private _propertySectionProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
         protected createViewer(): controls.viewers.TreeViewer;
@@ -226,6 +227,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getPack(): core.AssetPack;
         setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;
+        getPropertyProvider(): AssetPackEditorPropertySectionProvider;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {
@@ -264,6 +266,12 @@ declare namespace phasereditor2d.pack.ui.editor {
         getInput(): any;
         preload(): Promise<void>;
         onViewerSelectionChanged(selection: any[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import controls = colibri.ui.controls;
+    class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
+        addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {

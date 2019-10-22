@@ -958,6 +958,7 @@ var phasereditor2d;
                     constructor() {
                         super("phasereditor2d.AssetPackEditor");
                         this._outlineProvider = new editor.AssetPackEditorOutlineProvider(this);
+                        this._propertySectionProvider = new editor.AssetPackEditorPropertySectionProvider();
                         this.addClass("AssetPackEditor");
                     }
                     static getFactory() {
@@ -971,7 +972,7 @@ var phasereditor2d;
                         viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
                         viewer.setInput(this);
                         viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
-                            this._outlineProvider.setSelection(viewer.getSelection(), true, false);
+                            this._outlineProvider.setSelection(viewer.getSelection(), true, true);
                             this._outlineProvider.repaint();
                         });
                         this.updateContent();
@@ -1000,6 +1001,9 @@ var phasereditor2d;
                                 return this._outlineProvider;
                         }
                         return null;
+                    }
+                    getPropertyProvider() {
+                        return this._propertySectionProvider;
                     }
                 }
                 editor.AssetPackEditor = AssetPackEditor;
@@ -1139,7 +1143,7 @@ var phasereditor2d;
                         return new controls.viewers.TreeViewerRenderer(viewer);
                     }
                     getPropertySectionProvider() {
-                        return null;
+                        return this._editor.getPropertyProvider();
                     }
                     getInput() {
                         return this._editor.getViewer().getInput();
@@ -1154,6 +1158,26 @@ var phasereditor2d;
                     }
                 }
                 editor_3.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var controls = colibri.ui.controls;
+                class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
+                    addSections(page, sections) {
+                        sections.push(new ui.properties.ImageSection(page));
+                        sections.push(new ui.properties.ManyImageSection(page));
+                    }
+                }
+                editor.AssetPackEditorPropertySectionProvider = AssetPackEditorPropertySectionProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

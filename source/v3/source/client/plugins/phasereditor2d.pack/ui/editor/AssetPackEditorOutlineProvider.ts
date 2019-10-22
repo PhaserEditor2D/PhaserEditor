@@ -30,7 +30,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider {
-            return null;
+            return this._editor.getPropertyProvider();
         }
 
         getInput() {
