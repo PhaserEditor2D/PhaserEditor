@@ -2408,10 +2408,10 @@ var colibri;
                             if (frameCount === 1) {
                                 size = Math.min(width, height);
                             }
-                            var cols = width / size;
+                            var cols = Math.floor(width / size);
                             var rows = frameCount / cols + (frameCount % cols == 0 ? 0 : 1);
-                            var marginX = Math.max(0, (width - cols * size) / 2);
-                            var marginY = Math.max(0, (height - rows * size) / 2);
+                            var marginX = Math.max(0, (width - cols * size) / 2) | 0;
+                            var marginY = Math.max(0, (height - rows * size) / 2) | 0;
                             var itemX = 0;
                             var itemY = 0;
                             const startX = args.x + marginX;
