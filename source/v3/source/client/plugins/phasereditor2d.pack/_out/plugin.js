@@ -41,6 +41,54 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
+    (function (pack_1) {
+        var core;
+        (function (core) {
+            class AssetPackItem {
+                constructor(pack, data) {
+                    this._pack = pack;
+                    this._data = data;
+                    this._editorData = {};
+                }
+                getEditorData() {
+                    return this._editorData;
+                }
+                getPack() {
+                    return this._pack;
+                }
+                getKey() {
+                    return this._data["key"];
+                }
+                getType() {
+                    return this._data["type"];
+                }
+                getData() {
+                    return this._data;
+                }
+            }
+            core.AssetPackItem = AssetPackItem;
+        })(core = pack_1.core || (pack_1.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_2) {
+        var core;
+        (function (core) {
+            class AnimationsAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AnimationsAssetPackItem = AnimationsAssetPackItem;
+        })(core = pack_2.core || (pack_2.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
     (function (pack) {
         var core;
         (function (core_1) {
@@ -113,7 +161,7 @@ var phasereditor2d;
                                 const filesData = sectionData["files"];
                                 if (filesData) {
                                     for (const fileData of filesData) {
-                                        const item = new core_1.AssetPackItem(this, fileData);
+                                        const item = this.createPackItem(fileData);
                                         this._items.push(item);
                                     }
                                 }
@@ -124,6 +172,66 @@ var phasereditor2d;
                             alert(e.message);
                         }
                     }
+                }
+                createPackItem(data) {
+                    const type = data.type;
+                    switch (type) {
+                        case core_1.IMAGE_TYPE:
+                            return new core_1.ImageAssetPackItem(this, data);
+                        case core_1.SVG_TYPE:
+                            return new core_1.SvgAssetPackItem(this, data);
+                        case core_1.ATLAS_TYPE:
+                            return new core_1.AtlasAssetPackItem(this, data);
+                        case core_1.ATLAS_XML_TYPE:
+                            return new core_1.AtlasXMLAssetPackItem(this, data);
+                        case core_1.UNITY_ATLAS_TYPE:
+                            return new core_1.UnityAtlasAssetPackItem(this, data);
+                        case core_1.MULTI_ATLAS_TYPE:
+                            return new core_1.MultiatlasAssetPackItem(this, data);
+                        case core_1.SPRITESHEET_TYPE:
+                            return new core_1.SpritesheetAssetPackItem(this, data);
+                        case core_1.ANIMATIONS_TYPE:
+                            return new core_1.AnimationsAssetPackItem(this, data);
+                        case core_1.BITMAP_FONT_TYPE:
+                            return new core_1.BitmapFontAssetPackItem(this, data);
+                        case core_1.TILEMAP_CSV_TYPE:
+                            return new core_1.TilemapCSVAssetPackItem(this, data);
+                        case core_1.TILEMAP_IMPACT_TYPE:
+                            return new core_1.TilemapImpactAssetPackItem(this, data);
+                        case core_1.TILEMAP_TILED_JSON_TYPE:
+                            return new core_1.TilemapTiledJSONAssetPackItem(this, data);
+                        case core_1.PLUGIN_TYPE:
+                            return new core_1.PluginAssetPackItem(this, data);
+                        case core_1.SCENE_FILE_TYPE:
+                            return new core_1.SceneFileAssetPackItem(this, data);
+                        case core_1.SCENE_PLUGIN_TYPE:
+                            return new core_1.ScenePluginAssetPackItem(this, data);
+                        case core_1.SCRIPT_TYPE:
+                            return new core_1.ScriptAssetPackItem(this, data);
+                        case core_1.AUDIO_TYPE:
+                            return new core_1.AudioAssetPackItem(this, data);
+                        case core_1.AUDIO_SPRITE_TYPE:
+                            return new core_1.AudioSpriteAssetPackItem(this, data);
+                        case core_1.VIDEO_TYPE:
+                            return new core_1.VideoAssetPackItem(this, data);
+                        case core_1.TEXT_TYPE:
+                            return new core_1.TextAssetPackItem(this, data);
+                        case core_1.CSS_TYPE:
+                            return new core_1.CssAssetPackItem(this, data);
+                        case core_1.GLSL_TYPE:
+                            return new core_1.GlslAssetPackItem(this, data);
+                        case core_1.HTML_TYPE:
+                            return new core_1.HTMLAssetPackItem(this, data);
+                        case core_1.HTML_TEXTURE_TYPE:
+                            return new core_1.HTMLTextureAssetPackItem(this, data);
+                        case core_1.BINARY_TYPE:
+                            return new core_1.BinaryAssetPackItem(this, data);
+                        case core_1.JSON_TYPE:
+                            return new core_1.JSONAssetPackItem(this, data);
+                        case core_1.XML_TYPE:
+                            return new core_1.XMLAssetPackItem(this, data);
+                    }
+                    return new core_1.AssetPackItem(this, data);
                 }
                 static async createFromFile(file) {
                     const content = await ide.FileUtils.preloadAndGetFileString(file);
@@ -198,39 +306,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_1) {
-        var core;
-        (function (core) {
-            class AssetPackItem {
-                constructor(pack, data) {
-                    this._pack = pack;
-                    this._data = data;
-                    this._editorData = {};
-                }
-                getEditorData() {
-                    return this._editorData;
-                }
-                getPack() {
-                    return this._pack;
-                }
-                getKey() {
-                    return this._data["key"];
-                }
-                getType() {
-                    return this._data["type"];
-                }
-                getData() {
-                    return this._data;
-                }
-            }
-            core.AssetPackItem = AssetPackItem;
-        })(core = pack_1.core || (pack_1.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_2) {
+    (function (pack_3) {
         var core;
         (function (core) {
             var ide = colibri.ui.ide;
@@ -327,13 +403,216 @@ var phasereditor2d;
                 }
             }
             core.AssetPackUtils = AssetPackUtils;
-        })(core = pack_2.core || (pack_2.core = {}));
+        })(core = pack_3.core || (pack_3.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_3) {
+    (function (pack_4) {
+        var core;
+        (function (core) {
+            class AtlasAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AtlasAssetPackItem = AtlasAssetPackItem;
+        })(core = pack_4.core || (pack_4.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_5) {
+        var core;
+        (function (core) {
+            class AtlasXMLAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AtlasXMLAssetPackItem = AtlasXMLAssetPackItem;
+        })(core = pack_5.core || (pack_5.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_6) {
+        var core;
+        (function (core) {
+            class AudioAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AudioAssetPackItem = AudioAssetPackItem;
+        })(core = pack_6.core || (pack_6.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_7) {
+        var core;
+        (function (core) {
+            class AudioSpriteAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AudioSpriteAssetPackItem = AudioSpriteAssetPackItem;
+        })(core = pack_7.core || (pack_7.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_8) {
+        var core;
+        (function (core) {
+            class BinaryAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.BinaryAssetPackItem = BinaryAssetPackItem;
+        })(core = pack_8.core || (pack_8.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_9) {
+        var core;
+        (function (core) {
+            class BitmapFontAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.BitmapFontAssetPackItem = BitmapFontAssetPackItem;
+        })(core = pack_9.core || (pack_9.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_10) {
+        var core;
+        (function (core) {
+            class CssAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.CssAssetPackItem = CssAssetPackItem;
+        })(core = pack_10.core || (pack_10.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_11) {
+        var core;
+        (function (core) {
+            class GlslAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.GlslAssetPackItem = GlslAssetPackItem;
+        })(core = pack_11.core || (pack_11.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_12) {
+        var core;
+        (function (core) {
+            class HTMLAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.HTMLAssetPackItem = HTMLAssetPackItem;
+        })(core = pack_12.core || (pack_12.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_13) {
+        var core;
+        (function (core) {
+            class HTMLTextureAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.HTMLTextureAssetPackItem = HTMLTextureAssetPackItem;
+        })(core = pack_13.core || (pack_13.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_14) {
+        var core;
+        (function (core) {
+            class ImageAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.ImageAssetPackItem = ImageAssetPackItem;
+        })(core = pack_14.core || (pack_14.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_15) {
+        var core;
+        (function (core) {
+            class JSONAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.JSONAssetPackItem = JSONAssetPackItem;
+        })(core = pack_15.core || (pack_15.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_16) {
+        var core;
+        (function (core) {
+            class MultiatlasAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.MultiatlasAssetPackItem = MultiatlasAssetPackItem;
+        })(core = pack_16.core || (pack_16.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_17) {
         var core;
         (function (core_3) {
             var controls = colibri.ui.controls;
@@ -389,7 +668,211 @@ var phasereditor2d;
             PackFinder._packs = [];
             PackFinder._loaded = false;
             core_3.PackFinder = PackFinder;
-        })(core = pack_3.core || (pack_3.core = {}));
+        })(core = pack_17.core || (pack_17.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_18) {
+        var core;
+        (function (core) {
+            class PluginAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.PluginAssetPackItem = PluginAssetPackItem;
+        })(core = pack_18.core || (pack_18.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_19) {
+        var core;
+        (function (core) {
+            class SceneFileAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.SceneFileAssetPackItem = SceneFileAssetPackItem;
+        })(core = pack_19.core || (pack_19.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_20) {
+        var core;
+        (function (core) {
+            class ScenePluginAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.ScenePluginAssetPackItem = ScenePluginAssetPackItem;
+        })(core = pack_20.core || (pack_20.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_21) {
+        var core;
+        (function (core) {
+            class ScriptAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.ScriptAssetPackItem = ScriptAssetPackItem;
+        })(core = pack_21.core || (pack_21.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_22) {
+        var core;
+        (function (core) {
+            class SpritesheetAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.SpritesheetAssetPackItem = SpritesheetAssetPackItem;
+        })(core = pack_22.core || (pack_22.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_23) {
+        var core;
+        (function (core) {
+            class SvgAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.SvgAssetPackItem = SvgAssetPackItem;
+        })(core = pack_23.core || (pack_23.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_24) {
+        var core;
+        (function (core) {
+            class TextAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.TextAssetPackItem = TextAssetPackItem;
+        })(core = pack_24.core || (pack_24.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_25) {
+        var core;
+        (function (core) {
+            class TilemapCSVAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.TilemapCSVAssetPackItem = TilemapCSVAssetPackItem;
+        })(core = pack_25.core || (pack_25.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_26) {
+        var core;
+        (function (core) {
+            class TilemapImpactAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.TilemapImpactAssetPackItem = TilemapImpactAssetPackItem;
+        })(core = pack_26.core || (pack_26.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_27) {
+        var core;
+        (function (core) {
+            class TilemapTiledJSONAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.TilemapTiledJSONAssetPackItem = TilemapTiledJSONAssetPackItem;
+        })(core = pack_27.core || (pack_27.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_28) {
+        var core;
+        (function (core) {
+            class UnityAtlasAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.UnityAtlasAssetPackItem = UnityAtlasAssetPackItem;
+        })(core = pack_28.core || (pack_28.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_29) {
+        var core;
+        (function (core) {
+            class VideoAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.VideoAssetPackItem = VideoAssetPackItem;
+        })(core = pack_29.core || (pack_29.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_30) {
+        var core;
+        (function (core) {
+            class XMLAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.XMLAssetPackItem = XMLAssetPackItem;
+        })(core = pack_30.core || (pack_30.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

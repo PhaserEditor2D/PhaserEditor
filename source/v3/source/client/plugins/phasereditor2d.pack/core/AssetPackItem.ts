@@ -1,5 +1,7 @@
 namespace phasereditor2d.pack.core {
 
+    import controls = colibri.ui.controls;
+
     export class AssetPackItem {
         private _pack : AssetPack;
         private _data : any;
@@ -29,6 +31,13 @@ namespace phasereditor2d.pack.core {
 
         getData() {
             return this._data;
+        }
+
+        addToPhaserCache(game : Phaser.Game) {
+        }
+
+        async preload() : Promise<controls.PreloadResult> {
+            return controls.Controls.resolveNothingLoaded();
         }
     }
 

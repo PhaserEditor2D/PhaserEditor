@@ -9,6 +9,24 @@ declare namespace phasereditor2d.pack {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    class AssetPackItem {
+        private _pack;
+        private _data;
+        private _editorData;
+        constructor(pack: AssetPack, data: any);
+        getEditorData(): any;
+        getPack(): AssetPack;
+        getKey(): string;
+        getType(): string;
+        getData(): any;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AnimationsAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
     import core = colibri.core;
     const IMAGE_TYPE = "image";
     const ATLAS_TYPE = "atlas";
@@ -42,6 +60,7 @@ declare namespace phasereditor2d.pack.core {
         private _file;
         private _items;
         constructor(file: core.io.FilePath, content: string);
+        createPackItem(data: any): AssetPackItem;
         static createFromFile(file: core.io.FilePath): Promise<AssetPack>;
         getItems(): AssetPackItem[];
         getFile(): core.io.FilePath;
@@ -64,19 +83,6 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class AssetPackItem {
-        private _pack;
-        private _data;
-        private _editorData;
-        constructor(pack: AssetPack, data: any);
-        getEditorData(): any;
-        getPack(): AssetPack;
-        getKey(): string;
-        getType(): string;
-        getData(): any;
-    }
-}
-declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
     class AssetPackUtils {
@@ -92,6 +98,41 @@ declare namespace phasereditor2d.pack.core {
         static getFileJSONFromPackUrl(url: string): any;
         static getFileXMLFromPackUrl(url: string): Document;
         static getImageFromPackUrl(url: string): controls.IImage;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AtlasAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AtlasXMLAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AudioAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AudioSpriteAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class BinaryAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class BitmapFontAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class CssAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -118,6 +159,36 @@ declare namespace phasereditor2d.pack.core {
     };
 }
 declare namespace phasereditor2d.pack.core {
+    class GlslAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class HTMLAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class HTMLTextureAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class ImageAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class JSONAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class MultiatlasAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     class PackFinder {
         private static _packs;
@@ -128,6 +199,71 @@ declare namespace phasereditor2d.pack.core {
         static findAssetPackItem(key: string): AssetPackItem;
         static getAssetPackItemOrFrame(key: string, frame: any): AssetPackItem | AssetPackImageFrame;
         static getAssetPackItemImage(key: string, frame: any): controls.IImage;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class PluginAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class SceneFileAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class ScenePluginAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class ScriptAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class SpritesheetAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class SvgAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class TextAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class TilemapCSVAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class TilemapImpactAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class TilemapTiledJSONAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class UnityAtlasAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class VideoAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class XMLAssetPackItem extends AssetPackItem {
+        constructor(pack: AssetPack, data: any);
     }
 }
 declare namespace phasereditor2d.pack.core.parsers {
