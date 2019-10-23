@@ -40,6 +40,20 @@ namespace phasereditor2d.pack.core {
             return ide.FileUtils.getFileFromPath(url);
         }
 
+        static getFilePackUrl(file: io.FilePath) {
+
+            if (file.getParent()) {
+                return `${this.getFilePackUrl(file.getParent())}${file.getName()}${file.isFolder() ? "/" : ""}`;
+            }
+
+            return "";
+        }
+
+        static getFilePackUrlWithNewExtension(file: io.FilePath, ext : string) {
+            const url = this.getFilePackUrl(file.getParent());
+            return `${url}${file.getNameWithoutExtension()}.${ext}`;
+        }
+
         static getFileStringFromPackUrl(url: string): string {
 
             const file = ide.FileUtils.getFileFromPath(url);

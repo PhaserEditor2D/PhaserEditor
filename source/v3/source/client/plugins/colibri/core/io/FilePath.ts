@@ -5,6 +5,7 @@ namespace colibri.core.io {
 
         private _parent: FilePath;
         private _name: string;
+        private _nameWithoutExtension: string;
         private _isFile: boolean;
         private _files: FilePath[];
         private _ext: string;
@@ -24,8 +25,10 @@ namespace colibri.core.io {
                 const i = this._name.lastIndexOf(".");
                 if (i >= 0) {
                     this._ext = this._name.substring(i + 1);
+                    this._nameWithoutExtension = this._name.substring(0, i);
                 } else {
                     this._ext = "";
+                    this._nameWithoutExtension = this._name;
                 }
             }
 
@@ -64,14 +67,20 @@ namespace colibri.core.io {
             return this._name;
         }
 
+        getNameWithoutExtension() {
+            return this._nameWithoutExtension;
+        }
+
         getModTime() {
             return this._modTime;
         }
 
         getFullName() {
+            
             if (this._parent) {
                 return this._parent.getFullName() + "/" + this._name;
             }
+
             return this._name;
         }
 

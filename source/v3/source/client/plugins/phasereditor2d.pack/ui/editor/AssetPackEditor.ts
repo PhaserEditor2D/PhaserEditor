@@ -113,6 +113,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         private openAddFileDialog() {
+
             const viewer = new controls.viewers.TreeViewer();
 
             viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
@@ -122,6 +123,47 @@ namespace phasereditor2d.pack.ui.editor {
 
             const dlg = new dialogs.ViewerDialog(viewer);
             dlg.create();
+
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => {
+
+                const type = <string>viewer.getSelection()[0];
+
+                dlg.close();
+
+                this.openSelectFileDialog(type);
+            });
+        }
+
+        private openSelectFileDialog(type: string) {
+
+            const viewer = new controls.viewers.TreeViewer();
+
+            viewer.setLabelProvider(new files.ui.viewers.FileLabelProvider());
+            viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+            viewer.setCellRendererProvider(new files.ui.viewers.FileCellRendererProvider());
+
+            const folder = this.getInput().getParent();
+
+            const importer = importers.Importers.getImporter(type);
+
+            const list = folder.flatTree([], false)
+                .filter(file => importer.acceptFile(file));
+
+            viewer.setInput(list);
+
+            const dlg = new dialogs.ViewerDialog(viewer);
+            dlg.create();
+
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
+                
+                const file = viewer.getSelection()[0];
+                
+                await importer.importFile(this._pack, file);
+                
+                dlg.close();
+
+                this._viewer.repaint();
+            });
         }
     }
 }

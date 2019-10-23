@@ -82,6 +82,7 @@ declare namespace colibri.core.io {
     class FilePath {
         private _parent;
         private _name;
+        private _nameWithoutExtension;
         private _isFile;
         private _files;
         private _ext;
@@ -92,6 +93,7 @@ declare namespace colibri.core.io {
         getExtension(): string;
         getSize(): number;
         getName(): string;
+        getNameWithoutExtension(): string;
         getModTime(): number;
         getFullName(): any;
         getUrl(): any;

@@ -25,9 +25,13 @@ namespace colibri.ui.controls {
         }
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
-            const fd = this._frameData;
-
             const img = this._image;
+
+            if (!img) {
+                return;
+            }
+
+            const fd = this._frameData;
 
             const renderWidth = w;
             const renderHeight = h;
@@ -67,6 +71,11 @@ namespace colibri.ui.controls {
         }
 
         preload(): Promise<PreloadResult> {
+            
+            if (this._image === null) {
+                return controls.Controls.resolveNothingLoaded();
+            }
+
             return this._image.preload();
         }
 

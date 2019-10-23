@@ -37,6 +37,35 @@ namespace phasereditor2d.pack {
                     5
                 ));
 
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasContentTypeResolver",
+                    [new pack.core.AtlasContentTypeResolver()],
+                    5
+                ));
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.MultiatlasContentTypeResolver",
+                    [new pack.core.MultiatlasContentTypeResolver()],
+                    5
+                ));
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasXMLContentTypeResolver",
+                    [new pack.core.AtlasXMLContentTypeResolver()],
+                    5
+                ));
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.UnityAtlasContentTypeResolver",
+                    [new pack.core.UnityAtlasContentTypeResolver()],
+                    5
+                ));
+
+
             // content type icons
 
             reg.addExtension(

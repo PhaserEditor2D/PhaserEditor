@@ -14,7 +14,10 @@ namespace phasereditor2d.pack.ui.viewers {
                 if (frames.length > 0) {
 
                     const img = frames[0].getImage();
-                    img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+
+                    if (img) {
+                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                    }
                 }
             }
         }

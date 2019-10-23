@@ -375,6 +375,10 @@ namespace colibri.ui.ide {
         }
 
         getFileImage(file: core.io.FilePath) {
+            if (file === null) {
+                return null;
+            }
+            
             return this._fileImageCache.getContent(file);
         }
 

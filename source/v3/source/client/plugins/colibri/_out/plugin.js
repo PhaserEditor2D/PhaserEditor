@@ -223,9 +223,11 @@ var colibri;
                         const i = this._name.lastIndexOf(".");
                         if (i >= 0) {
                             this._ext = this._name.substring(i + 1);
+                            this._nameWithoutExtension = this._name.substring(0, i);
                         }
                         else {
                             this._ext = "";
+                            this._nameWithoutExtension = this._name;
                         }
                     }
                     if (fileData.children) {
@@ -251,6 +253,9 @@ var colibri;
                 }
                 getName() {
                     return this._name;
+                }
+                getNameWithoutExtension() {
+                    return this._nameWithoutExtension;
                 }
                 getModTime() {
                     return this._modTime;
@@ -1162,8 +1167,11 @@ var colibri;
                     return this._frameData;
                 }
                 paint(context, x, y, w, h, center) {
-                    const fd = this._frameData;
                     const img = this._image;
+                    if (!img) {
+                        return;
+                    }
+                    const fd = this._frameData;
                     const renderWidth = w;
                     const renderHeight = h;
                     let imgW = fd.src.w;
@@ -1190,6 +1198,9 @@ var colibri;
                     // not implemented fow now
                 }
                 preload() {
+                    if (this._image === null) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
                     return this._image.preload();
                 }
                 getWidth() {
@@ -4612,6 +4623,9 @@ var colibri;
                     return null;
                 }
                 getFileImage(file) {
+                    if (file === null) {
+                        return null;
+                    }
                     return this._fileImageCache.getContent(file);
                 }
                 getWorkbenchIcon(name) {

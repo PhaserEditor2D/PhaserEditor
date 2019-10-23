@@ -93,6 +93,8 @@ declare namespace phasereditor2d.pack.core {
         static preloadAssetPackItems(packItems: AssetPackItem[]): Promise<void>;
         static getAllPacks(): Promise<AssetPack[]>;
         static getFileFromPackUrl(url: string): io.FilePath;
+        static getFilePackUrl(file: io.FilePath): any;
+        static getFilePackUrlWithNewExtension(file: io.FilePath, ext: string): string;
         static getFileStringFromPackUrl(url: string): string;
         static getFileJSONFromPackUrl(url: string): any;
         static getFileXMLFromPackUrl(url: string): Document;
@@ -122,9 +124,25 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
+    const CONTENT_TYPE_ATLAS = "phasereditor2d.pack.core.atlas";
+    class AtlasContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
+    }
+}
+declare namespace phasereditor2d.pack.core {
     class AtlasXMLAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
         protected createParser(): parsers.ImageFrameParser;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
+    const CONTENT_TYPE_ATLAS_XML = "phasereditor2d.pack.core.atlasXML";
+    class AtlasXMLContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -208,6 +226,14 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
+    const CONTENT_TYPE_MULTI_ATLAS = "phasereditor2d.pack.core.multiAtlas";
+    class MultiatlasContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
+    }
+}
+declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     class PackFinder {
         private static _packs;
@@ -275,6 +301,14 @@ declare namespace phasereditor2d.pack.core {
     class UnityAtlasAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
         protected createParser(): parsers.ImageFrameParser;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
+    const CONTENT_TYPE_UNITY_ATLAS = "phasereditor2d.pack.core.unityAtlas";
+    class UnityAtlasContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -382,6 +416,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getPropertyProvider(): AssetPackEditorPropertySectionProvider;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
+        private openSelectFileDialog;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {
@@ -426,6 +461,68 @@ declare namespace phasereditor2d.pack.ui.editor {
     import controls = colibri.ui.controls;
     class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    abstract class Importer {
+        private _type;
+        constructor(type: string);
+        getType(): string;
+        abstract acceptFile(file: io.FilePath): boolean;
+        abstract createItemData(file: io.FilePath): any;
+        importFile(pack: core.AssetPack, file: io.FilePath): Promise<core.AssetPackItem>;
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    abstract class ContentTypeImporter extends Importer {
+        private _contentType;
+        constructor(contentType: string, assetPackItemType: string);
+        getContentType(): string;
+        acceptFile(file: io.FilePath): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    class BaseAtlasImporter extends ContentTypeImporter {
+        acceptFile(file: io.FilePath): boolean;
+        createItemData(file: io.FilePath): {
+            type: string;
+            atlasURL: any;
+            textureURL: string;
+        };
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    class AtlasImporter extends BaseAtlasImporter {
+        constructor();
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    class AtlasXMLImporter extends BaseAtlasImporter {
+        constructor();
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    class MultiatlasImporter extends ContentTypeImporter {
+        constructor();
+        createItemData(file: io.FilePath): {
+            type: string;
+            url: any;
+        };
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    class UnityAtlasImporter extends BaseAtlasImporter {
+        constructor();
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    class Importers {
+        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter)[];
+        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {
@@ -483,16 +580,16 @@ declare namespace phasereditor2d.pack.ui.viewers {
 }
 declare namespace phasereditor2d.pack.ui.viewers {
     import controls = colibri.ui.controls;
-    class ImageFrameContainerIconCellRenderer implements controls.viewers.ICellRenderer {
-        renderCell(args: controls.viewers.RenderCellArgs): void;
-        cellHeight(args: controls.viewers.RenderCellArgs): number;
-        preload(obj: any): Promise<controls.PreloadResult>;
+    class ImageAssetPackItemCellRenderer extends controls.viewers.ImageCellRenderer {
+        getImage(obj: any): controls.IImage;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {
     import controls = colibri.ui.controls;
-    class ImageAssetPackItemCellRenderer extends controls.viewers.ImageCellRenderer {
-        getImage(obj: any): controls.IImage;
+    class ImageFrameContainerIconCellRenderer implements controls.viewers.ICellRenderer {
+        renderCell(args: controls.viewers.RenderCellArgs): void;
+        cellHeight(args: controls.viewers.RenderCellArgs): number;
+        preload(obj: any): Promise<controls.PreloadResult>;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map
