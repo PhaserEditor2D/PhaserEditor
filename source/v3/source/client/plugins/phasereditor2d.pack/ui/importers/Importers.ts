@@ -1,6 +1,7 @@
 /// <reference path="./MultiatlasImporter.ts" />
 /// <reference path="./AtlasXMLImporter.ts" />
 /// <reference path="./UnityAtlasImporter.ts" />
+/// <reference path="./SingleFileImporter.ts" />
 
 namespace phasereditor2d.pack.ui.importers {
 
@@ -11,7 +12,8 @@ namespace phasereditor2d.pack.ui.importers {
             new AtlasImporter(),
             new MultiatlasImporter(),
             new AtlasXMLImporter(),
-            new UnityAtlasImporter()
+            new UnityAtlasImporter(),
+            new SingleFileImporter(files.core.CONTENT_TYPE_IMAGE, core.IMAGE_TYPE)
         ]
 
         static getImporter(type: string) {

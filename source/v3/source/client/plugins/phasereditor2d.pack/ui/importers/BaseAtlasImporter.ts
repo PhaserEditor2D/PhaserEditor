@@ -16,7 +16,6 @@ namespace phasereditor2d.pack.ui.importers {
 
         createItemData(file: io.FilePath) {
             return {
-                type: this.getType(),
                 atlasURL: core.AssetPackUtils.getFilePackUrl(file),
                 textureURL: core.AssetPackUtils.getFilePackUrlWithNewExtension(file, "png")
             }

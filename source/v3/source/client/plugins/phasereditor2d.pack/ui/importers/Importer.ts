@@ -27,6 +27,7 @@ namespace phasereditor2d.pack.ui.importers {
 
             const data = this.createItemData(file);
 
+            data.type = this.getType();
             data.key = computer.makeName(file.getNameWithoutExtension());
 
             console.log(data);

@@ -1856,6 +1856,7 @@ var phasereditor2d;
                         const computer = new ide.utils.NameMaker(item => item.getKey());
                         computer.update(pack.getItems());
                         const data = this.createItemData(file);
+                        data.type = this.getType();
                         data.key = computer.makeName(file.getNameWithoutExtension());
                         console.log(data);
                         const item = pack.createPackItem(data);
@@ -1914,7 +1915,6 @@ var phasereditor2d;
                     }
                     createItemData(file) {
                         return {
-                            type: this.getType(),
                             atlasURL: pack.core.AssetPackUtils.getFilePackUrl(file),
                             textureURL: pack.core.AssetPackUtils.getFilePackUrlWithNewExtension(file, "png")
                         };
@@ -2007,9 +2007,36 @@ var phasereditor2d;
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./Importer.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var importers;
+            (function (importers) {
+                var ide = colibri.ui.ide;
+                class SingleFileImporter extends importers.ContentTypeImporter {
+                    acceptFile(file) {
+                        const fileContentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                        return fileContentType === this.getContentType();
+                    }
+                    createItemData(file) {
+                        return {
+                            url: pack.core.AssetPackUtils.getFilePackUrl(file)
+                        };
+                    }
+                }
+                importers.SingleFileImporter = SingleFileImporter;
+            })(importers = ui.importers || (ui.importers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./MultiatlasImporter.ts" />
 /// <reference path="./AtlasXMLImporter.ts" />
 /// <reference path="./UnityAtlasImporter.ts" />
+/// <reference path="./SingleFileImporter.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
@@ -2027,7 +2054,8 @@ var phasereditor2d;
                     new importers.AtlasImporter(),
                     new importers.MultiatlasImporter(),
                     new importers.AtlasXMLImporter(),
-                    new importers.UnityAtlasImporter()
+                    new importers.UnityAtlasImporter(),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE)
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

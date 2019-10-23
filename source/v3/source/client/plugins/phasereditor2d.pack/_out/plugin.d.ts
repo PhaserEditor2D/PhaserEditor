@@ -488,7 +488,6 @@ declare namespace phasereditor2d.pack.ui.importers {
     class BaseAtlasImporter extends ContentTypeImporter {
         acceptFile(file: io.FilePath): boolean;
         createItemData(file: io.FilePath): {
-            type: string;
             atlasURL: any;
             textureURL: string;
         };
@@ -520,9 +519,18 @@ declare namespace phasereditor2d.pack.ui.importers {
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    class SingleFileImporter extends ContentTypeImporter {
+        acceptFile(file: io.FilePath): boolean;
+        createItemData(file: io.FilePath): {
+            url: any;
+        };
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
     class Importers {
-        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter)[];
-        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter;
+        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter)[];
+        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {
