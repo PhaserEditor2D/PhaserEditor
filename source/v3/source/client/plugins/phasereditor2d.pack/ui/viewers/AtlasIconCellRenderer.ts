@@ -7,9 +7,9 @@ namespace phasereditor2d.pack.ui.viewers {
         renderCell(args: controls.viewers.RenderCellArgs): void {
             const packItem = <core.AssetPackItem>args.obj;
 
-            if (core.AssetPackUtils.isImageFrameContainer(packItem)) {
+            if (packItem instanceof core.ImageFrameContainerAssetPackItem) {
 
-                const frames = core.AssetPackUtils.getImageFrames(packItem);
+                const frames = packItem.getFrames();
 
                 if (frames.length > 0) {
 

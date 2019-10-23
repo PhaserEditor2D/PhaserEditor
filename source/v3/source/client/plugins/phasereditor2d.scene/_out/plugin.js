@@ -515,7 +515,7 @@ var phasereditor2d;
                             switch (parent) {
                                 case phasereditor2d.pack.core.ATLAS_TYPE:
                                     return this.getPackItems()
-                                        .filter(item => phasereditor2d.pack.core.AssetPackUtils.isAtlasPackItem(item));
+                                        .filter(item => item instanceof phasereditor2d.pack.core.BaseAtlasAssetPackItem);
                                 case blocks.PREFAB_SECTION:
                                     //TODO: we need to implement the PrefabFinder
                                     const files = this.getSceneFiles();
@@ -2059,10 +2059,7 @@ var phasereditor2d;
                     async addToCache_async(data) {
                         let imageFrameContainerPackItem = null;
                         if (data instanceof phasereditor2d.pack.core.AssetPackItem) {
-                            if (data.getType() === phasereditor2d.pack.core.IMAGE_TYPE) {
-                                imageFrameContainerPackItem = data;
-                            }
-                            else if (phasereditor2d.pack.core.AssetPackUtils.isImageFrameContainer(data)) {
+                            if (data instanceof phasereditor2d.pack.core.ImageFrameContainerAssetPackItem) {
                                 imageFrameContainerPackItem = data;
                             }
                         }
@@ -2070,9 +2067,8 @@ var phasereditor2d;
                             imageFrameContainerPackItem = data.getPackItem();
                         }
                         if (imageFrameContainerPackItem !== null) {
-                            const parser = phasereditor2d.pack.core.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
-                            await parser.preload();
-                            parser.addToPhaserCache(this._scene.game);
+                            await imageFrameContainerPackItem.preload();
+                            imageFrameContainerPackItem.addToPhaserCache(this._scene.game);
                         }
                     }
                     createObject(data) {

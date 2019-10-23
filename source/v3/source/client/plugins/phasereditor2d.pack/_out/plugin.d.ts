@@ -9,6 +9,7 @@ declare namespace phasereditor2d.pack {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import controls = colibri.ui.controls;
     class AssetPackItem {
         private _pack;
         private _data;
@@ -19,6 +20,8 @@ declare namespace phasereditor2d.pack.core {
         getKey(): string;
         getType(): string;
         getData(): any;
+        addToPhaserCache(game: Phaser.Game): void;
+        preload(): Promise<controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -78,8 +81,8 @@ declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     class AssetPackImageFrame extends controls.ImageFrame {
         private _packItem;
-        constructor(packItem: AssetPackItem, name: string, frameImage: controls.IImage, frameData: controls.FrameData);
-        getPackItem(): AssetPackItem;
+        constructor(packItem: ImageFrameContainerAssetPackItem, name: string, frameImage: controls.IImage, frameData: controls.FrameData);
+        getPackItem(): ImageFrameContainerAssetPackItem;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -87,10 +90,6 @@ declare namespace phasereditor2d.pack.core {
     import io = colibri.core.io;
     class AssetPackUtils {
         static isAtlasType(type: string): boolean;
-        static isAtlasPackItem(packItem: AssetPackItem): boolean;
-        static isImageFrameContainer(packItem: AssetPackItem): boolean;
-        static getImageFrames(packItem: AssetPackItem): AssetPackImageFrame[];
-        static getImageFrameParser(packItem: AssetPackItem): parsers.ImageParser | parsers.AtlasParser | parsers.AtlasXMLParser | parsers.UnityAtlasParser | parsers.MultiAtlasParser | parsers.SpriteSheetParser;
         static preloadAssetPackItems(packItems: AssetPackItem[]): Promise<void>;
         static getAllPacks(): Promise<AssetPack[]>;
         static getFileFromPackUrl(url: string): io.FilePath;
@@ -101,13 +100,31 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class AtlasAssetPackItem extends AssetPackItem {
+    import controls = colibri.ui.controls;
+    abstract class ImageFrameContainerAssetPackItem extends AssetPackItem {
+        private _frames;
         constructor(pack: AssetPack, data: any);
+        preload(): Promise<controls.PreloadResult>;
+        protected abstract createParser(): parsers.ImageFrameParser;
+        findFrame(frameName: any): AssetPackImageFrame;
+        getFrames(): AssetPackImageFrame[];
+        addToPhaserCache(game: Phaser.Game): void;
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class AtlasXMLAssetPackItem extends AssetPackItem {
+    abstract class BaseAtlasAssetPackItem extends ImageFrameContainerAssetPackItem {
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AtlasAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
+    }
+}
+declare namespace phasereditor2d.pack.core {
+    class AtlasXMLAssetPackItem extends BaseAtlasAssetPackItem {
+        constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -174,8 +191,9 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class ImageAssetPackItem extends AssetPackItem {
+    class ImageAssetPackItem extends ImageFrameContainerAssetPackItem {
         constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -184,8 +202,9 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class MultiatlasAssetPackItem extends AssetPackItem {
+    class MultiatlasAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -222,8 +241,9 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class SpritesheetAssetPackItem extends AssetPackItem {
+    class SpritesheetAssetPackItem extends ImageFrameContainerAssetPackItem {
         constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -252,8 +272,9 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    class UnityAtlasAssetPackItem extends AssetPackItem {
+    class UnityAtlasAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
+        protected createParser(): parsers.ImageFrameParser;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -271,15 +292,10 @@ declare namespace phasereditor2d.pack.core.parsers {
     abstract class ImageFrameParser {
         private _packItem;
         constructor(packItem: AssetPackItem);
-        protected setCachedFrames(frames: AssetPackImageFrame[]): void;
-        protected getCachedFrames(): AssetPackImageFrame[];
-        protected hasCachedFrames(): boolean;
-        abstract addToPhaserCache(game: Phaser.Game): void;
         getPackItem(): AssetPackItem;
-        preload(): Promise<controls.PreloadResult>;
-        parse(): AssetPackImageFrame[];
-        protected abstract preloadFrames(): Promise<controls.PreloadResult>;
-        protected abstract parseFrames(): AssetPackImageFrame[];
+        abstract addToPhaserCache(game: Phaser.Game): void;
+        abstract preloadFrames(): Promise<controls.PreloadResult>;
+        abstract parseFrames(): AssetPackImageFrame[];
     }
 }
 declare namespace phasereditor2d.pack.core.parsers {
@@ -313,8 +329,8 @@ declare namespace phasereditor2d.pack.core.parsers {
     class ImageParser extends ImageFrameParser {
         constructor(packItem: AssetPackItem);
         addToPhaserCache(game: Phaser.Game): void;
-        protected preloadFrames(): Promise<controls.PreloadResult>;
-        protected parseFrames(): AssetPackImageFrame[];
+        preloadFrames(): Promise<controls.PreloadResult>;
+        parseFrames(): AssetPackImageFrame[];
     }
 }
 declare namespace phasereditor2d.pack.core.parsers {

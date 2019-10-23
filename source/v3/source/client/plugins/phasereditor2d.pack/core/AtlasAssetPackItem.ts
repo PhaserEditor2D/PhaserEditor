@@ -1,18 +1,16 @@
+/// <reference path="./BaseAtlasAssetPackItem.ts" />
+
 namespace phasereditor2d.pack.core {
 
-    import controls = colibri.ui.controls;
-
-    export class AtlasAssetPackItem extends AssetPackItem {
+    export class AtlasAssetPackItem extends BaseAtlasAssetPackItem {
 
         constructor(pack : AssetPack, data : any) {
             super(pack, data)
         }
 
-        preload() {
-
-            return controls.Controls.resolveNothingLoaded();
+        protected createParser(): parsers.ImageFrameParser {
+            return new parsers.AtlasParser(this);
         }
-
     }
 
 }

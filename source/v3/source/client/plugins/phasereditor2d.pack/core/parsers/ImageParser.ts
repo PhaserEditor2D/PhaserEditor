@@ -18,7 +18,7 @@ namespace phasereditor2d.pack.core.parsers {
             }
         }
 
-        protected preloadFrames(): Promise<controls.PreloadResult> {
+        preloadFrames(): Promise<controls.PreloadResult> {
 
             const url = this.getPackItem().getData().url;
             
@@ -27,7 +27,7 @@ namespace phasereditor2d.pack.core.parsers {
             return img.preload();
         }
 
-        protected parseFrames(): AssetPackImageFrame[] {
+        parseFrames(): AssetPackImageFrame[] {
             const url = this.getPackItem().getData().url;
             const img = AssetPackUtils.getImageFromPackUrl(url);
 
@@ -37,7 +37,7 @@ namespace phasereditor2d.pack.core.parsers {
                 new controls.Point(img.getWidth(), img.getWidth())
             );
 
-            return [new AssetPackImageFrame(this.getPackItem(), this.getPackItem().getKey(), img, fd)];
+            return [new AssetPackImageFrame( <ImageFrameContainerAssetPackItem> this.getPackItem(), this.getPackItem().getKey(), img, fd)];
         }
 
 

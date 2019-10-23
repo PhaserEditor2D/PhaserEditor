@@ -44,6 +44,7 @@ var phasereditor2d;
     (function (pack_1) {
         var core;
         (function (core) {
+            var controls = colibri.ui.controls;
             class AssetPackItem {
                 constructor(pack, data) {
                     this._pack = pack;
@@ -64,6 +65,11 @@ var phasereditor2d;
                 }
                 getData() {
                     return this._data;
+                }
+                addToPhaserCache(game) {
+                }
+                async preload() {
+                    return controls.Controls.resolveNothingLoaded();
                 }
             }
             core.AssetPackItem = AssetPackItem;
@@ -310,14 +316,6 @@ var phasereditor2d;
         var core;
         (function (core) {
             var ide = colibri.ui.ide;
-            const IMAGE_FRAME_CONTAINER_TYPES = new Set([
-                core.IMAGE_TYPE,
-                core.MULTI_ATLAS_TYPE,
-                core.ATLAS_TYPE,
-                core.UNITY_ATLAS_TYPE,
-                core.ATLAS_XML_TYPE,
-                core.SPRITESHEET_TYPE
-            ]);
             const ATLAS_TYPES = new Set([
                 core.MULTI_ATLAS_TYPE,
                 core.ATLAS_TYPE,
@@ -328,44 +326,9 @@ var phasereditor2d;
                 static isAtlasType(type) {
                     return ATLAS_TYPES.has(type);
                 }
-                static isAtlasPackItem(packItem) {
-                    return this.isAtlasType(packItem.getType());
-                }
-                static isImageFrameContainer(packItem) {
-                    return IMAGE_FRAME_CONTAINER_TYPES.has(packItem.getType());
-                }
-                static getImageFrames(packItem) {
-                    const parser = this.getImageFrameParser(packItem);
-                    if (parser) {
-                        return parser.parse();
-                    }
-                    return [];
-                }
-                static getImageFrameParser(packItem) {
-                    switch (packItem.getType()) {
-                        case core.IMAGE_TYPE:
-                            return new core.parsers.ImageParser(packItem);
-                        case core.ATLAS_TYPE:
-                            return new core.parsers.AtlasParser(packItem);
-                        case core.ATLAS_XML_TYPE:
-                            return new core.parsers.AtlasXMLParser(packItem);
-                        case core.UNITY_ATLAS_TYPE:
-                            return new core.parsers.UnityAtlasParser(packItem);
-                        case core.MULTI_ATLAS_TYPE:
-                            return new core.parsers.MultiAtlasParser(packItem);
-                        case core.SPRITESHEET_TYPE:
-                            return new core.parsers.SpriteSheetParser(packItem);
-                        default:
-                            break;
-                    }
-                    return null;
-                }
                 static async preloadAssetPackItems(packItems) {
                     for (const item of packItems) {
-                        if (this.isImageFrameContainer(item)) {
-                            const parser = this.getImageFrameParser(item);
-                            await parser.preload();
-                        }
+                        await item.preload();
                     }
                 }
                 static async getAllPacks() {
@@ -412,43 +375,85 @@ var phasereditor2d;
     (function (pack_4) {
         var core;
         (function (core) {
-            class AtlasAssetPackItem extends core.AssetPackItem {
+            var controls = colibri.ui.controls;
+            class ImageFrameContainerAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
+                    this._frames = null;
+                }
+                async preload() {
+                    if (this._frames) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                    const parser = this.createParser();
+                    return parser.preloadFrames();
+                }
+                findFrame(frameName) {
+                    return this.getFrames().find(f => f.getName() === frameName);
+                }
+                getFrames() {
+                    if (this._frames === null) {
+                        const parser = this.createParser();
+                        this._frames = parser.parseFrames();
+                    }
+                    return this._frames;
+                }
+                addToPhaserCache(game) {
+                    const parser = this.createParser();
+                    parser.addToPhaserCache(game);
                 }
             }
-            core.AtlasAssetPackItem = AtlasAssetPackItem;
+            core.ImageFrameContainerAssetPackItem = ImageFrameContainerAssetPackItem;
         })(core = pack_4.core || (pack_4.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./ImageFrameContainerAssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            class BaseAtlasAssetPackItem extends core.ImageFrameContainerAssetPackItem {
+            }
+            core.BaseAtlasAssetPackItem = BaseAtlasAssetPackItem;
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseAtlasAssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack_5) {
         var core;
         (function (core) {
-            class AtlasXMLAssetPackItem extends core.AssetPackItem {
+            class AtlasAssetPackItem extends core.BaseAtlasAssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
+                createParser() {
+                    return new core.parsers.AtlasParser(this);
+                }
             }
-            core.AtlasXMLAssetPackItem = AtlasXMLAssetPackItem;
+            core.AtlasAssetPackItem = AtlasAssetPackItem;
         })(core = pack_5.core || (pack_5.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack_6) {
         var core;
         (function (core) {
-            class AudioAssetPackItem extends core.AssetPackItem {
+            class AtlasXMLAssetPackItem extends core.BaseAtlasAssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
+                createParser() {
+                    return new core.parsers.AtlasXMLParser(this);
+                }
             }
-            core.AudioAssetPackItem = AudioAssetPackItem;
+            core.AtlasXMLAssetPackItem = AtlasXMLAssetPackItem;
         })(core = pack_6.core || (pack_6.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -459,12 +464,12 @@ var phasereditor2d;
     (function (pack_7) {
         var core;
         (function (core) {
-            class AudioSpriteAssetPackItem extends core.AssetPackItem {
+            class AudioAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.AudioSpriteAssetPackItem = AudioSpriteAssetPackItem;
+            core.AudioAssetPackItem = AudioAssetPackItem;
         })(core = pack_7.core || (pack_7.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -475,19 +480,35 @@ var phasereditor2d;
     (function (pack_8) {
         var core;
         (function (core) {
+            class AudioSpriteAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.AudioSpriteAssetPackItem = AudioSpriteAssetPackItem;
+        })(core = pack_8.core || (pack_8.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_9) {
+        var core;
+        (function (core) {
             class BinaryAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
             core.BinaryAssetPackItem = BinaryAssetPackItem;
-        })(core = pack_8.core || (pack_8.core = {}));
+        })(core = pack_9.core || (pack_9.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_9) {
+    (function (pack_10) {
         var core;
         (function (core) {
             class BitmapFontAssetPackItem extends core.AssetPackItem {
@@ -496,22 +517,6 @@ var phasereditor2d;
                 }
             }
             core.BitmapFontAssetPackItem = BitmapFontAssetPackItem;
-        })(core = pack_9.core || (pack_9.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./AssetPackItem.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_10) {
-        var core;
-        (function (core) {
-            class CssAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.CssAssetPackItem = CssAssetPackItem;
         })(core = pack_10.core || (pack_10.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -522,12 +527,12 @@ var phasereditor2d;
     (function (pack_11) {
         var core;
         (function (core) {
-            class GlslAssetPackItem extends core.AssetPackItem {
+            class CssAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.GlslAssetPackItem = GlslAssetPackItem;
+            core.CssAssetPackItem = CssAssetPackItem;
         })(core = pack_11.core || (pack_11.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -538,12 +543,12 @@ var phasereditor2d;
     (function (pack_12) {
         var core;
         (function (core) {
-            class HTMLAssetPackItem extends core.AssetPackItem {
+            class GlslAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.HTMLAssetPackItem = HTMLAssetPackItem;
+            core.GlslAssetPackItem = GlslAssetPackItem;
         })(core = pack_12.core || (pack_12.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -554,35 +559,54 @@ var phasereditor2d;
     (function (pack_13) {
         var core;
         (function (core) {
-            class HTMLTextureAssetPackItem extends core.AssetPackItem {
+            class HTMLAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.HTMLTextureAssetPackItem = HTMLTextureAssetPackItem;
+            core.HTMLAssetPackItem = HTMLAssetPackItem;
         })(core = pack_13.core || (pack_13.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_14) {
-        var core;
-        (function (core) {
-            class ImageAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.ImageAssetPackItem = ImageAssetPackItem;
-        })(core = pack_14.core || (pack_14.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
+    (function (pack_14) {
+        var core;
+        (function (core) {
+            class HTMLTextureAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.HTMLTextureAssetPackItem = HTMLTextureAssetPackItem;
+        })(core = pack_14.core || (pack_14.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
     (function (pack_15) {
+        var core;
+        (function (core) {
+            class ImageAssetPackItem extends core.ImageFrameContainerAssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+                createParser() {
+                    return new core.parsers.ImageParser(this);
+                }
+            }
+            core.ImageAssetPackItem = ImageAssetPackItem;
+        })(core = pack_15.core || (pack_15.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_16) {
         var core;
         (function (core) {
             class JSONAssetPackItem extends core.AssetPackItem {
@@ -591,21 +615,6 @@ var phasereditor2d;
                 }
             }
             core.JSONAssetPackItem = JSONAssetPackItem;
-        })(core = pack_15.core || (pack_15.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_16) {
-        var core;
-        (function (core) {
-            class MultiatlasAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.MultiatlasAssetPackItem = MultiatlasAssetPackItem;
         })(core = pack_16.core || (pack_16.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -613,6 +622,24 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack_17) {
+        var core;
+        (function (core) {
+            class MultiatlasAssetPackItem extends core.BaseAtlasAssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+                createParser() {
+                    return new core.parsers.MultiAtlasParser(this);
+                }
+            }
+            core.MultiatlasAssetPackItem = MultiatlasAssetPackItem;
+        })(core = pack_17.core || (pack_17.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_18) {
         var core;
         (function (core_3) {
             var controls = colibri.ui.controls;
@@ -647,9 +674,8 @@ var phasereditor2d;
                         }
                         return null;
                     }
-                    else if (core_3.AssetPackUtils.isImageFrameContainer(item)) {
-                        const frames = core_3.AssetPackUtils.getImageFrames(item);
-                        const imageFrame = frames.find(imageFrame => imageFrame.getName() === frame);
+                    else if (item instanceof core_3.ImageFrameContainerAssetPackItem) {
+                        const imageFrame = item.findFrame(frame);
                         return imageFrame;
                     }
                     return item;
@@ -668,22 +694,6 @@ var phasereditor2d;
             PackFinder._packs = [];
             PackFinder._loaded = false;
             core_3.PackFinder = PackFinder;
-        })(core = pack_17.core || (pack_17.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./AssetPackItem.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_18) {
-        var core;
-        (function (core) {
-            class PluginAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.PluginAssetPackItem = PluginAssetPackItem;
         })(core = pack_18.core || (pack_18.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -694,12 +704,12 @@ var phasereditor2d;
     (function (pack_19) {
         var core;
         (function (core) {
-            class SceneFileAssetPackItem extends core.AssetPackItem {
+            class PluginAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.SceneFileAssetPackItem = SceneFileAssetPackItem;
+            core.PluginAssetPackItem = PluginAssetPackItem;
         })(core = pack_19.core || (pack_19.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -710,12 +720,12 @@ var phasereditor2d;
     (function (pack_20) {
         var core;
         (function (core) {
-            class ScenePluginAssetPackItem extends core.AssetPackItem {
+            class SceneFileAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.ScenePluginAssetPackItem = ScenePluginAssetPackItem;
+            core.SceneFileAssetPackItem = SceneFileAssetPackItem;
         })(core = pack_20.core || (pack_20.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -726,27 +736,28 @@ var phasereditor2d;
     (function (pack_21) {
         var core;
         (function (core) {
-            class ScriptAssetPackItem extends core.AssetPackItem {
+            class ScenePluginAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.ScriptAssetPackItem = ScriptAssetPackItem;
+            core.ScenePluginAssetPackItem = ScenePluginAssetPackItem;
         })(core = pack_21.core || (pack_21.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack_22) {
         var core;
         (function (core) {
-            class SpritesheetAssetPackItem extends core.AssetPackItem {
+            class ScriptAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.SpritesheetAssetPackItem = SpritesheetAssetPackItem;
+            core.ScriptAssetPackItem = ScriptAssetPackItem;
         })(core = pack_22.core || (pack_22.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -756,20 +767,38 @@ var phasereditor2d;
     (function (pack_23) {
         var core;
         (function (core) {
+            class SpritesheetAssetPackItem extends core.ImageFrameContainerAssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+                createParser() {
+                    return new core.parsers.SpriteSheetParser(this);
+                }
+            }
+            core.SpritesheetAssetPackItem = SpritesheetAssetPackItem;
+        })(core = pack_23.core || (pack_23.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_24) {
+        var core;
+        (function (core) {
             class SvgAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
             core.SvgAssetPackItem = SvgAssetPackItem;
-        })(core = pack_23.core || (pack_23.core = {}));
+        })(core = pack_24.core || (pack_24.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_24) {
+    (function (pack_25) {
         var core;
         (function (core) {
             class TextAssetPackItem extends core.AssetPackItem {
@@ -778,13 +807,13 @@ var phasereditor2d;
                 }
             }
             core.TextAssetPackItem = TextAssetPackItem;
-        })(core = pack_24.core || (pack_24.core = {}));
+        })(core = pack_25.core || (pack_25.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_25) {
+    (function (pack_26) {
         var core;
         (function (core) {
             class TilemapCSVAssetPackItem extends core.AssetPackItem {
@@ -793,22 +822,6 @@ var phasereditor2d;
                 }
             }
             core.TilemapCSVAssetPackItem = TilemapCSVAssetPackItem;
-        })(core = pack_25.core || (pack_25.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./AssetPackItem.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_26) {
-        var core;
-        (function (core) {
-            class TilemapImpactAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.TilemapImpactAssetPackItem = TilemapImpactAssetPackItem;
         })(core = pack_26.core || (pack_26.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -819,43 +832,46 @@ var phasereditor2d;
     (function (pack_27) {
         var core;
         (function (core) {
-            class TilemapTiledJSONAssetPackItem extends core.AssetPackItem {
+            class TilemapImpactAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.TilemapTiledJSONAssetPackItem = TilemapTiledJSONAssetPackItem;
+            core.TilemapImpactAssetPackItem = TilemapImpactAssetPackItem;
         })(core = pack_27.core || (pack_27.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack_28) {
-        var core;
-        (function (core) {
-            class UnityAtlasAssetPackItem extends core.AssetPackItem {
-                constructor(pack, data) {
-                    super(pack, data);
-                }
-            }
-            core.UnityAtlasAssetPackItem = UnityAtlasAssetPackItem;
-        })(core = pack_28.core || (pack_28.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_29) {
+    (function (pack_28) {
         var core;
         (function (core) {
-            class VideoAssetPackItem extends core.AssetPackItem {
+            class TilemapTiledJSONAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
-            core.VideoAssetPackItem = VideoAssetPackItem;
+            core.TilemapTiledJSONAssetPackItem = TilemapTiledJSONAssetPackItem;
+        })(core = pack_28.core || (pack_28.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_29) {
+        var core;
+        (function (core) {
+            class UnityAtlasAssetPackItem extends core.BaseAtlasAssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+                createParser() {
+                    return new core.parsers.UnityAtlasParser(this);
+                }
+            }
+            core.UnityAtlasAssetPackItem = UnityAtlasAssetPackItem;
         })(core = pack_29.core || (pack_29.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -866,13 +882,29 @@ var phasereditor2d;
     (function (pack_30) {
         var core;
         (function (core) {
+            class VideoAssetPackItem extends core.AssetPackItem {
+                constructor(pack, data) {
+                    super(pack, data);
+                }
+            }
+            core.VideoAssetPackItem = VideoAssetPackItem;
+        })(core = pack_30.core || (pack_30.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./AssetPackItem.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack_31) {
+        var core;
+        (function (core) {
             class XMLAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
             }
             core.XMLAssetPackItem = XMLAssetPackItem;
-        })(core = pack_30.core || (pack_30.core = {}));
+        })(core = pack_31.core || (pack_31.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -883,36 +915,12 @@ var phasereditor2d;
         (function (core) {
             var parsers;
             (function (parsers) {
-                var controls = colibri.ui.controls;
                 class ImageFrameParser {
                     constructor(packItem) {
                         this._packItem = packItem;
                     }
-                    setCachedFrames(frames) {
-                        this._packItem.getEditorData()["__frames_cache"] = frames;
-                    }
-                    getCachedFrames() {
-                        return this._packItem.getEditorData()["__frames_cache"];
-                    }
-                    hasCachedFrames() {
-                        return "__frames_cache" in this._packItem.getEditorData();
-                    }
                     getPackItem() {
                         return this._packItem;
-                    }
-                    async preload() {
-                        if (this.hasCachedFrames()) {
-                            return controls.Controls.resolveNothingLoaded();
-                        }
-                        return this.preloadFrames();
-                    }
-                    parse() {
-                        if (this.hasCachedFrames()) {
-                            return this.getCachedFrames();
-                        }
-                        const frames = this.parseFrames();
-                        this.setCachedFrames(frames);
-                        return frames;
                     }
                 }
                 parsers.ImageFrameParser = ImageFrameParser;
@@ -926,7 +934,7 @@ var phasereditor2d;
     var pack;
     (function (pack) {
         var core;
-        (function (core_4) {
+        (function (core) {
             var parsers;
             (function (parsers) {
                 var ide = colibri.ui.ide;
@@ -938,29 +946,26 @@ var phasereditor2d;
                         const item = this.getPackItem();
                         if (!game.textures.exists(item.getKey())) {
                             const atlasURL = item.getData().atlasURL;
-                            const atlasData = core_4.AssetPackUtils.getFileJSONFromPackUrl(atlasURL);
+                            const atlasData = core.AssetPackUtils.getFileJSONFromPackUrl(atlasURL);
                             const textureURL = item.getData().textureURL;
-                            const image = core_4.AssetPackUtils.getImageFromPackUrl(textureURL);
+                            const image = core.AssetPackUtils.getImageFromPackUrl(textureURL);
                             game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
                         }
                     }
                     async preloadFrames() {
                         const data = this.getPackItem().getData();
-                        const dataFile = core_4.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                        const dataFile = core.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
                         let result1 = await ide.FileUtils.preloadFileString(dataFile);
-                        const imageFile = core_4.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                        const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
                         const image = ide.FileUtils.getImage(imageFile);
                         let result2 = await image.preload();
                         return Math.max(result1, result2);
                     }
                     parseFrames() {
-                        if (this.hasCachedFrames()) {
-                            return this.getCachedFrames();
-                        }
                         const list = [];
                         const data = this.getPackItem().getData();
-                        const dataFile = core_4.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
-                        const imageFile = core_4.AssetPackUtils.getFileFromPackUrl(data.textureURL);
+                        const dataFile = core.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                        const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
                         const image = ide.FileUtils.getImage(imageFile);
                         if (dataFile) {
                             const str = ide.FileUtils.getFileString(dataFile);
@@ -975,7 +980,7 @@ var phasereditor2d;
                     }
                 }
                 parsers.BaseAtlasParser = BaseAtlasParser;
-            })(parsers = core_4.parsers || (core_4.parsers = {}));
+            })(parsers = core.parsers || (core.parsers = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1034,7 +1039,7 @@ var phasereditor2d;
     var pack;
     (function (pack) {
         var core;
-        (function (core_5) {
+        (function (core_4) {
             var parsers;
             (function (parsers) {
                 var controls = colibri.ui.controls;
@@ -1046,9 +1051,9 @@ var phasereditor2d;
                         const item = this.getPackItem();
                         if (!game.textures.exists(item.getKey())) {
                             const atlasURL = item.getData().atlasURL;
-                            const atlasData = core_5.AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
+                            const atlasData = core_4.AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
                             const textureURL = item.getData().textureURL;
-                            const image = core_5.AssetPackUtils.getImageFromPackUrl(textureURL);
+                            const image = core_4.AssetPackUtils.getImageFromPackUrl(textureURL);
                             game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
                         }
                     }
@@ -1075,7 +1080,7 @@ var phasereditor2d;
                                     spriteH = Number.parseInt(elem.getAttribute("frameHeight"));
                                 }
                                 const fd = new controls.FrameData(i, new controls.Rect(frameX, frameY, frameW, frameH), new controls.Rect(spriteX, spriteY, spriteW, spriteH), new controls.Point(frameW, frameH));
-                                imageFrames.push(new core_5.AssetPackImageFrame(this.getPackItem(), name, image, fd));
+                                imageFrames.push(new core_4.AssetPackImageFrame(this.getPackItem(), name, image, fd));
                             }
                         }
                         catch (e) {
@@ -1084,7 +1089,7 @@ var phasereditor2d;
                     }
                 }
                 parsers.AtlasXMLParser = AtlasXMLParser;
-            })(parsers = core_5.parsers || (core_5.parsers = {}));
+            })(parsers = core_4.parsers || (core_4.parsers = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1131,7 +1136,7 @@ var phasereditor2d;
     var pack;
     (function (pack) {
         var core;
-        (function (core_6) {
+        (function (core_5) {
             var parsers;
             (function (parsers) {
                 var controls = colibri.ui.controls;
@@ -1144,8 +1149,8 @@ var phasereditor2d;
                         const item = this.getPackItem();
                         if (!game.textures.exists(item.getKey())) {
                             const packItemData = item.getData();
-                            const atlasDataFile = core_6.AssetPackUtils.getFileFromPackUrl(packItemData.url);
-                            const atlasData = core_6.AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
+                            const atlasDataFile = core_5.AssetPackUtils.getFileFromPackUrl(packItemData.url);
+                            const atlasData = core_5.AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
                             const images = [];
                             const jsonArrayData = [];
                             for (const textureData of atlasData.textures) {
@@ -1160,7 +1165,7 @@ var phasereditor2d;
                     }
                     async preloadFrames() {
                         const data = this.getPackItem().getData();
-                        const dataFile = core_6.AssetPackUtils.getFileFromPackUrl(data.url);
+                        const dataFile = core_5.AssetPackUtils.getFileFromPackUrl(data.url);
                         if (dataFile) {
                             let result = await ide.FileUtils.preloadFileString(dataFile);
                             const str = ide.FileUtils.getFileString(dataFile);
@@ -1187,7 +1192,7 @@ var phasereditor2d;
                     parseFrames() {
                         const list = [];
                         const data = this.getPackItem().getData();
-                        const dataFile = core_6.AssetPackUtils.getFileFromPackUrl(data.url);
+                        const dataFile = core_5.AssetPackUtils.getFileFromPackUrl(data.url);
                         if (dataFile) {
                             const str = ide.FileUtils.getFileString(dataFile);
                             try {
@@ -1212,7 +1217,7 @@ var phasereditor2d;
                     }
                 }
                 parsers.MultiAtlasParser = MultiAtlasParser;
-            })(parsers = core_6.parsers || (core_6.parsers = {}));
+            })(parsers = core_5.parsers || (core_5.parsers = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1222,7 +1227,7 @@ var phasereditor2d;
     var pack;
     (function (pack) {
         var core;
-        (function (core_7) {
+        (function (core) {
             var parsers;
             (function (parsers) {
                 var controls = colibri.ui.controls;
@@ -1235,20 +1240,20 @@ var phasereditor2d;
                         const item = this.getPackItem();
                         if (!game.textures.exists(item.getKey())) {
                             const data = item.getData();
-                            const image = core_7.AssetPackUtils.getImageFromPackUrl(data.url);
+                            const image = core.AssetPackUtils.getImageFromPackUrl(data.url);
                             game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
                         }
                     }
                     async preloadFrames() {
                         const data = this.getPackItem().getData();
-                        const imageFile = core_7.AssetPackUtils.getFileFromPackUrl(data.url);
+                        const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.url);
                         const image = ide.FileUtils.getImage(imageFile);
                         return await image.preload();
                     }
                     parseFrames() {
                         const frames = [];
                         const data = this.getPackItem().getData();
-                        const imageFile = core_7.AssetPackUtils.getFileFromPackUrl(data.url);
+                        const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.url);
                         const image = ide.FileUtils.getImage(imageFile);
                         const w = data.frameConfig.frameWidth;
                         const h = data.frameConfig.frameHeight;
@@ -1273,10 +1278,8 @@ var phasereditor2d;
                             }
                             if (i >= start) {
                                 if (x + w <= image.getWidth() && y + h <= image.getHeight()) {
-                                    // FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
-                                    // list.add(frame);
                                     const fd = new controls.FrameData(i, new controls.Rect(x, y, w, h), new controls.Rect(0, 0, w, h), new controls.Point(w, h));
-                                    frames.push(new core_7.AssetPackImageFrame(this.getPackItem(), i.toString(), image, fd));
+                                    frames.push(new core.AssetPackImageFrame(this.getPackItem(), i.toString(), image, fd));
                                 }
                             }
                             column++;
@@ -1293,7 +1296,7 @@ var phasereditor2d;
                     }
                 }
                 parsers.SpriteSheetParser = SpriteSheetParser;
-            })(parsers = core_7.parsers || (core_7.parsers = {}));
+            })(parsers = core.parsers || (core.parsers = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -1528,13 +1531,11 @@ var phasereditor2d;
                         if (parent instanceof pack.core.AssetPack) {
                             return parent.getItems();
                         }
-                        if (parent instanceof pack.core.AssetPackItem) {
-                            if (parent.getType() === pack.core.IMAGE_TYPE) {
-                                return [];
-                            }
-                            if (pack.core.AssetPackUtils.isImageFrameContainer(parent)) {
-                                return pack.core.AssetPackUtils.getImageFrames(parent);
-                            }
+                        if (parent instanceof pack.core.ImageAssetPackItem) {
+                            return [];
+                        }
+                        if (parent instanceof pack.core.ImageFrameContainerAssetPackItem) {
+                            return parent.getFrames();
                         }
                         return [];
                     }
@@ -1803,8 +1804,8 @@ var phasereditor2d;
                     }
                     async getImageFrames() {
                         const frames = this.getSelection().flatMap(obj => {
-                            if (obj instanceof pack.core.AssetPackItem) {
-                                return pack.core.AssetPackUtils.getImageFrames(obj);
+                            if (obj instanceof pack.core.ImageFrameContainerAssetPackItem) {
+                                return obj.getFrames();
                             }
                             return [obj];
                         });
@@ -1812,9 +1813,9 @@ var phasereditor2d;
                     }
                     canEdit(obj, n) {
                         if (n === 1) {
-                            return obj instanceof pack.core.AssetPackItem && obj.getType() !== pack.core.IMAGE_TYPE && pack.core.AssetPackUtils.isImageFrameContainer(obj);
+                            return obj instanceof pack.core.AssetPackItem && obj.getType() !== pack.core.IMAGE_TYPE && obj instanceof pack.core.ImageFrameContainerAssetPackItem;
                         }
-                        return obj instanceof controls.ImageFrame || obj instanceof pack.core.AssetPackItem && pack.core.AssetPackUtils.isImageFrameContainer(obj);
+                        return obj instanceof controls.ImageFrame || obj instanceof pack.core.AssetPackItem && obj instanceof pack.core.ImageFrameContainerAssetPackItem;
                     }
                     canEditNumber(n) {
                         return n > 0;
@@ -2018,8 +2019,8 @@ var phasereditor2d;
                 class ImageFrameContainerIconCellRenderer {
                     renderCell(args) {
                         const packItem = args.obj;
-                        if (pack.core.AssetPackUtils.isImageFrameContainer(packItem)) {
-                            const frames = pack.core.AssetPackUtils.getImageFrames(packItem);
+                        if (packItem instanceof pack.core.ImageFrameContainerAssetPackItem) {
+                            const frames = packItem.getFrames();
                             if (frames.length > 0) {
                                 const img = frames[0].getImage();
                                 img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);

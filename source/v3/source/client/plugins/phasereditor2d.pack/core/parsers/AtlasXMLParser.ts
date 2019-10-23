@@ -57,7 +57,7 @@ namespace phasereditor2d.pack.core.parsers {
                         new controls.Rect(spriteX, spriteY, spriteW, spriteH),
                         new controls.Point(frameW, frameH)
                     );
-                    imageFrames.push(new AssetPackImageFrame(this.getPackItem(), name, image, fd));
+                    imageFrames.push(new AssetPackImageFrame( <ImageFrameContainerAssetPackItem> this.getPackItem(), name, image, fd));
                 }
             } catch (e) {
                 console.error(e);

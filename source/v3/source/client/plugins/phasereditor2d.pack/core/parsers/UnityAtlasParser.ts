@@ -1,10 +1,10 @@
 namespace phasereditor2d.pack.core.parsers {
-    
+
     import controls = colibri.ui.controls;
 
     export class UnityAtlasParser extends BaseAtlasParser {
 
-        addToPhaserCache(game : Phaser.Game) {
+        addToPhaserCache(game: Phaser.Game) {
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
@@ -12,7 +12,7 @@ namespace phasereditor2d.pack.core.parsers {
                 const atlasData = AssetPackUtils.getFileStringFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
-                game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any> atlasData);
+                game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any>atlasData);
             }
         }
 
@@ -87,7 +87,7 @@ namespace phasereditor2d.pack.core.parsers {
             const dst = new controls.Rect(0, 0, rect.width, rect.height);
             const srcSize = new controls.Point(rect.width, rect.height);
             const fd = new controls.FrameData(imageFrames.length, src, dst, srcSize);
-            imageFrames.push(new AssetPackImageFrame(this.getPackItem(), spriteName, image, fd));
+            imageFrames.push(new AssetPackImageFrame(<ImageFrameContainerAssetPackItem>this.getPackItem(), spriteName, image, fd));
         }
 
     }

@@ -37,7 +37,7 @@ namespace phasereditor2d.scene.ui.blocks {
                 switch (parent) {
                     case pack.core.ATLAS_TYPE:
                         return this.getPackItems()
-                            .filter(item => pack.core.AssetPackUtils.isAtlasPackItem(item));
+                            .filter(item => item instanceof pack.core.BaseAtlasAssetPackItem);
 
                     case PREFAB_SECTION:
                         //TODO: we need to implement the PrefabFinder

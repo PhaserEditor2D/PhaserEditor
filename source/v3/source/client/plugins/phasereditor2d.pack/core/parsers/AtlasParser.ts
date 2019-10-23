@@ -18,11 +18,10 @@ namespace phasereditor2d.pack.core.parsers {
                 if (Array.isArray(data.frames)) {
 
                     for (const frame of data.frames) {
-                        
+
                         const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
                         imageFrames.push(frameData);
                     }
-
                 } else {
 
                     for (const name in data.frames) {
@@ -32,9 +31,7 @@ namespace phasereditor2d.pack.core.parsers {
                         const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
                         imageFrames.push(frameData);
                     }
-
                 }
-
             } catch (e) {
                 console.error(e);
             }
@@ -50,7 +47,7 @@ namespace phasereditor2d.pack.core.parsers {
 
             const frameData = new controls.FrameData(index, src, dst, srcSize);
 
-            return new AssetPackImageFrame(packItem, frame.filename, image, frameData);
+            return new AssetPackImageFrame(<ImageFrameContainerAssetPackItem>packItem, frame.filename, image, frameData);
         }
 
     }

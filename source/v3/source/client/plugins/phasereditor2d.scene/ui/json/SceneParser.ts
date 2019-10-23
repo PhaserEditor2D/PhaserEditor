@@ -59,25 +59,21 @@ namespace phasereditor2d.scene.ui.json {
 
         async addToCache_async(data: pack.core.AssetPackItem | pack.core.AssetPackImageFrame) {
 
-            let imageFrameContainerPackItem: pack.core.AssetPackItem = null;
+            let imageFrameContainerPackItem: pack.core.ImageFrameContainerAssetPackItem = null;
 
             if (data instanceof pack.core.AssetPackItem) {
-                if (data.getType() === pack.core.IMAGE_TYPE) {
-                    imageFrameContainerPackItem = data;
-                } else if (pack.core.AssetPackUtils.isImageFrameContainer(data)) {
-                    imageFrameContainerPackItem = data;
+                if (data instanceof pack.core.ImageFrameContainerAssetPackItem) {
+                    imageFrameContainerPackItem = data;   
                 }
             } else if (data instanceof pack.core.AssetPackImageFrame) {
-                imageFrameContainerPackItem = data.getPackItem();
+                imageFrameContainerPackItem = <pack.core.ImageFrameContainerAssetPackItem> data.getPackItem();
             }
 
             if (imageFrameContainerPackItem !== null) {
 
-                const parser = pack.core.AssetPackUtils.getImageFrameParser(imageFrameContainerPackItem);
+                await imageFrameContainerPackItem.preload();
 
-                await parser.preload();
-
-                parser.addToPhaserCache(this._scene.game);
+                imageFrameContainerPackItem.addToPhaserCache(this._scene.game);
 
             }
         }

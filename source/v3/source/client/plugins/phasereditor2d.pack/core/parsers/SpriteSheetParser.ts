@@ -1,10 +1,9 @@
 /// <reference path="./BaseAtlasParser.ts" />
 
 namespace phasereditor2d.pack.core.parsers {
-    
+
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
 
     export class SpriteSheetParser extends ImageFrameParser {
 
@@ -36,7 +35,7 @@ namespace phasereditor2d.pack.core.parsers {
         }
 
         parseFrames(): AssetPackImageFrame[] {
-            
+
             const frames: AssetPackImageFrame[] = [];
 
             const data = this.getPackItem().getData();
@@ -66,20 +65,22 @@ namespace phasereditor2d.pack.core.parsers {
             let y = margin;
 
             while (true) {
+
                 if (i > end || y >= image.getHeight() || i > 50) {
                     break;
                 }
 
                 if (i >= start) {
+
                     if (x + w <= image.getWidth() && y + h <= image.getHeight()) {
-                        // FrameModel frame = new FrameModel(this, i, row, column, new Rectangle(x, y, w, h));
-                        // list.add(frame);
+
                         const fd = new controls.FrameData(i,
                             new controls.Rect(x, y, w, h),
                             new controls.Rect(0, 0, w, h),
                             new controls.Point(w, h)
                         );
-                        frames.push(new AssetPackImageFrame(this.getPackItem(), i.toString(), image, fd));
+
+                        frames.push(new AssetPackImageFrame(<ImageFrameContainerAssetPackItem>this.getPackItem(), i.toString(), image, fd));
                     }
                 }
 

@@ -4,7 +4,6 @@ namespace phasereditor2d.pack.core.parsers {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    import core = colibri.core;
 
     export abstract class BaseAtlasParser extends ImageFrameParser {
 
@@ -40,11 +39,6 @@ namespace phasereditor2d.pack.core.parsers {
         protected abstract parseFrames2(frames: AssetPackImageFrame[], image: controls.IImage, atlas: string);
 
         parseFrames(): AssetPackImageFrame[] {
-
-            if (this.hasCachedFrames()) {
-                return this.getCachedFrames();
-            }
-
             const list: AssetPackImageFrame[] = [];
 
             const data = this.getPackItem().getData();

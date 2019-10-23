@@ -56,11 +56,9 @@ namespace phasereditor2d.pack.core {
 
                 return null;
 
-            } else if (AssetPackUtils.isImageFrameContainer(item)) {
+            } else if (item instanceof ImageFrameContainerAssetPackItem) {
 
-                const frames = AssetPackUtils.getImageFrames(item);
-
-                const imageFrame = frames.find(imageFrame => imageFrame.getName() === frame);
+                const imageFrame = item.findFrame(frame);
 
                 return imageFrame;
             }
