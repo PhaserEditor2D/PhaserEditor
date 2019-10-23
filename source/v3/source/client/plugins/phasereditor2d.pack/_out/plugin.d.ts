@@ -229,6 +229,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;
         getPropertyProvider(): AssetPackEditorPropertySectionProvider;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
+        private openAddFileDialog;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {

@@ -77,5 +77,9 @@ namespace colibri.ui.controls.viewers {
             this._viewerContainer.layout();
             this._scrollPane.layout();
         }
+
+        getFilterControl() {
+            return this._filterControl;
+        }
     }
 }

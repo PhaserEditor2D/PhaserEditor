@@ -937,6 +937,7 @@ var phasereditor2d;
             (function (editor) {
                 var ide = colibri.ui.ide;
                 var controls = colibri.ui.controls;
+                var dialogs = controls.dialogs;
                 var io = colibri.core.io;
                 class AssetPackEditorFactory extends ide.EditorFactory {
                     constructor() {
@@ -1011,10 +1012,19 @@ var phasereditor2d;
                             text: "Add File",
                             icon: ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_PLUS),
                             callback: () => {
-                                alert("Hello!");
+                                this.openAddFileDialog();
                             }
                         }));
                         return manager;
+                    }
+                    openAddFileDialog() {
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
+                        viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("tree"));
+                        viewer.setInput(pack.core.TYPES);
+                        const dlg = new dialogs.ViewerDialog(viewer);
+                        dlg.create();
                     }
                 }
                 editor.AssetPackEditor = AssetPackEditor;

@@ -502,6 +502,28 @@ declare namespace colibri.ui.controls {
     function setElementBounds(elem: HTMLElement, bounds: Bounds): void;
     function getElementBounds(elem: HTMLElement): Bounds;
 }
+declare namespace colibri.ui.controls.dialogs {
+    class Dialog extends Control {
+        private _containerElement;
+        private _width;
+        private _height;
+        private static _dialogs;
+        private static _firstTime;
+        constructor(...classList: string[]);
+        create(): void;
+        protected createDialogArea(): void;
+        protected resize(): void;
+        close(): void;
+    }
+}
+declare namespace colibri.ui.controls.dialogs {
+    class ViewerDialog extends Dialog {
+        private _viewer;
+        private _filteredViewer;
+        constructor(viewer: viewers.TreeViewer);
+        createDialogArea(): void;
+    }
+}
 declare namespace colibri.ui.controls.properties {
     class PropertyPage extends Control {
         private _sectionProvider;
@@ -573,13 +595,18 @@ declare namespace colibri.ui.controls.viewers {
     }
 }
 declare namespace colibri.ui.controls.viewers {
-    class ViewerContainer extends controls.Control {
+    class FilterControl extends Control {
+        private _filterElement;
+        constructor();
+        getFilterElement(): HTMLInputElement;
+    }
+    export class ViewerContainer extends controls.Control {
         private _viewer;
         constructor(viewer: Viewer);
         getViewer(): Viewer;
         layout(): void;
     }
-    class FilteredViewer<T extends Viewer> extends Control {
+    export class FilteredViewer<T extends Viewer> extends Control {
         private _viewer;
         private _viewerContainer;
         private _filterControl;
@@ -588,7 +615,9 @@ declare namespace colibri.ui.controls.viewers {
         private onFilterInput;
         getViewer(): T;
         layout(): void;
+        getFilterControl(): FilterControl;
     }
+    export {};
 }
 declare namespace colibri.ui.controls.viewers {
     class FolderCellRenderer implements ICellRenderer {

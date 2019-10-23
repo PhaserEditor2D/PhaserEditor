@@ -2,6 +2,7 @@ namespace phasereditor2d.pack.ui.editor {
 
     import ide = colibri.ui.ide;
     import controls = colibri.ui.controls;
+    import dialogs = controls.dialogs;
     import io = colibri.core.io;
 
     export class AssetPackEditorFactory extends ide.EditorFactory {
@@ -104,11 +105,23 @@ namespace phasereditor2d.pack.ui.editor {
                 text: "Add File",
                 icon: ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_PLUS),
                 callback: () => {
-                    alert("Hello!");
+                    this.openAddFileDialog();
                 }
             }));
 
             return manager;
+        }
+
+        private openAddFileDialog() {
+            const viewer = new controls.viewers.TreeViewer();
+
+            viewer.setLabelProvider(new viewers.AssetPackLabelProvider());
+            viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+            viewer.setCellRendererProvider(new viewers.AssetPackCellRendererProvider("tree"));
+            viewer.setInput(core.TYPES);
+
+            const dlg = new dialogs.ViewerDialog(viewer);
+            dlg.create();
         }
     }
 }

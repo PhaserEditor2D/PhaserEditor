@@ -109,3 +109,13 @@ Important:
 .dark .ToolbarItem:active {
     background: rgba(255, 255, 255, 0.3);
 }
+
+/* Dialog */
+
+.dark .Dialog {
+    background: #6e6e6e;
+}
+
+.dark .ViewerDialog .FilteredViewer {
+    background: #3f3f3f;
+}

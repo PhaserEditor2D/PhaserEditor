@@ -106,3 +106,13 @@ Important:
 .light .ToolbarItem:active {
     background: rgba(255, 255, 255, 0.7);
 }
+
+/* Dialog */
+
+.light .Dialog {
+    background: #cacaca;
+}
+
+.light .ViewerDialog .FilteredViewer {
+    background: #dadada;
+}

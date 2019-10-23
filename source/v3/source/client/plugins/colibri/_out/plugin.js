@@ -1886,6 +1886,88 @@ var colibri;
     (function (ui) {
         var controls;
         (function (controls) {
+            var dialogs;
+            (function (dialogs) {
+                class Dialog extends controls.Control {
+                    constructor(...classList) {
+                        super("div", "Dialog", ...classList);
+                        if (Dialog._firstTime) {
+                            Dialog._firstTime = false;
+                            window.addEventListener("keydown", e => {
+                                if (e.code === "Escape") {
+                                    const list = Dialog._dialogs;
+                                    if (list.length > 0) {
+                                        const dlg = list.pop();
+                                        dlg.close();
+                                    }
+                                }
+                            });
+                        }
+                        Dialog._dialogs.push(this);
+                    }
+                    create() {
+                        this._containerElement = document.createElement("div");
+                        this._containerElement.classList.add("DialogContainer");
+                        document.body.appendChild(this._containerElement);
+                        document.body.appendChild(this.getElement());
+                        this._width = 400;
+                        this._height = 300;
+                        window.addEventListener("resize", () => this.resize());
+                        this.createDialogArea();
+                        this.resize();
+                    }
+                    createDialogArea() {
+                    }
+                    resize() {
+                        this.setBounds({
+                            x: window.innerWidth / 2 - this._width / 2,
+                            y: window.innerHeight * 0.2,
+                            width: this._width,
+                            height: this._height
+                        });
+                    }
+                    close() {
+                        this._containerElement.remove();
+                        this.getElement().remove();
+                    }
+                }
+                Dialog._dialogs = [];
+                Dialog._firstTime = true;
+                dialogs.Dialog = Dialog;
+            })(dialogs = controls.dialogs || (controls.dialogs = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var dialogs;
+            (function (dialogs) {
+                class ViewerDialog extends dialogs.Dialog {
+                    constructor(viewer) {
+                        super("ViewerDialog");
+                        this._viewer = viewer;
+                    }
+                    createDialogArea() {
+                        this._filteredViewer = new controls.viewers.FilteredViewer(this._viewer);
+                        this.add(this._filteredViewer);
+                        this._filteredViewer.getFilterControl().getFilterElement().focus();
+                    }
+                }
+                dialogs.ViewerDialog = ViewerDialog;
+            })(dialogs = controls.dialogs || (controls.dialogs = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             var properties;
             (function (properties) {
                 class PropertySectionPane extends controls.Control {
@@ -2266,6 +2348,9 @@ var colibri;
                     layout() {
                         this._viewerContainer.layout();
                         this._scrollPane.layout();
+                    }
+                    getFilterControl() {
+                        return this._filterControl;
                     }
                 }
                 viewers.FilteredViewer = FilteredViewer;
