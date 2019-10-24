@@ -5,6 +5,7 @@
 /// <reference path="./SpritesheetImporter.ts" />
 /// <reference path="./BitmapFontImporter.ts" />
 /// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
+/// <reference path="../../core/contentTypes/TilemapTiledJSONContentTypeResolver.ts" />
 
 namespace phasereditor2d.pack.ui.importers {
 
@@ -22,7 +23,8 @@ namespace phasereditor2d.pack.ui.importers {
             new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATIONS_TYPE),
             new BitmapFontImporter(),
             new SingleFileImporter(files.core.CONTENT_TYPE_CSV, core.TILEMAP_CSV_TYPE),
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE)
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE),
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, core.TILEMAP_TILED_JSON_TYPE)
         ]
 
         static getImporter(type: string) {

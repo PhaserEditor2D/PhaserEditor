@@ -339,6 +339,13 @@ declare namespace phasereditor2d.pack.core.contentTypes {
     }
 }
 declare namespace phasereditor2d.pack.core.contentTypes {
+    const CONTENT_TYPE_TILEMAP_TILED_JSON = "phasereditor2d.pack.core.contentTypes.tilemapTiledJSON";
+    class TilemapTiledJSONContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: colibri.core.io.FilePath): Promise<string>;
+    }
+}
+declare namespace phasereditor2d.pack.core.contentTypes {
     import io = colibri.core.io;
     const CONTENT_TYPE_UNITY_ATLAS = "phasereditor2d.pack.core.unityAtlas";
     class UnityAtlasContentTypeResolver implements colibri.core.IContentTypeResolver {

@@ -60,6 +60,7 @@ var phasereditor2d;
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AnimationsContentTypeResolver", [new pack.core.contentTypes.AnimationsContentTypeResolver()], 5));
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.BitmapFontContentTypeResolver", [new pack.core.contentTypes.BitmapFontContentTypeResolver()], 5));
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver", [new pack.core.contentTypes.TilemapImpactContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapTiledJSONContentTypeResolver", [new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()], 5));
                 // content type icons
                 reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
@@ -1140,6 +1141,39 @@ var phasereditor2d;
                     }
                 }
                 contentTypes.TilemapImpactContentTypeResolver = TilemapImpactContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON = "phasereditor2d.pack.core.contentTypes.tilemapTiledJSON";
+                class TilemapTiledJSONContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.contentTypes.TilemapTiledJSONContentTypeResolver";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (Array.isArray(data.layers)
+                                && Array.isArray(data.tilesets)
+                                && typeof (data.tilewidth === "number")
+                                && typeof (data.tileheight)) {
+                                return contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON;
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.TilemapTiledJSONContentTypeResolver = TilemapTiledJSONContentTypeResolver;
             })(contentTypes = core.contentTypes || (core.contentTypes = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2238,6 +2272,7 @@ var phasereditor2d;
 /// <reference path="./SpritesheetImporter.ts" />
 /// <reference path="./BitmapFontImporter.ts" />
 /// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
+/// <reference path="../../core/contentTypes/TilemapTiledJSONContentTypeResolver.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
@@ -2262,7 +2297,8 @@ var phasereditor2d;
                     new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE),
                     new importers.BitmapFontImporter(),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE)
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE),
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, pack.core.TILEMAP_TILED_JSON_TYPE)
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

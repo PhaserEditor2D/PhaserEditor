@@ -90,6 +90,13 @@ namespace phasereditor2d.pack {
                     5
                 ));
 
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapTiledJSONContentTypeResolver",
+                    [new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()],
+                    5
+                ));
+
             // content type icons
 
             reg.addExtension(
