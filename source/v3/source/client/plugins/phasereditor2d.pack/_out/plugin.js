@@ -61,6 +61,7 @@ var phasereditor2d;
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.BitmapFontContentTypeResolver", [new pack.core.contentTypes.BitmapFontContentTypeResolver()], 5));
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver", [new pack.core.contentTypes.TilemapImpactContentTypeResolver()], 5));
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapTiledJSONContentTypeResolver", [new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AudioSpriteContentTypeResolver", [new pack.core.contentTypes.AudioSpriteContentTypeResolver()], 5));
                 // content type icons
                 reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
@@ -1045,6 +1046,36 @@ var phasereditor2d;
                     }
                 }
                 contentTypes.AtlasXMLContentTypeResolver = AtlasXMLContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_AUDIO_SPRITE = "phasereditor2d.pack.core.audioSprite";
+                class AudioSpriteContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.contentTypes.AudioSpriteContentTypeResolver";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (Array.isArray(data.resources) && typeof (data.spritemap) === "object") {
+                                return contentTypes.CONTENT_TYPE_AUDIO_SPRITE;
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.AudioSpriteContentTypeResolver = AudioSpriteContentTypeResolver;
             })(contentTypes = core.contentTypes || (core.contentTypes = {}));
         })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2153,6 +2184,37 @@ var phasereditor2d;
         (function (ui) {
             var importers;
             (function (importers) {
+                var ide = colibri.ui.ide;
+                class AudioSpriteImporter extends importers.ContentTypeImporter {
+                    constructor() {
+                        super(pack.core.contentTypes.CONTENT_TYPE_AUDIO_SPRITE, pack.core.AUDIO_SPRITE_TYPE);
+                    }
+                    createItemData(file) {
+                        const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();
+                        const baseName = file.getNameWithoutExtension();
+                        const urls = file.getParent().getFiles()
+                            .filter(f => reg.getCachedContentType(f) === phasereditor2d.files.core.CONTENT_TYPE_AUDIO)
+                            .filter(f => f.getNameWithoutExtension() === baseName)
+                            .map(f => pack.core.AssetPackUtils.getFilePackUrl(f));
+                        return {
+                            jsonURL: pack.core.AssetPackUtils.getFilePackUrl(file),
+                            audioURL: urls
+                        };
+                    }
+                }
+                importers.AudioSpriteImporter = AudioSpriteImporter;
+            })(importers = ui.importers || (ui.importers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var importers;
+            (function (importers) {
                 class BitmapFontImporter extends importers.ContentTypeImporter {
                     constructor() {
                         super(pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT, pack.core.BITMAP_FONT_TYPE);
@@ -2224,13 +2286,18 @@ var phasereditor2d;
             (function (importers) {
                 var ide = colibri.ui.ide;
                 class SingleFileImporter extends importers.ContentTypeImporter {
+                    constructor(contentType, assetPackType, urlIsArray = false) {
+                        super(contentType, assetPackType);
+                        this._urlIsArray = urlIsArray;
+                    }
                     acceptFile(file) {
                         const fileContentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
                         return fileContentType === this.getContentType();
                     }
                     createItemData(file) {
+                        const url = pack.core.AssetPackUtils.getFilePackUrl(file);
                         return {
-                            url: pack.core.AssetPackUtils.getFilePackUrl(file)
+                            url: this._urlIsArray ? [url] : url
                         };
                     }
                 }
@@ -2273,6 +2340,7 @@ var phasereditor2d;
 /// <reference path="./BitmapFontImporter.ts" />
 /// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
 /// <reference path="../../core/contentTypes/TilemapTiledJSONContentTypeResolver.ts" />
+/// <reference path="./AudioSpriteImporter.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
@@ -2302,7 +2370,9 @@ var phasereditor2d;
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.PLUGIN_TYPE),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_PLUGIN_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE)
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_AUDIO, pack.core.AUDIO_TYPE, true),
+                    new importers.AudioSpriteImporter()
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

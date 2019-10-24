@@ -6,6 +6,7 @@
 /// <reference path="./BitmapFontImporter.ts" />
 /// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
 /// <reference path="../../core/contentTypes/TilemapTiledJSONContentTypeResolver.ts" />
+/// <reference path="./AudioSpriteImporter.ts" />
 
 namespace phasereditor2d.pack.ui.importers {
 
@@ -28,7 +29,9 @@ namespace phasereditor2d.pack.ui.importers {
             new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.PLUGIN_TYPE),
             new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_FILE_TYPE),
             new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_PLUGIN_TYPE),
-            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCRIPT_TYPE)
+            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCRIPT_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_AUDIO, core.AUDIO_TYPE, true),
+            new AudioSpriteImporter()
         ]
 
         static getImporter(type: string) {

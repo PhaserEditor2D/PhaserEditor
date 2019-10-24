@@ -317,6 +317,14 @@ declare namespace phasereditor2d.pack.core.contentTypes {
 }
 declare namespace phasereditor2d.pack.core.contentTypes {
     import io = colibri.core.io;
+    const CONTENT_TYPE_AUDIO_SPRITE = "phasereditor2d.pack.core.audioSprite";
+    class AudioSpriteContentTypeResolver implements colibri.core.IContentTypeResolver {
+        getId(): string;
+        computeContentType(file: io.FilePath): Promise<string>;
+    }
+}
+declare namespace phasereditor2d.pack.core.contentTypes {
+    import io = colibri.core.io;
     const CONTENT_TYPE_BITMAP_FONT = "phasereditor2d.pack.core.bitmapFont";
     class BitmapFontContentTypeResolver implements colibri.core.IContentTypeResolver {
         getId(): string;
@@ -537,6 +545,15 @@ declare namespace phasereditor2d.pack.ui.importers {
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {
+    class AudioSpriteImporter extends ContentTypeImporter {
+        constructor();
+        createItemData(file: colibri.core.io.FilePath): {
+            jsonURL: any;
+            audioURL: any[];
+        };
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
     class BitmapFontImporter extends ContentTypeImporter {
         constructor();
         createItemData(file: colibri.core.io.FilePath): {
@@ -563,6 +580,8 @@ declare namespace phasereditor2d.pack.ui.importers {
 declare namespace phasereditor2d.pack.ui.importers {
     import io = colibri.core.io;
     class SingleFileImporter extends ContentTypeImporter {
+        private _urlIsArray;
+        constructor(contentType: string, assetPackType: string, urlIsArray?: boolean);
         acceptFile(file: io.FilePath): boolean;
         createItemData(file: io.FilePath): any;
     }
@@ -576,8 +595,8 @@ declare namespace phasereditor2d.pack.ui.importers {
 }
 declare namespace phasereditor2d.pack.ui.importers {
     class Importers {
-        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter)[];
-        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter;
+        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter | AudioSpriteImporter)[];
+        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter | AudioSpriteImporter;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {
