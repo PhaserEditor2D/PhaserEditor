@@ -35,6 +35,10 @@ var phasereditor2d;
                         contentType: files.core.CONTENT_TYPE_IMAGE
                     },
                     {
+                        iconName: files.ICON_FILE_IMAGE,
+                        contentType: files.core.CONTENT_TYPE_SVG
+                    },
+                    {
                         iconName: files.ICON_FILE_SOUND,
                         contentType: files.core.CONTENT_TYPE_AUDIO
                     },
@@ -92,10 +96,12 @@ var phasereditor2d;
         var core;
         (function (core) {
             core.CONTENT_TYPE_IMAGE = "image";
+            core.CONTENT_TYPE_SVG = "svg";
             core.CONTENT_TYPE_AUDIO = "audio";
             core.CONTENT_TYPE_VIDEO = "video";
             core.CONTENT_TYPE_SCRIPT = "script";
             core.CONTENT_TYPE_TEXT = "text";
+            core.CONTENT_TYPE_CSV = "csv";
             class DefaultExtensionTypeResolver extends core.ExtensionContentTypeResolver {
                 constructor() {
                     super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
@@ -104,6 +110,7 @@ var phasereditor2d;
                         ["bmp", core.CONTENT_TYPE_IMAGE],
                         ["gif", core.CONTENT_TYPE_IMAGE],
                         ["webp", core.CONTENT_TYPE_IMAGE],
+                        ["svg", core.CONTENT_TYPE_SVG],
                         ["mp3", core.CONTENT_TYPE_AUDIO],
                         ["wav", core.CONTENT_TYPE_AUDIO],
                         ["ogg", core.CONTENT_TYPE_AUDIO],
@@ -118,6 +125,7 @@ var phasereditor2d;
                         ["json", core.CONTENT_TYPE_SCRIPT],
                         ["txt", core.CONTENT_TYPE_TEXT],
                         ["md", core.CONTENT_TYPE_TEXT],
+                        ["csv", core.CONTENT_TYPE_CSV]
                     ]);
                 }
             }

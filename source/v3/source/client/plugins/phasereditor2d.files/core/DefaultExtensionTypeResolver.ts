@@ -3,10 +3,12 @@
 namespace phasereditor2d.files.core {
 
     export const CONTENT_TYPE_IMAGE = "image";
+    export const CONTENT_TYPE_SVG = "svg";
     export const CONTENT_TYPE_AUDIO = "audio";
     export const CONTENT_TYPE_VIDEO = "video";
     export const CONTENT_TYPE_SCRIPT = "script";
     export const CONTENT_TYPE_TEXT = "text";
+    export const CONTENT_TYPE_CSV = "csv";
 
     export class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor() {
@@ -16,6 +18,8 @@ namespace phasereditor2d.files.core {
                 ["bmp", CONTENT_TYPE_IMAGE],
                 ["gif", CONTENT_TYPE_IMAGE],
                 ["webp", CONTENT_TYPE_IMAGE],
+
+                ["svg", CONTENT_TYPE_SVG],
 
                 ["mp3", CONTENT_TYPE_AUDIO],
                 ["wav", CONTENT_TYPE_AUDIO],
@@ -34,6 +38,8 @@ namespace phasereditor2d.files.core {
 
                 ["txt", CONTENT_TYPE_TEXT],
                 ["md", CONTENT_TYPE_TEXT],
+
+                ["csv", CONTENT_TYPE_CSV]
             ]);
 
         }

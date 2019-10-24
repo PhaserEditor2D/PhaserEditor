@@ -2,8 +2,42 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
     (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_ANIMATIONS = "Phaser v3 Animations";
+                class AnimationsContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.AnimationsContentTypeResolver";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (data.meta) {
+                                if (data.meta.contentType === contentTypes.CONTENT_TYPE_ANIMATIONS) {
+                                    return contentTypes.CONTENT_TYPE_ANIMATIONS;
+                                }
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.AnimationsContentTypeResolver = AnimationsContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./core/contentTypes/AnimationsContentTypeResolver.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
         var ide = colibri.ui.ide;
         pack.ICON_ASSET_PACK = "asset-pack";
+        pack.ICON_ANIMATIONS = "animations";
         class AssetPackPlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.pack");
@@ -14,19 +48,31 @@ var phasereditor2d;
             registerExtensions(reg) {
                 // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
-                    pack.ICON_ASSET_PACK
+                    pack.ICON_ASSET_PACK,
+                    pack.ICON_ANIMATIONS
                 ]));
                 // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AssetPackContentTypeResolver", [new pack.core.AssetPackContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasContentTypeResolver", [new pack.core.AtlasContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.MultiatlasContentTypeResolver", [new pack.core.MultiatlasContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasXMLContentTypeResolver", [new pack.core.AtlasXMLContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.UnityAtlasContentTypeResolver", [new pack.core.UnityAtlasContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AssetPackContentTypeResolver", [new pack.core.contentTypes.AssetPackContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasContentTypeResolver", [new pack.core.contentTypes.AtlasContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.MultiatlasContentTypeResolver", [new pack.core.contentTypes.MultiatlasContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasXMLContentTypeResolver", [new pack.core.contentTypes.AtlasXMLContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.UnityAtlasContentTypeResolver", [new pack.core.contentTypes.UnityAtlasContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AnimationsContentTypeResolver", [new pack.core.contentTypes.AnimationsContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.BitmapFontContentTypeResolver", [new pack.core.contentTypes.BitmapFontContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver", [new pack.core.contentTypes.TilemapImpactContentTypeResolver()], 5));
                 // content type icons
                 reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
                         iconName: pack.ICON_ASSET_PACK,
-                        contentType: pack.core.CONTENT_TYPE_ASSET_PACK
+                        contentType: pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK
+                    },
+                    {
+                        iconName: pack.ICON_ANIMATIONS,
+                        contentType: pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS
+                    },
+                    {
+                        iconName: phasereditor2d.files.ICON_FILE_FONT,
+                        contentType: pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT
                     }
                 ]));
                 // project resources preloader
@@ -183,6 +229,19 @@ var phasereditor2d;
                         }
                     }
                 }
+                toJSON() {
+                    return {
+                        "section1": {
+                            "files": this._items.map(item => item.getData())
+                        },
+                        "meta": {
+                            "app": "Phaser Editor 2D - Asset Pack Editor",
+                            "contentType": "Phaser v3 Asset Pack",
+                            "url": "https://phasereditor2d.com",
+                            "version": "2"
+                        }
+                    };
+                }
                 createPackItem(data) {
                     const type = data.type;
                     switch (type) {
@@ -263,41 +322,6 @@ var phasereditor2d;
     var pack;
     (function (pack) {
         var core;
-        (function (core_2) {
-            var ide = colibri.ui.ide;
-            var core = colibri.core;
-            core_2.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
-            class AssetPackContentTypeResolver extends core.ContentTypeResolver {
-                constructor() {
-                    super("phasereditor2d.pack.core.AssetPackContentTypeResolver");
-                }
-                async computeContentType(file) {
-                    if (file.getExtension() === "json") {
-                        const content = await ide.FileUtils.preloadAndGetFileString(file);
-                        if (content !== null) {
-                            try {
-                                const data = JSON.parse(content);
-                                const meta = data["meta"];
-                                if (meta["contentType"] === "Phaser v3 Asset Pack") {
-                                    return core_2.CONTENT_TYPE_ASSET_PACK;
-                                }
-                            }
-                            catch (e) {
-                            }
-                        }
-                    }
-                    return core.CONTENT_TYPE_ANY;
-                }
-            }
-            core_2.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
-        })(core = pack.core || (pack.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var core;
         (function (core) {
             var controls = colibri.ui.controls;
             class AssetPackImageFrame extends controls.ImageFrame {
@@ -336,7 +360,7 @@ var phasereditor2d;
                     }
                 }
                 static async getAllPacks() {
-                    const files = await ide.FileUtils.getFilesWithContentType(core.CONTENT_TYPE_ASSET_PACK);
+                    const files = await ide.FileUtils.getFilesWithContentType(core.contentTypes.CONTENT_TYPE_ASSET_PACK);
                     const packs = [];
                     for (const file of files) {
                         const pack = await core.AssetPack.createFromFile(file);
@@ -456,36 +480,6 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack) {
-        var core;
-        (function (core) {
-            var ide = colibri.ui.ide;
-            core.CONTENT_TYPE_ATLAS = "phasereditor2d.pack.core.atlas";
-            class AtlasContentTypeResolver {
-                getId() {
-                    return "phasereditor2d.pack.core.atlasHashOrArray";
-                }
-                async computeContentType(file) {
-                    if (file.getExtension() === "json") {
-                        const content = await ide.FileUtils.preloadAndGetFileString(file);
-                        const data = JSON.parse(content);
-                        if (data.hasOwnProperty("frames")) {
-                            const frames = data["frames"];
-                            if (typeof (frames) === "object") {
-                                return core.CONTENT_TYPE_ATLAS;
-                            }
-                        }
-                    }
-                    return colibri.core.CONTENT_TYPE_ANY;
-                }
-            }
-            core.AtlasContentTypeResolver = AtlasContentTypeResolver;
-        })(core = pack.core || (pack.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
     (function (pack_6) {
         var core;
         (function (core) {
@@ -499,35 +493,6 @@ var phasereditor2d;
             }
             core.AtlasXMLAssetPackItem = AtlasXMLAssetPackItem;
         })(core = pack_6.core || (pack_6.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var core;
-        (function (core) {
-            var ide = colibri.ui.ide;
-            core.CONTENT_TYPE_ATLAS_XML = "phasereditor2d.pack.core.atlasXML";
-            class AtlasXMLContentTypeResolver {
-                getId() {
-                    return "phasereditor2d.pack.core.atlasXML";
-                }
-                async computeContentType(file) {
-                    if (file.getExtension() === "xml") {
-                        const content = await ide.FileUtils.preloadAndGetFileString(file);
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(content, "text/xml");
-                        const elements = xmlDoc.getElementsByTagName("TextureAtlas");
-                        if (elements.length === 1) {
-                            return core.CONTENT_TYPE_ATLAS_XML;
-                        }
-                    }
-                    return colibri.core.CONTENT_TYPE_ANY;
-                }
-            }
-            core.AtlasXMLContentTypeResolver = AtlasXMLContentTypeResolver;
-        })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./AssetPackItem.ts" />
@@ -712,39 +677,9 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack) {
-        var core;
-        (function (core) {
-            var ide = colibri.ui.ide;
-            core.CONTENT_TYPE_MULTI_ATLAS = "phasereditor2d.pack.core.multiAtlas";
-            class MultiatlasContentTypeResolver {
-                getId() {
-                    return "phasereditor2d.pack.core.atlasHashOrArray";
-                }
-                async computeContentType(file) {
-                    if (file.getExtension() === "json") {
-                        const content = await ide.FileUtils.preloadAndGetFileString(file);
-                        const data = JSON.parse(content);
-                        if (data.hasOwnProperty("textures")) {
-                            const frames = data["textures"];
-                            if (typeof (frames) === "object") {
-                                return core.CONTENT_TYPE_MULTI_ATLAS;
-                            }
-                        }
-                    }
-                    return colibri.core.CONTENT_TYPE_ANY;
-                }
-            }
-            core.MultiatlasContentTypeResolver = MultiatlasContentTypeResolver;
-        })(core = pack.core || (pack.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
     (function (pack_18) {
         var core;
-        (function (core_3) {
+        (function (core_2) {
             var controls = colibri.ui.controls;
             class PackFinder {
                 constructor() {
@@ -753,9 +688,9 @@ var phasereditor2d;
                     if (this._loaded) {
                         return controls.Controls.resolveNothingLoaded();
                     }
-                    this._packs = await core_3.AssetPackUtils.getAllPacks();
+                    this._packs = await core_2.AssetPackUtils.getAllPacks();
                     const items = this._packs.flatMap(pack => pack.getItems());
-                    await core_3.AssetPackUtils.preloadAssetPackItems(items);
+                    await core_2.AssetPackUtils.preloadAssetPackItems(items);
                     return controls.Controls.resolveResourceLoaded();
                 }
                 static getPacks() {
@@ -771,13 +706,13 @@ var phasereditor2d;
                     if (!item) {
                         return null;
                     }
-                    if (item.getType() === core_3.IMAGE_TYPE) {
+                    if (item.getType() === core_2.IMAGE_TYPE) {
                         if (frame === null || frame === undefined) {
                             return item;
                         }
                         return null;
                     }
-                    else if (item instanceof core_3.ImageFrameContainerAssetPackItem) {
+                    else if (item instanceof core_2.ImageFrameContainerAssetPackItem) {
                         const imageFrame = item.findFrame(frame);
                         return imageFrame;
                     }
@@ -785,10 +720,10 @@ var phasereditor2d;
                 }
                 static getAssetPackItemImage(key, frame) {
                     const asset = this.getAssetPackItemOrFrame(key, frame);
-                    if (asset instanceof core_3.AssetPackItem && asset.getType() === core_3.IMAGE_TYPE) {
-                        return core_3.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
+                    if (asset instanceof core_2.AssetPackItem && asset.getType() === core_2.IMAGE_TYPE) {
+                        return core_2.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
                     }
-                    else if (asset instanceof core_3.AssetPackImageFrame) {
+                    else if (asset instanceof core_2.AssetPackImageFrame) {
                         return asset;
                     }
                     return new controls.ImageWrapper(null);
@@ -796,7 +731,7 @@ var phasereditor2d;
             }
             PackFinder._packs = [];
             PackFinder._loaded = false;
-            core_3.PackFinder = PackFinder;
+            core_2.PackFinder = PackFinder;
         })(core = pack_18.core || (pack_18.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -978,28 +913,6 @@ var phasereditor2d;
         })(core = pack_29.core || (pack_29.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var core;
-        (function (core) {
-            core.CONTENT_TYPE_UNITY_ATLAS = "phasereditor2d.pack.core.unityAtlas";
-            class UnityAtlasContentTypeResolver {
-                getId() {
-                    return "phasereditor2d.pack.core.unityAtlas";
-                }
-                async computeContentType(file) {
-                    if (file.getExtension() === "meta") {
-                        return core.CONTENT_TYPE_UNITY_ATLAS;
-                    }
-                    return colibri.core.CONTENT_TYPE_ANY;
-                }
-            }
-            core.UnityAtlasContentTypeResolver = UnityAtlasContentTypeResolver;
-        })(core = pack.core || (pack.core = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./AssetPackItem.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
@@ -1030,6 +943,230 @@ var phasereditor2d;
             }
             core.XMLAssetPackItem = XMLAssetPackItem;
         })(core = pack_31.core || (pack_31.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core_3) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                var core = colibri.core;
+                contentTypes.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+                class AssetPackContentTypeResolver extends core.ContentTypeResolver {
+                    constructor() {
+                        super("phasereditor2d.pack.core.AssetPackContentTypeResolver");
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            if (content !== null) {
+                                try {
+                                    const data = JSON.parse(content);
+                                    const meta = data["meta"];
+                                    if (meta["contentType"] === "Phaser v3 Asset Pack") {
+                                        return contentTypes.CONTENT_TYPE_ASSET_PACK;
+                                    }
+                                }
+                                catch (e) {
+                                }
+                            }
+                        }
+                        return core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.AssetPackContentTypeResolver = AssetPackContentTypeResolver;
+            })(contentTypes = core_3.contentTypes || (core_3.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_ATLAS = "phasereditor2d.pack.core.atlas";
+                class AtlasContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.atlasHashOrArray";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (data.hasOwnProperty("frames")) {
+                                const frames = data["frames"];
+                                if (typeof (frames) === "object") {
+                                    return contentTypes.CONTENT_TYPE_ATLAS;
+                                }
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.AtlasContentTypeResolver = AtlasContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_ATLAS_XML = "phasereditor2d.pack.core.atlasXML";
+                class AtlasXMLContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.atlasXML";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "xml") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(content, "text/xml");
+                            const elements = xmlDoc.getElementsByTagName("TextureAtlas");
+                            if (elements.length === 1) {
+                                return contentTypes.CONTENT_TYPE_ATLAS_XML;
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.AtlasXMLContentTypeResolver = AtlasXMLContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_BITMAP_FONT = "phasereditor2d.pack.core.bitmapFont";
+                class BitmapFontContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.BitmapFontContentTypeResolver";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "xml") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(content, "text/xml");
+                            const fontElements = xmlDoc.getElementsByTagName("font");
+                            const charsElements = xmlDoc.getElementsByTagName("chars");
+                            if (fontElements.length === 1 && charsElements.length === 1) {
+                                return contentTypes.CONTENT_TYPE_BITMAP_FONT;
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.BitmapFontContentTypeResolver = BitmapFontContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_MULTI_ATLAS = "phasereditor2d.pack.core.multiAtlas";
+                class MultiatlasContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.atlasHashOrArray";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (data.hasOwnProperty("textures")) {
+                                const frames = data["textures"];
+                                if (typeof (frames) === "object") {
+                                    return contentTypes.CONTENT_TYPE_MULTI_ATLAS;
+                                }
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.MultiatlasContentTypeResolver = MultiatlasContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                var ide = colibri.ui.ide;
+                contentTypes.CONTENT_TYPE_TILEMAP_IMPACT = "phasereditor2d.pack.core.contentTypes.tilemapImpact";
+                class TilemapImpactContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "json") {
+                            const content = await ide.FileUtils.preloadAndGetFileString(file);
+                            const data = JSON.parse(content);
+                            if (Array.isArray(data.entities) && Array.isArray(data.layer)) {
+                                return contentTypes.CONTENT_TYPE_TILEMAP_IMPACT;
+                            }
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.TilemapImpactContentTypeResolver = TilemapImpactContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var core;
+        (function (core) {
+            var contentTypes;
+            (function (contentTypes) {
+                contentTypes.CONTENT_TYPE_UNITY_ATLAS = "phasereditor2d.pack.core.unityAtlas";
+                class UnityAtlasContentTypeResolver {
+                    getId() {
+                        return "phasereditor2d.pack.core.unityAtlas";
+                    }
+                    async computeContentType(file) {
+                        if (file.getExtension() === "meta") {
+                            return contentTypes.CONTENT_TYPE_UNITY_ATLAS;
+                        }
+                        return colibri.core.CONTENT_TYPE_ANY;
+                    }
+                }
+                contentTypes.UnityAtlasContentTypeResolver = UnityAtlasContentTypeResolver;
+            })(contentTypes = core.contentTypes || (core.contentTypes = {}));
+        })(core = pack.core || (pack.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1557,7 +1694,7 @@ var phasereditor2d;
                     acceptInput(input) {
                         if (input instanceof io.FilePath) {
                             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                            return contentType === pack.core.CONTENT_TYPE_ASSET_PACK;
+                            return contentType === pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK;
                         }
                         return false;
                     }
@@ -1599,6 +1736,16 @@ var phasereditor2d;
                         this._pack = new pack.core.AssetPack(file, content);
                         this.getViewer().repaint();
                         this._outlineProvider.repaint();
+                    }
+                    async save() {
+                        const content = JSON.stringify(this._pack.toJSON(), null, 4);
+                        try {
+                            await ide.FileUtils.setFileString_async(this.getInput(), content);
+                            this.setDirty(false);
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
                     }
                     getPack() {
                         return this._pack;
@@ -1659,6 +1806,7 @@ var phasereditor2d;
                             await importer.importFile(this._pack, file);
                             dlg.close();
                             this._viewer.repaint();
+                            this.setDirty(true);
                         });
                     }
                 }
@@ -1936,7 +2084,7 @@ var phasereditor2d;
             (function (importers) {
                 class AtlasImporter extends importers.BaseAtlasImporter {
                     constructor() {
-                        super(pack.core.CONTENT_TYPE_ATLAS, pack.core.ATLAS_TYPE);
+                        super(pack.core.contentTypes.CONTENT_TYPE_ATLAS, pack.core.ATLAS_TYPE);
                     }
                 }
                 importers.AtlasImporter = AtlasImporter;
@@ -1955,10 +2103,34 @@ var phasereditor2d;
             (function (importers) {
                 class AtlasXMLImporter extends importers.BaseAtlasImporter {
                     constructor() {
-                        super(pack.core.CONTENT_TYPE_ATLAS_XML, pack.core.ATLAS_XML_TYPE);
+                        super(pack.core.contentTypes.CONTENT_TYPE_ATLAS_XML, pack.core.ATLAS_XML_TYPE);
                     }
                 }
                 importers.AtlasXMLImporter = AtlasXMLImporter;
+            })(importers = ui.importers || (ui.importers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var importers;
+            (function (importers) {
+                class BitmapFontImporter extends importers.ContentTypeImporter {
+                    constructor() {
+                        super(pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT, pack.core.BITMAP_FONT_TYPE);
+                    }
+                    createItemData(file) {
+                        return {
+                            textureURL: pack.core.AssetPackUtils.getFilePackUrlWithNewExtension(file, "png"),
+                            fontDataURL: pack.core.AssetPackUtils.getFilePackUrl(file)
+                        };
+                    }
+                }
+                importers.BitmapFontImporter = BitmapFontImporter;
             })(importers = ui.importers || (ui.importers = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -1974,7 +2146,7 @@ var phasereditor2d;
             (function (importers) {
                 class MultiatlasImporter extends importers.ContentTypeImporter {
                     constructor() {
-                        super(pack.core.CONTENT_TYPE_MULTI_ATLAS, pack.core.MULTI_ATLAS_TYPE);
+                        super(pack.core.contentTypes.CONTENT_TYPE_MULTI_ATLAS, pack.core.MULTI_ATLAS_TYPE);
                     }
                     createItemData(file) {
                         return {
@@ -1999,7 +2171,7 @@ var phasereditor2d;
             (function (importers) {
                 class UnityAtlasImporter extends importers.BaseAtlasImporter {
                     constructor() {
-                        super(pack.core.CONTENT_TYPE_UNITY_ATLAS, pack.core.UNITY_ATLAS_TYPE);
+                        super(pack.core.contentTypes.CONTENT_TYPE_UNITY_ATLAS, pack.core.UNITY_ATLAS_TYPE);
                     }
                 }
                 importers.UnityAtlasImporter = UnityAtlasImporter;
@@ -2033,10 +2205,39 @@ var phasereditor2d;
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var importers;
+            (function (importers) {
+                class SpritesheetImporter extends importers.SingleFileImporter {
+                    constructor() {
+                        super(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.SPRITESHEET_TYPE);
+                    }
+                    createItemData(file) {
+                        const data = super.createItemData(file);
+                        data.frameConfig = {
+                            frameWidth: 32,
+                            frameHeight: 32
+                        };
+                        return data;
+                    }
+                }
+                importers.SpritesheetImporter = SpritesheetImporter;
+            })(importers = ui.importers || (ui.importers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./MultiatlasImporter.ts" />
 /// <reference path="./AtlasXMLImporter.ts" />
 /// <reference path="./UnityAtlasImporter.ts" />
 /// <reference path="./SingleFileImporter.ts" />
+/// <reference path="./SpritesheetImporter.ts" />
+/// <reference path="./BitmapFontImporter.ts" />
+/// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
@@ -2055,7 +2256,13 @@ var phasereditor2d;
                     new importers.MultiatlasImporter(),
                     new importers.AtlasXMLImporter(),
                     new importers.UnityAtlasImporter(),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE)
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_SVG, pack.core.SVG_TYPE),
+                    new importers.SpritesheetImporter(),
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE),
+                    new importers.BitmapFontImporter(),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE)
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

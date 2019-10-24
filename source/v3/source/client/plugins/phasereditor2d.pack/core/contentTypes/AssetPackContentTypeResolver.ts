@@ -1,4 +1,4 @@
-namespace phasereditor2d.pack.core {
+namespace phasereditor2d.pack.core.contentTypes{
 
     import ide = colibri.ui.ide;
     import core = colibri.core;

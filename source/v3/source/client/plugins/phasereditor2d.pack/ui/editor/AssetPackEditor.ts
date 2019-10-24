@@ -14,7 +14,7 @@ namespace phasereditor2d.pack.ui.editor {
         acceptInput(input: any): boolean {
             if (input instanceof io.FilePath) {
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                return contentType === pack.core.CONTENT_TYPE_ASSET_PACK;
+                return contentType === pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK;
             }
             return false;
         }
@@ -72,6 +72,21 @@ namespace phasereditor2d.pack.ui.editor {
             this.getViewer().repaint();
 
             this._outlineProvider.repaint();
+        }
+
+        async save() {
+
+            const content = JSON.stringify(this._pack.toJSON(), null, 4);
+
+            try {
+
+                await ide.FileUtils.setFileString_async(this.getInput(), content);
+
+                this.setDirty(false);
+
+            } catch (e) {
+                console.error(e);
+            }
         }
 
         getPack() {
@@ -163,6 +178,8 @@ namespace phasereditor2d.pack.ui.editor {
                 dlg.close();
 
                 this._viewer.repaint();
+
+                this.setDirty(true);
             });
         }
     }

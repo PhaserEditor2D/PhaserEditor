@@ -62,6 +62,7 @@ namespace phasereditor2d.pack.core {
     ];
 
     export class AssetPack {
+
         private _file: core.io.FilePath;
         private _items: AssetPackItem[];
 
@@ -85,6 +86,20 @@ namespace phasereditor2d.pack.core {
                 } catch (e) {
                     console.error(e);
                     alert(e.message);
+                }
+            }
+        }
+
+        toJSON(): any {
+            return {
+                "section1": {
+                    "files": this._items.map(item => item.getData())
+                },
+                "meta": {
+                    "app": "Phaser Editor 2D - Asset Pack Editor",
+                    "contentType": "Phaser v3 Asset Pack",
+                    "url": "https://phasereditor2d.com",
+                    "version": "2"
                 }
             }
         }

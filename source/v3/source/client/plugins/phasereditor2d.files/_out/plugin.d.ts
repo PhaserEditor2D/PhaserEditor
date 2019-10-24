@@ -23,10 +23,12 @@ declare namespace phasereditor2d.files.core {
 }
 declare namespace phasereditor2d.files.core {
     const CONTENT_TYPE_IMAGE = "image";
+    const CONTENT_TYPE_SVG = "svg";
     const CONTENT_TYPE_AUDIO = "audio";
     const CONTENT_TYPE_VIDEO = "video";
     const CONTENT_TYPE_SCRIPT = "script";
     const CONTENT_TYPE_TEXT = "text";
+    const CONTENT_TYPE_CSV = "csv";
     class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor();
     }

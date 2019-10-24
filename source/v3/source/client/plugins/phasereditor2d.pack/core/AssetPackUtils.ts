@@ -24,7 +24,7 @@ namespace phasereditor2d.pack.core {
         }
 
         static async getAllPacks() {
-            const files = await ide.FileUtils.getFilesWithContentType(CONTENT_TYPE_ASSET_PACK);
+            const files = await ide.FileUtils.getFilesWithContentType(contentTypes.CONTENT_TYPE_ASSET_PACK);
 
             const packs: AssetPack[] = [];
 

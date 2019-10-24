@@ -1,9 +1,12 @@
+/// <reference path="./core/contentTypes/AnimationsContentTypeResolver.ts" />
+
 namespace phasereditor2d.pack {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
 
     export const ICON_ASSET_PACK = "asset-pack";
+    export const ICON_ANIMATIONS = "animations";
 
     export class AssetPackPlugin extends ide.Plugin {
 
@@ -24,7 +27,8 @@ namespace phasereditor2d.pack {
             reg.addExtension(
                 ide.IconLoaderExtension.POINT_ID,
                 ide.IconLoaderExtension.withPluginFiles(this, [
-                    ICON_ASSET_PACK
+                    ICON_ASSET_PACK,
+                    ICON_ANIMATIONS
                 ])
             );
 
@@ -32,39 +36,59 @@ namespace phasereditor2d.pack {
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AssetPackContentTypeResolver",
-                    [new pack.core.AssetPackContentTypeResolver()],
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AssetPackContentTypeResolver",
+                    [new pack.core.contentTypes.AssetPackContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasContentTypeResolver",
-                    [new pack.core.AtlasContentTypeResolver()],
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasContentTypeResolver",
+                    [new pack.core.contentTypes.AtlasContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.MultiatlasContentTypeResolver",
-                    [new pack.core.MultiatlasContentTypeResolver()],
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.MultiatlasContentTypeResolver",
+                    [new pack.core.contentTypes.MultiatlasContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.AtlasXMLContentTypeResolver",
-                    [new pack.core.AtlasXMLContentTypeResolver()],
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasXMLContentTypeResolver",
+                    [new pack.core.contentTypes.AtlasXMLContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.UnityAtlasContentTypeResolver",
-                    [new pack.core.UnityAtlasContentTypeResolver()],
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.UnityAtlasContentTypeResolver",
+                    [new pack.core.contentTypes.UnityAtlasContentTypeResolver()],
                     5
                 ));
 
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AnimationsContentTypeResolver",
+                    [new pack.core.contentTypes.AnimationsContentTypeResolver()],
+                    5
+                ));
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.BitmapFontContentTypeResolver",
+                    [new pack.core.contentTypes.BitmapFontContentTypeResolver()],
+                    5
+                ));
+
+            reg.addExtension(
+                colibri.core.ContentTypeExtension.POINT_ID,
+                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver",
+                    [new pack.core.contentTypes.TilemapImpactContentTypeResolver()],
+                    5
+                ));
 
             // content type icons
 
@@ -73,7 +97,15 @@ namespace phasereditor2d.pack {
                 ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
                         iconName: ICON_ASSET_PACK,
-                        contentType: core.CONTENT_TYPE_ASSET_PACK
+                        contentType: core.contentTypes.CONTENT_TYPE_ASSET_PACK
+                    },
+                    {
+                        iconName: ICON_ANIMATIONS,
+                        contentType: core.contentTypes.CONTENT_TYPE_ANIMATIONS
+                    },
+                    {
+                        iconName: files.ICON_FILE_FONT,
+                        contentType: core.contentTypes.CONTENT_TYPE_BITMAP_FONT
                     }
                 ]));
 

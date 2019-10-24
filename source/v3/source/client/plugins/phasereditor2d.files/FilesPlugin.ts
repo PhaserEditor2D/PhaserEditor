@@ -57,6 +57,10 @@ namespace phasereditor2d.files {
                         contentType: core.CONTENT_TYPE_IMAGE
                     },
                     {
+                        iconName: ICON_FILE_IMAGE,
+                        contentType: core.CONTENT_TYPE_SVG
+                    },
+                    {
                         iconName: ICON_FILE_SOUND,
                         contentType: core.CONTENT_TYPE_AUDIO
                     },

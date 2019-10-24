@@ -2,6 +2,9 @@
 /// <reference path="./AtlasXMLImporter.ts" />
 /// <reference path="./UnityAtlasImporter.ts" />
 /// <reference path="./SingleFileImporter.ts" />
+/// <reference path="./SpritesheetImporter.ts" />
+/// <reference path="./BitmapFontImporter.ts" />
+/// <reference path="../../core/contentTypes/TilemapImpactContentTypeResolver.ts" />
 
 namespace phasereditor2d.pack.ui.importers {
 
@@ -13,7 +16,13 @@ namespace phasereditor2d.pack.ui.importers {
             new MultiatlasImporter(),
             new AtlasXMLImporter(),
             new UnityAtlasImporter(),
-            new SingleFileImporter(files.core.CONTENT_TYPE_IMAGE, core.IMAGE_TYPE)
+            new SingleFileImporter(files.core.CONTENT_TYPE_IMAGE, core.IMAGE_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_SVG, core.SVG_TYPE),
+            new SpritesheetImporter(),
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATIONS_TYPE),
+            new BitmapFontImporter(),
+            new SingleFileImporter(files.core.CONTENT_TYPE_CSV, core.TILEMAP_CSV_TYPE),
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE)
         ]
 
         static getImporter(type: string) {
