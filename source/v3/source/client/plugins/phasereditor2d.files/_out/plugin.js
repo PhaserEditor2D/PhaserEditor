@@ -51,6 +51,18 @@ var phasereditor2d;
                         contentType: files.core.CONTENT_TYPE_SCRIPT
                     },
                     {
+                        iconName: files.ICON_FILE_SCRIPT,
+                        contentType: files.core.CONTENT_TYPE_JAVASCRIPT
+                    },
+                    {
+                        iconName: files.ICON_FILE_SCRIPT,
+                        contentType: files.core.CONTENT_TYPE_CSS
+                    },
+                    {
+                        iconName: files.ICON_FILE_SCRIPT,
+                        contentType: files.core.CONTENT_TYPE_HTML
+                    },
+                    {
                         iconName: files.ICON_FILE_TEXT,
                         contentType: files.core.CONTENT_TYPE_TEXT
                     }
@@ -102,6 +114,10 @@ var phasereditor2d;
             core.CONTENT_TYPE_SCRIPT = "script";
             core.CONTENT_TYPE_TEXT = "text";
             core.CONTENT_TYPE_CSV = "csv";
+            core.CONTENT_TYPE_JAVASCRIPT = "javascript";
+            core.CONTENT_TYPE_HTML = "html";
+            core.CONTENT_TYPE_CSS = "css";
+            core.CONTENT_TYPE_JSON = "json";
             class DefaultExtensionTypeResolver extends core.ExtensionContentTypeResolver {
                 constructor() {
                     super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
@@ -118,9 +134,9 @@ var phasereditor2d;
                         ["ogv", core.CONTENT_TYPE_VIDEO],
                         ["mp4", core.CONTENT_TYPE_VIDEO],
                         ["webm", core.CONTENT_TYPE_VIDEO],
-                        ["js", core.CONTENT_TYPE_SCRIPT],
-                        ["html", core.CONTENT_TYPE_SCRIPT],
-                        ["css", core.CONTENT_TYPE_SCRIPT],
+                        ["js", core.CONTENT_TYPE_JAVASCRIPT],
+                        ["html", core.CONTENT_TYPE_HTML],
+                        ["css", core.CONTENT_TYPE_CSS],
                         ["ts", core.CONTENT_TYPE_SCRIPT],
                         ["json", core.CONTENT_TYPE_SCRIPT],
                         ["txt", core.CONTENT_TYPE_TEXT],

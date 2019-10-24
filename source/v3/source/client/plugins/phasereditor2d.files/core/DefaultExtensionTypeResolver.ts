@@ -9,6 +9,10 @@ namespace phasereditor2d.files.core {
     export const CONTENT_TYPE_SCRIPT = "script";
     export const CONTENT_TYPE_TEXT = "text";
     export const CONTENT_TYPE_CSV = "csv";
+    export const CONTENT_TYPE_JAVASCRIPT = "javascript";
+    export const CONTENT_TYPE_HTML = "html";
+    export const CONTENT_TYPE_CSS = "css";
+    export const CONTENT_TYPE_JSON = "json";
 
     export class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor() {
@@ -30,9 +34,9 @@ namespace phasereditor2d.files.core {
                 ["mp4", CONTENT_TYPE_VIDEO],
                 ["webm", CONTENT_TYPE_VIDEO],
 
-                ["js", CONTENT_TYPE_SCRIPT],
-                ["html", CONTENT_TYPE_SCRIPT],
-                ["css", CONTENT_TYPE_SCRIPT],
+                ["js", CONTENT_TYPE_JAVASCRIPT],
+                ["html", CONTENT_TYPE_HTML],
+                ["css", CONTENT_TYPE_CSS],
                 ["ts", CONTENT_TYPE_SCRIPT],
                 ["json", CONTENT_TYPE_SCRIPT],
 

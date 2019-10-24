@@ -2298,7 +2298,11 @@ var phasereditor2d;
                     new importers.BitmapFontImporter(),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
                     new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, pack.core.TILEMAP_TILED_JSON_TYPE)
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, pack.core.TILEMAP_TILED_JSON_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.PLUGIN_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_PLUGIN_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE)
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

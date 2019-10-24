@@ -24,7 +24,11 @@ namespace phasereditor2d.pack.ui.importers {
             new BitmapFontImporter(),
             new SingleFileImporter(files.core.CONTENT_TYPE_CSV, core.TILEMAP_CSV_TYPE),
             new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE),
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, core.TILEMAP_TILED_JSON_TYPE)
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, core.TILEMAP_TILED_JSON_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.PLUGIN_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_FILE_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_PLUGIN_TYPE),
+            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCRIPT_TYPE)
         ]
 
         static getImporter(type: string) {
