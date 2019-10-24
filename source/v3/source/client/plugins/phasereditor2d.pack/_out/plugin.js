@@ -1819,11 +1819,10 @@ var phasereditor2d;
                         dlg.create();
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => {
                             const type = viewer.getSelection()[0];
-                            dlg.close();
-                            this.openSelectFileDialog(type);
+                            this.openSelectFileDialog(dlg, type);
                         });
                     }
-                    openSelectFileDialog(type) {
+                    openSelectFileDialog(prevDialog, type) {
                         const viewer = new controls.viewers.TreeViewer();
                         viewer.setLabelProvider(new phasereditor2d.files.ui.viewers.FileLabelProvider());
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
@@ -1836,9 +1835,10 @@ var phasereditor2d;
                         const dlg = new dialogs.ViewerDialog(viewer);
                         dlg.create();
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
+                            dlg.close();
+                            prevDialog.close();
                             const file = viewer.getSelection()[0];
                             await importer.importFile(this._pack, file);
-                            dlg.close();
                             this._viewer.repaint();
                             this.setDirty(true);
                         });
