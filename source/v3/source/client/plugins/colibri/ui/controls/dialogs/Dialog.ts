@@ -20,7 +20,7 @@ namespace colibri.ui.controls.dialogs {
                     if (e.code === "Escape") {
                         const list = Dialog._dialogs;
                         if (list.length > 0) {
-                            const dlg = list.pop();
+                            const dlg = list[list.length - 1];
                             dlg.close();
                         }
                     }
@@ -97,6 +97,8 @@ namespace colibri.ui.controls.dialogs {
         }
 
         close() {
+            
+            Dialog._dialogs = Dialog._dialogs.filter(d => d !== this);
 
             this._containerElement.remove();
             this.getElement().remove();

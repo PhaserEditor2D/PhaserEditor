@@ -1908,7 +1908,7 @@ var colibri;
                                 if (e.code === "Escape") {
                                     const list = Dialog._dialogs;
                                     if (list.length > 0) {
-                                        const dlg = list.pop();
+                                        const dlg = list[list.length - 1];
                                         dlg.close();
                                     }
                                 }
@@ -1960,6 +1960,7 @@ var colibri;
                         });
                     }
                     close() {
+                        Dialog._dialogs = Dialog._dialogs.filter(d => d !== this);
                         this._containerElement.remove();
                         this.getElement().remove();
                     }
