@@ -15,11 +15,16 @@ namespace phasereditor2d.pack.core.parsers {
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
+
                 const atlasURL = item.getData().atlasURL;
                 const atlasData = AssetPackUtils.getFileJSONFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
+                
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
-                game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+
+                if (image) {
+                    game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+                }
             }
         }
 
@@ -31,9 +36,14 @@ namespace phasereditor2d.pack.core.parsers {
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
             const image = ide.FileUtils.getImage(imageFile);
-            let result2 = await image.preload();
 
-            return Math.max(result1, result2);
+            if (image) {
+                let result2 = await image.preload();
+
+                return Math.max(result1, result2);
+            }
+
+            return result1;
         }
 
         protected abstract parseFrames2(frames: AssetPackImageFrame[], image: controls.IImage, atlas: string);

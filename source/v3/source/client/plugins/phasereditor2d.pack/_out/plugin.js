@@ -1276,7 +1276,9 @@ var phasereditor2d;
                             const atlasData = core.AssetPackUtils.getFileJSONFromPackUrl(atlasURL);
                             const textureURL = item.getData().textureURL;
                             const image = core.AssetPackUtils.getImageFromPackUrl(textureURL);
-                            game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+                            if (image) {
+                                game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+                            }
                         }
                     }
                     async preloadFrames() {
@@ -1285,8 +1287,11 @@ var phasereditor2d;
                         let result1 = await ide.FileUtils.preloadFileString(dataFile);
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
                         const image = ide.FileUtils.getImage(imageFile);
-                        let result2 = await image.preload();
-                        return Math.max(result1, result2);
+                        if (image) {
+                            let result2 = await image.preload();
+                            return Math.max(result1, result2);
+                        }
+                        return result1;
                     }
                     parseFrames() {
                         const list = [];
@@ -1696,6 +1701,9 @@ var phasereditor2d;
                         }
                     }
                     addFrame(image, imageFrames, spriteName, rect) {
+                        if (!image) {
+                            return;
+                        }
                         const src = new controls.Rect(rect.x, rect.y, rect.width, rect.height);
                         src.y = image.getHeight() - src.y - src.h;
                         const dst = new controls.Rect(0, 0, rect.width, rect.height);
@@ -1867,6 +1875,7 @@ var phasereditor2d;
                         const dlg = new dialogs.ViewerDialog(viewer);
                         dlg.create();
                         const importFiles = async (files) => {
+                            console.log(files);
                             dlg.close();
                             prevDialog.close();
                             if (files.length === 0) {
@@ -1874,7 +1883,8 @@ var phasereditor2d;
                             }
                             else {
                                 for (const file of files) {
-                                    await importer.importFile(this._pack, file);
+                                    const item = await importer.importFile(this._pack, file);
+                                    await item.preload();
                                 }
                             }
                             this._viewer.repaint();
@@ -1884,7 +1894,7 @@ var phasereditor2d;
                             importFiles(viewer.getSelection());
                         });
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
-                            importFiles(viewer.getSelection()[0]);
+                            importFiles([viewer.getSelection()[0]]);
                         });
                     }
                 }

@@ -171,6 +171,8 @@ namespace phasereditor2d.pack.ui.editor {
             dlg.create();
 
             const importFiles = async (files: io.FilePath[]) => {
+                console.log(files);
+
                 dlg.close();
                 prevDialog.close();
 
@@ -178,7 +180,8 @@ namespace phasereditor2d.pack.ui.editor {
                     //TODO: importer.createEmptyItem(this._pack, file)
                 } else {
                     for (const file of files) {
-                        await importer.importFile(this._pack, file);
+                        const item = await importer.importFile(this._pack, file);
+                        await item.preload();
                     }
                 }
 
@@ -192,7 +195,7 @@ namespace phasereditor2d.pack.ui.editor {
             });
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
-                importFiles(viewer.getSelection()[0]);
+                importFiles([viewer.getSelection()[0]]);
             });
         }
     }
