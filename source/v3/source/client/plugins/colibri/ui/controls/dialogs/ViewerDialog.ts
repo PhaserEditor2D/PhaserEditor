@@ -14,11 +14,11 @@ namespace colibri.ui.controls.dialogs {
 
         createDialogArea() {
 
-            this._filteredViewer = new viewers.FilteredViewer(this._viewer);
+            this._filteredViewer = new viewers.FilteredViewer(this._viewer, "DialogClientArea");
 
             this.add(this._filteredViewer);
 
-                this._filteredViewer.getFilterControl().getFilterElement().focus();
+            this._filteredViewer.getFilterControl().getFilterElement().focus();
         }
 
     }

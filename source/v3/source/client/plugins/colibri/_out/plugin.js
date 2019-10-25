@@ -1898,18 +1898,18 @@ var colibri;
         var controls;
         (function (controls) {
             var dialogs;
-            (function (dialogs_1) {
+            (function (dialogs) {
                 class Dialog extends controls.Control {
                     constructor(...classList) {
                         super("div", "Dialog", ...classList);
-                        const dialogs = Dialog._dialogs;
-                        this._parentDialog = dialogs.length === 0 ? null : dialogs[dialogs.length - 1];
+                        this._parentDialog = Dialog._dialogs.length === 0 ?
+                            null : Dialog._dialogs[Dialog._dialogs.length - 1];
                         if (Dialog._firstTime) {
                             Dialog._firstTime = false;
                             window.addEventListener("keydown", e => {
                                 if (e.code === "Escape") {
-                                    if (dialogs.length > 0) {
-                                        const dlg = dialogs[dialogs.length - 1];
+                                    if (Dialog._dialogs.length > 0) {
+                                        const dlg = Dialog._dialogs[Dialog._dialogs.length - 1];
                                         dlg.close();
                                     }
                                 }
@@ -1933,25 +1933,24 @@ var colibri;
                         this._width = 400;
                         this._height = 300;
                         window.addEventListener("resize", () => this.resize());
+                        this._titlePaneElement = document.createElement("div");
+                        this._titlePaneElement.classList.add("DialogTitlePane");
+                        this.getElement().appendChild(this._titlePaneElement);
                         this.createDialogArea();
+                        this._buttonPaneElement = document.createElement("div");
+                        this._buttonPaneElement.classList.add("DialogButtonPane");
+                        this.getElement().appendChild(this._buttonPaneElement);
                         this.resize();
                     }
+                    setTitle(title) {
+                        this._titlePaneElement.innerText = title;
+                    }
                     addButton(text, callback) {
-                        this.ensureButtonPane();
                         const btn = document.createElement("button");
                         btn.innerText = text;
                         btn.addEventListener("click", e => callback());
                         this._buttonPaneElement.appendChild(btn);
                         return btn;
-                    }
-                    ensureButtonPane() {
-                        if (this._buttonPaneElement) {
-                            return;
-                        }
-                        this.addClass("DialogWithButtonPane");
-                        this._buttonPaneElement = document.createElement("div");
-                        this._buttonPaneElement.classList.add("DialogButtonPane");
-                        this.getElement().appendChild(this._buttonPaneElement);
                     }
                     createDialogArea() {
                     }
@@ -1977,7 +1976,7 @@ var colibri;
                 }
                 Dialog._dialogs = [];
                 Dialog._firstTime = true;
-                dialogs_1.Dialog = Dialog;
+                dialogs.Dialog = Dialog;
             })(dialogs = controls.dialogs || (controls.dialogs = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -1996,7 +1995,7 @@ var colibri;
                         this._viewer = viewer;
                     }
                     createDialogArea() {
-                        this._filteredViewer = new controls.viewers.FilteredViewer(this._viewer);
+                        this._filteredViewer = new controls.viewers.FilteredViewer(this._viewer, "DialogClientArea");
                         this.add(this._filteredViewer);
                         this._filteredViewer.getFilterControl().getFilterElement().focus();
                     }

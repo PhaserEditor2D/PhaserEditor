@@ -4,6 +4,7 @@ namespace colibri.ui.controls.dialogs {
 
         private _containerElement: HTMLElement;
         private _buttonPaneElement: HTMLElement;
+        private _titlePaneElement: HTMLElement;
         private _width: number;
         private _height: number;
         private static _dialogs: Dialog[] = [];
@@ -13,18 +14,19 @@ namespace colibri.ui.controls.dialogs {
         constructor(...classList: string[]) {
             super("div", "Dialog", ...classList);
 
-            const dialogs = Dialog._dialogs;
-
-            this._parentDialog = dialogs.length === 0 ? null : dialogs[dialogs.length - 1];
+            this._parentDialog = Dialog._dialogs.length === 0 ?
+                null : Dialog._dialogs[Dialog._dialogs.length - 1];
 
             if (Dialog._firstTime) {
 
                 Dialog._firstTime = false;
 
                 window.addEventListener("keydown", e => {
+
                     if (e.code === "Escape") {
-                        if (dialogs.length > 0) {
-                            const dlg = dialogs[dialogs.length - 1];
+
+                        if (Dialog._dialogs.length > 0) {
+                            const dlg = Dialog._dialogs[Dialog._dialogs.length - 1];
                             dlg.close();
                         }
                     }
@@ -58,14 +60,25 @@ namespace colibri.ui.controls.dialogs {
 
             window.addEventListener("resize", () => this.resize());
 
+            this._titlePaneElement = document.createElement("div");
+            this._titlePaneElement.classList.add("DialogTitlePane");
+            this.getElement().appendChild(this._titlePaneElement);
+
             this.createDialogArea();
+
+            this._buttonPaneElement = document.createElement("div");
+            this._buttonPaneElement.classList.add("DialogButtonPane");
+
+            this.getElement().appendChild(this._buttonPaneElement);
 
             this.resize();
         }
 
-        addButton(text: string, callback: () => void) {
+        setTitle(title: string) {
+            this._titlePaneElement.innerText = title;
+        }
 
-            this.ensureButtonPane();
+        addButton(text: string, callback: () => void) {
 
             const btn = document.createElement("button");
 
@@ -76,18 +89,6 @@ namespace colibri.ui.controls.dialogs {
             this._buttonPaneElement.appendChild(btn);
 
             return btn;
-        }
-
-        private ensureButtonPane() {
-            if (this._buttonPaneElement) {
-                return;
-            }
-
-            this.addClass("DialogWithButtonPane");
-            this._buttonPaneElement = document.createElement("div");
-            this._buttonPaneElement.classList.add("DialogButtonPane");
-
-            this.getElement().appendChild(this._buttonPaneElement);
         }
 
         protected createDialogArea() {

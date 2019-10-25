@@ -1855,11 +1855,23 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("tree"));
                         viewer.setInput(pack.core.TYPES);
                         const dlg = new dialogs.ViewerDialog(viewer);
-                        dlg.create();
-                        viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => {
+                        const selectCallback = () => {
                             const type = viewer.getSelection()[0];
                             this.openSelectFileDialog(type);
+                        };
+                        dlg.create();
+                        dlg.setTitle("Select File Type");
+                        {
+                            const btn = dlg.addButton("Select", selectCallback);
+                            btn.disabled = true;
+                            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                                btn.disabled = viewer.getSelection().length === 0;
+                            });
+                        }
+                        dlg.addButton("Cancel", () => {
+                            dlg.close();
                         });
+                        viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => selectCallback());
                     }
                     openSelectFileDialog(type) {
                         const viewer = new controls.viewers.TreeViewer();
@@ -1874,7 +1886,8 @@ var phasereditor2d;
                         viewer.setInput(list);
                         const dlg = new dialogs.ViewerDialog(viewer);
                         dlg.create();
-                        const importFiles = async (files) => {
+                        dlg.setTitle("Select Files");
+                        const importFilesCallback = async (files) => {
                             dlg.closeAll();
                             for (const file of files) {
                                 const item = await importer.importFile(this._pack, file);
@@ -1885,14 +1898,14 @@ var phasereditor2d;
                         };
                         {
                             const btn = dlg.addButton("Select", () => {
-                                importFiles(viewer.getSelection());
+                                importFilesCallback(viewer.getSelection());
                             });
                             btn.disabled = true;
                             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                                 btn.disabled = viewer.getSelection().length === 0;
                             });
                         }
-                        dlg.addButton("Show All", () => {
+                        dlg.addButton("Show All Files", () => {
                             viewer.setInput(allFiles);
                             viewer.repaint();
                         });
@@ -1900,7 +1913,7 @@ var phasereditor2d;
                             dlg.close();
                         });
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
-                            importFiles([viewer.getSelection()[0]]);
+                            importFilesCallback([viewer.getSelection()[0]]);
                         });
                     }
                 }

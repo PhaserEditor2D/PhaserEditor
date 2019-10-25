@@ -508,6 +508,7 @@ declare namespace colibri.ui.controls.dialogs {
     class Dialog extends Control {
         private _containerElement;
         private _buttonPaneElement;
+        private _titlePaneElement;
         private _width;
         private _height;
         private static _dialogs;
@@ -516,8 +517,8 @@ declare namespace colibri.ui.controls.dialogs {
         constructor(...classList: string[]);
         getParentDialog(): Dialog;
         create(): void;
+        setTitle(title: string): void;
         addButton(text: string, callback: () => void): HTMLButtonElement;
-        private ensureButtonPane;
         protected createDialogArea(): void;
         protected resize(): void;
         close(): void;

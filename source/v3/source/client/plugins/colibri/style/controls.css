@@ -220,34 +220,36 @@ canvas {
 
 }
 
-.ViewerDialog {
+.Dialog {
     display: grid;
     grid-template-columns: 5px 1fr 5px;
-    grid-template-rows: 5px 1fr 5px;
+    grid-template-rows: 5px auto 5px 1fr 5px auto 5px;;
 }
 
-.ViewerDialog.DialogWithButtonPane {
-    display: grid;
-    grid-template-columns: 5px 1fr 5px;
-    grid-template-rows: 5px 1fr 5px auto 5px;
+.Dialog .DialogTitlePane {
+    width: 100%;
+    grid-column-start: 2;
+    grid-row-start: 2;
+    font-size: small;
+    text-align: center;
 }
 
-.ViewerDialog .FilteredViewer {
+.Dialog .DialogClientArea {
     position: relative;
     width: 100%;
     height: 100%;
     grid-column-start: 2;
-    grid-row-start: 2;
+    grid-row-start: 4;
     border-radius: 3px;
 }
 
-.ViewerDialog .DialogButtonPane {
-    grid-row-start: 4;
+.Dialog .DialogButtonPane {
+    grid-row-start: 6;
     grid-column-start: 2;
     display: block;
 }
 
-.DialogButtonPane button {
+.Dialog .DialogButtonPane button {
     float: right;
     margin-left: 10px;
 }

@@ -148,6 +148,10 @@ Important:
     background: #6e6e6e;
 }
 
-.dark .ViewerDialog .FilteredViewer {
+.dark .Dialog .DialogTitlePane {
+    text-shadow: 1px 1px #0e0e0e;
+}
+
+.dark .Dialog .DialogClientArea {
     background: #3f3f3f;
 }

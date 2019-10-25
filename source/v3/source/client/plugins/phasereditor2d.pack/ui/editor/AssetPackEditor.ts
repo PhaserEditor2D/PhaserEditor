@@ -137,14 +137,33 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.setInput(core.TYPES);
 
             const dlg = new dialogs.ViewerDialog(viewer);
-            dlg.create();
 
-            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => {
+            const selectCallback = () => {
 
                 const type = <string>viewer.getSelection()[0];
 
                 this.openSelectFileDialog(type);
+            };
+
+            dlg.create();
+
+            dlg.setTitle("Select File Type");
+
+            {
+                const btn = dlg.addButton("Select", selectCallback);
+
+                btn.disabled = true;
+
+                viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                    btn.disabled = viewer.getSelection().length === 0;
+                })
+            }
+
+            dlg.addButton("Cancel", () => {
+                dlg.close();
             });
+
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => selectCallback());
         }
 
         private openSelectFileDialog(type: string) {
@@ -170,7 +189,9 @@ namespace phasereditor2d.pack.ui.editor {
 
             dlg.create();
 
-            const importFiles = async (files: io.FilePath[]) => {
+            dlg.setTitle("Select Files")
+
+            const importFilesCallback = async (files: io.FilePath[]) => {
 
                 dlg.closeAll();
 
@@ -186,7 +207,7 @@ namespace phasereditor2d.pack.ui.editor {
 
             {
                 const btn = dlg.addButton("Select", () => {
-                    importFiles(viewer.getSelection());
+                    importFilesCallback(viewer.getSelection());
                 });
 
                 btn.disabled = true;
@@ -196,7 +217,7 @@ namespace phasereditor2d.pack.ui.editor {
                 });
             }
 
-            dlg.addButton("Show All", () => {
+            dlg.addButton("Show All Files", () => {
                 viewer.setInput(allFiles);
                 viewer.repaint();
             });
@@ -206,7 +227,7 @@ namespace phasereditor2d.pack.ui.editor {
             });
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
-                importFiles([viewer.getSelection()[0]]);
+                importFilesCallback([viewer.getSelection()[0]]);
             });
         }
     }

@@ -152,6 +152,11 @@ Important:
     background: #cacaca;
 }
 
-.light .ViewerDialog .FilteredViewer {
+
+.light .Dialog .DialogTitlePane {
+    text-shadow: 1px 1px #f0f0f0;
+}
+
+.light .Dialog .DialogClientArea {
     background: #dadada;
 }
