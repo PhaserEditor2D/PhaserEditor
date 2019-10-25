@@ -8,19 +8,23 @@ namespace colibri.ui.controls.dialogs {
         private _height: number;
         private static _dialogs: Dialog[] = [];
         private static _firstTime = true;
+        private _parentDialog: Dialog;
 
         constructor(...classList: string[]) {
             super("div", "Dialog", ...classList);
 
+            const dialogs = Dialog._dialogs;
+
+            this._parentDialog = dialogs.length === 0 ? null : dialogs[dialogs.length - 1];
+
             if (Dialog._firstTime) {
-                
+
                 Dialog._firstTime = false;
-                
+
                 window.addEventListener("keydown", e => {
                     if (e.code === "Escape") {
-                        const list = Dialog._dialogs;
-                        if (list.length > 0) {
-                            const dlg = list[list.length - 1];
+                        if (dialogs.length > 0) {
+                            const dlg = dialogs[dialogs.length - 1];
                             dlg.close();
                         }
                     }
@@ -28,13 +32,17 @@ namespace colibri.ui.controls.dialogs {
 
                 window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
 
-                    for(const dlg of Dialog._dialogs) {
+                    for (const dlg of Dialog._dialogs) {
                         dlg.layout();
                     }
                 });
             }
 
             Dialog._dialogs.push(this);
+        }
+
+        getParentDialog() {
+            return this._parentDialog;
         }
 
         create() {
@@ -97,11 +105,20 @@ namespace colibri.ui.controls.dialogs {
         }
 
         close() {
-            
+
             Dialog._dialogs = Dialog._dialogs.filter(d => d !== this);
 
             this._containerElement.remove();
             this.getElement().remove();
+        }
+
+        closeAll() {
+
+            this.close();
+
+            if (this._parentDialog) {
+                this._parentDialog.closeAll();
+            }
         }
 
     }

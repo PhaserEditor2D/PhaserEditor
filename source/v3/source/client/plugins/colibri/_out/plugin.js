@@ -1898,17 +1898,18 @@ var colibri;
         var controls;
         (function (controls) {
             var dialogs;
-            (function (dialogs) {
+            (function (dialogs_1) {
                 class Dialog extends controls.Control {
                     constructor(...classList) {
                         super("div", "Dialog", ...classList);
+                        const dialogs = Dialog._dialogs;
+                        this._parentDialog = dialogs.length === 0 ? null : dialogs[dialogs.length - 1];
                         if (Dialog._firstTime) {
                             Dialog._firstTime = false;
                             window.addEventListener("keydown", e => {
                                 if (e.code === "Escape") {
-                                    const list = Dialog._dialogs;
-                                    if (list.length > 0) {
-                                        const dlg = list[list.length - 1];
+                                    if (dialogs.length > 0) {
+                                        const dlg = dialogs[dialogs.length - 1];
                                         dlg.close();
                                     }
                                 }
@@ -1920,6 +1921,9 @@ var colibri;
                             });
                         }
                         Dialog._dialogs.push(this);
+                    }
+                    getParentDialog() {
+                        return this._parentDialog;
                     }
                     create() {
                         this._containerElement = document.createElement("div");
@@ -1964,10 +1968,16 @@ var colibri;
                         this._containerElement.remove();
                         this.getElement().remove();
                     }
+                    closeAll() {
+                        this.close();
+                        if (this._parentDialog) {
+                            this._parentDialog.closeAll();
+                        }
+                    }
                 }
                 Dialog._dialogs = [];
                 Dialog._firstTime = true;
-                dialogs.Dialog = Dialog;
+                dialogs_1.Dialog = Dialog;
             })(dialogs = controls.dialogs || (controls.dialogs = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));

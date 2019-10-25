@@ -512,13 +512,16 @@ declare namespace colibri.ui.controls.dialogs {
         private _height;
         private static _dialogs;
         private static _firstTime;
+        private _parentDialog;
         constructor(...classList: string[]);
+        getParentDialog(): Dialog;
         create(): void;
         addButton(text: string, callback: () => void): HTMLButtonElement;
         private ensureButtonPane;
         protected createDialogArea(): void;
         protected resize(): void;
         close(): void;
+        closeAll(): void;
     }
 }
 declare namespace colibri.ui.controls.dialogs {

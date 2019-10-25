@@ -143,11 +143,11 @@ namespace phasereditor2d.pack.ui.editor {
 
                 const type = <string>viewer.getSelection()[0];
 
-                this.openSelectFileDialog(dlg, type);
+                this.openSelectFileDialog(type);
             });
         }
 
-        private openSelectFileDialog(prevDialog: dialogs.Dialog, type: string) {
+        private openSelectFileDialog(type: string) {
 
             const viewer = new controls.viewers.TreeViewer();
 
@@ -172,8 +172,7 @@ namespace phasereditor2d.pack.ui.editor {
 
             const importFiles = async (files: io.FilePath[]) => {
 
-                dlg.close();
-                prevDialog.close();
+                dlg.closeAll();
 
                 for (const file of files) {
                     const item = await importer.importFile(this._pack, file);
