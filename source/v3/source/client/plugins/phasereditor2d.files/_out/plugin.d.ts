@@ -33,6 +33,8 @@ declare namespace phasereditor2d.files.core {
     const CONTENT_TYPE_HTML = "html";
     const CONTENT_TYPE_CSS = "css";
     const CONTENT_TYPE_JSON = "json";
+    const CONTENT_TYPE_XML = "xml";
+    const CONTENT_TYPE_GLSL = "glsl";
     class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor();
     }

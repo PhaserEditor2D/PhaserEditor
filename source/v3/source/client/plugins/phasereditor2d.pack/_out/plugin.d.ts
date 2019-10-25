@@ -581,7 +581,8 @@ declare namespace phasereditor2d.pack.ui.importers {
     import io = colibri.core.io;
     class SingleFileImporter extends ContentTypeImporter {
         private _urlIsArray;
-        constructor(contentType: string, assetPackType: string, urlIsArray?: boolean);
+        private _defaultValues;
+        constructor(contentType: string, assetPackType: string, urlIsArray?: boolean, defaultValues?: any);
         acceptFile(file: io.FilePath): boolean;
         createItemData(file: io.FilePath): any;
     }

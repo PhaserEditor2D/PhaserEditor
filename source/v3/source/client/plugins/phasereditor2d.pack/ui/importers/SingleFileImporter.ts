@@ -7,11 +7,13 @@ namespace phasereditor2d.pack.ui.importers {
 
     export class SingleFileImporter extends ContentTypeImporter {
         private _urlIsArray: boolean;
+        private _defaultValues: any;
 
-        constructor(contentType: string, assetPackType: string, urlIsArray: boolean = false) {
+        constructor(contentType: string, assetPackType: string, urlIsArray: boolean = false, defaultValues : any = {}) {
             super(contentType, assetPackType);
 
             this._urlIsArray = urlIsArray;
+            this._defaultValues = defaultValues;
         }
 
         acceptFile(file: io.FilePath): boolean {
@@ -25,9 +27,15 @@ namespace phasereditor2d.pack.ui.importers {
 
             const url = core.AssetPackUtils.getFilePackUrl(file);
 
-            return {
+            const data = {
                 url: this._urlIsArray ? [url] : url
+            };
+
+            for(const k in this._defaultValues) {
+                data[k] = this._defaultValues[k];
             }
+
+            return data;
         }
     }
 

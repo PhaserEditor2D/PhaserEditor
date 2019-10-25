@@ -63,6 +63,10 @@ var phasereditor2d;
                         contentType: files.core.CONTENT_TYPE_HTML
                     },
                     {
+                        iconName: files.ICON_FILE_SCRIPT,
+                        contentType: files.core.CONTENT_TYPE_XML
+                    },
+                    {
                         iconName: files.ICON_FILE_TEXT,
                         contentType: files.core.CONTENT_TYPE_TEXT
                     }
@@ -118,6 +122,8 @@ var phasereditor2d;
             core.CONTENT_TYPE_HTML = "html";
             core.CONTENT_TYPE_CSS = "css";
             core.CONTENT_TYPE_JSON = "json";
+            core.CONTENT_TYPE_XML = "xml";
+            core.CONTENT_TYPE_GLSL = "glsl";
             class DefaultExtensionTypeResolver extends core.ExtensionContentTypeResolver {
                 constructor() {
                     super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
@@ -138,7 +144,9 @@ var phasereditor2d;
                         ["html", core.CONTENT_TYPE_HTML],
                         ["css", core.CONTENT_TYPE_CSS],
                         ["ts", core.CONTENT_TYPE_SCRIPT],
-                        ["json", core.CONTENT_TYPE_SCRIPT],
+                        ["json", core.CONTENT_TYPE_JSON],
+                        ["xml", core.CONTENT_TYPE_XML],
+                        ["glsl", core.CONTENT_TYPE_GLSL],
                         ["txt", core.CONTENT_TYPE_TEXT],
                         ["md", core.CONTENT_TYPE_TEXT],
                         ["csv", core.CONTENT_TYPE_CSV]

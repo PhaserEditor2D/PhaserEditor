@@ -2286,9 +2286,10 @@ var phasereditor2d;
             (function (importers) {
                 var ide = colibri.ui.ide;
                 class SingleFileImporter extends importers.ContentTypeImporter {
-                    constructor(contentType, assetPackType, urlIsArray = false) {
+                    constructor(contentType, assetPackType, urlIsArray = false, defaultValues = {}) {
                         super(contentType, assetPackType);
                         this._urlIsArray = urlIsArray;
+                        this._defaultValues = defaultValues;
                     }
                     acceptFile(file) {
                         const fileContentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
@@ -2296,9 +2297,13 @@ var phasereditor2d;
                     }
                     createItemData(file) {
                         const url = pack.core.AssetPackUtils.getFilePackUrl(file);
-                        return {
+                        const data = {
                             url: this._urlIsArray ? [url] : url
                         };
+                        for (const k in this._defaultValues) {
+                            data[k] = this._defaultValues[k];
+                        }
+                        return data;
                     }
                 }
                 importers.SingleFileImporter = SingleFileImporter;
@@ -2374,6 +2379,18 @@ var phasereditor2d;
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_AUDIO, pack.core.AUDIO_TYPE, true),
                     new importers.AudioSpriteImporter(),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_VIDEO, pack.core.VIDEO_TYPE, true),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TEXTURE_TYPE, false, {
+                        width: 512,
+                        height: 512
+                    }),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
+                    new importers.SingleFileImporter(colibri.core.CONTENT_TYPE_ANY, pack.core.BINARY_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_XML, pack.core.XML_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));

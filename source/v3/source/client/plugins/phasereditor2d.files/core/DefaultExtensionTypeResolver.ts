@@ -13,6 +13,9 @@ namespace phasereditor2d.files.core {
     export const CONTENT_TYPE_HTML = "html";
     export const CONTENT_TYPE_CSS = "css";
     export const CONTENT_TYPE_JSON = "json";
+    export const CONTENT_TYPE_XML = "xml";
+    export const CONTENT_TYPE_GLSL = "glsl";
+    
 
     export class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor() {
@@ -38,7 +41,9 @@ namespace phasereditor2d.files.core {
                 ["html", CONTENT_TYPE_HTML],
                 ["css", CONTENT_TYPE_CSS],
                 ["ts", CONTENT_TYPE_SCRIPT],
-                ["json", CONTENT_TYPE_SCRIPT],
+                ["json", CONTENT_TYPE_JSON],
+                ["xml", CONTENT_TYPE_XML],
+                ["glsl", CONTENT_TYPE_GLSL],
 
                 ["txt", CONTENT_TYPE_TEXT],
                 ["md", CONTENT_TYPE_TEXT],

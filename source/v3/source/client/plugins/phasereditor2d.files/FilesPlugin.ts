@@ -85,6 +85,10 @@ namespace phasereditor2d.files {
                         contentType: core.CONTENT_TYPE_HTML
                     },
                     {
+                        iconName: ICON_FILE_SCRIPT,
+                        contentType: core.CONTENT_TYPE_XML
+                    },
+                    {
                         iconName: ICON_FILE_TEXT,
                         contentType: core.CONTENT_TYPE_TEXT
                     }
