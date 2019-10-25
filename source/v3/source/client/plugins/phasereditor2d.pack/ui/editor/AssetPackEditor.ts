@@ -169,6 +169,7 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => selectCallback());
         }
 
+
         private openSelectFileDialog(type: string) {
 
             const viewer = new controls.viewers.TreeViewer();
@@ -198,14 +199,10 @@ namespace phasereditor2d.pack.ui.editor {
 
                 dlg.closeAll();
 
-                for (const file of files) {
-                    const item = await importer.importFile(this._pack, file);
-                    await item.preload();
-                }
-
-                this._viewer.repaint();
-
-                this.setDirty(true);
+                await this.importData({
+                    importer: importer,
+                    files: files
+                });
             };
 
             {
@@ -232,6 +229,20 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
                 importFilesCallback([viewer.getSelection()[0]]);
             });
+        }
+
+        async importData(importData: ImportData) {
+
+            for (const file of importData.files) {
+
+                const item = await importData.importer.importFile(this._pack, file);
+
+                await item.preload();
+            }
+
+            this._viewer.repaint();
+
+            this.setDirty(true);
         }
     }
 }

@@ -459,6 +459,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
         private openSelectFileDialog;
+        importData(importData: ImportData): Promise<void>;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
@@ -521,7 +522,7 @@ declare namespace phasereditor2d.pack.ui.editor {
 }
 declare namespace phasereditor2d.pack.ui.editor {
     import controls = colibri.ui.controls;
-    class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
+    class AssetPackEditorPropertySectionProvider extends files.ui.views.FilePropertySectionProvider {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
     }
 }
@@ -542,6 +543,22 @@ declare namespace phasereditor2d.pack.ui.editor {
         constructor(editor: AssetPackEditor, viewer: controls.viewers.TreeViewer);
         isChild(file: io.FilePath): boolean;
         isParent(file: io.FilePath): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    type ImportData = {
+        importer: importers.Importer;
+        files: colibri.core.io.FilePath[];
+    };
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    class ImportFileSection extends controls.properties.PropertySection<io.FilePath> {
+        constructor(page: controls.properties.PropertyPage);
+        protected createForm(parent: HTMLDivElement): void;
+        canEdit(obj: any, n: number): boolean;
+        canEditNumber(n: number): boolean;
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {

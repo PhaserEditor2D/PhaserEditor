@@ -2,13 +2,13 @@ namespace phasereditor2d.pack.ui.editor {
 
     import controls = colibri.ui.controls;
 
-    export class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
+    export class AssetPackEditorPropertySectionProvider extends files.ui.views.FilePropertySectionProvider {
 
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void {
 
-            sections.push(new properties.ImageSection(page));
+            sections.push(new ImportFileSection(page));
 
-            sections.push(new properties.ManyImageSection(page));
+            super.addSections(page, sections);
         }
 
     }
