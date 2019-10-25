@@ -144,6 +144,10 @@ namespace colibri.ui.controls.properties {
 
         private updateWithSelection(): void {
 
+            if (!this._sectionProvider) {
+                return;
+            }
+
             const n = this._selection.length;
 
             for (const pane of this._sectionPanes) {
@@ -201,6 +205,7 @@ namespace colibri.ui.controls.properties {
         }
 
         setSectionProvider(provider: PropertySectionProvider): void {
+
             this._sectionProvider = provider;
 
             this.build();

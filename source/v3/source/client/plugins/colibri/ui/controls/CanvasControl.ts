@@ -8,7 +8,7 @@ namespace colibri.ui.controls {
         protected _context: CanvasRenderingContext2D;
         private _padding: number;
 
-        constructor(padding: number = 0, ...classList : string[]) {
+        constructor(padding: number = 0, ...classList: string[]) {
             super("canvas", "CanvasControl", ...classList);
             this._padding = padding;
             this._canvas = <HTMLCanvasElement>this.getElement();
@@ -21,8 +21,12 @@ namespace colibri.ui.controls {
 
         resizeTo(parent?: HTMLElement): void {
             parent = parent || this.getElement().parentElement;
-            this.style.width = parent.clientWidth - this._padding * 2 + "px";
-            this.style.height = parent.clientHeight - this._padding * 2 + "px";
+
+            const b = parent.getBoundingClientRect();
+
+            this.style.width = ((b.width - this._padding * 2) | 0) + "px";
+            this.style.height = ((b.height - this._padding * 2) | 0) + "px";
+
             this.repaint();
         }
 
@@ -31,19 +35,24 @@ namespace colibri.ui.controls {
         }
 
         protected ensureCanvasSize(): void {
+
             if (this._canvas.width !== this._canvas.clientWidth || this._canvas.height !== this._canvas.clientHeight) {
+
                 this._canvas.width = this._canvas.clientWidth;
                 this._canvas.height = this._canvas.clientHeight;
+
                 this.initContext();
             }
         }
 
-        clear() : void {
+        clear(): void {
             this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
         }
 
         repaint(): void {
+
             this.ensureCanvasSize();
+
             this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
             this.paint();
         }

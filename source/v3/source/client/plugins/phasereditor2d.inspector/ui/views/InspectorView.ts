@@ -43,18 +43,25 @@ namespace phasereditor2d.inspector.ui.views {
                 this._currentPart = part;
 
                 if (part) {
+
                     part.addEventListener(controls.EVENT_SELECTION_CHANGED, this._selectionListener);
                     this.onPartSelection();
+
                 } else {
+                    
                     this._propertyPage.setSectionProvider(null);
                 }
             }
         }
 
         private onPartSelection() {
+            
             const sel = this._currentPart.getSelection();
+
             const provider = this._currentPart.getPropertyProvider();
+
             this._propertyPage.setSectionProvider(provider);
+
             this._propertyPage.setSelection(sel);
         }
     }

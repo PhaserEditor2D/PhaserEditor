@@ -462,6 +462,12 @@ declare namespace phasereditor2d.pack.ui.editor {
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
+    import controls = colibri.ui.controls;
+    class AssetPackEditorBlocksPropertyProvider extends files.ui.views.FilePropertySectionProvider {
+        addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
     import ide = colibri.ui.ide;
     class AssetPackEditorBlocksProvider extends ide.EditorViewerProvider {
         private _editor;

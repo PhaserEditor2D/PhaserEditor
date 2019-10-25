@@ -746,8 +746,9 @@ var colibri;
                 }
                 resizeTo(parent) {
                     parent = parent || this.getElement().parentElement;
-                    this.style.width = parent.clientWidth - this._padding * 2 + "px";
-                    this.style.height = parent.clientHeight - this._padding * 2 + "px";
+                    const b = parent.getBoundingClientRect();
+                    this.style.width = ((b.width - this._padding * 2) | 0) + "px";
+                    this.style.height = ((b.height - this._padding * 2) | 0) + "px";
                     this.repaint();
                 }
                 getPadding() {
@@ -2105,6 +2106,9 @@ var colibri;
                         }
                     }
                     updateWithSelection() {
+                        if (!this._sectionProvider) {
+                            return;
+                        }
                         const n = this._selection.length;
                         for (const pane of this._sectionPanes) {
                             const section = pane.getSection();
