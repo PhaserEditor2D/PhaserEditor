@@ -514,7 +514,7 @@ declare namespace colibri.ui.controls.dialogs {
         private static _firstTime;
         constructor(...classList: string[]);
         create(): void;
-        addAcceptButton(text: string, callback: () => void): void;
+        addButton(text: string, callback: () => void): HTMLButtonElement;
         private ensureButtonPane;
         protected createDialogArea(): void;
         protected resize(): void;

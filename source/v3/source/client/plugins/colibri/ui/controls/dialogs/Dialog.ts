@@ -46,7 +46,7 @@ namespace colibri.ui.controls.dialogs {
             this.resize();
         }
 
-        addAcceptButton(text: string, callback: () => void) {
+        addButton(text: string, callback: () => void) {
 
             this.ensureButtonPane();
 
@@ -57,6 +57,8 @@ namespace colibri.ui.controls.dialogs {
             btn.addEventListener("click", e => callback());
 
             this._buttonPaneElement.appendChild(btn);
+
+            return btn;
         }
 
         private ensureButtonPane() {

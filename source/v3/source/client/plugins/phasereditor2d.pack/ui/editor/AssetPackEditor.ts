@@ -171,17 +171,13 @@ namespace phasereditor2d.pack.ui.editor {
             dlg.create();
 
             const importFiles = async (files: io.FilePath[]) => {
-                
+
                 dlg.close();
                 prevDialog.close();
 
-                if (files.length === 0) {
-                    //TODO: importer.createEmptyItem(this._pack, file)
-                } else {
-                    for (const file of files) {
-                        const item = await importer.importFile(this._pack, file);
-                        await item.preload();
-                    }
+                for (const file of files) {
+                    const item = await importer.importFile(this._pack, file);
+                    await item.preload();
                 }
 
                 this._viewer.repaint();
@@ -189,8 +185,25 @@ namespace phasereditor2d.pack.ui.editor {
                 this.setDirty(true);
             };
 
-            dlg.addAcceptButton("Select", () => {
-                importFiles(viewer.getSelection());
+            {
+                const btn = dlg.addButton("Select", () => {
+                    importFiles(viewer.getSelection());
+                });
+
+                btn.disabled = true;
+
+                viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                    btn.disabled = viewer.getSelection().length === 0;
+                });
+            }
+
+            dlg.addButton("Show All", () => {
+                viewer.setInput(allFiles);
+                viewer.repaint();
+            });
+
+            dlg.addButton("Cancel", () => {
+                dlg.close();
             });
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {

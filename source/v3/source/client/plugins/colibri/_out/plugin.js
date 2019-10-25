@@ -1927,12 +1927,13 @@ var colibri;
                         this.createDialogArea();
                         this.resize();
                     }
-                    addAcceptButton(text, callback) {
+                    addButton(text, callback) {
                         this.ensureButtonPane();
                         const btn = document.createElement("button");
                         btn.innerText = text;
                         btn.addEventListener("click", e => callback());
                         this._buttonPaneElement.appendChild(btn);
+                        return btn;
                     }
                     ensureButtonPane() {
                         if (this._buttonPaneElement) {
