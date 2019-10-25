@@ -159,26 +159,40 @@ namespace phasereditor2d.pack.ui.editor {
 
             const importer = importers.Importers.getImporter(type);
 
-            const list = folder.flatTree([], false)
+            const allFiles = folder.flatTree([], false);
+
+            const list = allFiles
                 .filter(file => importer.acceptFile(file));
 
             viewer.setInput(list);
 
             const dlg = new dialogs.ViewerDialog(viewer);
+
             dlg.create();
 
-            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
-
+            const importFiles = async (files: io.FilePath[]) => {
                 dlg.close();
                 prevDialog.close();
 
-                const file = viewer.getSelection()[0];
-
-                await importer.importFile(this._pack, file);
+                if (files.length === 0) {
+                    //TODO: importer.createEmptyItem(this._pack, file)
+                } else {
+                    for (const file of files) {
+                        await importer.importFile(this._pack, file);
+                    }
+                }
 
                 this._viewer.repaint();
 
                 this.setDirty(true);
+            };
+
+            dlg.addAcceptButton("Select", () => {
+                importFiles(viewer.getSelection());
+            });
+
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
+                importFiles(viewer.getSelection()[0]);
             });
         }
     }

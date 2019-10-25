@@ -3,12 +3,13 @@ namespace colibri.ui.controls.dialogs {
     export class Dialog extends Control {
 
         private _containerElement: HTMLElement;
+        private _buttonPaneElement: HTMLElement;
         private _width: number;
         private _height: number;
         private static _dialogs: Dialog[] = [];
         private static _firstTime = true;
 
-        constructor(...classList : string[]) {
+        constructor(...classList: string[]) {
             super("div", "Dialog", ...classList);
 
             if (Dialog._firstTime) {
@@ -28,6 +29,7 @@ namespace colibri.ui.controls.dialogs {
         }
 
         create() {
+
             this._containerElement = document.createElement("div");
             this._containerElement.classList.add("DialogContainer")
 
@@ -42,6 +44,31 @@ namespace colibri.ui.controls.dialogs {
             this.createDialogArea();
 
             this.resize();
+        }
+
+        addAcceptButton(text: string, callback: () => void) {
+
+            this.ensureButtonPane();
+
+            const btn = document.createElement("button");
+
+            btn.innerText = text;
+
+            btn.addEventListener("click", e => callback());
+
+            this._buttonPaneElement.appendChild(btn);
+        }
+
+        private ensureButtonPane() {
+            if (this._buttonPaneElement) {
+                return;
+            }
+
+            this.addClass("DialogWithButtonPane");
+            this._buttonPaneElement = document.createElement("div");
+            this._buttonPaneElement.classList.add("DialogButtonPane");
+
+            this.getElement().appendChild(this._buttonPaneElement);
         }
 
         protected createDialogArea() {

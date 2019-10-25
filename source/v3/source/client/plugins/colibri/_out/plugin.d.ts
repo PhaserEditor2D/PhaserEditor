@@ -507,12 +507,15 @@ declare namespace colibri.ui.controls {
 declare namespace colibri.ui.controls.dialogs {
     class Dialog extends Control {
         private _containerElement;
+        private _buttonPaneElement;
         private _width;
         private _height;
         private static _dialogs;
         private static _firstTime;
         constructor(...classList: string[]);
         create(): void;
+        addAcceptButton(text: string, callback: () => void): void;
+        private ensureButtonPane;
         protected createDialogArea(): void;
         protected resize(): void;
         close(): void;

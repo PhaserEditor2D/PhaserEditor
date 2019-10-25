@@ -1927,6 +1927,22 @@ var colibri;
                         this.createDialogArea();
                         this.resize();
                     }
+                    addAcceptButton(text, callback) {
+                        this.ensureButtonPane();
+                        const btn = document.createElement("button");
+                        btn.innerText = text;
+                        btn.addEventListener("click", e => callback());
+                        this._buttonPaneElement.appendChild(btn);
+                    }
+                    ensureButtonPane() {
+                        if (this._buttonPaneElement) {
+                            return;
+                        }
+                        this.addClass("DialogWithButtonPane");
+                        this._buttonPaneElement = document.createElement("div");
+                        this._buttonPaneElement.classList.add("DialogButtonPane");
+                        this.getElement().appendChild(this._buttonPaneElement);
+                    }
                     createDialogArea() {
                     }
                     resize() {
