@@ -1913,6 +1913,11 @@ var colibri;
                                     }
                                 }
                             });
+                            window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
+                                for (const dlg of Dialog._dialogs) {
+                                    dlg.layout();
+                                }
+                            });
                         }
                         Dialog._dialogs.push(this);
                     }

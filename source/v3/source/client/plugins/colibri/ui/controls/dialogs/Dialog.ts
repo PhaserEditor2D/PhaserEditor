@@ -13,7 +13,9 @@ namespace colibri.ui.controls.dialogs {
             super("div", "Dialog", ...classList);
 
             if (Dialog._firstTime) {
+                
                 Dialog._firstTime = false;
+                
                 window.addEventListener("keydown", e => {
                     if (e.code === "Escape") {
                         const list = Dialog._dialogs;
@@ -22,7 +24,14 @@ namespace colibri.ui.controls.dialogs {
                             dlg.close();
                         }
                     }
-                })
+                });
+
+                window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
+
+                    for(const dlg of Dialog._dialogs) {
+                        dlg.layout();
+                    }
+                });
             }
 
             Dialog._dialogs.push(this);
