@@ -7,8 +7,9 @@ namespace colibri.ui.controls.viewers {
             let x = args.x;
 
             const ctx = args.canvasContext;
+            
             if (img) {
-                img.paint(ctx, x, args.y, ICON_SIZE, args.h, false);
+                img.paint(ctx, x, args.y, ICON_SIZE, ICON_SIZE, false);
             }
         }
         

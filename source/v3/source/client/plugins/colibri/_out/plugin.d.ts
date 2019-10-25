@@ -785,11 +785,13 @@ declare namespace colibri.ui.controls.viewers {
     }
 }
 declare namespace colibri.ui.controls.viewers {
-    class IconImageCellRenderer extends ImageCellRenderer {
+    class IconImageCellRenderer implements ICellRenderer {
         private _icon;
         constructor(icon: IImage);
-        getImage(): IImage;
+        getIcon(obj: any): IImage;
+        renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
+        preload(obj: any): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {

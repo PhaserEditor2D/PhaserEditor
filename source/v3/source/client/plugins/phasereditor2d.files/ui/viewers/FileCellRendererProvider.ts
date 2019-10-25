@@ -7,6 +7,11 @@ namespace phasereditor2d.files.ui.viewers {
 
     export class FileCellRendererProvider implements viewers.ICellRendererProvider {
 
+        private _layout: "tree" | "grid"
+        constructor(layout: "tree" | "grid" = "tree") {
+            this._layout = layout;
+        }
+
         getCellRenderer(file: io.FilePath): viewers.ICellRenderer {
 
             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);

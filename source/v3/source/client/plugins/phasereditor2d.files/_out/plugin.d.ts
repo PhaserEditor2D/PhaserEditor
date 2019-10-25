@@ -50,9 +50,10 @@ declare namespace phasereditor2d.files.ui.viewers {
 declare namespace phasereditor2d.files.ui.viewers {
     import viewers = colibri.ui.controls.viewers;
     import controls = colibri.ui.controls;
-    class FileCellRenderer extends viewers.LabelCellRenderer {
-        getImage(obj: any): controls.IImage;
-        preload(obj: any): Promise<any>;
+    class FileCellRenderer extends viewers.IconImageCellRenderer {
+        constructor();
+        getIcon(obj: any): controls.IImage;
+        preload(obj: any): Promise<controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.files.ui.viewers {
@@ -60,6 +61,8 @@ declare namespace phasereditor2d.files.ui.viewers {
     import io = colibri.core.io;
     import viewers = colibri.ui.controls.viewers;
     class FileCellRendererProvider implements viewers.ICellRendererProvider {
+        private _layout;
+        constructor(layout?: "tree" | "grid");
         getCellRenderer(file: io.FilePath): viewers.ICellRenderer;
         preload(file: io.FilePath): Promise<controls.PreloadResult>;
     }

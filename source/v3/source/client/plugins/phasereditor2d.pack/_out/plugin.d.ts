@@ -445,6 +445,7 @@ declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack;
         private _outlineProvider;
+        private _blocksProviderProvider;
         private _propertySectionProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
@@ -458,6 +459,20 @@ declare namespace phasereditor2d.pack.ui.editor {
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
         private openSelectFileDialog;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import ide = colibri.ui.ide;
+    class AssetPackEditorBlocksProvider extends ide.EditorViewerProvider {
+        private _editor;
+        constructor(editor: AssetPackEditor);
+        getContentProvider(): colibri.ui.controls.viewers.ITreeContentProvider;
+        getLabelProvider(): colibri.ui.controls.viewers.ILabelProvider;
+        getCellRendererProvider(): colibri.ui.controls.viewers.ICellRendererProvider;
+        getTreeViewerRenderer(viewer: colibri.ui.controls.viewers.TreeViewer): colibri.ui.controls.viewers.TreeViewerRenderer;
+        getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider;
+        getInput(): colibri.core.io.FilePath[];
+        preload(): Promise<void>;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {
@@ -502,6 +517,25 @@ declare namespace phasereditor2d.pack.ui.editor {
     import controls = colibri.ui.controls;
     class AssetPackEditorPropertySectionProvider extends controls.properties.PropertySectionProvider {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.viewers {
+    import controls = colibri.ui.controls;
+    class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
+        constructor(viewer: controls.viewers.TreeViewer, flat: boolean);
+        renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, isLastChild: boolean): void;
+        protected isParent(obj: any): boolean;
+        protected isChild(obj: any): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    class AssetPackEditorTreeViewerRenderer extends viewers.AssetPackTreeViewerRenderer {
+        private _editor;
+        constructor(editor: AssetPackEditor, viewer: controls.viewers.TreeViewer);
+        isChild(file: io.FilePath): boolean;
+        isParent(file: io.FilePath): boolean;
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {
@@ -642,15 +676,6 @@ declare namespace phasereditor2d.pack.ui.viewers {
     import controls = colibri.ui.controls;
     class AssetPackLabelProvider implements controls.viewers.ILabelProvider {
         getLabel(obj: any): string;
-    }
-}
-declare namespace phasereditor2d.pack.ui.viewers {
-    import controls = colibri.ui.controls;
-    class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
-        constructor(viewer: controls.viewers.TreeViewer, flat: boolean);
-        renderCellBack(args: controls.viewers.RenderCellArgs, selected: boolean, isLastChild: boolean): void;
-        protected isParent(obj: any): boolean;
-        protected isChild(obj: any): boolean;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {

@@ -28,6 +28,7 @@ namespace phasereditor2d.pack.ui.editor {
     export class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack: core.AssetPack;
         private _outlineProvider = new AssetPackEditorOutlineProvider(this);
+        private _blocksProviderProvider = new AssetPackEditorBlocksProvider(this);
         private _propertySectionProvider = new AssetPackEditorPropertySectionProvider();
 
         constructor() {
@@ -103,6 +104,8 @@ namespace phasereditor2d.pack.ui.editor {
             switch (key) {
                 case outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                     return this._outlineProvider;
+                case blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
+                    return this._blocksProviderProvider;
             }
 
             return null;

@@ -187,8 +187,11 @@ var phasereditor2d;
                 var viewers = colibri.ui.controls.viewers;
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
-                class FileCellRenderer extends viewers.LabelCellRenderer {
-                    getImage(obj) {
+                class FileCellRenderer extends viewers.IconImageCellRenderer {
+                    constructor() {
+                        super(null);
+                    }
+                    getIcon(obj) {
                         const file = obj;
                         if (file.isFile()) {
                             const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
@@ -225,6 +228,9 @@ var phasereditor2d;
             (function (viewers_2) {
                 var ide = colibri.ui.ide;
                 class FileCellRendererProvider {
+                    constructor(layout = "tree") {
+                        this._layout = layout;
+                    }
                     getCellRenderer(file) {
                         const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
                         const extensions = ide.Workbench

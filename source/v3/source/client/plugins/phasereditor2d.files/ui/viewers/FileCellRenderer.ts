@@ -5,16 +5,20 @@ namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
 
-    export class FileCellRenderer extends viewers.LabelCellRenderer {
+    export class FileCellRenderer extends viewers.IconImageCellRenderer {
 
-        getImage(obj: any): controls.IImage {
+        constructor() {
+            super(null);
+        }
+
+        getIcon(obj: any): controls.IImage {
 
             const file = <io.FilePath>obj;
 
             if (file.isFile()) {
 
                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                
+
                 const icon = ide.Workbench.getWorkbench().getContentTypeIcon(ct);
 
                 if (icon) {

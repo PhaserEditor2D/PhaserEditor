@@ -1780,6 +1780,7 @@ var phasereditor2d;
                     constructor() {
                         super("phasereditor2d.AssetPackEditor");
                         this._outlineProvider = new editor.AssetPackEditorOutlineProvider(this);
+                        this._blocksProviderProvider = new editor.AssetPackEditorBlocksProvider(this);
                         this._propertySectionProvider = new editor.AssetPackEditorPropertySectionProvider();
                         this.addClass("AssetPackEditor");
                     }
@@ -1831,6 +1832,8 @@ var phasereditor2d;
                         switch (key) {
                             case phasereditor2d.outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                                 return this._outlineProvider;
+                            case phasereditor2d.blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
+                                return this._blocksProviderProvider;
                         }
                         return null;
                     }
@@ -1928,6 +1931,47 @@ var phasereditor2d;
     (function (pack) {
         var ui;
         (function (ui) {
+            var editor;
+            (function (editor_1) {
+                var ide = colibri.ui.ide;
+                class AssetPackEditorBlocksProvider extends ide.EditorViewerProvider {
+                    constructor(editor) {
+                        super();
+                        this._editor = editor;
+                    }
+                    getContentProvider() {
+                        return new phasereditor2d.files.ui.viewers.FileTreeContentProvider();
+                    }
+                    getLabelProvider() {
+                        return new phasereditor2d.files.ui.viewers.FileLabelProvider();
+                    }
+                    getCellRendererProvider() {
+                        return new phasereditor2d.files.ui.viewers.FileCellRendererProvider("grid");
+                    }
+                    getTreeViewerRenderer(viewer) {
+                        return new editor_1.AssetPackEditorTreeViewerRenderer(this._editor, viewer);
+                    }
+                    getPropertySectionProvider() {
+                        return null;
+                    }
+                    getInput() {
+                        return this._editor.getInput().getParent().getFiles();
+                    }
+                    preload() {
+                        return Promise.resolve();
+                    }
+                }
+                editor_1.AssetPackEditorBlocksProvider = AssetPackEditorBlocksProvider;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
             var viewers;
             (function (viewers) {
                 class AssetPackContentProvider {
@@ -1957,7 +2001,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_1) {
+            (function (editor_2) {
                 class AssetPackEditorContentProvider extends ui.viewers.AssetPackContentProvider {
                     constructor(editor, groupAtlasItems) {
                         super();
@@ -1992,7 +2036,7 @@ var phasereditor2d;
                         return super.getChildren(parent);
                     }
                 }
-                editor_1.AssetPackEditorContentProvider = AssetPackEditorContentProvider;
+                editor_2.AssetPackEditorContentProvider = AssetPackEditorContentProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2004,8 +2048,8 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_2) {
-                class AssetPackEditorOutlineContentProvider extends editor_2.AssetPackEditorContentProvider {
+            (function (editor_3) {
+                class AssetPackEditorOutlineContentProvider extends editor_3.AssetPackEditorContentProvider {
                     constructor(editor) {
                         super(editor, false);
                     }
@@ -2019,7 +2063,7 @@ var phasereditor2d;
                         return [];
                     }
                 }
-                editor_2.AssetPackEditorOutlineContentProvider = AssetPackEditorOutlineContentProvider;
+                editor_3.AssetPackEditorOutlineContentProvider = AssetPackEditorOutlineContentProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2031,7 +2075,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_3) {
+            (function (editor_4) {
                 var ide = colibri.ui.ide;
                 var controls = colibri.ui.controls;
                 class AssetPackEditorOutlineProvider extends ide.EditorViewerProvider {
@@ -2040,7 +2084,7 @@ var phasereditor2d;
                         this._editor = editor;
                     }
                     getContentProvider() {
-                        return new editor_3.AssetPackEditorOutlineContentProvider(this._editor);
+                        return new editor_4.AssetPackEditorOutlineContentProvider(this._editor);
                     }
                     getLabelProvider() {
                         return this._editor.getViewer().getLabelProvider();
@@ -2066,7 +2110,7 @@ var phasereditor2d;
                         this._editor.getViewer().repaint();
                     }
                 }
-                editor_3.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;
+                editor_4.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2087,6 +2131,105 @@ var phasereditor2d;
                     }
                 }
                 editor.AssetPackEditorPropertySectionProvider = AssetPackEditorPropertySectionProvider;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
+                class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
+                    constructor(viewer, flat) {
+                        super(viewer, flat, false);
+                        viewer.setCellSize(64);
+                        const types = pack.core.TYPES.filter(type => type === pack.core.ATLAS_TYPE || type.toLowerCase().indexOf("atlas") < 0);
+                        this.setSections(types);
+                    }
+                    renderCellBack(args, selected, isLastChild) {
+                        super.renderCellBack(args, selected, isLastChild);
+                        const isParent = this.isParent(args.obj);
+                        const isChild = this.isChild(args.obj);
+                        const expanded = args.viewer.isExpanded(args.obj);
+                        if (isChild) {
+                            const margin = controls.viewers.TREE_RENDERER_GRID_PADDING;
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                            if (isLastChild) {
+                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
+                            }
+                            else {
+                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
+                            }
+                            ctx.restore();
+                        }
+                        else if (isParent && !this.isFlat()) {
+                            const ctx = args.canvasContext;
+                            ctx.save();
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                            if (expanded) {
+                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
+                            }
+                            else {
+                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
+                            }
+                            ctx.restore();
+                        }
+                    }
+                    isParent(obj) {
+                        if (obj instanceof pack.core.AssetPackItem) {
+                            switch (obj.getType()) {
+                                case pack.core.ATLAS_TYPE:
+                                case pack.core.MULTI_ATLAS_TYPE:
+                                case pack.core.ATLAS_XML_TYPE:
+                                case pack.core.UNITY_ATLAS_TYPE:
+                                case pack.core.SPRITESHEET_TYPE:
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                        return false;
+                    }
+                    isChild(obj) {
+                        return obj instanceof controls.ImageFrame;
+                    }
+                }
+                viewers.AssetPackTreeViewerRenderer = AssetPackTreeViewerRenderer;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="../viewers/AssetPackTreeViewerRenderer.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor_5) {
+                class AssetPackEditorTreeViewerRenderer extends ui.viewers.AssetPackTreeViewerRenderer {
+                    constructor(editor, viewer) {
+                        super(viewer, false);
+                        this._editor = editor;
+                        this.setSections([]);
+                    }
+                    isChild(file) {
+                        const root = this._editor.getInput().getParent();
+                        return file.isFile() && file.getParent() !== root;
+                    }
+                    isParent(file) {
+                        return file.isFolder();
+                    }
+                }
+                editor_5.AssetPackEditorTreeViewerRenderer = AssetPackEditorTreeViewerRenderer;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2695,77 +2838,6 @@ var phasereditor2d;
                     }
                 }
                 viewers.AssetPackLabelProvider = AssetPackLabelProvider;
-            })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = pack.ui || (pack.ui = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var ui;
-        (function (ui) {
-            var viewers;
-            (function (viewers) {
-                var controls = colibri.ui.controls;
-                class AssetPackTreeViewerRenderer extends controls.viewers.GridTreeViewerRenderer {
-                    constructor(viewer, flat) {
-                        super(viewer, flat, false);
-                        viewer.setCellSize(64);
-                        const types = pack.core.TYPES.filter(type => type === pack.core.ATLAS_TYPE || type.toLowerCase().indexOf("atlas") < 0);
-                        this.setSections(types);
-                    }
-                    renderCellBack(args, selected, isLastChild) {
-                        super.renderCellBack(args, selected, isLastChild);
-                        const isParent = this.isParent(args.obj);
-                        const isChild = this.isChild(args.obj);
-                        const expanded = args.viewer.isExpanded(args.obj);
-                        if (isParent && !this.isFlat()) {
-                            const ctx = args.canvasContext;
-                            ctx.save();
-                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                            if (expanded) {
-                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 0, 0, 5);
-                            }
-                            else {
-                                controls.Controls.drawRoundedRect(ctx, args.x, args.y, args.w, args.h, 5, 5, 5, 5);
-                            }
-                            ctx.restore();
-                        }
-                        else if (isChild) {
-                            const margin = controls.viewers.TREE_RENDERER_GRID_PADDING;
-                            const ctx = args.canvasContext;
-                            ctx.save();
-                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                            if (isLastChild) {
-                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 5, 5, 0);
-                            }
-                            else {
-                                controls.Controls.drawRoundedRect(ctx, args.x - margin, args.y, args.w + margin, args.h, 0, 0, 0, 0);
-                            }
-                            ctx.restore();
-                        }
-                    }
-                    isParent(obj) {
-                        if (obj instanceof pack.core.AssetPackItem) {
-                            switch (obj.getType()) {
-                                case pack.core.ATLAS_TYPE:
-                                case pack.core.MULTI_ATLAS_TYPE:
-                                case pack.core.ATLAS_XML_TYPE:
-                                case pack.core.UNITY_ATLAS_TYPE:
-                                case pack.core.SPRITESHEET_TYPE:
-                                    return true;
-                                default:
-                                    return false;
-                            }
-                        }
-                        return false;
-                    }
-                    isChild(obj) {
-                        return obj instanceof controls.ImageFrame;
-                    }
-                }
-                viewers.AssetPackTreeViewerRenderer = AssetPackTreeViewerRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

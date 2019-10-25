@@ -2830,7 +2830,7 @@ var colibri;
                         let x = args.x;
                         const ctx = args.canvasContext;
                         if (img) {
-                            img.paint(ctx, x, args.y, controls.ICON_SIZE, args.h, false);
+                            img.paint(ctx, x, args.y, controls.ICON_SIZE, controls.ICON_SIZE, false);
                         }
                     }
                     cellHeight(args) {
@@ -3262,16 +3262,29 @@ var colibri;
         (function (controls) {
             var viewers;
             (function (viewers) {
-                class IconImageCellRenderer extends viewers.ImageCellRenderer {
+                class IconImageCellRenderer {
                     constructor(icon) {
-                        super();
                         this._icon = icon;
                     }
-                    getImage() {
+                    getIcon(obj) {
                         return this._icon;
+                    }
+                    renderCell(args) {
+                        const icon = this.getIcon(args.obj);
+                        if (!icon) {
+                            controls.DefaultImage.paintEmpty(args.canvasContext, args.x, args.y, args.w, args.h);
+                        }
+                        else {
+                            const x = args.x + (args.w - controls.ICON_SIZE) / 2;
+                            const y = args.y + (args.h - controls.ICON_SIZE) / 2;
+                            icon.paint(args.canvasContext, x, y, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        }
                     }
                     cellHeight(args) {
                         return controls.ROW_HEIGHT;
+                    }
+                    preload(obj) {
+                        return controls.Controls.resolveNothingLoaded();
                     }
                 }
                 viewers.IconImageCellRenderer = IconImageCellRenderer;
