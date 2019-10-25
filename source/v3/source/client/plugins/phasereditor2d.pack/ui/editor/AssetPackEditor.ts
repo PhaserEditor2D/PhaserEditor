@@ -171,8 +171,7 @@ namespace phasereditor2d.pack.ui.editor {
             dlg.create();
 
             const importFiles = async (files: io.FilePath[]) => {
-                console.log(files);
-
+                
                 dlg.close();
                 prevDialog.close();
 

@@ -1875,7 +1875,6 @@ var phasereditor2d;
                         const dlg = new dialogs.ViewerDialog(viewer);
                         dlg.create();
                         const importFiles = async (files) => {
-                            console.log(files);
                             dlg.close();
                             prevDialog.close();
                             if (files.length === 0) {
@@ -2150,9 +2149,20 @@ var phasereditor2d;
                         return contentType === this.getContentType();
                     }
                     createItemData(file) {
+                        let textureURL;
+                        if (file.getNameWithoutExtension().endsWith(".png")) {
+                            textureURL = pack.core.AssetPackUtils.getFilePackUrl(file.getParent()) + file.getNameWithoutExtension();
+                        }
+                        else {
+                            textureURL = pack.core.AssetPackUtils.getFilePackUrlWithNewExtension(file, "png");
+                        }
+                        const altTextureFile = file.getParent().getFile(file.getName() + ".png");
+                        if (altTextureFile) {
+                            textureURL = pack.core.AssetPackUtils.getFilePackUrl(altTextureFile);
+                        }
                         return {
                             atlasURL: pack.core.AssetPackUtils.getFilePackUrl(file),
-                            textureURL: pack.core.AssetPackUtils.getFilePackUrlWithNewExtension(file, "png")
+                            textureURL: textureURL
                         };
                     }
                 }
