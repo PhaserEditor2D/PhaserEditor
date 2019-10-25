@@ -2372,7 +2372,8 @@ var phasereditor2d;
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_PLUGIN_TYPE),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_AUDIO, pack.core.AUDIO_TYPE, true),
-                    new importers.AudioSpriteImporter()
+                    new importers.AudioSpriteImporter(),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_VIDEO, pack.core.VIDEO_TYPE, true),
                 ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));
