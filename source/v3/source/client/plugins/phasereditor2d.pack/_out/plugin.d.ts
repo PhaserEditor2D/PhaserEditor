@@ -483,6 +483,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         updateIgnoreFileSet_async(): Promise<void>;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
+        private isFileOrNotEmptyFolder;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {

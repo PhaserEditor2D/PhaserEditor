@@ -255,6 +255,7 @@ var phasereditor2d;
                     }
                 }
                 computeUsedFiles(files = new Set()) {
+                    files.add(this._file);
                     for (const item of this.getItems()) {
                         item.computeUsedFiles(files);
                     }
@@ -2018,12 +2019,22 @@ var phasereditor2d;
                     }
                     getRoots(input) {
                         return super.getRoots(input)
-                            .filter(obj => !this._ignoreFileSet.has(obj));
+                            .filter(obj => this.isFileOrNotEmptyFolder(obj));
                     }
                     getChildren(parent) {
                         return super.getChildren(parent)
-                            .filter(obj => !this._ignoreFileSet.has(obj))
-                            .filter(obj => obj.isFile() || this.getChildren(obj).length > 0);
+                            .filter(obj => this.isFileOrNotEmptyFolder(obj));
+                    }
+                    isFileOrNotEmptyFolder(parent) {
+                        if (parent.isFile() && !this._ignoreFileSet.has(parent)) {
+                            return true;
+                        }
+                        for (const file of parent.getFiles()) {
+                            if (this.isFileOrNotEmptyFolder(file)) {
+                                return true;
+                            }
+                        }
+                        return false;
                     }
                 }
                 editor_1.AssetPackEditorBlocksContentProvider = AssetPackEditorBlocksContentProvider;

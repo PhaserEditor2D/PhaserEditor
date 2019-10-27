@@ -93,6 +93,8 @@ namespace phasereditor2d.pack.core {
 
         computeUsedFiles(files: Set<io.FilePath> = new Set()) {
 
+            files.add(this._file);
+
             for (const item of this.getItems()) {
                 item.computeUsedFiles(files);
             }

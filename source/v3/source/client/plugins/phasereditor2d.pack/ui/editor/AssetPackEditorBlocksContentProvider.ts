@@ -34,16 +34,32 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         getRoots(input: any): any[] {
+
             return super.getRoots(input)
-                .filter(obj => !this._ignoreFileSet.has(obj))
+
+                .filter(obj => this.isFileOrNotEmptyFolder(obj))
         }
 
         getChildren(parent: any): any[] {
+            
             return super.getChildren(parent)
 
-                .filter(obj => !this._ignoreFileSet.has(obj))
+                .filter(obj => this.isFileOrNotEmptyFolder(obj));
+        }
 
-                .filter(obj => (<io.FilePath>obj).isFile() || this.getChildren(obj).length > 0);
+        private isFileOrNotEmptyFolder(parent: io.FilePath) {
+
+            if (parent.isFile() && !this._ignoreFileSet.has(parent)) {
+                return true;
+            }
+
+            for (const file of parent.getFiles()) {
+                if (this.isFileOrNotEmptyFolder(file)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
