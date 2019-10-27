@@ -19,6 +19,10 @@ namespace colibri.ui.controls {
             return this._imageElement;
         }
 
+        getURL() {
+            return this._url;
+        }
+
         preload(): Promise<PreloadResult> {
             if (this._ready || this._error) {
                 return Controls.resolveNothingLoaded();

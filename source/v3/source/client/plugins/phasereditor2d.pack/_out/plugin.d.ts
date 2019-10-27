@@ -26,7 +26,7 @@ declare namespace phasereditor2d.pack.core {
         private _editorData;
         constructor(pack: AssetPack, data: any);
         computeUsedFiles(files: Set<io.FilePath>): void;
-        protected addFilesFromDataKey(files: Set<io.FilePath>, key: string): void;
+        protected addFilesFromDataKey(files: Set<io.FilePath>, ...keys: string[]): void;
         protected addFilesFromUrls(files: Set<io.FilePath>, urls: string[]): void;
         getEditorData(): any;
         getPack(): AssetPack;
@@ -122,7 +122,9 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
     abstract class BaseAtlasAssetPackItem extends ImageFrameContainerAssetPackItem {
+        computeUsedFiles(files: Set<io.FilePath>): void;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -212,9 +214,11 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
     class MultiatlasAssetPackItem extends BaseAtlasAssetPackItem {
         constructor(pack: AssetPack, data: any);
         protected createParser(): parsers.ImageFrameParser;
+        computeUsedFiles(files: Set<io.FilePath>): void;
     }
 }
 declare namespace phasereditor2d.pack.core {

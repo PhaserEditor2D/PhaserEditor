@@ -292,6 +292,7 @@ declare namespace colibri.ui.controls {
         private _requestPromise;
         constructor(img: HTMLImageElement, url: string);
         getImageElement(): HTMLImageElement;
+        getURL(): string;
         preload(): Promise<PreloadResult>;
         getWidth(): number;
         getHeight(): number;

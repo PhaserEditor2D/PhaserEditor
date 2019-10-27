@@ -952,6 +952,9 @@ var colibri;
                 getImageElement() {
                     return this._imageElement;
                 }
+                getURL() {
+                    return this._url;
+                }
                 preload() {
                     if (this._ready || this._error) {
                         return controls.Controls.resolveNothingLoaded();

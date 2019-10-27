@@ -108,13 +108,15 @@ var phasereditor2d;
                     this.addFilesFromDataKey(files, "urls");
                     this.addFilesFromDataKey(files, "normalMap");
                 }
-                addFilesFromDataKey(files, key) {
+                addFilesFromDataKey(files, ...keys) {
                     const urls = [];
-                    if (Array.isArray(this._data[key])) {
-                        urls.push(...this._data[key]);
-                    }
-                    if (typeof (this._data[key]) === "string") {
-                        urls.push(this._data[key]);
+                    for (const key of keys) {
+                        if (Array.isArray(this._data[key])) {
+                            urls.push(...this._data[key]);
+                        }
+                        if (typeof (this._data[key]) === "string") {
+                            urls.push(this._data[key]);
+                        }
                     }
                     this.addFilesFromUrls(files, urls);
                 }
@@ -482,6 +484,10 @@ var phasereditor2d;
         var core;
         (function (core) {
             class BaseAtlasAssetPackItem extends core.ImageFrameContainerAssetPackItem {
+                computeUsedFiles(files) {
+                    super.computeUsedFiles(files);
+                    this.addFilesFromDataKey(files, "atlasURL", "textureURL");
+                }
             }
             core.BaseAtlasAssetPackItem = BaseAtlasAssetPackItem;
         })(core = pack.core || (pack.core = {}));
@@ -691,12 +697,33 @@ var phasereditor2d;
     (function (pack_17) {
         var core;
         (function (core) {
+            var ide = colibri.ui.ide;
             class MultiatlasAssetPackItem extends core.BaseAtlasAssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
                 }
                 createParser() {
                     return new core.parsers.MultiAtlasParser(this);
+                }
+                computeUsedFiles(files) {
+                    super.computeUsedFiles(files);
+                    try {
+                        const urlSet = new Set();
+                        const atlasFile = core.AssetPackUtils.getFileFromPackUrl(this.getData().url);
+                        const str = ide.FileUtils.getFileString(atlasFile);
+                        const data = JSON.parse(str);
+                        for (const texture of data.textures) {
+                            const url = core.AssetPackUtils.getFilePackUrl(atlasFile.getSibling(texture.image));
+                            urlSet.add(url);
+                        }
+                        for (const url of urlSet) {
+                            const file = core.AssetPackUtils.getFileFromPackUrl(url);
+                            files.add(file);
+                        }
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
                 }
             }
             core.MultiatlasAssetPackItem = MultiatlasAssetPackItem;

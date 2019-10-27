@@ -15,23 +15,26 @@ namespace phasereditor2d.pack.core {
         }
 
         computeUsedFiles(files: Set<io.FilePath>) {
-            
+
             this.addFilesFromDataKey(files, "url");
 
             this.addFilesFromDataKey(files, "urls");
-            
+
             this.addFilesFromDataKey(files, "normalMap");
         }
 
-        protected addFilesFromDataKey(files: Set<io.FilePath>, key: string) {
+        protected addFilesFromDataKey(files: Set<io.FilePath>, ...keys: string[]) {
             const urls: string[] = [];
 
-            if (Array.isArray(this._data[key])) {
-                urls.push(...this._data[key]);
-            }
+            for (const key of keys) {
 
-            if (typeof (this._data[key]) === "string") {
-                urls.push(this._data[key]);
+                if (Array.isArray(this._data[key])) {
+                    urls.push(...this._data[key]);
+                }
+
+                if (typeof (this._data[key]) === "string") {
+                    urls.push(this._data[key]);
+                }
             }
 
             this.addFilesFromUrls(files, urls);
