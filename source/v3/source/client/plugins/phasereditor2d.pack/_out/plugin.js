@@ -1979,6 +1979,7 @@ var phasereditor2d;
                         this._viewer.repaint();
                         this.setDirty(true);
                         await this.updateBlocks();
+                        this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, { detail: this }));
                     }
                     async updateBlocks() {
                         await this._blocksProviderProvider.updateBlocks_async();
@@ -2002,6 +2003,9 @@ var phasereditor2d;
                         super();
                         this._editor = editor;
                         this._ignoreFileSet = new Set();
+                    }
+                    getIgnoreFileSet() {
+                        return this._ignoreFileSet;
                     }
                     async updateIgnoreFileSet_async() {
                         let packs = (await pack_32.core.AssetPackUtils.getAllPacks())
@@ -2080,6 +2084,8 @@ var phasereditor2d;
                     }
                     async updateBlocks_async() {
                         await this._contentProvider.updateIgnoreFileSet_async();
+                        const sel = this.getSelection().filter(obj => !this._contentProvider.getIgnoreFileSet().has(obj));
+                        this.setSelection(sel, false, true);
                         this.repaint();
                     }
                     preload() {

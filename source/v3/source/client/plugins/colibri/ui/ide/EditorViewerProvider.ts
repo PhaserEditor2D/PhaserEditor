@@ -36,6 +36,10 @@ namespace colibri.ui.ide {
 
         }
 
+        getSelection() {
+            return this._viewer.getSelection();
+        }
+
         onViewerSelectionChanged(selection: any[]) {
 
         }

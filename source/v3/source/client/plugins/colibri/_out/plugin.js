@@ -3869,6 +3869,9 @@ var colibri;
                         this._initialSelection = selection;
                     }
                 }
+                getSelection() {
+                    return this._viewer.getSelection();
+                }
                 onViewerSelectionChanged(selection) {
                 }
                 repaint() {

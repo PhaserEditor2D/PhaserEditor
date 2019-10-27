@@ -474,10 +474,12 @@ declare namespace phasereditor2d.pack.ui.editor {
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
+    import io = colibri.core.io;
     class AssetPackEditorBlocksContentProvider extends files.ui.viewers.FileTreeContentProvider {
         private _editor;
         private _ignoreFileSet;
         constructor(editor: AssetPackEditor);
+        getIgnoreFileSet(): Set<io.FilePath>;
         updateIgnoreFileSet_async(): Promise<void>;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];

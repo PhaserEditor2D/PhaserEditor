@@ -966,6 +966,7 @@ declare namespace colibri.ui.ide {
         constructor();
         setViewer(viewer: controls.viewers.TreeViewer): void;
         setSelection(selection: any[], reveal: boolean, notify: boolean): void;
+        getSelection(): any[];
         onViewerSelectionChanged(selection: any[]): void;
         repaint(): void;
         abstract getContentProvider(): viewers.ITreeContentProvider;

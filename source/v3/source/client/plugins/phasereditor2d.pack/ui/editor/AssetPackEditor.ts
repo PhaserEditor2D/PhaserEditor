@@ -249,6 +249,8 @@ namespace phasereditor2d.pack.ui.editor {
             this.setDirty(true);
 
             await this.updateBlocks();
+
+            this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, { detail: this }));
         }
 
         private async updateBlocks() {

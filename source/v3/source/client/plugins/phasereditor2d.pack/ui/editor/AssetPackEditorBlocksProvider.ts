@@ -42,6 +42,10 @@ namespace phasereditor2d.pack.ui.editor {
             
             await this._contentProvider.updateIgnoreFileSet_async();
 
+            const sel = this.getSelection().filter(obj => !this._contentProvider.getIgnoreFileSet().has(obj));
+
+            this.setSelection(sel, false, true);
+
             this.repaint();
         }
 

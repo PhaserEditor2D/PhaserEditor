@@ -15,6 +15,9 @@ namespace phasereditor2d.pack.ui.editor {
             this._ignoreFileSet = new Set();
         }
 
+        getIgnoreFileSet() {
+            return this._ignoreFileSet;
+        }
 
         async updateIgnoreFileSet_async() {
 
