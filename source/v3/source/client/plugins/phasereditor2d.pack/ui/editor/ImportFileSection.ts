@@ -13,9 +13,7 @@ namespace phasereditor2d.pack.ui.editor {
         protected createForm(parent: HTMLDivElement) {
             const comp = this.createGridElement(parent, 1);
 
-            this.addUpdater(() => {
-
-                console.log("----");
+            this.addUpdater( () => {
 
                 while (comp.children.length > 0) {
                     comp.children.item(0).remove();
@@ -41,11 +39,11 @@ namespace phasereditor2d.pack.ui.editor {
 
                     btn.innerText = `Import ${importData.importer.getType()} (${importData.files.length})`;
 
-                    btn.addEventListener("click", e => {
+                    btn.addEventListener("click", async (e) => {
 
                         const editor = <AssetPackEditor>ide.Workbench.getWorkbench().getActiveEditor();
 
-                        editor.importData(importData);
+                        await editor.importData_async(importData);
                     });
 
                     comp.appendChild(btn);

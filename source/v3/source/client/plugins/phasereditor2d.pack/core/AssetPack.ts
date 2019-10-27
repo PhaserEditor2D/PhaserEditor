@@ -2,6 +2,7 @@ namespace phasereditor2d.pack.core {
 
     import ide = colibri.ui.ide;
     import core = colibri.core;
+    import io = colibri.core.io;
 
     export const IMAGE_TYPE = "image";
     export const ATLAS_TYPE = "atlas";
@@ -90,6 +91,15 @@ namespace phasereditor2d.pack.core {
             }
         }
 
+        computeUsedFiles(files: Set<io.FilePath> = new Set()) {
+
+            for (const item of this.getItems()) {
+                item.computeUsedFiles(files);
+            }
+
+            return files;
+        }
+
         toJSON(): any {
             return {
                 "section1": {
@@ -165,7 +175,7 @@ namespace phasereditor2d.pack.core {
                     return new XMLAssetPackItem(this, data);
             }
 
-            return new AssetPackItem(this, data);
+            throw new Error(`Unknown file type ${type}`);
         }
 
         static async createFromFile(file: core.io.FilePath) {

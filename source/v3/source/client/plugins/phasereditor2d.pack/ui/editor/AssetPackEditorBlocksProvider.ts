@@ -1,20 +1,21 @@
 namespace phasereditor2d.pack.ui.editor {
 
     import ide = colibri.ui.ide;
-    import controls = colibri.ui.controls;
 
     export class AssetPackEditorBlocksProvider extends ide.EditorViewerProvider {
 
         private _editor: AssetPackEditor;
+        private _contentProvider : AssetPackEditorBlocksContentProvider;
 
         constructor(editor: AssetPackEditor) {
             super();
 
             this._editor = editor;
+            this._contentProvider = new AssetPackEditorBlocksContentProvider(this._editor);
         }
 
         getContentProvider(): colibri.ui.controls.viewers.ITreeContentProvider {
-            return new files.ui.viewers.FileTreeContentProvider();
+            return this._contentProvider;
         }
 
         getLabelProvider(): colibri.ui.controls.viewers.ILabelProvider {
@@ -37,8 +38,16 @@ namespace phasereditor2d.pack.ui.editor {
             return this._editor.getInput().getParent().getFiles();
         }
 
+        async updateBlocks_async() {
+            
+            await this._contentProvider.updateIgnoreFileSet_async();
+
+            this.repaint();
+        }
+
         preload(): Promise<void> {
             return Promise.resolve();
         }
+
     }
 }

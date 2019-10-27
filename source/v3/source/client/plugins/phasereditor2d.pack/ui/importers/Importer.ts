@@ -30,8 +30,6 @@ namespace phasereditor2d.pack.ui.importers {
             data.type = this.getType();
             data.key = computer.makeName(file.getNameWithoutExtension());
 
-            console.log(data);
-
             const item = pack.createPackItem(data);
 
             pack.getItems().push(item);

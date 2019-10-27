@@ -72,7 +72,7 @@ namespace phasereditor2d.pack.ui.editor {
 
             this.getViewer().repaint();
 
-            this._outlineProvider.repaint();
+            await this.updateBlocks();
         }
 
         async save() {
@@ -102,9 +102,13 @@ namespace phasereditor2d.pack.ui.editor {
         getEditorViewerProvider(key: string): ide.EditorViewerProvider {
 
             switch (key) {
+
                 case outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
+
                     return this._outlineProvider;
+
                 case blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
+
                     return this._blocksProviderProvider;
             }
 
@@ -199,7 +203,7 @@ namespace phasereditor2d.pack.ui.editor {
 
                 dlg.closeAll();
 
-                await this.importData({
+                await this.importData_async({
                     importer: importer,
                     files: files
                 });
@@ -231,7 +235,7 @@ namespace phasereditor2d.pack.ui.editor {
             });
         }
 
-        async importData(importData: ImportData) {
+        async importData_async(importData: ImportData) {
 
             for (const file of importData.files) {
 
@@ -243,6 +247,12 @@ namespace phasereditor2d.pack.ui.editor {
             this._viewer.repaint();
 
             this.setDirty(true);
+
+            await this.updateBlocks();
+        }
+
+        private async updateBlocks() {
+            await this._blocksProviderProvider.updateBlocks_async();
         }
     }
 }

@@ -19,11 +19,15 @@ declare namespace phasereditor2d.pack {
 }
 declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
-    class AssetPackItem {
+    import io = colibri.core.io;
+    abstract class AssetPackItem {
         private _pack;
         private _data;
         private _editorData;
         constructor(pack: AssetPack, data: any);
+        computeUsedFiles(files: Set<io.FilePath>): void;
+        protected addFilesFromDataKey(files: Set<io.FilePath>, key: string): void;
+        protected addFilesFromUrls(files: Set<io.FilePath>, urls: string[]): void;
         getEditorData(): any;
         getPack(): AssetPack;
         getKey(): string;
@@ -40,6 +44,7 @@ declare namespace phasereditor2d.pack.core {
 }
 declare namespace phasereditor2d.pack.core {
     import core = colibri.core;
+    import io = colibri.core.io;
     const IMAGE_TYPE = "image";
     const ATLAS_TYPE = "atlas";
     const ATLAS_XML_TYPE = "atlasXML";
@@ -72,11 +77,12 @@ declare namespace phasereditor2d.pack.core {
         private _file;
         private _items;
         constructor(file: core.io.FilePath, content: string);
+        computeUsedFiles(files?: Set<io.FilePath>): Set<io.FilePath>;
         toJSON(): any;
-        createPackItem(data: any): AssetPackItem;
+        createPackItem(data: any): AnimationsAssetPackItem | ImageAssetPackItem | SvgAssetPackItem | AtlasAssetPackItem | AtlasXMLAssetPackItem | UnityAtlasAssetPackItem | MultiatlasAssetPackItem | SpritesheetAssetPackItem | BitmapFontAssetPackItem | TilemapCSVAssetPackItem | TilemapImpactAssetPackItem | TilemapTiledJSONAssetPackItem | PluginAssetPackItem | SceneFileAssetPackItem | ScenePluginAssetPackItem | ScriptAssetPackItem | AudioAssetPackItem | AudioSpriteAssetPackItem | VideoAssetPackItem | TextAssetPackItem | CssAssetPackItem | GlslAssetPackItem | HTMLAssetPackItem | HTMLTextureAssetPackItem | BinaryAssetPackItem | JSONAssetPackItem | XMLAssetPackItem;
         static createFromFile(file: core.io.FilePath): Promise<AssetPack>;
         getItems(): AssetPackItem[];
-        getFile(): core.io.FilePath;
+        getFile(): io.FilePath;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -459,7 +465,18 @@ declare namespace phasereditor2d.pack.ui.editor {
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
         private openSelectFileDialog;
-        importData(importData: ImportData): Promise<void>;
+        importData_async(importData: ImportData): Promise<void>;
+        private updateBlocks;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    class AssetPackEditorBlocksContentProvider extends files.ui.viewers.FileTreeContentProvider {
+        private _editor;
+        private _ignoreFileSet;
+        constructor(editor: AssetPackEditor);
+        updateIgnoreFileSet_async(): Promise<void>;
+        getRoots(input: any): any[];
+        getChildren(parent: any): any[];
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
@@ -472,6 +489,7 @@ declare namespace phasereditor2d.pack.ui.editor {
     import ide = colibri.ui.ide;
     class AssetPackEditorBlocksProvider extends ide.EditorViewerProvider {
         private _editor;
+        private _contentProvider;
         constructor(editor: AssetPackEditor);
         getContentProvider(): colibri.ui.controls.viewers.ITreeContentProvider;
         getLabelProvider(): colibri.ui.controls.viewers.ILabelProvider;
@@ -479,6 +497,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getTreeViewerRenderer(viewer: colibri.ui.controls.viewers.TreeViewer): colibri.ui.controls.viewers.TreeViewerRenderer;
         getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider;
         getInput(): colibri.core.io.FilePath[];
+        updateBlocks_async(): Promise<void>;
         preload(): Promise<void>;
     }
 }
