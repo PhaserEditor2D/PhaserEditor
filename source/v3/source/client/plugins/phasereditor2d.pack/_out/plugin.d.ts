@@ -145,8 +145,10 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
     class AudioSpriteAssetPackItem extends AssetPackItem {
         constructor(pack: AssetPack, data: any);
+        computeUsedFiles(files: Set<io.FilePath>): void;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -155,8 +157,10 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
+    import io = colibri.core.io;
     class BitmapFontAssetPackItem extends AssetPackItem {
         constructor(pack: AssetPack, data: any);
+        computeUsedFiles(files: Set<io.FilePath>): void;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -483,7 +487,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         updateIgnoreFileSet_async(): Promise<void>;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
-        private isFileOrNotEmptyFolder;
+        private acceptFile;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {

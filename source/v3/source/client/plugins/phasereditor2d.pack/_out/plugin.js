@@ -558,6 +558,10 @@ var phasereditor2d;
                 constructor(pack, data) {
                     super(pack, data);
                 }
+                computeUsedFiles(files) {
+                    super.computeUsedFiles(files);
+                    this.addFilesFromDataKey(files, "jsonURL", "audioURL");
+                }
             }
             core.AudioSpriteAssetPackItem = AudioSpriteAssetPackItem;
         })(core = pack_8.core || (pack_8.core = {}));
@@ -588,6 +592,10 @@ var phasereditor2d;
             class BitmapFontAssetPackItem extends core.AssetPackItem {
                 constructor(pack, data) {
                     super(pack, data);
+                }
+                computeUsedFiles(files) {
+                    super.computeUsedFiles(files);
+                    this.addFilesFromDataKey(files, "fontDataURL", "textureURL");
                 }
             }
             core.BitmapFontAssetPackItem = BitmapFontAssetPackItem;
@@ -2019,18 +2027,24 @@ var phasereditor2d;
                     }
                     getRoots(input) {
                         return super.getRoots(input)
-                            .filter(obj => this.isFileOrNotEmptyFolder(obj));
+                            .filter(obj => this.acceptFile(obj));
                     }
                     getChildren(parent) {
                         return super.getChildren(parent)
-                            .filter(obj => this.isFileOrNotEmptyFolder(obj));
+                            .filter(obj => this.acceptFile(obj));
                     }
-                    isFileOrNotEmptyFolder(parent) {
+                    acceptFile(parent) {
                         if (parent.isFile() && !this._ignoreFileSet.has(parent)) {
+                            // TODO: we should create an extension point to know 
+                            // what files are created by the editor and are not
+                            // intended to be imported in the asset pack.
+                            if (parent.getExtension() === "scene") {
+                                return false;
+                            }
                             return true;
                         }
                         for (const file of parent.getFiles()) {
-                            if (this.isFileOrNotEmptyFolder(file)) {
+                            if (this.acceptFile(file)) {
                                 return true;
                             }
                         }
