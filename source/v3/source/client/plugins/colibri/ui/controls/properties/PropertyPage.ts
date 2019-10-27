@@ -11,7 +11,9 @@ namespace colibri.ui.controls.properties {
 
         constructor(page: PropertyPage, section: PropertySection<any>) {
             super();
+
             this._page = page;
+
             this._section = section;
 
             this.addClass("PropertySectionPane")
@@ -123,12 +125,24 @@ namespace colibri.ui.controls.properties {
                 this._sectionProvider.addSections(this, list);
 
                 for (const section of list) {
+
                     if (!this._sectionPaneMap.has(section.getId())) {
+
                         const pane = new PropertySectionPane(this, section);
+
                         this.add(pane);
+
                         this._sectionPaneMap.set(section.getId(), pane);
+
                         this._sectionPanes.push(pane);
                     }
+                }
+
+                const sectionIdList = list.map(section => section.getId());
+
+                for (const pane of this._sectionPanes) {
+                    const index = sectionIdList.indexOf(pane.getSection().getId());
+                    pane.getElement().style.order = index.toString();
                 }
 
                 this.updateWithSelection();
@@ -148,26 +162,47 @@ namespace colibri.ui.controls.properties {
                 return;
             }
 
+            const list: PropertySection<any>[] = [];
+
+            this._sectionProvider.addSections(this, list);
+
+            const sectionIdSet = new Set<string>();
+
+            for (const section of list) {
+                sectionIdSet.add(section.getId());
+            }
+
             const n = this._selection.length;
 
             for (const pane of this._sectionPanes) {
 
                 const section = pane.getSection();
+
                 let show = false;
+
                 if (section.canEditNumber(n)) {
+
                     show = true;
+
                     for (const obj of this._selection) {
+
                         if (!section.canEdit(obj, n)) {
+
                             show = false;
                             break;
                         }
                     }
                 }
 
+                show = show && sectionIdSet.has(section.getId());
+
                 if (show) {
+
                     pane.getElement().style.display = "grid";
                     pane.createOrUpdateWithSelection();
+
                 } else {
+
                     pane.getElement().style.display = "none";
                 }
             }
@@ -178,17 +213,37 @@ namespace colibri.ui.controls.properties {
 
 
         updateExpandStatus() {
+
+            const list: PropertySection<any>[] = [];
+
+            this._sectionProvider.addSections(this, list);
+
+            const sectionIdList = list.map(section => section.getId());
+
+            const sortedPanes = this._sectionPanes
+                .map(p => p)
+                .sort((a, b) =>
+                    sectionIdList.indexOf(a.getSection().getId()) - sectionIdList.indexOf(b.getSection().getId())
+                );
+
             let templateRows = "";
 
-            for (const pane of this._sectionPanes) {
+            for (const pane of sortedPanes) {
+
                 if (pane.style.display !== "none") {
+
                     pane.createOrUpdateWithSelection();
+
                     if (pane.isExpanded()) {
+
                         templateRows += " " + (pane.getSection().isFillSpace() ? "1fr" : "min-content");
+
                     } else {
+
                         templateRows += " min-content";
                     }
                 }
+
             }
 
             this.getElement().style.gridTemplateRows = templateRows + " ";
@@ -199,6 +254,7 @@ namespace colibri.ui.controls.properties {
         }
 
         setSelection(sel: any[]): any {
+
             this._selection = sel;
 
             this.updateWithSelection();

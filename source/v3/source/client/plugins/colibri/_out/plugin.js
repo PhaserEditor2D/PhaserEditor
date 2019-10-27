@@ -2100,6 +2100,11 @@ var colibri;
                                     this._sectionPanes.push(pane);
                                 }
                             }
+                            const sectionIdList = list.map(section => section.getId());
+                            for (const pane of this._sectionPanes) {
+                                const index = sectionIdList.indexOf(pane.getSection().getId());
+                                pane.getElement().style.order = index.toString();
+                            }
                             this.updateWithSelection();
                         }
                         else {
@@ -2111,6 +2116,12 @@ var colibri;
                     updateWithSelection() {
                         if (!this._sectionProvider) {
                             return;
+                        }
+                        const list = [];
+                        this._sectionProvider.addSections(this, list);
+                        const sectionIdSet = new Set();
+                        for (const section of list) {
+                            sectionIdSet.add(section.getId());
                         }
                         const n = this._selection.length;
                         for (const pane of this._sectionPanes) {
@@ -2125,6 +2136,7 @@ var colibri;
                                     }
                                 }
                             }
+                            show = show && sectionIdSet.has(section.getId());
                             if (show) {
                                 pane.getElement().style.display = "grid";
                                 pane.createOrUpdateWithSelection();
@@ -2136,8 +2148,14 @@ var colibri;
                         this.updateExpandStatus();
                     }
                     updateExpandStatus() {
+                        const list = [];
+                        this._sectionProvider.addSections(this, list);
+                        const sectionIdList = list.map(section => section.getId());
+                        const sortedPanes = this._sectionPanes
+                            .map(p => p)
+                            .sort((a, b) => sectionIdList.indexOf(a.getSection().getId()) - sectionIdList.indexOf(b.getSection().getId()));
                         let templateRows = "";
-                        for (const pane of this._sectionPanes) {
+                        for (const pane of sortedPanes) {
                             if (pane.style.display !== "none") {
                                 pane.createOrUpdateWithSelection();
                                 if (pane.isExpanded()) {
