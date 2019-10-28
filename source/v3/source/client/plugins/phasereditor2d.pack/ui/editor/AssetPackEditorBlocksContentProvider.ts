@@ -6,13 +6,13 @@ namespace phasereditor2d.pack.ui.editor {
     export class AssetPackEditorBlocksContentProvider extends files.ui.viewers.FileTreeContentProvider {
 
         private _editor: AssetPackEditor;
-        private _ignoreFileSet: Set<io.FilePath>;
+        private _ignoreFileSet: IgnoreFileSet;
 
         constructor(editor: AssetPackEditor) {
             super();
 
             this._editor = editor;
-            this._ignoreFileSet = new Set();
+            this._ignoreFileSet = new IgnoreFileSet(editor);
         }
 
         getIgnoreFileSet() {
@@ -20,17 +20,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         async updateIgnoreFileSet_async() {
-
-            let packs = (await core.AssetPackUtils.getAllPacks())
-                .filter(pack => pack.getFile() !== this._editor.getInput());
-
-            this._ignoreFileSet = new Set();
-
-            for (const pack of packs) {
-                pack.computeUsedFiles(this._ignoreFileSet);
-            }
-
-            this._editor.getPack().computeUsedFiles(this._ignoreFileSet);
+            await this._ignoreFileSet.updateIgnoreFileSet_async();
         }
 
         getRoots(input: any): any[] {

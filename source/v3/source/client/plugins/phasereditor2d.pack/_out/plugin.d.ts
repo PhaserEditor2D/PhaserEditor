@@ -472,18 +472,17 @@ declare namespace phasereditor2d.pack.ui.editor {
         getPropertyProvider(): AssetPackEditorPropertySectionProvider;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
-        private openSelectFileDialog;
+        private openSelectFileDialog_async;
         importData_async(importData: ImportData): Promise<void>;
         private updateBlocks;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
-    import io = colibri.core.io;
     class AssetPackEditorBlocksContentProvider extends files.ui.viewers.FileTreeContentProvider {
         private _editor;
         private _ignoreFileSet;
         constructor(editor: AssetPackEditor);
-        getIgnoreFileSet(): Set<io.FilePath>;
+        getIgnoreFileSet(): IgnoreFileSet;
         updateIgnoreFileSet_async(): Promise<void>;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
@@ -573,6 +572,14 @@ declare namespace phasereditor2d.pack.ui.editor {
         constructor(editor: AssetPackEditor, viewer: controls.viewers.TreeViewer);
         isChild(file: io.FilePath): boolean;
         isParent(file: io.FilePath): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import io = colibri.core.io;
+    class IgnoreFileSet extends Set<io.FilePath> {
+        private _editor;
+        constructor(editor: AssetPackEditor);
+        updateIgnoreFileSet_async(): Promise<void>;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {

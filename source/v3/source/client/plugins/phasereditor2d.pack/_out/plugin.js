@@ -1921,9 +1921,9 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("tree"));
                         viewer.setInput(pack.core.TYPES);
                         const dlg = new dialogs.ViewerDialog(viewer);
-                        const selectCallback = () => {
+                        const selectCallback = async () => {
                             const type = viewer.getSelection()[0];
-                            this.openSelectFileDialog(type);
+                            await this.openSelectFileDialog_async(type);
                         };
                         dlg.create();
                         dlg.setTitle("Select File Type");
@@ -1939,16 +1939,18 @@ var phasereditor2d;
                         });
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => selectCallback());
                     }
-                    openSelectFileDialog(type) {
+                    async openSelectFileDialog_async(type) {
                         const viewer = new controls.viewers.TreeViewer();
                         viewer.setLabelProvider(new phasereditor2d.files.ui.viewers.FileLabelProvider());
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         viewer.setCellRendererProvider(new phasereditor2d.files.ui.viewers.FileCellRendererProvider());
                         const folder = this.getInput().getParent();
                         const importer = ui.importers.Importers.getImporter(type);
+                        const ignoreFileSet = new editor.IgnoreFileSet(this);
+                        await ignoreFileSet.updateIgnoreFileSet_async();
                         const allFiles = folder.flatTree([], false);
                         const list = allFiles
-                            .filter(file => importer.acceptFile(file));
+                            .filter(file => !ignoreFileSet.has(file) && importer.acceptFile(file));
                         viewer.setInput(list);
                         const dlg = new dialogs.ViewerDialog(viewer);
                         dlg.create();
@@ -2002,7 +2004,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack_32) {
+    (function (pack) {
         var ui;
         (function (ui) {
             var editor;
@@ -2011,19 +2013,13 @@ var phasereditor2d;
                     constructor(editor) {
                         super();
                         this._editor = editor;
-                        this._ignoreFileSet = new Set();
+                        this._ignoreFileSet = new editor_1.IgnoreFileSet(editor);
                     }
                     getIgnoreFileSet() {
                         return this._ignoreFileSet;
                     }
                     async updateIgnoreFileSet_async() {
-                        let packs = (await pack_32.core.AssetPackUtils.getAllPacks())
-                            .filter(pack => pack.getFile() !== this._editor.getInput());
-                        this._ignoreFileSet = new Set();
-                        for (const pack of packs) {
-                            pack.computeUsedFiles(this._ignoreFileSet);
-                        }
-                        this._editor.getPack().computeUsedFiles(this._ignoreFileSet);
+                        await this._ignoreFileSet.updateIgnoreFileSet_async();
                     }
                     getRoots(input) {
                         return super.getRoots(input)
@@ -2053,7 +2049,7 @@ var phasereditor2d;
                 }
                 editor_1.AssetPackEditorBlocksContentProvider = AssetPackEditorBlocksContentProvider;
             })(editor = ui.editor || (ui.editor = {}));
-        })(ui = pack_32.ui || (pack_32.ui = {}));
+        })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -2392,11 +2388,39 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
-    (function (pack) {
+    (function (pack_32) {
         var ui;
         (function (ui) {
             var editor;
             (function (editor_7) {
+                class IgnoreFileSet extends Set {
+                    constructor(editor) {
+                        super();
+                        this._editor = editor;
+                    }
+                    async updateIgnoreFileSet_async() {
+                        let packs = (await pack_32.core.AssetPackUtils.getAllPacks())
+                            .filter(pack => pack.getFile() !== this._editor.getInput());
+                        this.clear();
+                        for (const pack of packs) {
+                            pack.computeUsedFiles(this);
+                        }
+                        this._editor.getPack().computeUsedFiles(this);
+                    }
+                }
+                editor_7.IgnoreFileSet = IgnoreFileSet;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack_32.ui || (pack_32.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor_8) {
                 var controls = colibri.ui.controls;
                 var io = colibri.core.io;
                 var ide = colibri.ui.ide;
@@ -2438,7 +2462,7 @@ var phasereditor2d;
                         return n > 0;
                     }
                 }
-                editor_7.ImportFileSection = ImportFileSection;
+                editor_8.ImportFileSection = ImportFileSection;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

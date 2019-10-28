@@ -145,11 +145,11 @@ namespace phasereditor2d.pack.ui.editor {
 
             const dlg = new dialogs.ViewerDialog(viewer);
 
-            const selectCallback = () => {
+            const selectCallback = async () => {
 
                 const type = <string>viewer.getSelection()[0];
 
-                this.openSelectFileDialog(type);
+                await this.openSelectFileDialog_async(type);
             };
 
             dlg.create();
@@ -174,7 +174,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
 
-        private openSelectFileDialog(type: string) {
+        private async openSelectFileDialog_async(type: string) {
 
             const viewer = new controls.viewers.TreeViewer();
 
@@ -186,10 +186,15 @@ namespace phasereditor2d.pack.ui.editor {
 
             const importer = importers.Importers.getImporter(type);
 
+            const ignoreFileSet = new IgnoreFileSet(this);
+
+            await ignoreFileSet.updateIgnoreFileSet_async();
+
             const allFiles = folder.flatTree([], false);
 
             const list = allFiles
-                .filter(file => importer.acceptFile(file));
+
+                .filter(file => !ignoreFileSet.has(file) && importer.acceptFile(file));
 
             viewer.setInput(list);
 
