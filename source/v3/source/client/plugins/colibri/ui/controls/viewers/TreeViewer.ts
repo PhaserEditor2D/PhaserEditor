@@ -50,10 +50,56 @@ namespace colibri.ui.controls.viewers {
                 const path = this.getObjectPath(obj);
                 this.revealPath(path);
             }
+
+
+            try {
+                if (!(this.getContainer().getContainer() instanceof ScrollPane)) {
+                    return;
+                }
+            } catch (e) {
+                return;
+            }
+
+            const scrollPane = <ScrollPane>this.getContainer().getContainer();
+
+            this.repaint().then(() => {
+
+                const objSet = new Set(objects);
+
+                let found = false;
+
+                let y = -this._contentHeight;
+
+                const b = this.getBounds();
+
+                for (const item of this._paintItems) {
+
+                    if (objSet.has(item.data)) {
+
+                        if (item.y < 0 || item.y + item.h > b.height) {
+
+                            y = (item.y - b.height / 2 + item.h / 2) - this.getScrollY();
+
+                            found = true;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+
+                    this.setScrollY(-y);
+                    this.repaint();
+
+                    scrollPane.layout();
+                }
+            });
+
         }
 
 
-        revealPath(path: any[]) {
+        private revealPath(path: any[]) {
 
             for (let i = 0; i < path.length - 1; i++) {
                 this.setExpanded(path[i], true);
@@ -209,9 +255,9 @@ namespace colibri.ui.controls.viewers {
         expandCollapseBranch(obj: any) {
 
             if (this.getContentProvider().getChildren(obj).length > 0) {
-                
+
                 this.setExpanded(obj, !this.isExpanded(obj));
-                
+
                 return [obj];
             }
 

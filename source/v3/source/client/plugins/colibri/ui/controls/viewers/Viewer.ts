@@ -159,12 +159,13 @@ namespace colibri.ui.controls.viewers {
             this._selectedObjects = new Set(selection);
 
             if (notify) {
+                
                 this.fireSelectionChanged();
                 this.repaint();
             }
         }
 
-        abstract reveal(obj: any): void;
+        abstract reveal(...objects: any[]): void;
 
         private fireSelectionChanged() {
             this.dispatchEvent(new CustomEvent(EVENT_SELECTION_CHANGED, {

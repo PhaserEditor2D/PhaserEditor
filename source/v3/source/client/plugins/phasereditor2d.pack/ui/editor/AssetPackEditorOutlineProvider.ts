@@ -43,9 +43,11 @@ namespace phasereditor2d.pack.ui.editor {
 
         onViewerSelectionChanged(selection : any[]) {
             
-            this._editor.getViewer().setSelection(selection, false);
-            this._editor.getViewer().reveal(selection);
-            this._editor.getViewer().repaint();
+            const viewer= this._editor.getViewer();
+
+            viewer.setSelection(selection, false);
+            viewer.reveal(...selection);
+            viewer.repaint();
         }
     }
 

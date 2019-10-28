@@ -741,7 +741,7 @@ declare namespace colibri.ui.controls.viewers {
         protected getPaintItemAt(e: MouseEvent): PaintItem;
         getSelection(): any[];
         setSelection(selection: any[], notify?: boolean): void;
-        abstract reveal(obj: any): void;
+        abstract reveal(...objects: any[]): void;
         private fireSelectionChanged;
         private onKeyDown;
         private onWheel;
@@ -841,7 +841,7 @@ declare namespace colibri.ui.controls.viewers {
         setTreeRenderer(treeRenderer: TreeViewerRenderer): void;
         canSelectAtPoint(e: MouseEvent): boolean;
         reveal(...objects: any[]): void;
-        revealPath(path: any[]): void;
+        private revealPath;
         getObjectPath(obj: any): any[];
         private getObjectPath2;
         private getTreeIconAtPoint;

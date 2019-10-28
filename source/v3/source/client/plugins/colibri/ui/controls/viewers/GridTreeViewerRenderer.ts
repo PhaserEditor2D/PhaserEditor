@@ -166,6 +166,7 @@ namespace colibri.ui.controls.viewers {
 
                         // render tree icon
                         if (children.length > 0 && !this._flat) {
+                            
                             const iconY = y + (cellSize - TREE_ICON_SIZE) / 2;
 
                             const icon = Controls.getIcon(expanded ? ICON_CONTROL_TREE_COLLAPSE : ICON_CONTROL_TREE_EXPAND);
@@ -176,24 +177,27 @@ namespace colibri.ui.controls.viewers {
                                 obj: obj
                             });
                         }
-
                     }
 
                     const item = new PaintItem(paintItems.length, obj, parentPaintItem);
-                    item.set(args.x, args.y, args.w, args.h);
-                    paintItems.push(item);
-                    newParentPaintItem = item;
 
+                    item.set(args.x, args.y, args.w, args.h);
+
+                    paintItems.push(item);
+
+                    newParentPaintItem = item;
 
                     x += cellSize + TREE_RENDERER_GRID_PADDING;
 
                     if (x + cellSize > b.width) {
+
                         y += cellSize + TREE_RENDERER_GRID_PADDING;
                         x = 0 + offset;
                     }
                 }
 
                 if (expanded && !this._flat) {
+
                     const result = this.paintItems2(children, treeIconList, paintItems, newParentPaintItem, x, y, offset, depth + 1);
                     y = result.y;
                     x = result.x;

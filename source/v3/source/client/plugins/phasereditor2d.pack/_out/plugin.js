@@ -1858,7 +1858,7 @@ var phasereditor2d;
                         viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
                         viewer.setInput(this);
                         viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
-                            this._outlineProvider.setSelection(viewer.getSelection(), true, true);
+                            this._outlineProvider.setSelection(viewer.getSelection(), true, false);
                             this._outlineProvider.repaint();
                         });
                         this.updateContent();
@@ -1983,14 +1983,17 @@ var phasereditor2d;
                         });
                     }
                     async importData_async(importData) {
+                        const sel = [];
                         for (const file of importData.files) {
                             const item = await importData.importer.importFile(this._pack, file);
                             await item.preload();
+                            sel.push(item);
                         }
                         this._viewer.repaint();
                         this.setDirty(true);
                         await this.updateBlocks();
-                        this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, { detail: this }));
+                        this._viewer.setSelection(sel);
+                        this._viewer.reveal(...sel);
                     }
                     async updateBlocks() {
                         await this._blocksProviderProvider.updateBlocks_async();
@@ -2257,9 +2260,10 @@ var phasereditor2d;
                         return Promise.resolve();
                     }
                     onViewerSelectionChanged(selection) {
-                        this._editor.getViewer().setSelection(selection, false);
-                        this._editor.getViewer().reveal(selection);
-                        this._editor.getViewer().repaint();
+                        const viewer = this._editor.getViewer();
+                        viewer.setSelection(selection, false);
+                        viewer.reveal(...selection);
+                        viewer.repaint();
                     }
                 }
                 editor_5.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;

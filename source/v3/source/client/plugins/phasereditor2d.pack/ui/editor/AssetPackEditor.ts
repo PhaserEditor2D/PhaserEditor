@@ -51,7 +51,9 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.setInput(this);
 
             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
-                this._outlineProvider.setSelection(viewer.getSelection(), true, true);
+
+                this._outlineProvider.setSelection(viewer.getSelection(), true, false);
+                
                 this._outlineProvider.repaint();
             });
 
@@ -242,11 +244,15 @@ namespace phasereditor2d.pack.ui.editor {
 
         async importData_async(importData: ImportData) {
 
+            const sel = [];
+
             for (const file of importData.files) {
 
                 const item = await importData.importer.importFile(this._pack, file);
 
                 await item.preload();
+
+                sel.push(item);
             }
 
             this._viewer.repaint();
@@ -255,7 +261,9 @@ namespace phasereditor2d.pack.ui.editor {
 
             await this.updateBlocks();
 
-            this.dispatchEvent(new CustomEvent(controls.EVENT_SELECTION_CHANGED, { detail: this }));
+            this._viewer.setSelection(sel);
+
+            this._viewer.reveal(...sel);
         }
 
         private async updateBlocks() {
