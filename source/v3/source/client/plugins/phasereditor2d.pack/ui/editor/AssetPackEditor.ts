@@ -43,7 +43,46 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         static registerCommands(manager: ide.commands.CommandManager) {
-            //TODO: register commands
+            // delete 
+
+            manager.addHandlerHelper(ide.CMD_DELETE,
+
+                args => AssetPackEditor.isEditorScope(args),
+
+                args => {
+                    const editor = <AssetPackEditor>args.activeEditor;
+                    editor.deleteSelection();
+                });
+        }
+
+        private static isEditorScope(args: ide.commands.CommandArgs) {
+
+            return args.activePart instanceof AssetPackEditor ||
+
+                args.activePart instanceof outline.ui.views.OutlineView
+
+                && args.activeEditor instanceof AssetPackEditor
+        }
+
+        deleteSelection() {
+
+            const toDelete = this._viewer.getSelection().filter(obj => obj instanceof core.AssetPackItem);
+
+            if (toDelete.length === 0) {
+                return;
+            }
+
+            const before = AssetPackEditorOperation.takeSnapshot(this);
+
+            for (const obj of toDelete) {
+                this._pack.deleteItem(obj);
+            }
+
+            const after = AssetPackEditorOperation.takeSnapshot(this);
+
+            this.getUndoManager().add(new AssetPackEditorOperation(this, before, after));
+
+            this.updateAll();
         }
 
         updateAll() {

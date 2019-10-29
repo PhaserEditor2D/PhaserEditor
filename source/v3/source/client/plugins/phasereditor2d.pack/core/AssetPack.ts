@@ -206,6 +206,14 @@ namespace phasereditor2d.pack.core {
             return this._items;
         }
 
+        deleteItem(item: AssetPackItem) {
+            const i = this._items.indexOf(item);
+
+            if (i >= 0) {
+                this._items.splice(i, 1);
+            }
+        }
+
         getFile() {
             return this._file;
         }

@@ -83,6 +83,7 @@ declare namespace phasereditor2d.pack.core {
         createPackItem(data: any): AnimationsAssetPackItem | ImageAssetPackItem | SvgAssetPackItem | AtlasAssetPackItem | AtlasXMLAssetPackItem | UnityAtlasAssetPackItem | MultiatlasAssetPackItem | SpritesheetAssetPackItem | BitmapFontAssetPackItem | TilemapCSVAssetPackItem | TilemapImpactAssetPackItem | TilemapTiledJSONAssetPackItem | PluginAssetPackItem | SceneFileAssetPackItem | ScenePluginAssetPackItem | ScriptAssetPackItem | AudioAssetPackItem | AudioSpriteAssetPackItem | VideoAssetPackItem | TextAssetPackItem | CssAssetPackItem | GlslAssetPackItem | HTMLAssetPackItem | HTMLTextureAssetPackItem | BinaryAssetPackItem | JSONAssetPackItem | XMLAssetPackItem;
         static createFromFile(file: core.io.FilePath): Promise<AssetPack>;
         getItems(): AssetPackItem[];
+        deleteItem(item: AssetPackItem): void;
         getFile(): io.FilePath;
     }
 }
@@ -465,6 +466,8 @@ declare namespace phasereditor2d.pack.ui.editor {
         constructor();
         static getFactory(): AssetPackEditorFactory;
         static registerCommands(manager: ide.commands.CommandManager): void;
+        private static isEditorScope;
+        deleteSelection(): void;
         updateAll(): void;
         protected createViewer(): controls.viewers.TreeViewer;
         private updateContent;
