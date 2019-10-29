@@ -434,6 +434,7 @@ declare namespace colibri.ui.controls {
         private _startDrag;
         private _startPos;
         constructor(left?: Control, right?: Control, horizontal?: boolean);
+        private onDragStart;
         private onMouseDown;
         private onMouseUp;
         private onMouseMove;

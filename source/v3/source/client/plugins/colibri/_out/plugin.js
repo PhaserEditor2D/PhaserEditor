@@ -1453,12 +1453,14 @@ var colibri;
                     this._splitPosition = 50;
                     this._splitFactor = 0.5;
                     this._splitWidth = 2;
+                    const l0 = (e) => this.onDragStart(e);
                     const l1 = (e) => this.onMouseLeave(e);
                     const l2 = (e) => this.onMouseDown(e);
                     const l3 = (e) => this.onMouseUp(e);
                     const l4 = (e) => this.onMouseMove(e);
                     const l5 = (e) => {
                         if (!this.getElement().isConnected) {
+                            window.removeEventListener("dragstart", l0);
                             window.removeEventListener("mouseleave", l1);
                             window.removeEventListener("mousedown", l2);
                             window.removeEventListener("mouseup", l3);
@@ -1466,6 +1468,7 @@ var colibri;
                             window.removeEventListener("mousemove", l5);
                         }
                     };
+                    window.addEventListener("dragstart", l0);
                     window.addEventListener("mouseleave", l1);
                     window.addEventListener("mousedown", l2);
                     window.addEventListener("mouseup", l3);
@@ -1476,6 +1479,12 @@ var colibri;
                     }
                     if (right) {
                         this.setRightControl(right);
+                    }
+                }
+                onDragStart(e) {
+                    if (this._startDrag !== -1) {
+                        e.stopImmediatePropagation();
+                        e.preventDefault();
                     }
                 }
                 onMouseDown(e) {

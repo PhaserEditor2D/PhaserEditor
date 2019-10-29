@@ -1,5 +1,5 @@
 namespace colibri.ui.controls {
-    
+
     export class SplitPanel extends Control {
         private _leftControl: Control;
         private _rightControl: Control;
@@ -18,12 +18,14 @@ namespace colibri.ui.controls {
             this._splitFactor = 0.5;
             this._splitWidth = 2;
 
+            const l0 = (e: DragEvent) => this.onDragStart(e);
             const l1 = (e: MouseEvent) => this.onMouseLeave(e);
             const l2 = (e: MouseEvent) => this.onMouseDown(e);
             const l3 = (e: MouseEvent) => this.onMouseUp(e);
             const l4 = (e: MouseEvent) => this.onMouseMove(e);
             const l5 = (e: MouseEvent) => {
                 if (!this.getElement().isConnected) {
+                    window.removeEventListener("dragstart", l0);
                     window.removeEventListener("mouseleave", l1);
                     window.removeEventListener("mousedown", l2);
                     window.removeEventListener("mouseup", l3);
@@ -32,6 +34,7 @@ namespace colibri.ui.controls {
                 }
             };
 
+            window.addEventListener("dragstart", l0);
             window.addEventListener("mouseleave", l1);
             window.addEventListener("mousedown", l2);
             window.addEventListener("mouseup", l3);
@@ -47,7 +50,17 @@ namespace colibri.ui.controls {
             }
         }
 
+        private onDragStart(e: DragEvent) {
+
+            if (this._startDrag !== -1) {
+
+                e.stopImmediatePropagation();
+                e.preventDefault();
+            }
+        }
+
         private onMouseDown(e: MouseEvent) {
+
             const pos = this.getControlPosition(e.x, e.y);
             const offset = this._horizontal ? pos.x : pos.y;
 
