@@ -31,7 +31,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider {
-            return new AssetPackEditorPropertySectionProvider();
+            return new AssetPackEditorBlocksPropertySectionProvider();
         }
 
         getUndoManager() {

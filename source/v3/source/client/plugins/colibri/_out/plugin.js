@@ -2260,6 +2260,13 @@ var colibri;
                         parent.appendChild(label);
                         return label;
                     }
+                    createButton(parent, text, callback) {
+                        const btn = document.createElement("button");
+                        btn.innerText = text;
+                        btn.addEventListener("click", e => callback());
+                        parent.appendChild(btn);
+                        return btn;
+                    }
                     createText(parent, readOnly = false) {
                         const text = document.createElement("input");
                         text.type = "text";

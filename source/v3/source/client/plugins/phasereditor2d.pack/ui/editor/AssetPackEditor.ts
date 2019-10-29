@@ -30,7 +30,7 @@ namespace phasereditor2d.pack.ui.editor {
         private _pack: core.AssetPack;
         private _outlineProvider = new AssetPackEditorOutlineProvider(this);
         private _blocksProviderProvider = new AssetPackEditorBlocksProvider(this);
-        private _propertySectionProvider = new AssetPackEditorPropertySectionProvider();
+        private _propertyProvider = new properties.AssetPackEditorPropertyProvider();
 
         constructor() {
             super("phasereditor2d.AssetPackEditor");
@@ -72,28 +72,33 @@ namespace phasereditor2d.pack.ui.editor {
                 return;
             }
 
-            const before = AssetPackEditorOperation.takeSnapshot(this);
+            const before = undo.AssetPackEditorOperation.takeSnapshot(this);
 
             for (const obj of toDelete) {
                 this._pack.deleteItem(obj);
             }
 
-            const after = AssetPackEditorOperation.takeSnapshot(this);
+            const after = undo.AssetPackEditorOperation.takeSnapshot(this);
 
-            this.getUndoManager().add(new AssetPackEditorOperation(this, before, after));
+            this.getUndoManager().add(new undo.AssetPackEditorOperation(this, before, after));
 
             this.updateAll();
         }
 
         updateAll() {
 
-            this._viewer.repaint();
-
-            this._outlineProvider.repaint();
+            this.repaintEditorAndOutline();
 
             this._blocksProviderProvider.updateBlocks_async();
 
             this.setSelection([]);
+        }
+
+        repaintEditorAndOutline() {
+
+            this._viewer.repaint();
+
+            this._outlineProvider.repaint();
         }
 
         protected createViewer(): controls.viewers.TreeViewer {
@@ -173,7 +178,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         getPropertyProvider() {
-            return this._propertySectionProvider;
+            return this._propertyProvider;
         }
 
         createEditorToolbar(parent: HTMLElement) {
@@ -231,7 +236,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
 
-        private async openSelectFileDialog_async(type: string) {
+        async createFilesViewer(filter : (file : io.FilePath) => boolean) {
 
             const viewer = new controls.viewers.TreeViewer();
 
@@ -239,21 +244,29 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setCellRendererProvider(new files.ui.viewers.FileCellRendererProvider());
 
-            const folder = this.getInput().getParent();
-
-            const importer = importers.Importers.getImporter(type);
-
             const ignoreFileSet = new IgnoreFileSet(this);
 
             await ignoreFileSet.updateIgnoreFileSet_async();
+
+            const folder = this.getInput().getParent();
 
             const allFiles = folder.flatTree([], false);
 
             const list = allFiles
 
-                .filter(file => !ignoreFileSet.has(file) && importer.acceptFile(file));
+                .filter(file => !ignoreFileSet.has(file) && filter(file));
 
             viewer.setInput(list);
+            
+
+            return viewer;
+        }
+
+        private async openSelectFileDialog_async(type: string) {
+            
+            const importer = importers.Importers.getImporter(type);
+
+            const viewer = await this.createFilesViewer(file => importer.acceptFile(file));
 
             const dlg = new dialogs.ViewerDialog(viewer);
 
@@ -284,7 +297,7 @@ namespace phasereditor2d.pack.ui.editor {
             }
 
             dlg.addButton("Show All Files", () => {
-                viewer.setInput(allFiles);
+                viewer.setInput(this.getInput().getParent().flatTree([], false));
                 viewer.repaint();
             });
 
@@ -299,7 +312,7 @@ namespace phasereditor2d.pack.ui.editor {
 
         async importData_async(importData: ImportData) {
 
-            const before = AssetPackEditorOperation.takeSnapshot(this);
+            const before = undo.AssetPackEditorOperation.takeSnapshot(this);
 
             const sel = [];
 
@@ -322,9 +335,9 @@ namespace phasereditor2d.pack.ui.editor {
 
             this._viewer.reveal(...sel);
 
-            const after = AssetPackEditorOperation.takeSnapshot(this);
+            const after = undo.AssetPackEditorOperation.takeSnapshot(this);
 
-            this.getUndoManager().add(new AssetPackEditorOperation(this, before, after));
+            this.getUndoManager().add(new undo.AssetPackEditorOperation(this, before, after));
         }
 
         private async updateBlocks() {

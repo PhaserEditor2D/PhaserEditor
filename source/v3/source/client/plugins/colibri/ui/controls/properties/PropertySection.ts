@@ -75,13 +75,13 @@ namespace colibri.ui.controls.properties {
 
         protected createGridElement(parent: HTMLElement, cols = 0, simpleProps = true) {
             const div = document.createElement("div");
-            
+
             div.classList.add("formGrid");
 
             if (cols > 0) {
                 div.classList.add("formGrid-cols-" + cols);
             }
-            
+
             if (simpleProps) {
                 div.classList.add("formSimpleProps");
             }
@@ -90,19 +90,40 @@ namespace colibri.ui.controls.properties {
         }
 
         protected createLabel(parent: HTMLElement, text = "") {
+
             const label = document.createElement("label");
+
             label.classList.add("formLabel");
             label.innerText = text;
+
             parent.appendChild(label);
+
             return label;
         }
 
+        protected createButton(parent: HTMLElement, text : string, callback: () => void) {
+            
+            const btn = document.createElement("button");
+            
+            btn.innerText = text;
+
+            btn.addEventListener("click", e => callback());
+
+            parent.appendChild(btn);
+
+            return btn;
+        }
+
         protected createText(parent: HTMLElement, readOnly = false) {
+
             const text = document.createElement("input");
+
             text.type = "text";
             text.classList.add("formText");
             text.readOnly = readOnly;
+
             parent.appendChild(text);
+
             return text;
         }
     }

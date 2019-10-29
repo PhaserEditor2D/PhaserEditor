@@ -8,7 +8,7 @@ namespace phasereditor2d.scene.ui.blocks {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void {
 
             sections.push(new pack.ui.properties.AssetPackItemSection(page));
-            sections.push(new pack.ui.properties.ImageSection(page));
+            sections.push(new pack.ui.properties.ImagePreviewSection(page));
             sections.push(new pack.ui.properties.ManyImageSection(page));
 
         }

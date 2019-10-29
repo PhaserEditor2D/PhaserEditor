@@ -566,7 +566,7 @@ var phasereditor2d;
                 class SceneEditorBlocksPropertyProvider extends controls.properties.PropertySectionProvider {
                     addSections(page, sections) {
                         sections.push(new phasereditor2d.pack.ui.properties.AssetPackItemSection(page));
-                        sections.push(new phasereditor2d.pack.ui.properties.ImageSection(page));
+                        sections.push(new phasereditor2d.pack.ui.properties.ImagePreviewSection(page));
                         sections.push(new phasereditor2d.pack.ui.properties.ManyImageSection(page));
                     }
                 }

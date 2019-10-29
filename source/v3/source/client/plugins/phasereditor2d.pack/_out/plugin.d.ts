@@ -31,6 +31,7 @@ declare namespace phasereditor2d.pack.core {
         getEditorData(): any;
         getPack(): AssetPack;
         getKey(): string;
+        setKey(key: string): void;
         getType(): string;
         getData(): any;
         addToPhaserCache(game: Phaser.Game): void;
@@ -462,22 +463,24 @@ declare namespace phasereditor2d.pack.ui.editor {
         private _pack;
         private _outlineProvider;
         private _blocksProviderProvider;
-        private _propertySectionProvider;
+        private _propertyProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
         static registerCommands(manager: ide.commands.CommandManager): void;
         private static isEditorScope;
         deleteSelection(): void;
         updateAll(): void;
+        repaintEditorAndOutline(): void;
         protected createViewer(): controls.viewers.TreeViewer;
         private updateContent;
         save(): Promise<void>;
         getPack(): core.AssetPack;
         setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;
-        getPropertyProvider(): AssetPackEditorPropertySectionProvider;
+        getPropertyProvider(): properties.AssetPackEditorPropertyProvider;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         private openAddFileDialog;
+        createFilesViewer(filter: (file: io.FilePath) => boolean): Promise<controls.viewers.TreeViewer>;
         private openSelectFileDialog_async;
         importData_async(importData: ImportData): Promise<void>;
         private updateBlocks;
@@ -497,7 +500,7 @@ declare namespace phasereditor2d.pack.ui.editor {
 }
 declare namespace phasereditor2d.pack.ui.editor {
     import controls = colibri.ui.controls;
-    class AssetPackEditorBlocksPropertyProvider extends files.ui.views.FilePropertySectionProvider {
+    class AssetPackEditorBlocksPropertySectionProvider extends files.ui.views.FilePropertySectionProvider {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
     }
 }
@@ -536,19 +539,6 @@ declare namespace phasereditor2d.pack.ui.editor {
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {
-    import ide = colibri.ui.ide;
-    class AssetPackEditorOperation extends ide.undo.Operation {
-        private _editor;
-        private _before;
-        private _after;
-        static takeSnapshot(editor: AssetPackEditor): any;
-        constructor(editor: AssetPackEditor, before: any, after: any);
-        private load;
-        undo(): void;
-        redo(): void;
-    }
-}
-declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditorOutlineContentProvider extends AssetPackEditorContentProvider {
         constructor(editor: AssetPackEditor);
         getRoots(): string[];
@@ -568,12 +558,6 @@ declare namespace phasereditor2d.pack.ui.editor {
         getInput(): any;
         preload(): Promise<void>;
         onViewerSelectionChanged(selection: any[]): void;
-    }
-}
-declare namespace phasereditor2d.pack.ui.editor {
-    import controls = colibri.ui.controls;
-    class AssetPackEditorPropertySectionProvider extends files.ui.views.FilePropertySectionProvider {
-        addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.viewers {
@@ -617,6 +601,67 @@ declare namespace phasereditor2d.pack.ui.editor {
         protected createForm(parent: HTMLDivElement): void;
         canEdit(obj: any, n: number): boolean;
         canEditNumber(n: number): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class AssetPackEditorPropertyProvider extends controls.properties.PropertySectionProvider {
+        addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    abstract class BaseSection extends controls.properties.PropertySection<core.AssetPackItem> {
+        getEditor(): AssetPackEditor;
+        changeItemField(key: string, value: any): void;
+        canEdit(obj: any, n: number): boolean;
+        canEditNumber(n: number): boolean;
+        browseFile_onlyContentType(title: string, contentType: string, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
+        browseFile(title: string, fileFilter: (file: io.FilePath) => boolean, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class ImageSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class ItemSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        protected createForm(parent: HTMLDivElement): void;
+        canEdit(obj: any, n: number): boolean;
+        canEditNumber(n: number): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.undo {
+    import ide = colibri.ui.ide;
+    class AssetPackEditorOperation extends ide.undo.Operation {
+        private _editor;
+        private _before;
+        private _after;
+        static takeSnapshot(editor: AssetPackEditor): any;
+        constructor(editor: AssetPackEditor, before: any, after: any);
+        private load;
+        undo(): void;
+        redo(): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.undo {
+    import ide = colibri.ui.ide;
+    class ChangeItemFieldOperation extends ide.undo.Operation {
+        private _editor;
+        private _itemIndexList;
+        private _fieldKey;
+        private _newValueList;
+        private _oldValueList;
+        constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any);
+        undo(): void;
+        redo(): void;
+        private load;
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {
@@ -726,7 +771,7 @@ declare namespace phasereditor2d.pack.ui.properties {
 }
 declare namespace phasereditor2d.pack.ui.properties {
     import controls = colibri.ui.controls;
-    class ImageSection extends controls.properties.PropertySection<core.AssetPackItem> {
+    class ImagePreviewSection extends controls.properties.PropertySection<core.AssetPackItem> {
         constructor(page: controls.properties.PropertyPage);
         protected createForm(parent: HTMLDivElement): void;
         canEdit(obj: any): boolean;

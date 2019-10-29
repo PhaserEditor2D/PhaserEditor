@@ -1,4 +1,4 @@
-namespace phasereditor2d.pack.ui.editor {
+namespace phasereditor2d.pack.ui.editor.undo {
 
     import ide = colibri.ui.ide;
 
@@ -21,7 +21,9 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         private load(data : any) {
+
             this._editor.getPack().fromJSON(data);
+            
             this._editor.updateAll();
         }
 

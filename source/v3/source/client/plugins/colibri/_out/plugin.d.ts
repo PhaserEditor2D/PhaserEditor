@@ -574,6 +574,7 @@ declare namespace colibri.ui.controls.properties {
         flatValues_StringJoin(values: string[]): string;
         protected createGridElement(parent: HTMLElement, cols?: number, simpleProps?: boolean): HTMLDivElement;
         protected createLabel(parent: HTMLElement, text?: string): HTMLLabelElement;
+        protected createButton(parent: HTMLElement, text: string, callback: () => void): HTMLButtonElement;
         protected createText(parent: HTMLElement, readOnly?: boolean): HTMLInputElement;
     }
 }

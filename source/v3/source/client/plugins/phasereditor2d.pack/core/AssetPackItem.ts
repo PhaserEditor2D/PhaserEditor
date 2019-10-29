@@ -60,6 +60,10 @@ namespace phasereditor2d.pack.core {
             return this._data["key"];
         }
 
+        setKey(key : string) {
+            this._data["key"] = key;
+        }
+
         getType(): string {
             return this._data["type"];
         }
