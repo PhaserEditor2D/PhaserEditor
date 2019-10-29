@@ -614,17 +614,19 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
     import io = colibri.core.io;
     abstract class BaseSection extends controls.properties.PropertySection<core.AssetPackItem> {
         getEditor(): AssetPackEditor;
-        changeItemField(key: string, value: any): void;
+        changeItemField(key: string, value: any, updateSelection?: boolean): void;
         canEdit(obj: any, n: number): boolean;
         canEditNumber(n: number): boolean;
         browseFile_onlyContentType(title: string, contentType: string, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
         browseFile(title: string, fileFilter: (file: io.FilePath) => boolean, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
+        protected createImageField(comp: HTMLElement, label: string, fieldKey: string): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
     class ImageSection extends BaseSection {
         constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
         protected createForm(parent: HTMLDivElement): void;
     }
 }
@@ -658,7 +660,8 @@ declare namespace phasereditor2d.pack.ui.editor.undo {
         private _fieldKey;
         private _newValueList;
         private _oldValueList;
-        constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any);
+        private _updateSelection;
+        constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any, updateSelection?: boolean);
         undo(): void;
         redo(): void;
         private load;

@@ -25,6 +25,8 @@ namespace phasereditor2d.pack.ui.editor.undo {
             this._editor.getPack().fromJSON(data);
             
             this._editor.updateAll();
+
+            this._editor.setDirty(true);
         }
 
         undo(): void {

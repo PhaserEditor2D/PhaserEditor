@@ -48,14 +48,14 @@ namespace phasereditor2d.inspector.ui.views {
                     this.onPartSelection();
 
                 } else {
-                    
+
                     this._propertyPage.setSectionProvider(null);
                 }
             }
         }
 
         private onPartSelection() {
-            
+
             const sel = this._currentPart.getSelection();
 
             const provider = this._currentPart.getPropertyProvider();
@@ -63,6 +63,20 @@ namespace phasereditor2d.inspector.ui.views {
             this._propertyPage.setSectionProvider(provider);
 
             this._propertyPage.setSelection(sel);
+        }
+
+        getUndoManager() {
+
+            if (this._currentPart) {
+
+                const manager = this._currentPart.getUndoManager();
+
+                if (manager) {
+                    return manager;
+                }
+            }
+
+            return super.getUndoManager();
         }
     }
 }

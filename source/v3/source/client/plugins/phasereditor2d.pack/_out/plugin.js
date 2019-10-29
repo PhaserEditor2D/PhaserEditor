@@ -1888,6 +1888,7 @@ var phasereditor2d;
                         const after = editor_1.undo.AssetPackEditorOperation.takeSnapshot(this);
                         this.getUndoManager().add(new editor_1.undo.AssetPackEditorOperation(this, before, after));
                         this.updateAll();
+                        this.setDirty(true);
                     }
                     updateAll() {
                         this.repaintEditorAndOutline();
@@ -2555,8 +2556,8 @@ var phasereditor2d;
                         getEditor() {
                             return ide.Workbench.getWorkbench().getActiveEditor();
                         }
-                        changeItemField(key, value) {
-                            this.getEditor().getUndoManager().add(new editor.undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value));
+                        changeItemField(key, value, updateSelection = false) {
+                            this.getEditor().getUndoManager().add(new editor.undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value, updateSelection));
                         }
                         canEdit(obj, n) {
                             return obj instanceof pack.core.AssetPackItem && n === 1;
@@ -2597,6 +2598,21 @@ var phasereditor2d;
                                 dlg.close();
                             });
                         }
+                        createImageField(comp, label, fieldKey) {
+                            this.createLabel(comp, label);
+                            const text = this.createText(comp, true);
+                            this.addUpdater(() => {
+                                const val = this.getSelection()[0].getData()[fieldKey];
+                                text.value = val === undefined ? "" : val;
+                            });
+                            this.createButton(comp, "Browse", () => {
+                                this.browseFile_onlyContentType("Select Image", phasereditor2d.files.core.CONTENT_TYPE_IMAGE, (files) => {
+                                    const file = files[0];
+                                    const url = pack.core.AssetPackUtils.getFilePackUrl(file);
+                                    this.changeItemField(fieldKey, url, true);
+                                });
+                            });
+                        }
                     }
                     properties.BaseSection = BaseSection;
                 })(properties = editor.properties || (editor.properties = {}));
@@ -2618,21 +2634,14 @@ var phasereditor2d;
                         constructor(page) {
                             super(page, "phasereditor2d.pack.ui.editor.properties.ImageSection", "Image");
                         }
+                        canEdit(obj, n) {
+                            return obj instanceof pack.core.ImageAssetPackItem && super.canEdit(obj, n);
+                        }
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            {
-                                // url
-                                this.createLabel(comp, "URL");
-                                const text = this.createText(comp, true);
-                                this.addUpdater(() => {
-                                    text.value = this.getSelection()[0].getData().url;
-                                });
-                                this.createButton(comp, "Browse", () => {
-                                    this.browseFile_onlyContentType("Select Image", phasereditor2d.files.core.CONTENT_TYPE_IMAGE, (files) => {
-                                    });
-                                });
-                            }
+                            this.createImageField(comp, "URL", "url");
+                            this.createImageField(comp, "Normal Map", "normalMap");
                         }
                     }
                     properties.ImageSection = ImageSection;
@@ -2707,6 +2716,7 @@ var phasereditor2d;
                         load(data) {
                             this._editor.getPack().fromJSON(data);
                             this._editor.updateAll();
+                            this._editor.setDirty(true);
                         }
                         undo() {
                             this.load(this._before);
@@ -2733,11 +2743,12 @@ var phasereditor2d;
                 (function (undo) {
                     var ide = colibri.ui.ide;
                     class ChangeItemFieldOperation extends ide.undo.Operation {
-                        constructor(editor, items, fieldKey, newValue) {
+                        constructor(editor, items, fieldKey, newValue, updateSelection = false) {
                             super();
                             this._editor = editor;
                             this._itemIndexList = items.map(item => this._editor.getPack().getItems().indexOf(item));
                             this._fieldKey = fieldKey;
+                            this._updateSelection = updateSelection;
                             this._newValueList = [];
                             this._oldValueList = items.map(item => item.getData()[fieldKey]);
                             for (let i = 0; i < items.length; i++) {
@@ -2759,6 +2770,9 @@ var phasereditor2d;
                             }
                             this._editor.repaintEditorAndOutline();
                             this._editor.setDirty(true);
+                            if (this._updateSelection) {
+                                this._editor.setSelection(this._editor.getSelection());
+                            }
                         }
                     }
                     undo.ChangeItemFieldOperation = ChangeItemFieldOperation;
@@ -3173,7 +3187,7 @@ var phasereditor2d;
                 var ide = colibri.ui.ide;
                 class ImagePreviewSection extends controls.properties.PropertySection {
                     constructor(page) {
-                        super(page, "pack.ImageSection", "Image", true);
+                        super(page, "pack.ImageSection", "Image Preview", true);
                     }
                     createForm(parent) {
                         parent.classList.add("ImagePreviewFormArea", "PreviewBackground");
@@ -3220,7 +3234,7 @@ var phasereditor2d;
                 var ide = colibri.ui.ide;
                 class ManyImageSection extends controls.properties.PropertySection {
                     constructor(page) {
-                        super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageSection", "Images", true);
+                        super(page, "phasereditor2d.ui.ide.editors.pack.properties.ManyImageSection", "Image Preview", true);
                     }
                     createForm(parent) {
                         parent.classList.add("ManyImagePreviewFormArea");

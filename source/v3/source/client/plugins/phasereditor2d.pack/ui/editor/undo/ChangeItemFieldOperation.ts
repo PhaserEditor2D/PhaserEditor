@@ -9,13 +9,16 @@ namespace phasereditor2d.pack.ui.editor.undo {
         private _fieldKey: string;
         private _newValueList: any[];
         private _oldValueList: any[];
+        private _updateSelection: boolean;
 
-        constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any) {
+        constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any, updateSelection: boolean = false) {
             super();
 
             this._editor = editor;
             this._itemIndexList = items.map(item => this._editor.getPack().getItems().indexOf(item));
             this._fieldKey = fieldKey;
+            this._updateSelection = updateSelection;
+
             this._newValueList = [];
 
             this._oldValueList = items.map(item => item.getData()[fieldKey]);
@@ -44,11 +47,16 @@ namespace phasereditor2d.pack.ui.editor.undo {
                 const item = this._editor.getPack().getItems()[index];
 
                 item.getData()[this._fieldKey] = values[i];
+
             }
 
             this._editor.repaintEditorAndOutline();
 
             this._editor.setDirty(true);
+
+            if (this._updateSelection) {
+                this._editor.setSelection(this._editor.getSelection());
+            }
         }
     }
 }

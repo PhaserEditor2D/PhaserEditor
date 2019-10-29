@@ -19,6 +19,7 @@ declare namespace phasereditor2d.inspector.ui.views {
         protected createPart(): void;
         private onWorkbenchPartActivate;
         private onPartSelection;
+        getUndoManager(): ide.undo.UndoManager;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

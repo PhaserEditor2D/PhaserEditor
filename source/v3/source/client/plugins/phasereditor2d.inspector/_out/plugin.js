@@ -69,6 +69,15 @@ var phasereditor2d;
                         this._propertyPage.setSectionProvider(provider);
                         this._propertyPage.setSelection(sel);
                     }
+                    getUndoManager() {
+                        if (this._currentPart) {
+                            const manager = this._currentPart.getUndoManager();
+                            if (manager) {
+                                return manager;
+                            }
+                        }
+                        return super.getUndoManager();
+                    }
                 }
                 views.InspectorView = InspectorView;
             })(views = ui.views || (ui.views = {}));

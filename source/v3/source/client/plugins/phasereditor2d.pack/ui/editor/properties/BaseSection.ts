@@ -6,14 +6,13 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
     export abstract class BaseSection extends controls.properties.PropertySection<core.AssetPackItem> {
 
-
         getEditor() {
             return <AssetPackEditor>ide.Workbench.getWorkbench().getActiveEditor();
         }
 
-        changeItemField(key: string, value: any) {
+        changeItemField(key: string, value: any, updateSelection: boolean = false) {
             this.getEditor().getUndoManager().add(
-                new undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value)
+                new undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value, updateSelection)
             );
         }
 
@@ -26,7 +25,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
         }
 
         async browseFile_onlyContentType(title: string, contentType: string, selectionCallback: (files: io.FilePath[]) => void) {
-            
+
             this.browseFile(title, f => {
 
                 const type = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(f);
@@ -71,6 +70,34 @@ namespace phasereditor2d.pack.ui.editor.properties {
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, async (e) => {
                 selectionCallback([viewer.getSelection()[0]]);
                 dlg.close();
+            });
+        }
+
+        protected createImageField(comp: HTMLElement, label: string, fieldKey: string) {
+
+            this.createLabel(comp, label);
+
+            const text = this.createText(comp, true);
+
+            this.addUpdater(() => {
+                
+                const val = this.getSelection()[0].getData()[fieldKey];
+
+                text.value = val === undefined ? "" : val;
+            });
+
+            this.createButton(comp, "Browse", () => {
+
+                this.browseFile_onlyContentType("Select Image", files.core.CONTENT_TYPE_IMAGE, (files) => {
+
+                    const file = files[0];
+
+                    const url = core.AssetPackUtils.getFilePackUrl(file);
+
+                    this.changeItemField(fieldKey, url, true);
+
+                });
+
             });
         }
     }

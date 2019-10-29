@@ -83,6 +83,8 @@ namespace phasereditor2d.pack.ui.editor {
             this.getUndoManager().add(new undo.AssetPackEditorOperation(this, before, after));
 
             this.updateAll();
+
+            this.setDirty(true);
         }
 
         updateAll() {

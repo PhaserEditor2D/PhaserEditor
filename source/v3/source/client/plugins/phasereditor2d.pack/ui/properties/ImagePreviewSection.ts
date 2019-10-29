@@ -6,7 +6,7 @@ namespace phasereditor2d.pack.ui.properties {
     export class ImagePreviewSection extends controls.properties.PropertySection<core.AssetPackItem> {
 
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "pack.ImageSection", "Image", true);
+            super(page, "pack.ImageSection", "Image Preview", true);
         }
 
         protected createForm(parent: HTMLDivElement) {
