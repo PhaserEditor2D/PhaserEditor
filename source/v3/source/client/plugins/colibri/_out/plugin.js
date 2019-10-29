@@ -4603,7 +4603,9 @@ var colibri;
                     window.addEventListener("mousedown", e => {
                         this._activeElement = e.target;
                         const part = this.findPart(e.target);
-                        this.setActivePart(part);
+                        if (part) {
+                            this.setActivePart(part);
+                        }
                     });
                 }
                 registerEditors(plugins) {

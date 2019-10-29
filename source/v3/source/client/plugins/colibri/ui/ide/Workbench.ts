@@ -15,7 +15,7 @@ namespace colibri.ui.ide {
     export class Workbench extends EventTarget {
 
         private static _workbench: Workbench;
-        private _plugins : ide.Plugin[];
+        private _plugins: ide.Plugin[];
 
         static getWorkbench() {
 
@@ -58,7 +58,7 @@ namespace colibri.ui.ide {
             this._extensionRegistry = new core.extensions.ExtensionRegistry();
         }
 
-        addPlugin(plugin : ide.Plugin) {
+        addPlugin(plugin: ide.Plugin) {
             this._plugins.push(plugin);
         }
 
@@ -192,9 +192,14 @@ namespace colibri.ui.ide {
 
         private initEvents() {
             window.addEventListener("mousedown", e => {
+                
                 this._activeElement = <HTMLElement>e.target;
+
                 const part = this.findPart(<any>e.target);
-                this.setActivePart(part);
+
+                if (part) {
+                    this.setActivePart(part);
+                }
             });
         }
 
@@ -378,7 +383,7 @@ namespace colibri.ui.ide {
             if (file === null) {
                 return null;
             }
-            
+
             return this._fileImageCache.getContent(file);
         }
 
