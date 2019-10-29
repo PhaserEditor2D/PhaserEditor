@@ -63,5 +63,7 @@ namespace colibri.ui.ide {
         abstract getInput(): any;
 
         abstract preload(): Promise<void>;
+
+        abstract getUndoManager();
     }
 }

@@ -2,8 +2,16 @@ namespace phasereditor2d.scene.ui.blocks {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
-    
+
     export class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
+
+        private _editor: editor.SceneEditor;
+
+        constructor(editor: editor.SceneEditor) {
+            super();
+
+            this._editor = editor;
+        }
 
         async preload() {
             pack.core.PackFinder.preload();
@@ -23,6 +31,10 @@ namespace phasereditor2d.scene.ui.blocks {
 
         getTreeViewerRenderer(viewer: controls.viewers.TreeViewer) {
             return new SceneEditorBlocksTreeRendererProvider(viewer);
+        }
+
+        getUndoManager() {
+            return this._editor;
         }
 
         getPropertySectionProvider(): controls.properties.PropertySectionProvider {

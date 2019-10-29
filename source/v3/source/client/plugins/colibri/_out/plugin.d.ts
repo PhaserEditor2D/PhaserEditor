@@ -976,6 +976,7 @@ declare namespace colibri.ui.ide {
         abstract getPropertySectionProvider(): controls.properties.PropertySectionProvider;
         abstract getInput(): any;
         abstract preload(): Promise<void>;
+        abstract getUndoManager(): any;
     }
 }
 declare namespace colibri.ui.ide {
@@ -1006,6 +1007,7 @@ declare namespace colibri.ui.ide {
         abstract getViewerProvider(editor: EditorPart): EditorViewerProvider;
         private onWorkbenchEditorActivated;
         getPropertyProvider(): controls.properties.PropertySectionProvider;
+        getUndoManager(): any;
     }
 }
 declare namespace colibri.ui.ide {

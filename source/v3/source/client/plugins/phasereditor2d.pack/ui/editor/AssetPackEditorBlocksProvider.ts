@@ -34,6 +34,10 @@ namespace phasereditor2d.pack.ui.editor {
             return new AssetPackEditorPropertySectionProvider();
         }
 
+        getUndoManager() {
+            return this._editor.getUndoManager();
+        }
+
         getInput() {
             return this._editor.getInput().getParent().getFiles();
         }

@@ -512,6 +512,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         getCellRendererProvider(): colibri.ui.controls.viewers.ICellRendererProvider;
         getTreeViewerRenderer(viewer: colibri.ui.controls.viewers.TreeViewer): colibri.ui.controls.viewers.TreeViewerRenderer;
         getPropertySectionProvider(): colibri.ui.controls.properties.PropertySectionProvider;
+        getUndoManager(): ide.undo.UndoManager;
         getInput(): colibri.core.io.FilePath[];
         updateBlocks_async(): Promise<void>;
         preload(): Promise<void>;
@@ -558,6 +559,7 @@ declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditorOutlineProvider extends ide.EditorViewerProvider {
         private _editor;
         constructor(editor: AssetPackEditor);
+        getUndoManager(): ide.undo.UndoManager;
         getContentProvider(): colibri.ui.controls.viewers.ITreeContentProvider;
         getLabelProvider(): colibri.ui.controls.viewers.ILabelProvider;
         getCellRendererProvider(): colibri.ui.controls.viewers.ICellRendererProvider;

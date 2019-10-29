@@ -12,6 +12,10 @@ namespace phasereditor2d.scene.ui.editor.outline {
             this._editor = editor;
         }
 
+        getUndoManager() {
+            return this._editor.getUndoManager();
+        }
+
         getContentProvider(): controls.viewers.ITreeContentProvider {
             return new SceneEditorOutlineContentProvider();
         }

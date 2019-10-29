@@ -132,11 +132,14 @@ declare namespace phasereditor2d.scene.ui.blocks {
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
     class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
+        private _editor;
+        constructor(editor: editor.SceneEditor);
         preload(): Promise<void>;
         getContentProvider(): controls.viewers.ITreeContentProvider;
         getLabelProvider(): controls.viewers.ILabelProvider;
         getCellRendererProvider(): controls.viewers.ICellRendererProvider;
         getTreeViewerRenderer(viewer: controls.viewers.TreeViewer): SceneEditorBlocksTreeRendererProvider;
+        getUndoManager(): editor.SceneEditor;
         getPropertySectionProvider(): controls.properties.PropertySectionProvider;
         getInput(): this;
     }
@@ -274,6 +277,7 @@ declare namespace phasereditor2d.scene.ui.editor.outline {
     class SceneEditorOutlineProvider extends ide.EditorViewerProvider {
         private _editor;
         constructor(editor: SceneEditor);
+        getUndoManager(): ide.undo.UndoManager;
         getContentProvider(): controls.viewers.ITreeContentProvider;
         getLabelProvider(): controls.viewers.ILabelProvider;
         getCellRendererProvider(): controls.viewers.ICellRendererProvider;

@@ -585,6 +585,10 @@ var phasereditor2d;
             (function (blocks) {
                 var ide = colibri.ui.ide;
                 class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
+                    constructor(editor) {
+                        super();
+                        this._editor = editor;
+                    }
                     async preload() {
                         phasereditor2d.pack.core.PackFinder.preload();
                     }
@@ -599,6 +603,9 @@ var phasereditor2d;
                     }
                     getTreeViewerRenderer(viewer) {
                         return new blocks.SceneEditorBlocksTreeRendererProvider(viewer);
+                    }
+                    getUndoManager() {
+                        return this._editor;
                     }
                     getPropertySectionProvider() {
                         return new blocks.SceneEditorBlocksPropertyProvider();
@@ -1027,7 +1034,7 @@ var phasereditor2d;
                 class SceneEditor extends colibri.ui.ide.FileEditor {
                     constructor() {
                         super("phasereditor2d.SceneEditor");
-                        this._blocksProvider = new ui.blocks.SceneEditorBlocksProvider();
+                        this._blocksProvider = new ui.blocks.SceneEditorBlocksProvider(this);
                         this._outlineProvider = new editor.outline.SceneEditorOutlineProvider(this);
                         this._propertyProvider = new editor.properties.SceneEditorSectionProvider();
                     }
@@ -1414,6 +1421,9 @@ var phasereditor2d;
                         constructor(editor) {
                             super();
                             this._editor = editor;
+                        }
+                        getUndoManager() {
+                            return this._editor.getUndoManager();
                         }
                         getContentProvider() {
                             return new outline.SceneEditorOutlineContentProvider();

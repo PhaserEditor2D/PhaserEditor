@@ -50,10 +50,9 @@ namespace phasereditor2d.scene.ui.editor {
         constructor() {
             super("phasereditor2d.SceneEditor");
 
-            this._blocksProvider = new blocks.SceneEditorBlocksProvider();
+            this._blocksProvider = new blocks.SceneEditorBlocksProvider(this);
             this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
             this._propertyProvider = new properties.SceneEditorSectionProvider();
-
         }
 
         async save() {

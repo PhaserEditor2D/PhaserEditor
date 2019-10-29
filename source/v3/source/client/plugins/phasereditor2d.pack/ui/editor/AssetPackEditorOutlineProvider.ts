@@ -13,6 +13,10 @@ namespace phasereditor2d.pack.ui.editor {
             this._editor = editor;
         }
 
+        getUndoManager() {
+            return this._editor.getUndoManager();
+        }
+
         getContentProvider(): colibri.ui.controls.viewers.ITreeContentProvider {
             return new AssetPackEditorOutlineContentProvider(this._editor);
         }

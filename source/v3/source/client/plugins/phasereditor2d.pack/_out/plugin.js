@@ -2148,6 +2148,9 @@ var phasereditor2d;
                     getPropertySectionProvider() {
                         return new editor_3.AssetPackEditorPropertySectionProvider();
                     }
+                    getUndoManager() {
+                        return this._editor.getUndoManager();
+                    }
                     getInput() {
                         return this._editor.getInput().getParent().getFiles();
                     }
@@ -2317,6 +2320,9 @@ var phasereditor2d;
                     constructor(editor) {
                         super();
                         this._editor = editor;
+                    }
+                    getUndoManager() {
+                        return this._editor.getUndoManager();
                     }
                     getContentProvider() {
                         return new editor_7.AssetPackEditorOutlineContentProvider(this._editor);

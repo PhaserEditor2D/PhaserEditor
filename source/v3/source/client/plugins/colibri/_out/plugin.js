@@ -4048,6 +4048,12 @@ var colibri;
                     }
                     return null;
                 }
+                getUndoManager() {
+                    if (this._currentViewerProvider) {
+                        return this._currentViewerProvider.getUndoManager();
+                    }
+                    return super.getUndoManager();
+                }
             }
             ide.EditorViewerView = EditorViewerView;
         })(ide = ui.ide || (ui.ide = {}));

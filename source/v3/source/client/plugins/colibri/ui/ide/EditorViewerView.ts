@@ -98,5 +98,13 @@ namespace colibri.ui.ide {
 
             return null;
         }
+
+        getUndoManager() {
+            if (this._currentViewerProvider) {
+                return this._currentViewerProvider.getUndoManager();
+            }
+
+            return super.getUndoManager();
+        }
     }
 }
