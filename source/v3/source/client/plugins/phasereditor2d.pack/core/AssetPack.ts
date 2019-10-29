@@ -72,19 +72,15 @@ namespace phasereditor2d.pack.core {
             this._items = [];
 
             if (content) {
+
                 try {
+
                     const data = JSON.parse(content);
-                    for (const sectionId in data) {
-                        const sectionData = data[sectionId];
-                        const filesData = sectionData["files"];
-                        if (filesData) {
-                            for (const fileData of filesData) {
-                                const item = this.createPackItem(fileData);
-                                this._items.push(item);
-                            }
-                        }
-                    }
+
+                    this.fromJSON(data);
+
                 } catch (e) {
+
                     console.error(e);
                     alert(e.message);
                 }
@@ -112,6 +108,27 @@ namespace phasereditor2d.pack.core {
                     "contentType": "Phaser v3 Asset Pack",
                     "url": "https://phasereditor2d.com",
                     "version": "2"
+                }
+            }
+        }
+
+        fromJSON(data: any) {
+
+            this._items = [];
+
+            for (const sectionId in data) {
+
+                const sectionData = data[sectionId];
+
+                const filesData = sectionData["files"];
+
+                if (filesData) {
+
+                    for (const fileData of filesData) {
+
+                        const item = this.createPackItem(fileData);
+                        this._items.push(item);
+                    }
                 }
             }
         }

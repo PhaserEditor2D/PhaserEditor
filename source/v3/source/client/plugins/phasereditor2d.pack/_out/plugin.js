@@ -83,6 +83,7 @@ var phasereditor2d;
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
                     pack.ui.editor.AssetPackEditor.getFactory()
                 ]));
+                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", pack.ui.editor.AssetPackEditor.registerCommands));
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -237,16 +238,7 @@ var phasereditor2d;
                     if (content) {
                         try {
                             const data = JSON.parse(content);
-                            for (const sectionId in data) {
-                                const sectionData = data[sectionId];
-                                const filesData = sectionData["files"];
-                                if (filesData) {
-                                    for (const fileData of filesData) {
-                                        const item = this.createPackItem(fileData);
-                                        this._items.push(item);
-                                    }
-                                }
-                            }
+                            this.fromJSON(data);
                         }
                         catch (e) {
                             console.error(e);
@@ -273,6 +265,19 @@ var phasereditor2d;
                             "version": "2"
                         }
                     };
+                }
+                fromJSON(data) {
+                    this._items = [];
+                    for (const sectionId in data) {
+                        const sectionData = data[sectionId];
+                        const filesData = sectionData["files"];
+                        if (filesData) {
+                            for (const fileData of filesData) {
+                                const item = this.createPackItem(fileData);
+                                this._items.push(item);
+                            }
+                        }
+                    }
                 }
                 createPackItem(data) {
                     const type = data.type;
@@ -1850,6 +1855,15 @@ var phasereditor2d;
                     static getFactory() {
                         return new AssetPackEditorFactory();
                     }
+                    static registerCommands(manager) {
+                        //TODO: register commands
+                    }
+                    updateAll() {
+                        this._viewer.repaint();
+                        this._outlineProvider.repaint();
+                        this._blocksProviderProvider.updateBlocks_async();
+                        this.setSelection([]);
+                    }
                     createViewer() {
                         const viewer = new controls.viewers.TreeViewer();
                         viewer.setContentProvider(new editor.AssetPackEditorContentProvider(this, true));
@@ -1983,6 +1997,7 @@ var phasereditor2d;
                         });
                     }
                     async importData_async(importData) {
+                        const before = editor.AssetPackEditorOperation.takeSnapshot(this);
                         const sel = [];
                         for (const file of importData.files) {
                             const item = await importData.importer.importFile(this._pack, file);
@@ -1994,6 +2009,8 @@ var phasereditor2d;
                         await this.updateBlocks();
                         this._viewer.setSelection(sel);
                         this._viewer.reveal(...sel);
+                        const after = editor.AssetPackEditorOperation.takeSnapshot(this);
+                        this.getUndoManager().add(new editor.AssetPackEditorOperation(this, before, after));
                     }
                     async updateBlocks() {
                         await this._blocksProviderProvider.updateBlocks_async();
@@ -2204,7 +2221,42 @@ var phasereditor2d;
         (function (ui) {
             var editor;
             (function (editor_4) {
-                class AssetPackEditorOutlineContentProvider extends editor_4.AssetPackEditorContentProvider {
+                var ide = colibri.ui.ide;
+                class AssetPackEditorOperation extends ide.undo.Operation {
+                    constructor(editor, before, after) {
+                        super();
+                        this._editor = editor;
+                        this._before = before;
+                        this._after = after;
+                    }
+                    static takeSnapshot(editor) {
+                        return editor.getPack().toJSON();
+                    }
+                    load(data) {
+                        this._editor.getPack().fromJSON(data);
+                        this._editor.updateAll();
+                    }
+                    undo() {
+                        this.load(this._before);
+                    }
+                    redo() {
+                        this.load(this._after);
+                    }
+                }
+                editor_4.AssetPackEditorOperation = AssetPackEditorOperation;
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor_5) {
+                class AssetPackEditorOutlineContentProvider extends editor_5.AssetPackEditorContentProvider {
                     constructor(editor) {
                         super(editor, false);
                     }
@@ -2218,7 +2270,7 @@ var phasereditor2d;
                         return [];
                     }
                 }
-                editor_4.AssetPackEditorOutlineContentProvider = AssetPackEditorOutlineContentProvider;
+                editor_5.AssetPackEditorOutlineContentProvider = AssetPackEditorOutlineContentProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2230,7 +2282,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_5) {
+            (function (editor_6) {
                 var ide = colibri.ui.ide;
                 var controls = colibri.ui.controls;
                 class AssetPackEditorOutlineProvider extends ide.EditorViewerProvider {
@@ -2239,7 +2291,7 @@ var phasereditor2d;
                         this._editor = editor;
                     }
                     getContentProvider() {
-                        return new editor_5.AssetPackEditorOutlineContentProvider(this._editor);
+                        return new editor_6.AssetPackEditorOutlineContentProvider(this._editor);
                     }
                     getLabelProvider() {
                         return this._editor.getViewer().getLabelProvider();
@@ -2266,7 +2318,7 @@ var phasereditor2d;
                         viewer.repaint();
                     }
                 }
-                editor_5.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;
+                editor_6.AssetPackEditorOutlineProvider = AssetPackEditorOutlineProvider;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2369,7 +2421,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_6) {
+            (function (editor_7) {
                 class AssetPackEditorTreeViewerRenderer extends ui.viewers.AssetPackTreeViewerRenderer {
                     constructor(editor, viewer) {
                         super(viewer, false);
@@ -2384,7 +2436,7 @@ var phasereditor2d;
                         return file.isFolder();
                     }
                 }
-                editor_6.AssetPackEditorTreeViewerRenderer = AssetPackEditorTreeViewerRenderer;
+                editor_7.AssetPackEditorTreeViewerRenderer = AssetPackEditorTreeViewerRenderer;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2396,7 +2448,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_7) {
+            (function (editor_8) {
                 class IgnoreFileSet extends Set {
                     constructor(editor) {
                         super();
@@ -2412,7 +2464,7 @@ var phasereditor2d;
                         this._editor.getPack().computeUsedFiles(this);
                     }
                 }
-                editor_7.IgnoreFileSet = IgnoreFileSet;
+                editor_8.IgnoreFileSet = IgnoreFileSet;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack_32.ui || (pack_32.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
@@ -2424,7 +2476,7 @@ var phasereditor2d;
         var ui;
         (function (ui) {
             var editor;
-            (function (editor_8) {
+            (function (editor_9) {
                 var controls = colibri.ui.controls;
                 var io = colibri.core.io;
                 var ide = colibri.ui.ide;
@@ -2466,7 +2518,7 @@ var phasereditor2d;
                         return n > 0;
                     }
                 }
-                editor_8.ImportFileSection = ImportFileSection;
+                editor_9.ImportFileSection = ImportFileSection;
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

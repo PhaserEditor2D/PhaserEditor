@@ -26,6 +26,7 @@ namespace phasereditor2d.pack.ui.editor {
     }
 
     export class AssetPackEditor extends ide.ViewerFileEditor {
+
         private _pack: core.AssetPack;
         private _outlineProvider = new AssetPackEditorOutlineProvider(this);
         private _blocksProviderProvider = new AssetPackEditorBlocksProvider(this);
@@ -41,6 +42,21 @@ namespace phasereditor2d.pack.ui.editor {
             return new AssetPackEditorFactory();
         }
 
+        static registerCommands(manager: ide.commands.CommandManager) {
+            //TODO: register commands
+        }
+
+        updateAll() {
+
+            this._viewer.repaint();
+
+            this._outlineProvider.repaint();
+
+            this._blocksProviderProvider.updateBlocks_async();
+
+            this.setSelection([]);
+        }
+
         protected createViewer(): controls.viewers.TreeViewer {
             const viewer = new controls.viewers.TreeViewer();
 
@@ -53,7 +69,7 @@ namespace phasereditor2d.pack.ui.editor {
             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
 
                 this._outlineProvider.setSelection(viewer.getSelection(), true, false);
-                
+
                 this._outlineProvider.repaint();
             });
 
@@ -244,6 +260,8 @@ namespace phasereditor2d.pack.ui.editor {
 
         async importData_async(importData: ImportData) {
 
+            const before = AssetPackEditorOperation.takeSnapshot(this);
+
             const sel = [];
 
             for (const file of importData.files) {
@@ -264,6 +282,10 @@ namespace phasereditor2d.pack.ui.editor {
             this._viewer.setSelection(sel);
 
             this._viewer.reveal(...sel);
+
+            const after = AssetPackEditorOperation.takeSnapshot(this);
+
+            this.getUndoManager().add(new AssetPackEditorOperation(this, before, after));
         }
 
         private async updateBlocks() {

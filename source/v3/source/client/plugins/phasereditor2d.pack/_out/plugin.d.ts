@@ -79,6 +79,7 @@ declare namespace phasereditor2d.pack.core {
         constructor(file: core.io.FilePath, content: string);
         computeUsedFiles(files?: Set<io.FilePath>): Set<io.FilePath>;
         toJSON(): any;
+        fromJSON(data: any): void;
         createPackItem(data: any): AnimationsAssetPackItem | ImageAssetPackItem | SvgAssetPackItem | AtlasAssetPackItem | AtlasXMLAssetPackItem | UnityAtlasAssetPackItem | MultiatlasAssetPackItem | SpritesheetAssetPackItem | BitmapFontAssetPackItem | TilemapCSVAssetPackItem | TilemapImpactAssetPackItem | TilemapTiledJSONAssetPackItem | PluginAssetPackItem | SceneFileAssetPackItem | ScenePluginAssetPackItem | ScriptAssetPackItem | AudioAssetPackItem | AudioSpriteAssetPackItem | VideoAssetPackItem | TextAssetPackItem | CssAssetPackItem | GlslAssetPackItem | HTMLAssetPackItem | HTMLTextureAssetPackItem | BinaryAssetPackItem | JSONAssetPackItem | XMLAssetPackItem;
         static createFromFile(file: core.io.FilePath): Promise<AssetPack>;
         getItems(): AssetPackItem[];
@@ -463,6 +464,8 @@ declare namespace phasereditor2d.pack.ui.editor {
         private _propertySectionProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
+        static registerCommands(manager: ide.commands.CommandManager): void;
+        updateAll(): void;
         protected createViewer(): controls.viewers.TreeViewer;
         private updateContent;
         save(): Promise<void>;
@@ -526,6 +529,19 @@ declare namespace phasereditor2d.pack.ui.editor {
         getPack(): core.AssetPack;
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor {
+    import ide = colibri.ui.ide;
+    class AssetPackEditorOperation extends ide.undo.Operation {
+        private _editor;
+        private _before;
+        private _after;
+        static takeSnapshot(editor: AssetPackEditor): any;
+        constructor(editor: AssetPackEditor, before: any, after: any);
+        private load;
+        undo(): void;
+        redo(): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor {

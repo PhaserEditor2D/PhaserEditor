@@ -139,6 +139,10 @@ namespace phasereditor2d.pack {
                 new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
                     ui.editor.AssetPackEditor.getFactory()
                 ]));
+
+            reg.addExtension(ide.commands.CommandExtension.POINT_ID,
+                new ide.commands.CommandExtension("phasereditor2d.scene.commands",
+                    ui.editor.AssetPackEditor.registerCommands));
         }
     }
 
