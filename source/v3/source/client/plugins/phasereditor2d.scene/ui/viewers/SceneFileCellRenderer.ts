@@ -1,5 +1,5 @@
 namespace phasereditor2d.scene.ui.viewers {
-    
+
     import controls = colibri.ui.controls;
     import core = colibri.core;
 
@@ -10,8 +10,10 @@ namespace phasereditor2d.scene.ui.viewers {
             const file = <core.io.FilePath>args.obj;
 
             const image = SceneThumbnailCache.getInstance().getContent(file);
-
-            image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+            
+            if (image) {
+                image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+            }
         }
 
         cellHeight(args: controls.viewers.RenderCellArgs): number {
@@ -20,7 +22,7 @@ namespace phasereditor2d.scene.ui.viewers {
 
 
         async preload(obj: any): Promise<controls.PreloadResult> {
-            
+
             const file = <core.io.FilePath>obj;
 
             return SceneThumbnailCache.getInstance().preload(file);

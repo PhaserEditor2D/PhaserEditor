@@ -687,6 +687,14 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
+    class SpritesheetSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
     class UnityAtlasSection extends BaseSection {
         constructor(page: controls.properties.PropertyPage);
         canEdit(obj: any, n: number): boolean;
@@ -716,8 +724,8 @@ declare namespace phasereditor2d.pack.ui.editor.undo {
         private _oldValueList;
         private _updateSelection;
         constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any, updateSelection?: boolean);
-        private getDataValue;
-        private setDataValue;
+        static getDataValue(data: any, key: string): any;
+        static setDataValue(data: any, key: string, value: any): void;
         undo(): void;
         redo(): void;
         private load_async;

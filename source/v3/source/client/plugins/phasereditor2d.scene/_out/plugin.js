@@ -2244,7 +2244,9 @@ var phasereditor2d;
                     renderCell(args) {
                         const file = args.obj;
                         const image = ui.SceneThumbnailCache.getInstance().getContent(file);
-                        image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                        if (image) {
+                            image.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                        }
                     }
                     cellHeight(args) {
                         return args.viewer.getCellSize();

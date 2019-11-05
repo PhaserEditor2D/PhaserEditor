@@ -2540,6 +2540,7 @@ var phasereditor2d;
                             sections.push(new properties.AtlasXMLSection(page));
                             sections.push(new properties.UnityAtlasSection(page));
                             sections.push(new properties.MultiatlasSection(page));
+                            sections.push(new properties.SpritesheetSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2917,6 +2918,57 @@ var phasereditor2d;
             (function (editor) {
                 var properties;
                 (function (properties) {
+                    class SpritesheetSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.SpritesheetSection", "Spritesheet");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.SpritesheetAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "URL", "url", pack.core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
+                            for (const info of [
+                                ["Frame Width", "frameWidth"],
+                                ["Frame Height", "frameHeight"],
+                                ["Start Frame", "startFrame"],
+                                ["End Frame", "endFrame"],
+                                ["Margin", "margin"],
+                                ["Spacing", "spacing"]
+                            ]) {
+                                const label = info[0];
+                                const field = `frameConfig.${info[1]}`;
+                                this.createLabel(comp, label);
+                                const text = this.createText(comp, false);
+                                text.style.gridColumn = "2 / span 2";
+                                text.addEventListener("change", e => {
+                                    this.changeItemField(field, Number.parseInt(text.value), true);
+                                });
+                                this.addUpdater(() => {
+                                    const data = this.getSelection()[0].getData();
+                                    text.value = editor.undo.ChangeItemFieldOperation.getDataValue(data, field);
+                                });
+                            }
+                        }
+                    }
+                    properties.SpritesheetSection = SpritesheetSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
                     class UnityAtlasSection extends properties.BaseSection {
                         constructor(page) {
                             super(page, "phasereditor2d.pack.ui.editor.properties.UnityAtlasSection", "Unity Atlas");
@@ -2996,13 +3048,13 @@ var phasereditor2d;
                             this._fieldKey = fieldKey;
                             this._updateSelection = updateSelection;
                             this._newValueList = [];
-                            this._oldValueList = items.map(item => this.getDataValue(item.getData(), fieldKey));
+                            this._oldValueList = items.map(item => ChangeItemFieldOperation.getDataValue(item.getData(), fieldKey));
                             for (let i = 0; i < items.length; i++) {
                                 this._newValueList.push(newValue);
                             }
                             this.load_async(this._newValueList);
                         }
-                        getDataValue(data, key) {
+                        static getDataValue(data, key) {
                             let result = data;
                             const keys = key.split(".");
                             for (const key of keys) {
@@ -3012,7 +3064,7 @@ var phasereditor2d;
                             }
                             return result;
                         }
-                        setDataValue(data, key, value) {
+                        static setDataValue(data, key, value) {
                             const keys = key.split(".");
                             const lastKey = keys[keys.length - 1];
                             for (let i = 0; i < keys.length - 1; i++) {
@@ -3036,7 +3088,7 @@ var phasereditor2d;
                             for (let i = 0; i < this._itemIndexList.length; i++) {
                                 const index = this._itemIndexList[i];
                                 const item = this._editor.getPack().getItems()[index];
-                                this.setDataValue(item.getData(), this._fieldKey, values[i]);
+                                ChangeItemFieldOperation.setDataValue(item.getData(), this._fieldKey, values[i]);
                                 console.log(item.getData());
                                 item.resetCache();
                                 await item.preload();
@@ -3343,7 +3395,11 @@ var phasereditor2d;
                         const data = super.createItemData(file);
                         data.frameConfig = {
                             frameWidth: 32,
-                            frameHeight: 32
+                            frameHeight: 32,
+                            startFrame: 0,
+                            endFrame: -1,
+                            spacing: 0,
+                            margin: 0
                         };
                         return data;
                     }

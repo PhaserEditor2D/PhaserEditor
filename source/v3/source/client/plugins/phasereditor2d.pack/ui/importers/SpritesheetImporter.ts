@@ -14,8 +14,12 @@ namespace phasereditor2d.pack.ui.importers {
 
             data.frameConfig = {
                 frameWidth: 32,
-                frameHeight: 32
-            }
+                frameHeight: 32,
+                startFrame: 0,
+                endFrame: -1,
+                spacing: 0,
+                margin: 0
+            };
 
             return data;
         }
