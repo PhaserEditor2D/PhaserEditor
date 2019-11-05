@@ -2539,6 +2539,7 @@ var phasereditor2d;
                             sections.push(new properties.AtlasSection(page));
                             sections.push(new properties.AtlasXMLSection(page));
                             sections.push(new properties.UnityAtlasSection(page));
+                            sections.push(new properties.MultiatlasSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2765,6 +2766,49 @@ var phasereditor2d;
                         }
                     }
                     properties.ItemSection = ItemSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class MultiatlasSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.MultiatlasSection", "Multiatlas");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.MultiatlasAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "URL", "url", pack.core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
+                            {
+                                // path
+                                this.createLabel(comp, "Path");
+                                const text = this.createText(comp, false);
+                                text.style.gridColumn = "2 / span 2";
+                                text.addEventListener("change", e => {
+                                    this.changeItemField("path", text.value, true);
+                                });
+                                this.addUpdater(() => {
+                                    const data = this.getSelection()[0].getData();
+                                    text.value = data.path;
+                                });
+                            }
+                        }
+                    }
+                    properties.MultiatlasSection = MultiatlasSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));

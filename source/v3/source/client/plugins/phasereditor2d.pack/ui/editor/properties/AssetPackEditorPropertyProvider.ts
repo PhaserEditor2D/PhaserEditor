@@ -12,6 +12,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
             sections.push(new AtlasSection(page));
             sections.push(new AtlasXMLSection(page));
             sections.push(new UnityAtlasSection(page));
+            sections.push(new MultiatlasSection(page));
 
             sections.push(new SimpleURLSection(page,
                 "phasereditor2d.pack.ui.editor.properties.Animations",
