@@ -2537,6 +2537,8 @@ var phasereditor2d;
                             sections.push(new properties.ImageSection(page));
                             sections.push(new properties.SVGSection(page));
                             sections.push(new properties.AtlasSection(page));
+                            sections.push(new properties.AtlasXMLSection(page));
+                            sections.push(new properties.UnityAtlasSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2659,6 +2661,38 @@ var phasereditor2d;
                         }
                     }
                     properties.AtlasSection = AtlasSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class AtlasXMLSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.AtlasXMLSection", "Atlas XML");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.AtlasXMLAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_ATLAS_XML);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                        }
+                    }
+                    properties.AtlasXMLSection = AtlasXMLSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
@@ -2823,6 +2857,38 @@ var phasereditor2d;
                         }
                     }
                     properties.SimpleURLSection = SimpleURLSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class UnityAtlasSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.UnityAtlasSection", "Unity Atlas");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.UnityAtlasAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_UNITY_ATLAS);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                        }
+                    }
+                    properties.UnityAtlasSection = UnityAtlasSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));

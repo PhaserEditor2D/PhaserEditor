@@ -634,6 +634,14 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
+    class AtlasXMLSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
     class ImageSection extends BaseSection {
         constructor(page: controls.properties.PropertyPage);
         canEdit(obj: any, n: number): boolean;
@@ -665,6 +673,14 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
         private _contentType;
         private _assetPackType;
         constructor(page: controls.properties.PropertyPage, id: string, title: string, fieldLabel: string, dataKey: string, contentType: string, assetPackType: string);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class UnityAtlasSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
         canEdit(obj: any, n: number): boolean;
         protected createForm(parent: HTMLDivElement): void;
     }
