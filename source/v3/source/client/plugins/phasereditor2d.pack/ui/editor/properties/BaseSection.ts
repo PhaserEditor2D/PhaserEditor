@@ -11,6 +11,14 @@ namespace phasereditor2d.pack.ui.editor.properties {
         }
 
         changeItemField(key: string, value: any, updateSelection: boolean = false) {
+
+            if (Number.isNaN(value)) {
+                
+                this.updateWithSelection();
+
+                return;
+            }
+            
             this.getEditor().getUndoManager().add(
                 new undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value, updateSelection)
             );
@@ -73,7 +81,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
             });
         }
 
-        protected createImageField(comp: HTMLElement, label: string, fieldKey: string) {
+        protected createFileField(comp: HTMLElement, label: string, fieldKey: string, contentType : string) {
 
             this.createLabel(comp, label);
 
@@ -88,7 +96,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createButton(comp, "Browse", () => {
 
-                this.browseFile_onlyContentType("Select Image", files.core.CONTENT_TYPE_IMAGE, (files) => {
+                this.browseFile_onlyContentType("Select File", contentType, (files) => {
 
                     const file = files[0];
 

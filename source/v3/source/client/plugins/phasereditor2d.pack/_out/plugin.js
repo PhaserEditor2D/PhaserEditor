@@ -2530,6 +2530,8 @@ var phasereditor2d;
                         addSections(page, sections) {
                             sections.push(new properties.ItemSection(page));
                             sections.push(new properties.ImageSection(page));
+                            sections.push(new properties.SVGSection(page));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
                         }
@@ -2557,6 +2559,10 @@ var phasereditor2d;
                             return ide.Workbench.getWorkbench().getActiveEditor();
                         }
                         changeItemField(key, value, updateSelection = false) {
+                            if (Number.isNaN(value)) {
+                                this.updateWithSelection();
+                                return;
+                            }
                             this.getEditor().getUndoManager().add(new editor.undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value, updateSelection));
                         }
                         canEdit(obj, n) {
@@ -2598,7 +2604,7 @@ var phasereditor2d;
                                 dlg.close();
                             });
                         }
-                        createImageField(comp, label, fieldKey) {
+                        createFileField(comp, label, fieldKey, contentType) {
                             this.createLabel(comp, label);
                             const text = this.createText(comp, true);
                             this.addUpdater(() => {
@@ -2606,7 +2612,7 @@ var phasereditor2d;
                                 text.value = val === undefined ? "" : val;
                             });
                             this.createButton(comp, "Browse", () => {
-                                this.browseFile_onlyContentType("Select Image", phasereditor2d.files.core.CONTENT_TYPE_IMAGE, (files) => {
+                                this.browseFile_onlyContentType("Select File", contentType, (files) => {
                                     const file = files[0];
                                     const url = pack.core.AssetPackUtils.getFilePackUrl(file);
                                     this.changeItemField(fieldKey, url, true);
@@ -2640,8 +2646,8 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createImageField(comp, "URL", "url");
-                            this.createImageField(comp, "Normal Map", "normalMap");
+                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.ImageSection = ImageSection;
@@ -2687,6 +2693,98 @@ var phasereditor2d;
                         }
                     }
                     properties.ItemSection = ItemSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class SVGSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.SVGSection", "SVG");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.SvgAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            {
+                                // URL
+                                this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_SVG);
+                            }
+                            {
+                                // svgConfig.width
+                                this.createLabel(comp, "Width");
+                                const text = this.createText(comp, false);
+                                text.style.gridColumn = "2 / span 2";
+                                text.addEventListener("change", e => {
+                                    this.changeItemField("svgConfig.width", Number.parseInt(text.value), true);
+                                });
+                                this.addUpdater(() => {
+                                    const data = this.getSelection()[0].getData();
+                                    text.value = data.svgConfig.width.toString();
+                                });
+                            }
+                            {
+                                // svgConfig.height
+                                this.createLabel(comp, "Height");
+                                const text = this.createText(comp, false);
+                                text.style.gridColumn = "2 / span 2";
+                                text.addEventListener("change", e => {
+                                    this.changeItemField("svgConfig.height", Number.parseInt(text.value), true);
+                                });
+                                this.addUpdater(() => {
+                                    const data = this.getSelection()[0].getData();
+                                    text.value = data.svgConfig.height.toString();
+                                });
+                            }
+                        }
+                    }
+                    properties.SVGSection = SVGSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class SimpleURLSection extends properties.BaseSection {
+                        constructor(page, id, title, fieldLabel, dataKey, contentType, assetPackType) {
+                            super(page, id, title, false);
+                            this._label = fieldLabel;
+                            this._dataKey = dataKey;
+                            this._contentType = contentType;
+                            this._assetPackType = assetPackType;
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj.getType() === this._assetPackType;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, this._label, this._dataKey, this._contentType);
+                        }
+                    }
+                    properties.SimpleURLSection = SimpleURLSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
@@ -2750,11 +2848,35 @@ var phasereditor2d;
                             this._fieldKey = fieldKey;
                             this._updateSelection = updateSelection;
                             this._newValueList = [];
-                            this._oldValueList = items.map(item => item.getData()[fieldKey]);
+                            this._oldValueList = items.map(item => this.getDataValue(item.getData(), fieldKey));
                             for (let i = 0; i < items.length; i++) {
                                 this._newValueList.push(newValue);
                             }
                             this.load(this._newValueList);
+                        }
+                        getDataValue(data, key) {
+                            let result = data;
+                            const keys = key.split(".");
+                            for (const key of keys) {
+                                if (result !== undefined) {
+                                    result = result[key];
+                                }
+                            }
+                            return result;
+                        }
+                        setDataValue(data, key, value) {
+                            const keys = key.split(".");
+                            const lastKey = keys[keys.length - 1];
+                            for (let i = 0; i < keys.length - 1; i++) {
+                                const key = keys[i];
+                                if (key in data) {
+                                    data = data[key];
+                                }
+                                else {
+                                    data = (data[key] = {});
+                                }
+                            }
+                            data[lastKey] = value;
                         }
                         undo() {
                             this.load(this._oldValueList);
@@ -2766,7 +2888,8 @@ var phasereditor2d;
                             for (let i = 0; i < this._itemIndexList.length; i++) {
                                 const index = this._itemIndexList[i];
                                 const item = this._editor.getPack().getItems()[index];
-                                item.getData()[this._fieldKey] = values[i];
+                                this.setDataValue(item.getData(), this._fieldKey, values[i]);
+                                console.log(item.getData());
                             }
                             this._editor.repaintEditorAndOutline();
                             this._editor.setDirty(true);
@@ -3107,7 +3230,12 @@ var phasereditor2d;
                     new importers.AtlasXMLImporter(),
                     new importers.UnityAtlasImporter(),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_SVG, pack.core.SVG_TYPE),
+                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_SVG, pack.core.SVG_TYPE, false, {
+                        svgConfig: {
+                            width: 512,
+                            height: 512
+                        }
+                    }),
                     new importers.SpritesheetImporter(),
                     new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE),
                     new importers.BitmapFontImporter(),

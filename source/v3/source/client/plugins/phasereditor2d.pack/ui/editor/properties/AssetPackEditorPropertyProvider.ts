@@ -8,6 +8,16 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             sections.push(new ItemSection(page));
             sections.push(new ImageSection(page));
+            sections.push(new SVGSection(page));
+            
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.Animations",
+                "Animations",
+                "URL",
+                "url",
+                core.contentTypes.CONTENT_TYPE_ANIMATIONS,
+                core.ANIMATIONS_TYPE));
+            
 
             sections.push(new ui.properties.ImagePreviewSection(page));
             sections.push(new ui.properties.ManyImageSection(page));

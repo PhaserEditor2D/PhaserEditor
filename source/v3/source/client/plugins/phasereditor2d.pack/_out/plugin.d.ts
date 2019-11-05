@@ -619,7 +619,7 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
         canEditNumber(n: number): boolean;
         browseFile_onlyContentType(title: string, contentType: string, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
         browseFile(title: string, fileFilter: (file: io.FilePath) => boolean, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
-        protected createImageField(comp: HTMLElement, label: string, fieldKey: string): void;
+        protected createFileField(comp: HTMLElement, label: string, fieldKey: string, contentType: string): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
@@ -637,6 +637,26 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
         protected createForm(parent: HTMLDivElement): void;
         canEdit(obj: any, n: number): boolean;
         canEditNumber(n: number): boolean;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class SVGSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class SimpleURLSection extends BaseSection {
+        private _label;
+        private _dataKey;
+        private _contentType;
+        private _assetPackType;
+        constructor(page: controls.properties.PropertyPage, id: string, title: string, fieldLabel: string, dataKey: string, contentType: string, assetPackType: string);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor.undo {
@@ -662,6 +682,8 @@ declare namespace phasereditor2d.pack.ui.editor.undo {
         private _oldValueList;
         private _updateSelection;
         constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any, updateSelection?: boolean);
+        private getDataValue;
+        private setDataValue;
         undo(): void;
         redo(): void;
         private load;

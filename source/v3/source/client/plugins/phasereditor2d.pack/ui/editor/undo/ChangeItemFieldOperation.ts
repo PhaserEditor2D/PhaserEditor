@@ -21,13 +21,48 @@ namespace phasereditor2d.pack.ui.editor.undo {
 
             this._newValueList = [];
 
-            this._oldValueList = items.map(item => item.getData()[fieldKey]);
+            this._oldValueList = items.map(item => this.getDataValue(item.getData(), fieldKey));
 
             for (let i = 0; i < items.length; i++) {
                 this._newValueList.push(newValue);
             }
 
             this.load(this._newValueList);
+        }
+
+        private getDataValue(data: any, key: string) {
+
+            let result = data;
+
+            const keys = key.split(".");
+
+            for (const key of keys) {
+                if (result !== undefined) {
+                    result = result[key];
+                }
+            }
+
+            return result;
+        }
+
+        private setDataValue(data: any, key: string, value: any) {
+
+            const keys = key.split(".");
+
+            const lastKey = keys[keys.length - 1];
+
+            for (let i = 0; i < keys.length - 1; i++) {
+
+                const key = keys[i];
+
+                if (key in data) {
+                    data = data[key];
+                } else {
+                    data = (data[key] = {});
+                }
+            }
+
+            data[lastKey] = value;
         }
 
         undo(): void {
@@ -46,8 +81,9 @@ namespace phasereditor2d.pack.ui.editor.undo {
 
                 const item = this._editor.getPack().getItems()[index];
 
-                item.getData()[this._fieldKey] = values[i];
+                this.setDataValue(item.getData(), this._fieldKey, values[i]);
 
+                console.log(item.getData());
             }
 
             this._editor.repaintEditorAndOutline();
