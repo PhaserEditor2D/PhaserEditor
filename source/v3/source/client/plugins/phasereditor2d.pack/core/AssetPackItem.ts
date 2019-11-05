@@ -78,6 +78,10 @@ namespace phasereditor2d.pack.core {
         async preload(): Promise<controls.PreloadResult> {
             return controls.Controls.resolveNothingLoaded();
         }
+
+        resetCache() {
+
+        }
     }
 
 }

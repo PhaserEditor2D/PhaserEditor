@@ -36,6 +36,7 @@ declare namespace phasereditor2d.pack.core {
         getData(): any;
         addToPhaserCache(game: Phaser.Game): void;
         preload(): Promise<controls.PreloadResult>;
+        resetCache(): void;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -118,6 +119,7 @@ declare namespace phasereditor2d.pack.core {
         private _frames;
         constructor(pack: AssetPack, data: any);
         preload(): Promise<controls.PreloadResult>;
+        resetCache(): void;
         protected abstract createParser(): parsers.ImageFrameParser;
         findFrame(frameName: any): AssetPackImageFrame;
         getFrames(): AssetPackImageFrame[];
@@ -624,6 +626,14 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
+    class AtlasSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
     class ImageSection extends BaseSection {
         constructor(page: controls.properties.PropertyPage);
         canEdit(obj: any, n: number): boolean;
@@ -686,7 +696,7 @@ declare namespace phasereditor2d.pack.ui.editor.undo {
         private setDataValue;
         undo(): void;
         redo(): void;
-        private load;
+        private load_async;
     }
 }
 declare namespace phasereditor2d.pack.ui.importers {

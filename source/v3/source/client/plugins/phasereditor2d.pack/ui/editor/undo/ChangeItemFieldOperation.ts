@@ -27,7 +27,7 @@ namespace phasereditor2d.pack.ui.editor.undo {
                 this._newValueList.push(newValue);
             }
 
-            this.load(this._newValueList);
+            this.load_async(this._newValueList);
         }
 
         private getDataValue(data: any, key: string) {
@@ -66,14 +66,14 @@ namespace phasereditor2d.pack.ui.editor.undo {
         }
 
         undo(): void {
-            this.load(this._oldValueList);
+            this.load_async(this._oldValueList);
         }
 
         redo(): void {
-            this.load(this._newValueList);
+            this.load_async(this._newValueList);
         }
 
-        private load(values: any[]) {
+        private async load_async(values: any[]) {
 
             for (let i = 0; i < this._itemIndexList.length; i++) {
 
@@ -84,6 +84,10 @@ namespace phasereditor2d.pack.ui.editor.undo {
                 this.setDataValue(item.getData(), this._fieldKey, values[i]);
 
                 console.log(item.getData());
+
+                item.resetCache();
+
+                await item.preload();
             }
 
             this._editor.repaintEditorAndOutline();

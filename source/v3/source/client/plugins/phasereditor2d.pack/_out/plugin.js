@@ -150,6 +150,8 @@ var phasereditor2d;
                 async preload() {
                     return controls.Controls.resolveNothingLoaded();
                 }
+                resetCache() {
+                }
             }
             core.AssetPackItem = AssetPackItem;
         })(core = pack_1.core || (pack_1.core = {}));
@@ -471,6 +473,9 @@ var phasereditor2d;
                     }
                     const parser = this.createParser();
                     return parser.preloadFrames();
+                }
+                resetCache() {
+                    this._frames = null;
                 }
                 findFrame(frameName) {
                     return this.getFrames().find(f => f.getName() === frameName);
@@ -2531,6 +2536,7 @@ var phasereditor2d;
                             sections.push(new properties.ItemSection(page));
                             sections.push(new properties.ImageSection(page));
                             sections.push(new properties.SVGSection(page));
+                            sections.push(new properties.AtlasSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2621,6 +2627,38 @@ var phasereditor2d;
                         }
                     }
                     properties.BaseSection = BaseSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseSection.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class AtlasSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.AtlasSection", "Atlas");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.AtlasAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_ATLAS);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                        }
+                    }
+                    properties.AtlasSection = AtlasSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
@@ -2852,7 +2890,7 @@ var phasereditor2d;
                             for (let i = 0; i < items.length; i++) {
                                 this._newValueList.push(newValue);
                             }
-                            this.load(this._newValueList);
+                            this.load_async(this._newValueList);
                         }
                         getDataValue(data, key) {
                             let result = data;
@@ -2879,17 +2917,19 @@ var phasereditor2d;
                             data[lastKey] = value;
                         }
                         undo() {
-                            this.load(this._oldValueList);
+                            this.load_async(this._oldValueList);
                         }
                         redo() {
-                            this.load(this._newValueList);
+                            this.load_async(this._newValueList);
                         }
-                        load(values) {
+                        async load_async(values) {
                             for (let i = 0; i < this._itemIndexList.length; i++) {
                                 const index = this._itemIndexList[i];
                                 const item = this._editor.getPack().getItems()[index];
                                 this.setDataValue(item.getData(), this._fieldKey, values[i]);
                                 console.log(item.getData());
+                                item.resetCache();
+                                await item.preload();
                             }
                             this._editor.repaintEditorAndOutline();
                             this._editor.setDirty(true);

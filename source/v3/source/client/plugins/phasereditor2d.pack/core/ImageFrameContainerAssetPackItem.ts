@@ -23,6 +23,10 @@ namespace phasereditor2d.pack.core {
             return parser.preloadFrames();
         }
 
+        resetCache() {
+            this._frames = null;
+        }
+
         protected abstract createParser(): parsers.ImageFrameParser;
 
         findFrame(frameName : any) {
