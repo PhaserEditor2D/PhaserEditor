@@ -3112,7 +3112,8 @@ var phasereditor2d;
                     createItemData(file) {
                         return {
                             type: pack.core.MULTI_ATLAS_TYPE,
-                            url: pack.core.AssetPackUtils.getFilePackUrl(file)
+                            url: pack.core.AssetPackUtils.getFilePackUrl(file),
+                            path: pack.core.AssetPackUtils.getFilePackUrl(file.getParent()),
                         };
                     }
                 }

@@ -754,6 +754,7 @@ declare namespace phasereditor2d.pack.ui.importers {
         createItemData(file: io.FilePath): {
             type: string;
             url: any;
+            path: any;
         };
     }
 }

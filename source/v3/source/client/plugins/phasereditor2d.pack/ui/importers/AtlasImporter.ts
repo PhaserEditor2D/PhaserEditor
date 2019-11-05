@@ -8,5 +8,4 @@ namespace phasereditor2d.pack.ui.importers {
             super(core.contentTypes.CONTENT_TYPE_ATLAS, core.ATLAS_TYPE);
         }
     }
-
 }
