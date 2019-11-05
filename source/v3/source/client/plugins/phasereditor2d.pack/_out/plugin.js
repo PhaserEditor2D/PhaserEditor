@@ -2541,6 +2541,7 @@ var phasereditor2d;
                             sections.push(new properties.UnityAtlasSection(page));
                             sections.push(new properties.MultiatlasSection(page));
                             sections.push(new properties.SpritesheetSection(page));
+                            sections.push(new properties.BitmapFontSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.Animations", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2695,6 +2696,37 @@ var phasereditor2d;
                         }
                     }
                     properties.AtlasXMLSection = AtlasXMLSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class BitmapFontSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.BitmapFontSection", "Bitmap Font");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.BitmapFontAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "Font Data URL", "fontDataURL", pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                        }
+                    }
+                    properties.BitmapFontSection = BitmapFontSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
