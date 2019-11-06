@@ -60,6 +60,8 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             sections.push(new AudioSection(page));
 
+            sections.push(new AudioSpriteSection(page));
+
             // preview sections
 
             sections.push(new ui.properties.ImagePreviewSection(page));

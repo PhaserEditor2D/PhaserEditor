@@ -2551,6 +2551,7 @@ var phasereditor2d;
                             sections.push(new properties.ScenePluginSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.ScriptSection", "Script", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE));
                             sections.push(new properties.AudioSection(page));
+                            sections.push(new properties.AudioSpriteSection(page));
                             // preview sections
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2774,6 +2775,36 @@ var phasereditor2d;
                         }
                     }
                     properties.AudioSection = AudioSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class AudioSpriteSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.AudioSpriteSection", "Audio Sprite");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.AudioSpriteAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "JSON URL", "jsonURL", pack.core.contentTypes.CONTENT_TYPE_AUDIO_SPRITE);
+                            this.createMultiFileField(comp, "Audio URL", "audioURL", phasereditor2d.files.core.CONTENT_TYPE_AUDIO);
+                        }
+                    }
+                    properties.AudioSpriteSection = AudioSpriteSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));
