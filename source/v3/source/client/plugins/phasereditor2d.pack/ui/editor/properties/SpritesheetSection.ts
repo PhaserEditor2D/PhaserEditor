@@ -23,33 +23,17 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createFileField(comp, "URL", "url", core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
 
+            this.createSimpleIntegerField(comp, "Frame Width", "frameConfig.frameWidth");
 
-            for (const info of [
-                ["Frame Width", "frameWidth"],
-                ["Frame Height", "frameHeight"],
-                ["Start Frame", "startFrame"],
-                ["End Frame", "endFrame"],
-                ["Margin", "margin"],
-                ["Spacing", "spacing"]
-            ]) {
-                const label = info[0];
-                const field = `frameConfig.${info[1]}`;
+            this.createSimpleIntegerField(comp, "Frame Height", "frameConfig.frameHeight");
 
-                this.createLabel(comp, label);
+            this.createSimpleIntegerField(comp, "Start Frame", "frameConfig.startFrame");
 
-                const text = this.createText(comp, false);
-                text.style.gridColumn = "2 / span 2";
+            this.createSimpleIntegerField(comp, "End Frame", "frameConfig.endFrame");
 
-                text.addEventListener("change", e => {
-                    this.changeItemField(field, Number.parseInt(text.value), true);
-                });
+            this.createSimpleIntegerField(comp, "Margin", "frameConfig.margin");
 
-                this.addUpdater(() => {
-                    const data = this.getSelection()[0].getData();
-                    text.value = json.getDataValue(data, field);
-                });
-            }
-
+            this.createSimpleIntegerField(comp, "Spacing", "frameConfig.spacing");
         }
     }
 }

@@ -22,23 +22,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createFileField(comp, "URL", "url", core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
 
-            {
-                // path
-
-                this.createLabel(comp, "Path");
-
-                const text = this.createText(comp, false);
-                text.style.gridColumn = "2 / span 2";
-
-                text.addEventListener("change", e => {
-                    this.changeItemField("path", text.value, true);
-                });
-
-                this.addUpdater(() => {
-                    const data = this.getSelection()[0].getData();
-                    text.value = data.path;
-                });
-            }
+            this.createSimpleTextField(comp, "Path", "path");
         }
     }
 }

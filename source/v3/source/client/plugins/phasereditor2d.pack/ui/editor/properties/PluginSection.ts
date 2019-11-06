@@ -43,23 +43,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 });
             }
 
-            {
-                // mapping
-
-                this.createLabel(comp, "Mapping");
-
-                const text = this.createText(comp, false);
-                text.style.gridColumn = "2 / span 2";
-
-                text.addEventListener("change", e => {
-                    this.changeItemField("mapping", text.value, true);
-                });
-
-                this.addUpdater(() => {
-                    const data = this.getSelection()[0].getData();
-                    text.value = data.mapping;
-                });
-            }
+            this.createSimpleTextField(comp, "Mapping", "mapping");
 
         }
     }

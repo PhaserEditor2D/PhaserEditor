@@ -2860,19 +2860,7 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "URL", "url", pack.core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
-                            {
-                                // path
-                                this.createLabel(comp, "Path");
-                                const text = this.createText(comp, false);
-                                text.style.gridColumn = "2 / span 2";
-                                text.addEventListener("change", e => {
-                                    this.changeItemField("path", text.value, true);
-                                });
-                                this.addUpdater(() => {
-                                    const data = this.getSelection()[0].getData();
-                                    text.value = data.path;
-                                });
-                            }
+                            this.createSimpleTextField(comp, "Path", "path");
                         }
                     }
                     properties.MultiatlasSection = MultiatlasSection;
@@ -2919,19 +2907,7 @@ var phasereditor2d;
                                     checkbox.checked = data.start;
                                 });
                             }
-                            {
-                                // mapping
-                                this.createLabel(comp, "Mapping");
-                                const text = this.createText(comp, false);
-                                text.style.gridColumn = "2 / span 2";
-                                text.addEventListener("change", e => {
-                                    this.changeItemField("mapping", text.value, true);
-                                });
-                                this.addUpdater(() => {
-                                    const data = this.getSelection()[0].getData();
-                                    text.value = data.mapping;
-                                });
-                            }
+                            this.createSimpleTextField(comp, "Mapping", "mapping");
                         }
                     }
                     properties.PluginSection = PluginSection;
@@ -2961,36 +2937,9 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            {
-                                // URL
-                                this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_SVG);
-                            }
-                            {
-                                // svgConfig.width
-                                this.createLabel(comp, "Width");
-                                const text = this.createText(comp, false);
-                                text.style.gridColumn = "2 / span 2";
-                                text.addEventListener("change", e => {
-                                    this.changeItemField("svgConfig.width", Number.parseInt(text.value), true);
-                                });
-                                this.addUpdater(() => {
-                                    const data = this.getSelection()[0].getData();
-                                    text.value = data.svgConfig.width.toString();
-                                });
-                            }
-                            {
-                                // svgConfig.height
-                                this.createLabel(comp, "Height");
-                                const text = this.createText(comp, false);
-                                text.style.gridColumn = "2 / span 2";
-                                text.addEventListener("change", e => {
-                                    this.changeItemField("svgConfig.height", Number.parseInt(text.value), true);
-                                });
-                                this.addUpdater(() => {
-                                    const data = this.getSelection()[0].getData();
-                                    text.value = data.svgConfig.height.toString();
-                                });
-                            }
+                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_SVG);
+                            this.createSimpleIntegerField(comp, "Width", "svgConfig.width");
+                            this.createSimpleIntegerField(comp, "Height", "svgConfig.height");
                         }
                     }
                     properties.SVGSection = SVGSection;
@@ -3075,7 +3024,6 @@ var phasereditor2d;
             (function (editor) {
                 var properties;
                 (function (properties) {
-                    var json = colibri.core.json;
                     class SpritesheetSection extends properties.BaseSection {
                         constructor(page) {
                             super(page, "phasereditor2d.pack.ui.editor.properties.SpritesheetSection", "Spritesheet");
@@ -3087,27 +3035,12 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "URL", "url", pack.core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
-                            for (const info of [
-                                ["Frame Width", "frameWidth"],
-                                ["Frame Height", "frameHeight"],
-                                ["Start Frame", "startFrame"],
-                                ["End Frame", "endFrame"],
-                                ["Margin", "margin"],
-                                ["Spacing", "spacing"]
-                            ]) {
-                                const label = info[0];
-                                const field = `frameConfig.${info[1]}`;
-                                this.createLabel(comp, label);
-                                const text = this.createText(comp, false);
-                                text.style.gridColumn = "2 / span 2";
-                                text.addEventListener("change", e => {
-                                    this.changeItemField(field, Number.parseInt(text.value), true);
-                                });
-                                this.addUpdater(() => {
-                                    const data = this.getSelection()[0].getData();
-                                    text.value = json.getDataValue(data, field);
-                                });
-                            }
+                            this.createSimpleIntegerField(comp, "Frame Width", "frameConfig.frameWidth");
+                            this.createSimpleIntegerField(comp, "Frame Height", "frameConfig.frameHeight");
+                            this.createSimpleIntegerField(comp, "Start Frame", "frameConfig.startFrame");
+                            this.createSimpleIntegerField(comp, "End Frame", "frameConfig.endFrame");
+                            this.createSimpleIntegerField(comp, "Margin", "frameConfig.margin");
+                            this.createSimpleIntegerField(comp, "Spacing", "frameConfig.spacing");
                         }
                     }
                     properties.SpritesheetSection = SpritesheetSection;
