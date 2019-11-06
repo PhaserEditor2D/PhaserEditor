@@ -4029,6 +4029,35 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 var controls = colibri.ui.controls;
+                const ASSET_PACK_TYPE_DISPLAY_NAME = {
+                    image: "Image",
+                    svg: "SVG",
+                    atlas: "Atlas",
+                    atlasXML: "Atlas XML",
+                    unityAtlas: "Unity Atlas",
+                    multiatlas: "Multiatlas",
+                    spritesheet: "Spritesheet",
+                    animations: "Animations",
+                    bitmapFont: "Bitmap Font",
+                    tilemapCSV: "Tilemap CSV",
+                    tilemapImpact: "Tilemap Impact",
+                    tilemapTiledJSON: "Tilemap Tiled JSON",
+                    plugin: "Plugin",
+                    sceneFile: "Scene File",
+                    scenePlugin: "Scene Plugin",
+                    script: "Script",
+                    audio: "Audio",
+                    audioSprite: "Audio Sprite",
+                    video: "Video",
+                    text: "Text",
+                    css: "CSS",
+                    glsl: "GLSL",
+                    html: "HTML",
+                    htmlTexture: "HTML Texture",
+                    binary: "Binary",
+                    json: "JSON",
+                    xml: "XML"
+                };
                 class AssetPackLabelProvider {
                     getLabel(obj) {
                         if (obj instanceof pack.core.AssetPack) {
@@ -4041,6 +4070,9 @@ var phasereditor2d;
                             return obj.getName();
                         }
                         if (typeof (obj) === "string") {
+                            if (obj in ASSET_PACK_TYPE_DISPLAY_NAME) {
+                                return ASSET_PACK_TYPE_DISPLAY_NAME[obj];
+                            }
                             return obj;
                         }
                         return "";

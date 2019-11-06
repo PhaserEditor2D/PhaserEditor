@@ -2695,23 +2695,9 @@ var colibri;
                     getSections() {
                         return this._sections;
                     }
-                    static formatSectionLabel(label) {
-                        let s = "";
-                        let lastUpperCase = false;
-                        for (let c of label) {
-                            const upperCase = c === c.toUpperCase();
-                            if (upperCase !== lastUpperCase) {
-                                if (upperCase) {
-                                    s += " ";
-                                }
-                            }
-                            s += c;
-                            lastUpperCase = upperCase;
-                        }
-                        return s.toUpperCase();
-                    }
                     paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this.getViewer();
+                        const labelProvider = viewer.getLabelProvider();
                         let cellSize = viewer.getCellSize();
                         if (this._flat) {
                             if (cellSize < 64) {
@@ -2737,19 +2723,13 @@ var colibri;
                                 if (objects2.length === 0) {
                                     continue;
                                 }
-                                const label = GridTreeViewerRenderer.formatSectionLabel(viewer
-                                    .getLabelProvider()
-                                    .getLabel(section));
+                                const label = labelProvider.getLabel(section);
                                 ctx.save();
-                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "44";
+                                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                                ctx.fillRect(0, y2 - 16, b.width, controls.ROW_HEIGHT);
+                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "66";
                                 const m = ctx.measureText(label);
-                                ctx.fillText(label, x2, y2);
-                                ctx.strokeStyle = controls.Controls.theme.treeItemForeground + "44";
-                                ctx.setLineDash([2, 10]);
-                                ctx.beginPath();
-                                ctx.moveTo(m.width + 20, y2 - 5);
-                                ctx.lineTo(b.width, y2 - 5);
-                                ctx.stroke();
+                                ctx.fillText(label, b.width / 2 - m.width / 2, y2);
                                 ctx.restore();
                                 y2 += 10;
                                 const result = this.paintItems2(objects2, treeIconList, paintItems, null, x2, y2, viewers.TREE_RENDERER_GRID_PADDING, 0);

@@ -627,7 +627,7 @@ var phasereditor2d;
         (function (ui) {
             var blocks;
             (function (blocks) {
-                blocks.PREFAB_SECTION = "prefab";
+                blocks.PREFAB_SECTION = "Prefab";
                 class SceneEditorBlocksTreeRendererProvider extends phasereditor2d.pack.ui.viewers.AssetPackTreeViewerRenderer {
                     constructor(viewer) {
                         super(viewer, false);

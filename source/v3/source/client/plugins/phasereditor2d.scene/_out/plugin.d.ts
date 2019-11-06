@@ -146,7 +146,7 @@ declare namespace phasereditor2d.scene.ui.blocks {
 }
 declare namespace phasereditor2d.scene.ui.blocks {
     import controls = colibri.ui.controls;
-    const PREFAB_SECTION = "prefab";
+    const PREFAB_SECTION = "Prefab";
     class SceneEditorBlocksTreeRendererProvider extends pack.ui.viewers.AssetPackTreeViewerRenderer {
         constructor(viewer: controls.viewers.TreeViewer);
     }

@@ -672,7 +672,6 @@ declare namespace colibri.ui.controls.viewers {
         isFlat(): boolean;
         setSections(sections: any[]): void;
         getSections(): any[];
-        private static formatSectionLabel;
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number): {
             x: number;
             y: number;
