@@ -768,6 +768,14 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
         protected createForm(parent: HTMLDivElement): void;
     }
 }
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class VideoSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
 declare namespace phasereditor2d.pack.ui.editor.undo {
     import ide = colibri.ui.ide;
     class AssetPackEditorOperation extends ide.undo.Operation {
