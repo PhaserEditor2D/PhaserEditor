@@ -3,6 +3,7 @@
 namespace phasereditor2d.pack.ui.editor.properties {
 
     import controls = colibri.ui.controls;
+    import json = colibri.core.json;
 
     export class SpritesheetSection extends BaseSection {
 
@@ -45,7 +46,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
                 this.addUpdater(() => {
                     const data = this.getSelection()[0].getData();
-                    text.value = undo.ChangeItemFieldOperation.getDataValue(data, field);
+                    text.value = json.getDataValue(data, field);
                 });
             }
 

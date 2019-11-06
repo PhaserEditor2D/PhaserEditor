@@ -557,6 +557,32 @@ var colibri;
                 return defaultValue;
             }
             json.read = read;
+            function getDataValue(data, key) {
+                let result = data;
+                const keys = key.split(".");
+                for (const key of keys) {
+                    if (result !== undefined) {
+                        result = result[key];
+                    }
+                }
+                return result;
+            }
+            json.getDataValue = getDataValue;
+            function setDataValue(data, key, value) {
+                const keys = key.split(".");
+                const lastKey = keys[keys.length - 1];
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const key = keys[i];
+                    if (key in data) {
+                        data = data[key];
+                    }
+                    else {
+                        data = (data[key] = {});
+                    }
+                }
+                data[lastKey] = value;
+            }
+            json.setDataValue = setDataValue;
         })(json = core.json || (core.json = {}));
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));

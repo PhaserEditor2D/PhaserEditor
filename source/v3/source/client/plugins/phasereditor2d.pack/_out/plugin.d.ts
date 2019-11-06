@@ -756,8 +756,6 @@ declare namespace phasereditor2d.pack.ui.editor.undo {
         private _oldValueList;
         private _updateSelection;
         constructor(editor: AssetPackEditor, items: core.AssetPackItem[], fieldKey: string, newValue: any, updateSelection?: boolean);
-        static getDataValue(data: any, key: string): any;
-        static setDataValue(data: any, key: string, value: any): void;
         undo(): void;
         redo(): void;
         private load_async;

@@ -166,6 +166,8 @@ declare namespace colibri.core.io {
 declare namespace colibri.core.json {
     function write(data: any, name: string, value: any, defaultValue?: any): void;
     function read(data: any, name: string, defaultValue?: any): any;
+    function getDataValue(data: any, key: string): any;
+    function setDataValue(data: any, key: string, value: any): void;
 }
 declare namespace colibri.ui.controls {
     const EVENT_ACTION_CHANGED = "actionChanged";

@@ -2953,6 +2953,7 @@ var phasereditor2d;
             (function (editor) {
                 var properties;
                 (function (properties) {
+                    var json = colibri.core.json;
                     class SpritesheetSection extends properties.BaseSection {
                         constructor(page) {
                             super(page, "phasereditor2d.pack.ui.editor.properties.SpritesheetSection", "Spritesheet");
@@ -2982,7 +2983,7 @@ var phasereditor2d;
                                 });
                                 this.addUpdater(() => {
                                     const data = this.getSelection()[0].getData();
-                                    text.value = editor.undo.ChangeItemFieldOperation.getDataValue(data, field);
+                                    text.value = json.getDataValue(data, field);
                                 });
                             }
                         }
@@ -3162,6 +3163,7 @@ var phasereditor2d;
                 var undo;
                 (function (undo) {
                     var ide = colibri.ui.ide;
+                    var json = colibri.core.json;
                     class ChangeItemFieldOperation extends ide.undo.Operation {
                         constructor(editor, items, fieldKey, newValue, updateSelection = false) {
                             super();
@@ -3170,35 +3172,11 @@ var phasereditor2d;
                             this._fieldKey = fieldKey;
                             this._updateSelection = updateSelection;
                             this._newValueList = [];
-                            this._oldValueList = items.map(item => ChangeItemFieldOperation.getDataValue(item.getData(), fieldKey));
+                            this._oldValueList = items.map(item => json.getDataValue(item.getData(), fieldKey));
                             for (let i = 0; i < items.length; i++) {
                                 this._newValueList.push(newValue);
                             }
                             this.load_async(this._newValueList);
-                        }
-                        static getDataValue(data, key) {
-                            let result = data;
-                            const keys = key.split(".");
-                            for (const key of keys) {
-                                if (result !== undefined) {
-                                    result = result[key];
-                                }
-                            }
-                            return result;
-                        }
-                        static setDataValue(data, key, value) {
-                            const keys = key.split(".");
-                            const lastKey = keys[keys.length - 1];
-                            for (let i = 0; i < keys.length - 1; i++) {
-                                const key = keys[i];
-                                if (key in data) {
-                                    data = data[key];
-                                }
-                                else {
-                                    data = (data[key] = {});
-                                }
-                            }
-                            data[lastKey] = value;
                         }
                         undo() {
                             this.load_async(this._oldValueList);
@@ -3210,7 +3188,7 @@ var phasereditor2d;
                             for (let i = 0; i < this._itemIndexList.length; i++) {
                                 const index = this._itemIndexList[i];
                                 const item = this._editor.getPack().getItems()[index];
-                                ChangeItemFieldOperation.setDataValue(item.getData(), this._fieldKey, values[i]);
+                                json.setDataValue(item.getData(), this._fieldKey, values[i]);
                                 console.log(item.getData());
                                 item.resetCache();
                                 await item.preload();

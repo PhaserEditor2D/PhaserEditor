@@ -1,6 +1,7 @@
 namespace phasereditor2d.pack.ui.editor.undo {
 
     import ide = colibri.ui.ide;
+    import json = colibri.core.json;
 
     export class ChangeItemFieldOperation extends ide.undo.Operation {
 
@@ -21,48 +22,13 @@ namespace phasereditor2d.pack.ui.editor.undo {
 
             this._newValueList = [];
 
-            this._oldValueList = items.map(item => ChangeItemFieldOperation.getDataValue(item.getData(), fieldKey));
+            this._oldValueList = items.map(item => json.getDataValue(item.getData(), fieldKey));
 
             for (let i = 0; i < items.length; i++) {
                 this._newValueList.push(newValue);
             }
 
             this.load_async(this._newValueList);
-        }
-
-        static getDataValue(data: any, key: string) {
-
-            let result = data;
-
-            const keys = key.split(".");
-
-            for (const key of keys) {
-                if (result !== undefined) {
-                    result = result[key];
-                }
-            }
-
-            return result;
-        }
-
-        static setDataValue(data: any, key: string, value: any) {
-
-            const keys = key.split(".");
-
-            const lastKey = keys[keys.length - 1];
-
-            for (let i = 0; i < keys.length - 1; i++) {
-
-                const key = keys[i];
-
-                if (key in data) {
-                    data = data[key];
-                } else {
-                    data = (data[key] = {});
-                }
-            }
-
-            data[lastKey] = value;
         }
 
         undo(): void {
@@ -81,7 +47,7 @@ namespace phasereditor2d.pack.ui.editor.undo {
 
                 const item = this._editor.getPack().getItems()[index];
 
-                ChangeItemFieldOperation.setDataValue(item.getData(), this._fieldKey, values[i]);
+                json.setDataValue(item.getData(), this._fieldKey, values[i]);
 
                 console.log(item.getData());
 
