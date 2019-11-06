@@ -58,6 +58,8 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 files.core.CONTENT_TYPE_JAVASCRIPT,
                 core.SCRIPT_TYPE));
 
+            sections.push(new AudioSection(page));
+
             // preview sections
 
             sections.push(new ui.properties.ImagePreviewSection(page));

@@ -109,6 +109,30 @@ namespace phasereditor2d.pack.ui.editor.properties {
             });
         }
 
+        protected createMultiFileField(comp: HTMLElement, label: string, fieldKey: string, contentType: string) {
+
+            this.createLabel(comp, label);
+
+            const text = this.createText(comp, true);
+
+            this.addUpdater(() => {
+
+                const val = this.getSelection()[0].getData()[fieldKey];
+
+                text.value = val === undefined ? "" : JSON.stringify(val);
+            });
+
+            this.createButton(comp, "Browse", () => {
+
+                this.browseFile_onlyContentType("Select Files", contentType, (files) => {
+
+                    const urls = files.map(file => core.AssetPackUtils.getFilePackUrl(file));
+
+                    this.changeItemField(fieldKey, urls, true);
+                });
+            });
+        }
+
         protected createSimpleTextField(parent: HTMLElement, label: string, field: string) {
 
             this.createLabel(parent, label);
