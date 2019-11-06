@@ -579,6 +579,7 @@ declare namespace colibri.ui.controls.properties {
         protected createLabel(parent: HTMLElement, text?: string): HTMLLabelElement;
         protected createButton(parent: HTMLElement, text: string, callback: () => void): HTMLButtonElement;
         protected createText(parent: HTMLElement, readOnly?: boolean): HTMLInputElement;
+        protected createCheckbox(parent: HTMLElement): HTMLInputElement;
     }
 }
 declare namespace colibri.ui.controls.properties {

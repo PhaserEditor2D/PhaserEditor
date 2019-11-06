@@ -13,12 +13,12 @@ namespace phasereditor2d.pack.ui.editor.properties {
         changeItemField(key: string, value: any, updateSelection: boolean = false) {
 
             if (Number.isNaN(value)) {
-                
+
                 this.updateWithSelection();
 
                 return;
             }
-            
+
             this.getEditor().getUndoManager().add(
                 new undo.ChangeItemFieldOperation(this.getEditor(), this.getSelection(), key, value, updateSelection)
             );
@@ -81,14 +81,14 @@ namespace phasereditor2d.pack.ui.editor.properties {
             });
         }
 
-        protected createFileField(comp: HTMLElement, label: string, fieldKey: string, contentType : string) {
+        protected createFileField(comp: HTMLElement, label: string, fieldKey: string, contentType: string) {
 
             this.createLabel(comp, label);
 
             const text = this.createText(comp, true);
 
             this.addUpdater(() => {
-                
+
                 const val = this.getSelection()[0].getData()[fieldKey];
 
                 text.value = val === undefined ? "" : val;
@@ -107,6 +107,44 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 });
 
             });
+        }
+
+        protected createSimpleTextField(parent: HTMLElement, label: string, field: string) {
+
+            this.createLabel(parent, label);
+
+            const text = this.createText(parent, false);
+            text.style.gridColumn = "2 / span 2";
+
+            text.addEventListener("change", e => {
+                this.changeItemField(field, text.value, true);
+            });
+
+            this.addUpdater(() => {
+                const data = this.getSelection()[0].getData();
+                text.value = colibri.core.json.getDataValue(data, field);
+            });
+
+            return text;
+        }
+
+        protected createSimpleIntegerField(parent: HTMLElement, label: string, field: string) {
+
+            this.createLabel(parent, label);
+
+            const text = this.createText(parent, false);
+            text.style.gridColumn = "2 / span 2";
+
+            text.addEventListener("change", e => {
+                this.changeItemField(field, Number.parseInt(text.value), true);
+            });
+
+            this.addUpdater(() => {
+                const data = this.getSelection()[0].getData();
+                text.value = colibri.core.json.getDataValue(data, field);
+            });
+
+            return text;
         }
     }
 }

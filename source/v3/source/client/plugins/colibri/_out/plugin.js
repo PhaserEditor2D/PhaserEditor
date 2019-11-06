@@ -2310,6 +2310,13 @@ var colibri;
                         parent.appendChild(text);
                         return text;
                     }
+                    createCheckbox(parent) {
+                        const check = document.createElement("input");
+                        check.type = "checkbox";
+                        check.classList.add("formCheckbox");
+                        parent.appendChild(check);
+                        return check;
+                    }
                 }
                 properties.PropertySection = PropertySection;
             })(properties = controls.properties || (controls.properties = {}));

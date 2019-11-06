@@ -126,5 +126,17 @@ namespace colibri.ui.controls.properties {
 
             return text;
         }
+
+        protected createCheckbox(parent: HTMLElement) {
+
+            const check = document.createElement("input");
+            
+            check.type = "checkbox";
+            check.classList.add("formCheckbox");
+
+            parent.appendChild(check);
+
+            return check;
+        }
     }
 }

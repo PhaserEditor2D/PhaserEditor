@@ -622,6 +622,8 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
         browseFile_onlyContentType(title: string, contentType: string, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
         browseFile(title: string, fileFilter: (file: io.FilePath) => boolean, selectionCallback: (files: io.FilePath[]) => void): Promise<void>;
         protected createFileField(comp: HTMLElement, label: string, fieldKey: string, contentType: string): void;
+        protected createSimpleTextField(parent: HTMLElement, label: string, field: string): HTMLInputElement;
+        protected createSimpleIntegerField(parent: HTMLElement, label: string, field: string): HTMLInputElement;
     }
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
@@ -675,7 +677,23 @@ declare namespace phasereditor2d.pack.ui.editor.properties {
 }
 declare namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
+    class PluginSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
     class SVGSection extends BaseSection {
+        constructor(page: controls.properties.PropertyPage);
+        canEdit(obj: any, n: number): boolean;
+        protected createForm(parent: HTMLDivElement): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.editor.properties {
+    import controls = colibri.ui.controls;
+    class ScenePluginSection extends BaseSection {
         constructor(page: controls.properties.PropertyPage);
         canEdit(obj: any, n: number): boolean;
         protected createForm(parent: HTMLDivElement): void;
@@ -848,6 +866,13 @@ declare namespace phasereditor2d.pack.ui.importers {
 declare namespace phasereditor2d.pack.ui.importers {
     import io = colibri.core.io;
     class SpritesheetImporter extends SingleFileImporter {
+        constructor();
+        createItemData(file: io.FilePath): any;
+    }
+}
+declare namespace phasereditor2d.pack.ui.importers {
+    import io = colibri.core.io;
+    class ScenePluginImporter extends SingleFileImporter {
         constructor();
         createItemData(file: io.FilePath): any;
     }
