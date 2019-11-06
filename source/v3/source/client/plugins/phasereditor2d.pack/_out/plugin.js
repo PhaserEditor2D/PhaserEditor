@@ -2553,6 +2553,14 @@ var phasereditor2d;
                             sections.push(new properties.AudioSection(page));
                             sections.push(new properties.AudioSpriteSection(page));
                             sections.push(new properties.VideoSection(page));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.TextSection", "Text", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.CSSSection", "CSS", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.GLSLSection", "GLSL", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.HTMLSection", "HTML", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE));
+                            sections.push(new properties.HTMLTextureSection(page));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.BinarySection", "Binary", "URL", "url", colibri.core.CONTENT_TYPE_ANY, pack.core.BINARY_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.JSONSection", "JSON", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.XMLSection", "XML", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_XML, pack.core.XML_TYPE));
                             // preview sections
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2837,6 +2845,37 @@ var phasereditor2d;
                         }
                     }
                     properties.BitmapFontSection = BitmapFontSection;
+                })(properties = editor.properties || (editor.properties = {}));
+            })(editor = ui.editor || (ui.editor = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var editor;
+            (function (editor) {
+                var properties;
+                (function (properties) {
+                    class HTMLTextureSection extends properties.BaseSection {
+                        constructor(page) {
+                            super(page, "phasereditor2d.pack.ui.editor.properties.HTMLTextureSection", "HTML Texture");
+                        }
+                        canEdit(obj, n) {
+                            return super.canEdit(obj, n) && obj instanceof pack.core.HTMLTextureAssetPackItem;
+                        }
+                        createForm(parent) {
+                            const comp = this.createGridElement(parent, 3);
+                            comp.style.gridTemplateColumns = "auto 1fr auto";
+                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_HTML);
+                            this.createSimpleIntegerField(comp, "Width", "width");
+                            this.createSimpleIntegerField(comp, "Height", "height");
+                        }
+                    }
+                    properties.HTMLTextureSection = HTMLTextureSection;
                 })(properties = editor.properties || (editor.properties = {}));
             })(editor = ui.editor || (ui.editor = {}));
         })(ui = pack.ui || (pack.ui = {}));

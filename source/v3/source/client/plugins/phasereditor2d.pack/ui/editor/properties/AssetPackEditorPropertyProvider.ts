@@ -64,6 +64,64 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             sections.push(new VideoSection(page));
 
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.TextSection",
+                "Text",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_TEXT,
+                core.TEXT_TYPE));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.CSSSection",
+                "CSS",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_CSS,
+                core.CSS_TYPE));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.GLSLSection",
+                "GLSL",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_GLSL,
+                core.GLSL_TYPE));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.HTMLSection",
+                "HTML",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_HTML,
+                core.HTML_TYPE));
+
+            sections.push(new HTMLTextureSection(page));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.BinarySection",
+                "Binary",
+                "URL",
+                "url",
+                colibri.core.CONTENT_TYPE_ANY,
+                core.BINARY_TYPE));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.JSONSection",
+                "JSON",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_JSON,
+                core.JSON_TYPE));
+
+            sections.push(new SimpleURLSection(page,
+                "phasereditor2d.pack.ui.editor.properties.XMLSection",
+                "XML",
+                "URL",
+                "url",
+                files.core.CONTENT_TYPE_XML,
+                core.XML_TYPE));
+
             // preview sections
 
             sections.push(new ui.properties.ImagePreviewSection(page));
