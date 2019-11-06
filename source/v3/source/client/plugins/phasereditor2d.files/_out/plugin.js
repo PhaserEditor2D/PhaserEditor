@@ -493,7 +493,7 @@ var phasereditor2d;
                     canEdit(obj) {
                         if (obj instanceof core.io.FilePath) {
                             const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === files.core.CONTENT_TYPE_IMAGE;
+                            return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
                         }
                         return false;
                     }
@@ -547,7 +547,7 @@ var phasereditor2d;
                     canEdit(obj) {
                         if (obj instanceof core.io.FilePath) {
                             const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === files.core.CONTENT_TYPE_IMAGE;
+                            return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
                         }
                         return false;
                     }

@@ -28,6 +28,14 @@ namespace phasereditor2d.images {
                         new ui.viewers.ImageFileCellRenderer())
                 );
 
+            reg
+                .addExtension(
+                    files.ui.viewers.ContentTypeCellRendererExtension.POINT,
+                    new files.ui.viewers.SimpleContentTypeCellRendererExtension(
+                        files.core.CONTENT_TYPE_SVG,
+                        new ui.viewers.ImageFileCellRenderer())
+                );
+
             // editors
 
             reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.images.EditorExtension", [

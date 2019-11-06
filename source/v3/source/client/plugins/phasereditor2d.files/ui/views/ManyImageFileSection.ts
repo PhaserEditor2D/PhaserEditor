@@ -46,10 +46,14 @@ namespace phasereditor2d.files.ui.views {
         }
 
         canEdit(obj: any): boolean {
+
             if (obj instanceof core.io.FilePath) {
+
                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                return ct === files.core.CONTENT_TYPE_IMAGE;
+
+                return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
             }
+
             return false;
         }
 
