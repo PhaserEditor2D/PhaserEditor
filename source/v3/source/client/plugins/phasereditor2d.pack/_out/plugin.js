@@ -1910,6 +1910,7 @@ var phasereditor2d;
                         viewer.setLabelProvider(new ui.viewers.AssetPackLabelProvider());
                         viewer.setCellRendererProvider(new ui.viewers.AssetPackCellRendererProvider("grid"));
                         viewer.setTreeRenderer(new ui.viewers.AssetPackTreeViewerRenderer(viewer, true));
+                        viewer.setCellSize(96);
                         viewer.setInput(this);
                         viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                             this._outlineProvider.setSelection(viewer.getSelection(), true, false);
