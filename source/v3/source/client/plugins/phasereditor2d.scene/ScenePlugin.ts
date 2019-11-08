@@ -60,7 +60,7 @@ namespace phasereditor2d.scene {
                 ]));
 
             // new file wizards
-            
+
             reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT,
                 new ui.dialogs.NewSceneFileDialogExtension());
         }

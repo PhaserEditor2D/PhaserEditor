@@ -1984,8 +1984,17 @@ var colibri;
                                     dlg.layout();
                                 }
                             });
+                            window.addEventListener("resize", e => {
+                                for (const dlg of Dialog._dialogs) {
+                                    dlg.layout();
+                                }
+                            });
                         }
                         Dialog._dialogs.push(this);
+                    }
+                    layout() {
+                        console.log("here man!!!");
+                        super.layout();
                     }
                     getParentDialog() {
                         return this._parentDialog;

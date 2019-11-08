@@ -44,6 +44,7 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         private createFile;
         private createCenterArea;
         private createFilteredViewer;
+        layout(): void;
     }
 }
 declare namespace phasereditor2d.ide.ui.dialogs {

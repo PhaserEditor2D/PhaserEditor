@@ -125,8 +125,11 @@ namespace colibri.ui.controls {
         layout(): void {
 
             if (this.isHandlePosition()) {
+
                 setElementBounds(this._element, this._bounds);
+
             } else {
+
                 setElementBounds(this._element, {
                     width: this._bounds.width,
                     height: this._bounds.height
@@ -135,9 +138,13 @@ namespace colibri.ui.controls {
 
 
             if (this._layout) {
+                
                 this._layout.layout(this);
+
             } else {
+
                 if (this._layoutChildren) {
+
                     for (let child of this._children) {
                         child.layout();
                     }

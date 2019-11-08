@@ -190,10 +190,12 @@ namespace phasereditor2d.ide.ui.dialogs {
             });
 
             this._filteredViewer = new viewers.FilteredViewerInElement(viewer);
+        }
 
-            addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
-                this._filteredViewer.resizeTo();
-            });
+        layout() {
+            super.layout();
+
+            this._filteredViewer.resizeTo();
         }
     }
 }

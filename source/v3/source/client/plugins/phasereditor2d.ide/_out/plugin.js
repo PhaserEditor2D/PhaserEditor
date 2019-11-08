@@ -246,9 +246,10 @@ var phasereditor2d;
                             this.validate();
                         });
                         this._filteredViewer = new viewers.FilteredViewerInElement(viewer);
-                        addEventListener(controls.EVENT_CONTROL_LAYOUT, (e) => {
-                            this._filteredViewer.resizeTo();
-                        });
+                    }
+                    layout() {
+                        super.layout();
+                        this._filteredViewer.resizeTo();
                     }
                 }
                 dialogs.NewFileDialog = NewFileDialog;

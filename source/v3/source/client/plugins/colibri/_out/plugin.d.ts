@@ -212,7 +212,7 @@ declare namespace colibri.ui.controls {
         static getControlOf(element: HTMLElement): Control;
         isHandlePosition(): boolean;
         setHandlePosition(_handlePosition: boolean): void;
-        readonly style: CSSStyleDeclaration;
+        get style(): CSSStyleDeclaration;
         isLayoutChildren(): boolean;
         setLayoutChildren(layout: boolean): void;
         getScrollY(): number;
@@ -523,6 +523,7 @@ declare namespace colibri.ui.controls.dialogs {
         private static _firstTime;
         private _parentDialog;
         constructor(...classList: string[]);
+        layout(): void;
         getParentDialog(): Dialog;
         create(): void;
         setTitle(title: string): void;
@@ -886,10 +887,7 @@ declare namespace colibri.ui.ide {
             contentType: string;
         }[]): ContentTypeIconExtension;
         constructor(id: string, config: ContentTypeIconExtensionConfig);
-        getConfig(): {
-            icon: controls.IImage;
-            contentType: string;
-        }[];
+        getConfig(): ContentTypeIconExtensionConfig;
     }
 }
 declare namespace colibri.ui.ide {
