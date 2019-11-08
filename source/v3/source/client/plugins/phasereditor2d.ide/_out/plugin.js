@@ -44,7 +44,7 @@ var phasereditor2d;
             var actions;
             (function (actions) {
                 var controls = colibri.ui.controls;
-                class OpenNewWizardAction extends controls.Action {
+                class OpenNewFileDialogAction extends controls.Action {
                     constructor() {
                         super({
                             text: "New",
@@ -78,16 +78,22 @@ var phasereditor2d;
                         dlg.addButton("Cancel", () => dlg.close());
                     }
                     openFileDialog(extension) {
-                        const dlg = new ui.wizards.FileLocationDialog();
+                        const dlg = new ui.wizards.NewFileDialog();
                         dlg.create();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
                         dlg.setInitialLocation(extension.getInitialFileLocation());
                         dlg.setFileExtension(extension.getFileExtension());
                         dlg.setFileContent(extension.getFileContent());
+                        dlg.setFileCreatedCallback(async (file) => {
+                            const wb = colibri.ui.ide.Workbench.getWorkbench();
+                            const reg = wb.getContentTypeRegistry();
+                            await reg.preload(file);
+                            wb.openEditor(file);
+                        });
                     }
                 }
-                actions.OpenNewWizardAction = OpenNewWizardAction;
+                actions.OpenNewFileDialogAction = OpenNewFileDialogAction;
                 class WizardLabelProvider {
                     getLabel(obj) {
                         return obj.getWizardName();
@@ -136,7 +142,7 @@ var phasereditor2d;
                         const toolbar = this.getToolbar();
                         const leftArea = toolbar.getLeftArea();
                         const manager = new controls.ToolbarManager(leftArea);
-                        manager.add(new ui.actions.OpenNewWizardAction());
+                        manager.add(new ui.actions.OpenNewFileDialogAction());
                     }
                     getEditorArea() {
                         return this._editorArea;
@@ -167,9 +173,9 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 var viewers = colibri.ui.controls.viewers;
                 var dialogs = colibri.ui.controls.dialogs;
-                class FileLocationDialog extends dialogs.Dialog {
+                class NewFileDialog extends dialogs.Dialog {
                     constructor() {
-                        super("FileLocationDialog");
+                        super("NewFileDialog");
                         this._fileExtension = "";
                         this._fileContent = "";
                     }
@@ -243,6 +249,9 @@ var phasereditor2d;
                         }
                         this._createBtn.disabled = !valid;
                     }
+                    setFileCreatedCallback(callback) {
+                        this._fileCreatedCallback = callback;
+                    }
                     setFileContent(fileContent) {
                         this._fileContent = fileContent;
                     }
@@ -262,11 +271,14 @@ var phasereditor2d;
                         this.addButton("Cancel", () => this.close());
                         this.validate();
                     }
-                    createFile() {
+                    async createFile() {
                         const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
                         const name = this.normalizedFileName();
-                        colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+                        const file = await colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
                         this.close();
+                        if (this._fileCreatedCallback) {
+                            this._fileCreatedCallback(file);
+                        }
                     }
                     createCenterArea() {
                         const centerArea = document.createElement("div");
@@ -289,7 +301,7 @@ var phasereditor2d;
                         });
                     }
                 }
-                wizards.FileLocationDialog = FileLocationDialog;
+                wizards.NewFileDialog = NewFileDialog;
             })(wizards = ui.wizards || (ui.wizards = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));

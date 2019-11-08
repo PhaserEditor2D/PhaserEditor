@@ -2,7 +2,7 @@ namespace phasereditor2d.ide.ui.actions {
 
     import controls = colibri.ui.controls;
 
-    export class OpenNewWizardAction extends controls.Action {
+    export class OpenNewFileDialogAction extends controls.Action {
 
         constructor() {
             super({
@@ -53,9 +53,9 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.addButton("Cancel", () => dlg.close());
         }
 
-        private openFileDialog(extension : ide.ui.wizards.NewWizardExtension) {
+        private openFileDialog(extension: ide.ui.wizards.NewWizardExtension) {
 
-            const dlg = new wizards.FileLocationDialog();
+            const dlg = new wizards.NewFileDialog();
 
             dlg.create();
 
@@ -64,6 +64,16 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.setInitialLocation(extension.getInitialFileLocation());
             dlg.setFileExtension(extension.getFileExtension());
             dlg.setFileContent(extension.getFileContent());
+            dlg.setFileCreatedCallback(async (file) => {
+
+                const wb = colibri.ui.ide.Workbench.getWorkbench();
+
+                const reg = wb.getContentTypeRegistry();
+
+                await reg.preload(file);
+
+                wb.openEditor(file);
+            });
         }
     }
 

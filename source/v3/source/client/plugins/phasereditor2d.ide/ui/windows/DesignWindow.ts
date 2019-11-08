@@ -45,7 +45,7 @@ namespace phasereditor2d.ide.ui.windows {
 
             const manager = new controls.ToolbarManager(leftArea);
 
-            manager.add(new actions.OpenNewWizardAction());
+            manager.add(new actions.OpenNewFileDialogAction());
         }
 
         getEditorArea() {

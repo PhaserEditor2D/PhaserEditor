@@ -1040,7 +1040,7 @@ declare namespace colibri.ui.ide {
         static preloadAndGetFileString(file: core.io.FilePath): Promise<string>;
         static getFileString(file: core.io.FilePath): string;
         static setFileString_async(file: core.io.FilePath, content: string): Promise<void>;
-        static createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<void>;
+        static createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<core.io.FilePath>;
         static preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string): core.io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;

@@ -467,6 +467,10 @@ var phasereditor2d;
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
                             ide.Workbench.getWorkbench().openEditor(e.detail);
                         });
+                        ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => {
+                            viewer.setInput(ide.FileUtils.getRoot());
+                            viewer.repaint();
+                        });
                     }
                     getIcon() {
                         return controls.Controls.getIcon(ide.ICON_FOLDER);

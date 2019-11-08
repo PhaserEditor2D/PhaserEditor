@@ -23,11 +23,13 @@ namespace phasereditor2d.files.ui.views {
         }
 
         protected createPart(): void {
+
             super.createPart();
 
             const root = ide.Workbench.getWorkbench().getProjectRoot();
 
             const viewer = this._viewer;
+
             viewer.setLabelProvider(new viewers.FileLabelProvider());
             viewer.setContentProvider(new viewers.FileTreeContentProvider());
             viewer.setCellRendererProvider(new viewers.FileCellRendererProvider());
@@ -37,6 +39,11 @@ namespace phasereditor2d.files.ui.views {
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e: CustomEvent) => {
                 ide.Workbench.getWorkbench().openEditor(e.detail);
+            });
+
+            ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => {
+                viewer.setInput(ide.FileUtils.getRoot());
+                viewer.repaint();
             });
         }
 

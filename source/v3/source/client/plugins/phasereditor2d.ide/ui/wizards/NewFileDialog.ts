@@ -5,18 +5,19 @@ namespace phasereditor2d.ide.ui.wizards {
     import dialogs = colibri.ui.controls.dialogs;
     import io = colibri.core.io;
 
-    export declare type CreateFileCallback = (folder : io.FilePath, filename : string) => void;
+    export declare type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
 
-    export class FileLocationDialog extends dialogs.Dialog {
+    export class NewFileDialog extends dialogs.Dialog {
 
         private _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
         private _fileNameText: HTMLInputElement;
         private _createBtn: HTMLButtonElement;
         private _fileExtension: string;
-        private _fileContent : string;
+        private _fileContent: string;
+        private _fileCreatedCallback: (file: io.FilePath) => void;
 
         constructor() {
-            super("FileLocationDialog");
+            super("NewFileDialog");
 
             this._fileExtension = "";
             this._fileContent = "";
@@ -118,7 +119,11 @@ namespace phasereditor2d.ide.ui.wizards {
             this._createBtn.disabled = !valid;
         }
 
-        setFileContent(fileContent : string) {
+        setFileCreatedCallback(callback: (file: io.FilePath) => void) {
+            this._fileCreatedCallback = callback;
+        }
+
+        setFileContent(fileContent: string) {
             this._fileContent = fileContent;
         }
 
@@ -146,15 +151,19 @@ namespace phasereditor2d.ide.ui.wizards {
             this.validate();
         }
 
-        private createFile() {
+        private async createFile() {
 
             const folder = this._filteredViewer.getViewer().getSelectionFirstElement() as io.FilePath;
 
             const name = this.normalizedFileName();
 
-            colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+            const file = await colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
 
             this.close();
+
+            if (this._fileCreatedCallback) {
+                this._fileCreatedCallback(file);
+            }
         }
 
         private createCenterArea() {

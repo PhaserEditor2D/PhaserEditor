@@ -13,7 +13,7 @@ declare namespace phasereditor2d.ide {
 }
 declare namespace phasereditor2d.ide.ui.actions {
     import controls = colibri.ui.controls;
-    class OpenNewWizardAction extends controls.Action {
+    class OpenNewFileDialogAction extends controls.Action {
         constructor();
         run(): void;
         private openFileDialog;
@@ -41,17 +41,19 @@ declare namespace phasereditor2d.ide.ui.wizards {
     import dialogs = colibri.ui.controls.dialogs;
     import io = colibri.core.io;
     type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
-    class FileLocationDialog extends dialogs.Dialog {
+    class NewFileDialog extends dialogs.Dialog {
         private _filteredViewer;
         private _fileNameText;
         private _createBtn;
         private _fileExtension;
         private _fileContent;
+        private _fileCreatedCallback;
         constructor();
         protected createDialogArea(): void;
         private createBottomArea;
         private normalizedFileName;
         private validate;
+        setFileCreatedCallback(callback: (file: io.FilePath) => void): void;
         setFileContent(fileContent: string): void;
         setInitialFileName(filename: string): void;
         setFileExtension(fileExtension: string): void;

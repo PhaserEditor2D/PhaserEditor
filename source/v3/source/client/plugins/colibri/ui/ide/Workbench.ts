@@ -409,10 +409,14 @@ namespace colibri.ui.ide {
 
             {
                 const editors = this.getEditors();
+
                 for (let editor of editors) {
+
                     if (editor.getInput() === input) {
+
                         editorArea.activateEditor(editor);
                         this.setActivePart(editor);
+                        
                         return;
                     }
                 }

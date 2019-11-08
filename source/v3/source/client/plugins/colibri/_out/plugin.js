@@ -4208,7 +4208,8 @@ var colibri;
                 }
                 static async createFile_async(folder, fileName, content) {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
-                    await storage.createFile(folder, fileName, content);
+                    const file = await storage.createFile(folder, fileName, content);
+                    return file;
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();

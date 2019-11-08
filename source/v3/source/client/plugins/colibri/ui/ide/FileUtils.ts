@@ -21,11 +21,13 @@ namespace colibri.ui.ide {
             return Workbench.getWorkbench().getFileStringCache().setContent(file, content);
         }
 
-        static async createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<void> {
+        static async createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<core.io.FilePath> {
             
             const storage = Workbench.getWorkbench().getFileStorage();
 
-            await storage.createFile(folder, fileName, content);
+            const file = await storage.createFile(folder, fileName, content);
+
+            return file;
         }
 
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
