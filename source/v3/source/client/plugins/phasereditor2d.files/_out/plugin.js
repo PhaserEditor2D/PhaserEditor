@@ -275,29 +275,45 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files) {
+    (function (files_1) {
         var ui;
         (function (ui) {
             var viewers;
             (function (viewers) {
                 var core = colibri.core;
                 class FileTreeContentProvider {
+                    constructor(onlyFolders = false) {
+                        this._onlyFolders = onlyFolders;
+                    }
                     getRoots(input) {
+                        let result = [];
                         if (input instanceof core.io.FilePath) {
+                            if (this._onlyFolders) {
+                                if (!input.isFolder()) {
+                                    return [];
+                                }
+                            }
                             return [input];
                         }
                         if (input instanceof Array) {
+                            if (this._onlyFolders) {
+                                return input.filter(f => f.isFolder());
+                            }
                             return input;
                         }
                         return this.getChildren(input);
                     }
                     getChildren(parent) {
-                        return parent.getFiles();
+                        const files = parent.getFiles();
+                        if (this._onlyFolders) {
+                            return files.filter(f => f.isFolder());
+                        }
+                        return files;
                     }
                 }
                 viewers.FileTreeContentProvider = FileTreeContentProvider;
             })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = files.ui || (files.ui = {}));
+        })(ui = files_1.ui || (files_1.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

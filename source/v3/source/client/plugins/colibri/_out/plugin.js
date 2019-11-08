@@ -2483,6 +2483,40 @@ var colibri;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                class FilteredViewerInElement extends viewers.FilteredViewer {
+                    constructor(viewer, ...classList) {
+                        super(viewer, ...classList);
+                        this.setHandlePosition(false);
+                        this.style.position = "relative";
+                        this.style.height = "100%";
+                        this.resizeTo();
+                    }
+                    resizeTo() {
+                        setTimeout(() => {
+                            const parent = this.getElement().parentElement;
+                            if (parent) {
+                                this.setBounds({
+                                    width: parent.clientWidth,
+                                    height: parent.clientHeight
+                                });
+                            }
+                            this.getViewer().repaint();
+                        }, 10);
+                    }
+                }
+                viewers.FilteredViewerInElement = FilteredViewerInElement;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 class FolderCellRenderer {
                     constructor(maxCount = 8) {
                         this._maxCount = maxCount;
@@ -3046,6 +3080,13 @@ var colibri;
                             sel.push(obj);
                         }
                         return sel;
+                    }
+                    getSelectionFirstElement() {
+                        const sel = this.getSelection();
+                        if (sel.length > 0) {
+                            return sel[0];
+                        }
+                        return null;
                     }
                     setSelection(selection, notify = true) {
                         this._selectedObjects = new Set(selection);
@@ -4376,6 +4417,15 @@ var colibri;
                     this._rightArea.classList.add("MainToolbarRightArea");
                     element.appendChild(this._rightArea);
                     ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onEditorActivated());
+                }
+                getLeftArea() {
+                    return this._leftArea;
+                }
+                getCenterArea() {
+                    return this._centerArea;
+                }
+                getRightArea() {
+                    return this._rightArea;
                 }
                 onEditorActivated() {
                     const editor = ide.Workbench.getWorkbench().getActiveEditor();

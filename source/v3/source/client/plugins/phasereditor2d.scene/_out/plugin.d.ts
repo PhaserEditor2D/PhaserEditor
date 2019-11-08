@@ -461,4 +461,9 @@ declare namespace phasereditor2d.scene.ui.viewers {
         preload(obj: any): Promise<controls.PreloadResult>;
     }
 }
+declare namespace phasereditor2d.scene.ui.wizards {
+    class NewSceneFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
+        constructor();
+    }
+}
 //# sourceMappingURL=plugin.d.ts.map

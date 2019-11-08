@@ -2,6 +2,8 @@ namespace phasereditor2d.ide {
 
     import ide = colibri.ui.ide;
 
+    export const ICON_NEW_FILE = "file-new";
+
     export class IDEPlugin extends ide.Plugin {
 
         private static _instance = new IDEPlugin();
@@ -14,8 +16,26 @@ namespace phasereditor2d.ide {
             super("phasereditor2d.ide");
         }
 
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+
+            // icons loader
+
+            // icons loader
+
+            reg.addExtension(
+                ide.IconLoaderExtension.POINT_ID,
+                ide.IconLoaderExtension.withPluginFiles(this, [
+                    ICON_NEW_FILE
+                ])
+            );
+        }
+
         createWindow(windows: ide.WorkbenchWindow[]): void {
             windows.push(new ui.windows.DesignWindow());
+        }
+
+        openNewWizard() {
+            
         }
 
     }

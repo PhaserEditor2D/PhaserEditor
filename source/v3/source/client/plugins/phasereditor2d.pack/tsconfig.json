@@ -6,6 +6,9 @@
     "references": [
         {
             "path": "../colibri"
+        },        
+        {
+            "path": "../phasereditor2d.ide"
         },
         {
             "path": "../phasereditor2d.blocks"
@@ -21,7 +24,7 @@
         },
         {
             "path": "../phasereditor2d.inspector"
-        }
+        }        
     ],
     "exclude": ["_out/plugin.d.ts"]
 }

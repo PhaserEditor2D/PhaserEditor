@@ -154,6 +154,16 @@ namespace colibri.ui.controls.viewers {
             return sel;
         }
 
+        getSelectionFirstElement() {
+            const sel = this.getSelection();
+
+            if (sel.length > 0) {
+                return sel[0];
+            }
+
+            return null;
+        }
+
         setSelection(selection: any[], notify = true) {
 
             this._selectedObjects = new Set(selection);

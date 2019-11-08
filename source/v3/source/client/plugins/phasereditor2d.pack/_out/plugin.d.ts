@@ -974,4 +974,9 @@ declare namespace phasereditor2d.pack.ui.viewers {
         preload(obj: any): Promise<controls.PreloadResult>;
     }
 }
+declare namespace phasereditor2d.pack.ui.wizards {
+    class NewAssetPackFileWizardExtension extends ide.ui.wizards.NewWizardExtension {
+        constructor();
+    }
+}
 //# sourceMappingURL=plugin.d.ts.map

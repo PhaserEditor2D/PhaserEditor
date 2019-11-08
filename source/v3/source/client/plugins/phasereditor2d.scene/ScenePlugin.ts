@@ -58,6 +58,11 @@ namespace phasereditor2d.scene {
                 new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
                     ui.editor.SceneEditor.getFactory()
                 ]));
+
+            // new file wizards
+            
+            reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT,
+                new ui.wizards.NewSceneFileWizardExtension());
         }
 
     }

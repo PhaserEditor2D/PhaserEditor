@@ -152,6 +152,7 @@ Important:
     text-shadow: 1px 1px #0e0e0e;
 }
 
-.dark .Dialog .DialogClientArea {
+.dark .Dialog .FilteredViewer,
+.dark .Dialog .DialogSection {
     background: #3f3f3f;
 }

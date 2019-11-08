@@ -635,6 +635,12 @@ declare namespace colibri.ui.controls.viewers {
     export {};
 }
 declare namespace colibri.ui.controls.viewers {
+    class FilteredViewerInElement<T extends Viewer> extends FilteredViewer<T> {
+        constructor(viewer: T, ...classList: string[]);
+        resizeTo(): void;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
     class FolderCellRenderer implements ICellRenderer {
         private _maxCount;
         constructor(maxCount?: number);
@@ -744,6 +750,7 @@ declare namespace colibri.ui.controls.viewers {
         protected matches(obj: any): boolean;
         protected getPaintItemAt(e: MouseEvent): PaintItem;
         getSelection(): any[];
+        getSelectionFirstElement(): any;
         setSelection(selection: any[], notify?: boolean): void;
         abstract reveal(...objects: any[]): void;
         private fireSelectionChanged;
@@ -1093,6 +1100,9 @@ declare namespace colibri.ui.ide {
         private _rightArea;
         private _currentManager;
         constructor();
+        getLeftArea(): HTMLElement;
+        getCenterArea(): HTMLElement;
+        getRightArea(): HTMLElement;
         private onEditorActivated;
     }
 }

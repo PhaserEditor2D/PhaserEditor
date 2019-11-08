@@ -77,6 +77,8 @@ declare namespace phasereditor2d.files.ui.viewers {
 declare namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
     class FileTreeContentProvider implements controls.viewers.ITreeContentProvider {
+        private _onlyFolders;
+        constructor(onlyFolders?: boolean);
         getRoots(input: any): any[];
         getChildren(parent: any): any[];
     }

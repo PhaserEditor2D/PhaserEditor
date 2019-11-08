@@ -26,6 +26,8 @@ var phasereditor2d;
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
                     scene.ui.editor.SceneEditor.getFactory()
                 ]));
+                // new file wizards
+                reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT, new scene.ui.wizards.NewSceneFileWizardExtension());
             }
         }
         ScenePlugin._instance = new ScenePlugin();
@@ -2258,6 +2260,30 @@ var phasereditor2d;
                 }
                 viewers.SceneFileCellRenderer = SceneFileCellRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = scene.ui || (scene.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene) {
+        var ui;
+        (function (ui) {
+            var wizards;
+            (function (wizards) {
+                class NewSceneFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.scene.ui.wizards.NewSceneFileWizardExtension",
+                            wizardName: "Scene File",
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP),
+                            fileExtension: "scene",
+                            initialFileName: "Scene"
+                        });
+                    }
+                }
+                wizards.NewSceneFileWizardExtension = NewSceneFileWizardExtension;
+            })(wizards = ui.wizards || (ui.wizards = {}));
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));

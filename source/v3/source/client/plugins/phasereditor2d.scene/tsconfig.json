@@ -24,6 +24,9 @@
         },
         {
             "path": "../phasereditor2d.inspector"
+        },
+        {
+            "path": "../phasereditor2d.ide"
         }
     ],
     "exclude": ["_out/plugin.d.ts"]

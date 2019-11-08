@@ -29,6 +29,18 @@ namespace colibri.ui.ide {
             ide.Workbench.getWorkbench().addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => this.onEditorActivated());
         }
 
+        getLeftArea() {
+            return this._leftArea;
+        }
+
+        getCenterArea() {
+            return this._centerArea;
+        }
+
+        getRightArea() {
+            return this._rightArea;
+        }
+
         private onEditorActivated() {
 
             const editor = ide.Workbench.getWorkbench().getActiveEditor();

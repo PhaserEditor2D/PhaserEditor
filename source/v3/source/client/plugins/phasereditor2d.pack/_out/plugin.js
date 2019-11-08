@@ -84,6 +84,8 @@ var phasereditor2d;
                     pack.ui.editor.AssetPackEditor.getFactory()
                 ]));
                 reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", pack.ui.editor.AssetPackEditor.registerCommands));
+                // new file wizards
+                reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT, new pack.ui.wizards.NewAssetPackFileWizardExtension());
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -4136,6 +4138,30 @@ var phasereditor2d;
                 }
                 viewers.ImageFrameContainerIconCellRenderer = ImageFrameContainerIconCellRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var wizards;
+            (function (wizards) {
+                class NewAssetPackFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.pack.ui.wizards.NewAssetPackFileWizardExtension",
+                            wizardName: "Asset Pack File",
+                            icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
+                            fileExtension: "json",
+                            initialFileName: "asset-pack"
+                        });
+                    }
+                }
+                wizards.NewAssetPackFileWizardExtension = NewAssetPackFileWizardExtension;
+            })(wizards = ui.wizards || (ui.wizards = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
