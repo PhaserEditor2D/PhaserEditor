@@ -442,6 +442,7 @@ var phasereditor2d;
             (function (views) {
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
+                var io = colibri.core.io;
                 class FilesView extends ide.ViewerView {
                     constructor() {
                         super("filesView");
@@ -457,7 +458,8 @@ var phasereditor2d;
                     }
                     createPart() {
                         super.createPart();
-                        const root = ide.Workbench.getWorkbench().getProjectRoot();
+                        const wb = ide.Workbench.getWorkbench();
+                        const root = wb.getProjectRoot();
                         const viewer = this._viewer;
                         viewer.setLabelProvider(new ui.viewers.FileLabelProvider());
                         viewer.setContentProvider(new ui.viewers.FileTreeContentProvider());
@@ -465,11 +467,21 @@ var phasereditor2d;
                         viewer.setInput(root);
                         viewer.repaint();
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
-                            ide.Workbench.getWorkbench().openEditor(e.detail);
+                            wb.openEditor(e.detail);
                         });
-                        ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => {
+                        wb.getFileStorage().addChangeListener(change => {
                             viewer.setInput(ide.FileUtils.getRoot());
                             viewer.repaint();
+                        });
+                        wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
+                            const editor = wb.getActiveEditor();
+                            if (editor) {
+                                const input = editor.getInput();
+                                if (input instanceof io.FilePath) {
+                                    viewer.setSelection([input]);
+                                    viewer.reveal(input);
+                                }
+                            }
                         });
                     }
                     getIcon() {

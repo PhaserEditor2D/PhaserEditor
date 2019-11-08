@@ -3,6 +3,7 @@ namespace phasereditor2d.files.ui.views {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
+    import io = colibri.core.io;
 
     export class FilesView extends ide.ViewerView {
 
@@ -26,7 +27,9 @@ namespace phasereditor2d.files.ui.views {
 
             super.createPart();
 
-            const root = ide.Workbench.getWorkbench().getProjectRoot();
+            const wb = ide.Workbench.getWorkbench();
+
+            const root = wb.getProjectRoot();
 
             const viewer = this._viewer;
 
@@ -38,12 +41,27 @@ namespace phasereditor2d.files.ui.views {
             viewer.repaint();
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e: CustomEvent) => {
-                ide.Workbench.getWorkbench().openEditor(e.detail);
+                wb.openEditor(e.detail);
             });
 
-            ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => {
+            wb.getFileStorage().addChangeListener(change => {
                 viewer.setInput(ide.FileUtils.getRoot());
                 viewer.repaint();
+            });
+
+            wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
+
+                const editor = wb.getActiveEditor();
+
+                if (editor) {
+                    const input = editor.getInput();
+
+                    if (input instanceof io.FilePath) {
+                        
+                        viewer.setSelection([input]);
+                        viewer.reveal(input);
+                    }
+                }
             });
         }
 
