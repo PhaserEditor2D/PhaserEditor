@@ -522,6 +522,7 @@ var colibri;
                         throw new Error(data.error);
                     }
                     file["_modTime"] = data["modTime"];
+                    file["_fileSize"] = data["size"];
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;

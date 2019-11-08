@@ -52,7 +52,7 @@ declare namespace phasereditor2d.ide.ui.wizards {
         protected createDialogArea(): void;
         private createBottomArea;
         private normalizedFileName;
-        private validate;
+        validate(): void;
         setFileCreatedCallback(callback: (file: io.FilePath) => void): void;
         setFileContent(fileContent: string): void;
         setInitialFileName(filename: string): void;

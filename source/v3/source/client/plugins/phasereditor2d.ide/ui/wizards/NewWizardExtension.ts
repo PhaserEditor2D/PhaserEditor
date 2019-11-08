@@ -68,7 +68,9 @@ namespace phasereditor2d.ide.ui.wizards {
 
             if (targetFiles.length > 0) {
 
-                targetFiles.sort((a, b) => b.getModTime() - a.getModTime());
+                targetFiles.sort((a, b) => {
+                    return b.getModTime() - a.getModTime();
+                });
 
                 return targetFiles[0].getParent();
             }

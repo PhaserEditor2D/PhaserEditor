@@ -178,6 +178,7 @@ namespace colibri.core.io {
             }
 
             file["_modTime"] = data["modTime"];
+            file["_fileSize"] = data["size"];
         }
     }
 }

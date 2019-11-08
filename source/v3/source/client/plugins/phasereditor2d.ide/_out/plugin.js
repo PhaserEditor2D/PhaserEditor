@@ -91,6 +91,7 @@ var phasereditor2d;
                             await reg.preload(file);
                             wb.openEditor(file);
                         });
+                        dlg.validate();
                     }
                 }
                 actions.OpenNewFileDialogAction = OpenNewFileDialogAction;
@@ -348,7 +349,9 @@ var phasereditor2d;
                         const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry();
                         const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
                         if (targetFiles.length > 0) {
-                            targetFiles.sort((a, b) => b.getModTime() - a.getModTime());
+                            targetFiles.sort((a, b) => {
+                                return b.getModTime() - a.getModTime();
+                            });
                             return targetFiles[0].getParent();
                         }
                         return root;

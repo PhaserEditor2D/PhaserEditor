@@ -74,6 +74,8 @@ namespace phasereditor2d.ide.ui.actions {
 
                 wb.openEditor(file);
             });
+
+            dlg.validate();
         }
     }
 

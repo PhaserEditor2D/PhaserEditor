@@ -93,7 +93,7 @@ namespace phasereditor2d.ide.ui.wizards {
             return name + "." + this._fileExtension;
         }
 
-        private validate() {
+        validate() {
             const folder = this._filteredViewer.getViewer().getSelectionFirstElement() as io.FilePath;
 
             let valid = folder !== null;
