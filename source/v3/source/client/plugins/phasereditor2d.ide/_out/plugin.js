@@ -81,7 +81,7 @@ var phasereditor2d;
                         const dlg = new ui.wizards.NewFileDialog();
                         dlg.create();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
-                        dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
+                        dlg.setInitialFileName(extension.getInitialFileName());
                         dlg.setInitialLocation(extension.getInitialFileLocation());
                         dlg.setFileExtension(extension.getFileExtension());
                         dlg.setFileContent(extension.getFileContent());
