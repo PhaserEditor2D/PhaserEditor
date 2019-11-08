@@ -105,6 +105,12 @@ namespace phasereditor2d.ide.ui.wizards {
             this._fileNameText.value = filename;
         }
 
+        setInitialLocation(folder : io.FilePath) {
+            console.log(folder.getFullName());
+            this._filteredViewer.getViewer().setSelection([folder]);
+            this._filteredViewer.getViewer().reveal(folder);
+        }
+
         create() {
 
             super.create();

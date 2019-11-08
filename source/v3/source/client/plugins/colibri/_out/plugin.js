@@ -4213,6 +4213,9 @@ var colibri;
                     ide.Workbench.getWorkbench().getProjectRoot().flatTree(files, false);
                     return files;
                 }
+                static getRoot() {
+                    return ide.Workbench.getWorkbench().getProjectRoot();
+                }
             }
             ide.FileUtils = FileUtils;
         })(ide = ui.ide || (ui.ide = {}));

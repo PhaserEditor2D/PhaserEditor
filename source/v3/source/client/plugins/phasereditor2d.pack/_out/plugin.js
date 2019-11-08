@@ -4159,6 +4159,9 @@ var phasereditor2d;
                             initialFileName: "asset-pack"
                         });
                     }
+                    getInitialFileLocation() {
+                        return super.findInitialFileLocationBasedOnContentType(pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK);
+                    }
                 }
                 wizards.NewAssetPackFileWizardExtension = NewAssetPackFileWizardExtension;
             })(wizards = ui.wizards || (ui.wizards = {}));

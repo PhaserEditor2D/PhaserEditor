@@ -69,5 +69,9 @@ namespace colibri.ui.ide {
             return files;
         }
 
+        static getRoot() {
+            return Workbench.getWorkbench().getProjectRoot();
+        }
+
     }
 }

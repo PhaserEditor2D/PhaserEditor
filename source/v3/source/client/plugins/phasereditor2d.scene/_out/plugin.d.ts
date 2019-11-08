@@ -464,6 +464,7 @@ declare namespace phasereditor2d.scene.ui.viewers {
 declare namespace phasereditor2d.scene.ui.wizards {
     class NewSceneFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
         constructor();
+        getInitialFileLocation(): colibri.core.io.FilePath;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

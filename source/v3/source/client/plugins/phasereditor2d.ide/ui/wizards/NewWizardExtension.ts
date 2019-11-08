@@ -1,6 +1,7 @@
 namespace phasereditor2d.ide.ui.wizards {
 
     import controls = colibri.ui.controls;
+    import io = colibri.core.io;
 
     export class NewWizardExtension extends colibri.core.extensions.Extension {
 
@@ -40,6 +41,32 @@ namespace phasereditor2d.ide.ui.wizards {
 
         getIcon() {
             return this._icon;
+        }
+
+        getInitialFileLocation(): io.FilePath {
+            return colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+        }
+
+        findInitialFileLocationBasedOnContentType(contentType: string) {
+
+            const root = colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+
+            const files: io.FilePath[] = [];
+
+            root.flatTree(files, false);
+
+            const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry()
+
+            const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
+
+            if (targetFiles.length > 0) {
+
+                targetFiles.sort((a, b) => b.getModTime() - a.getModTime());
+
+                return targetFiles[0].getParent();
+            }
+
+            return root;
         }
     }
 }

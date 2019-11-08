@@ -975,8 +975,10 @@ declare namespace phasereditor2d.pack.ui.viewers {
     }
 }
 declare namespace phasereditor2d.pack.ui.wizards {
+    import io = colibri.core.io;
     class NewAssetPackFileWizardExtension extends ide.ui.wizards.NewWizardExtension {
         constructor();
+        getInitialFileLocation(): io.FilePath;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

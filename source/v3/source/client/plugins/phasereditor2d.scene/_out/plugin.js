@@ -2281,6 +2281,9 @@ var phasereditor2d;
                             initialFileName: "Scene"
                         });
                     }
+                    getInitialFileLocation() {
+                        return super.findInitialFileLocationBasedOnContentType(scene.core.CONTENT_TYPE_SCENE);
+                    }
                 }
                 wizards.NewSceneFileWizardExtension = NewSceneFileWizardExtension;
             })(wizards = ui.wizards || (ui.wizards = {}));

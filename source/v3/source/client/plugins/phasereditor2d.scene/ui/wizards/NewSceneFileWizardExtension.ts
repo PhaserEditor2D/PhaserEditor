@@ -11,5 +11,9 @@ namespace phasereditor2d.scene.ui.wizards {
                 initialFileName: "Scene"
             });
         }
+
+        getInitialFileLocation() {
+            return super.findInitialFileLocationBasedOnContentType(scene.core.CONTENT_TYPE_SCENE);
+        }
     }
 }

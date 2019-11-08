@@ -1040,6 +1040,7 @@ declare namespace colibri.ui.ide {
         static getFileFromPath(path: string): core.io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;
         static getAllFiles(): core.io.FilePath[];
+        static getRoot(): core.io.FilePath;
     }
 }
 declare namespace colibri.ui.ide.commands {

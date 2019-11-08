@@ -39,6 +39,7 @@ declare namespace phasereditor2d.ide.ui.windows {
 }
 declare namespace phasereditor2d.ide.ui.wizards {
     import dialogs = colibri.ui.controls.dialogs;
+    import io = colibri.core.io;
     class FileLocationDialog extends dialogs.Dialog {
         private _filteredViewer;
         private _fileNameText;
@@ -48,6 +49,7 @@ declare namespace phasereditor2d.ide.ui.wizards {
         private createBottomArea;
         private validate;
         setInitialFileName(filename: string): void;
+        setInitialLocation(folder: io.FilePath): void;
         create(): void;
         private createCenterArea;
         private createFilteredViewer;
@@ -55,6 +57,7 @@ declare namespace phasereditor2d.ide.ui.wizards {
 }
 declare namespace phasereditor2d.ide.ui.wizards {
     import controls = colibri.ui.controls;
+    import io = colibri.core.io;
     class NewWizardExtension extends colibri.core.extensions.Extension {
         static POINT: string;
         private _wizardName;
@@ -72,6 +75,8 @@ declare namespace phasereditor2d.ide.ui.wizards {
         getFileExtension(): string;
         getWizardName(): string;
         getIcon(): controls.IImage;
+        getInitialFileLocation(): io.FilePath;
+        findInitialFileLocationBasedOnContentType(contentType: string): io.FilePath;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

@@ -82,6 +82,7 @@ var phasereditor2d;
                         dlg.create();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
+                        dlg.setInitialLocation(extension.getInitialFileLocation());
                     }
                 }
                 actions.OpenNewWizardAction = OpenNewWizardAction;
@@ -234,6 +235,11 @@ var phasereditor2d;
                     setInitialFileName(filename) {
                         this._fileNameText.value = filename;
                     }
+                    setInitialLocation(folder) {
+                        console.log(folder.getFullName());
+                        this._filteredViewer.getViewer().setSelection([folder]);
+                        this._filteredViewer.getViewer().reveal(folder);
+                    }
                     create() {
                         super.create();
                         this._createBtn = this.addButton("Create", () => { });
@@ -293,6 +299,21 @@ var phasereditor2d;
                     }
                     getIcon() {
                         return this._icon;
+                    }
+                    getInitialFileLocation() {
+                        return colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                    }
+                    findInitialFileLocationBasedOnContentType(contentType) {
+                        const root = colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                        const files = [];
+                        root.flatTree(files, false);
+                        const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry();
+                        const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
+                        if (targetFiles.length > 0) {
+                            targetFiles.sort((a, b) => b.getModTime() - a.getModTime());
+                            return targetFiles[0].getParent();
+                        }
+                        return root;
                     }
                 }
                 NewWizardExtension.POINT = "phasereditor2d.ide.ui.wizards.new";
