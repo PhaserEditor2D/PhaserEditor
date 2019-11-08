@@ -83,6 +83,7 @@ var phasereditor2d;
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
                         dlg.setInitialLocation(extension.getInitialFileLocation());
+                        dlg.setFileExtension(extension.getFileExtension());
                     }
                 }
                 actions.OpenNewWizardAction = OpenNewWizardAction;
@@ -168,6 +169,8 @@ var phasereditor2d;
                 class FileLocationDialog extends dialogs.Dialog {
                     constructor() {
                         super("FileLocationDialog");
+                        this._fileExtension = "";
+                        this._fileContent = "";
                     }
                     createDialogArea() {
                         const clientArea = document.createElement("div");
@@ -215,11 +218,18 @@ var phasereditor2d;
                         }
                         return bottomArea;
                     }
+                    normalizedFileName() {
+                        let name = this._fileNameText.value;
+                        if (name.endsWith("." + this._fileExtension)) {
+                            return name;
+                        }
+                        return name + "." + this._fileExtension;
+                    }
                     validate() {
                         const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
                         let valid = folder !== null;
                         if (valid) {
-                            const name = this._fileNameText.value;
+                            const name = this.normalizedFileName();
                             if (name.indexOf("/") >= 0 || name.trim() === "") {
                                 valid = false;
                             }
@@ -232,19 +242,30 @@ var phasereditor2d;
                         }
                         this._createBtn.disabled = !valid;
                     }
+                    setFileContent(fileContent) {
+                        this._fileContent = fileContent;
+                    }
                     setInitialFileName(filename) {
                         this._fileNameText.value = filename;
                     }
+                    setFileExtension(fileExtension) {
+                        this._fileExtension = fileExtension;
+                    }
                     setInitialLocation(folder) {
-                        console.log(folder.getFullName());
                         this._filteredViewer.getViewer().setSelection([folder]);
                         this._filteredViewer.getViewer().reveal(folder);
                     }
                     create() {
                         super.create();
-                        this._createBtn = this.addButton("Create", () => { });
+                        this._createBtn = this.addButton("Create", () => this.createFile());
                         this.addButton("Cancel", () => this.close());
                         this.validate();
+                    }
+                    createFile() {
+                        const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
+                        const name = this.normalizedFileName();
+                        console.debug(`Creating file '${folder.getFullName()}/${name}'`);
+                        colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
                     }
                     createCenterArea() {
                         const centerArea = document.createElement("div");

@@ -12,6 +12,8 @@ namespace colibri.core.io {
 
         setFileString(file: FilePath, content: string): Promise<void>;
 
+        createFile(folder : FilePath, fileName : string, content : string): Promise<FilePath>;
+
         addChangeListener(listener : ChangeListenerFunc);
 
     }

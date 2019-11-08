@@ -35,10 +35,16 @@ namespace colibri.core {
 
                 for (const resolver of registry.getResolvers()) {
 
-                    const ct = await resolver.computeContentType(file);
+                    try {
 
-                    if (ct !== CONTENT_TYPE_ANY) {
-                        return ct;
+                        const ct = await resolver.computeContentType(file);
+
+                        if (ct !== CONTENT_TYPE_ANY) {
+                            return ct;
+                        }
+                        
+                    } catch (e) {
+                        // nothing
                     }
                 }
 

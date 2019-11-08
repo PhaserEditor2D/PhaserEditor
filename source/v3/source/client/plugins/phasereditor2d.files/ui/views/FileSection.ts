@@ -37,10 +37,14 @@ namespace phasereditor2d.files.ui.views {
                 this.createLabel(comp, "Size");
                 const text = this.createText(comp, true);
                 this.addUpdater(() => {
-                    text.value = this.getSelection()
-                        .map(f => f.getSize())
-                        .reduce((a, b) => a + b)
-                        .toString();
+
+                    let total = 0;
+
+                    for(const file of this.getSelection()) {
+                        total += file.getSize();
+                    }
+
+                    text.value = total.toString();
                 })
             }
 

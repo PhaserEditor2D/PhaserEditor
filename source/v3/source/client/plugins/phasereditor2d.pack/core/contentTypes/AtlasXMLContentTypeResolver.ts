@@ -18,7 +18,9 @@ namespace phasereditor2d.pack.core.contentTypes {
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
 
                 const parser = new DOMParser();
+
                 const xmlDoc = parser.parseFromString(content, "text/xml");
+                
                 const elements = xmlDoc.getElementsByTagName("TextureAtlas");
 
                 if (elements.length === 1) {

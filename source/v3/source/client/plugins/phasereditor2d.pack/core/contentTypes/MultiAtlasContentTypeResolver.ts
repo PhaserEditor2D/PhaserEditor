@@ -16,15 +16,22 @@ namespace phasereditor2d.pack.core.contentTypes {
             if (file.getExtension() === "json") {
 
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
-                const data = JSON.parse(content);
 
-                if (data.hasOwnProperty("textures")) {
+                try {
 
-                    const frames = data["textures"];
+                    const data = JSON.parse(content);
 
-                    if (typeof (frames) === "object") {
-                        return CONTENT_TYPE_MULTI_ATLAS;
+                    if (data.hasOwnProperty("textures")) {
+
+                        const frames = data["textures"];
+
+                        if (typeof (frames) === "object") {
+                            return CONTENT_TYPE_MULTI_ATLAS;
+                        }
                     }
+                    
+                } catch (e) {
+                    // nothing
                 }
             }
 

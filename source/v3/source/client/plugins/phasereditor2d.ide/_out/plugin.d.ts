@@ -40,17 +40,24 @@ declare namespace phasereditor2d.ide.ui.windows {
 declare namespace phasereditor2d.ide.ui.wizards {
     import dialogs = colibri.ui.controls.dialogs;
     import io = colibri.core.io;
+    type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
     class FileLocationDialog extends dialogs.Dialog {
         private _filteredViewer;
         private _fileNameText;
         private _createBtn;
+        private _fileExtension;
+        private _fileContent;
         constructor();
         protected createDialogArea(): void;
         private createBottomArea;
+        private normalizedFileName;
         private validate;
+        setFileContent(fileContent: string): void;
         setInitialFileName(filename: string): void;
+        setFileExtension(fileExtension: string): void;
         setInitialLocation(folder: io.FilePath): void;
         create(): void;
+        private createFile;
         private createCenterArea;
         private createFilteredViewer;
     }

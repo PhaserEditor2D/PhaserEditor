@@ -15,11 +15,16 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (data.meta) {
-                                if (data.meta.contentType === contentTypes.CONTENT_TYPE_ANIMATIONS) {
-                                    return contentTypes.CONTENT_TYPE_ANIMATIONS;
+                            try {
+                                const data = JSON.parse(content);
+                                if (data.meta) {
+                                    if (data.meta.contentType === contentTypes.CONTENT_TYPE_ANIMATIONS) {
+                                        return contentTypes.CONTENT_TYPE_ANIMATIONS;
+                                    }
                                 }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;
@@ -1058,6 +1063,7 @@ var phasereditor2d;
                                     }
                                 }
                                 catch (e) {
+                                    // nothing
                                 }
                             }
                         }
@@ -1086,12 +1092,17 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (data.hasOwnProperty("frames")) {
-                                const frames = data["frames"];
-                                if (typeof (frames) === "object") {
-                                    return contentTypes.CONTENT_TYPE_ATLAS;
+                            try {
+                                const data = JSON.parse(content);
+                                if (data.hasOwnProperty("frames")) {
+                                    const frames = data["frames"];
+                                    if (typeof (frames) === "object") {
+                                        return contentTypes.CONTENT_TYPE_ATLAS;
+                                    }
                                 }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;
@@ -1151,9 +1162,14 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (Array.isArray(data.resources) && typeof (data.spritemap) === "object") {
-                                return contentTypes.CONTENT_TYPE_AUDIO_SPRITE;
+                            try {
+                                const data = JSON.parse(content);
+                                if (Array.isArray(data.resources) && typeof (data.spritemap) === "object") {
+                                    return contentTypes.CONTENT_TYPE_AUDIO_SPRITE;
+                                }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;
@@ -1214,12 +1230,17 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (data.hasOwnProperty("textures")) {
-                                const frames = data["textures"];
-                                if (typeof (frames) === "object") {
-                                    return contentTypes.CONTENT_TYPE_MULTI_ATLAS;
+                            try {
+                                const data = JSON.parse(content);
+                                if (data.hasOwnProperty("textures")) {
+                                    const frames = data["textures"];
+                                    if (typeof (frames) === "object") {
+                                        return contentTypes.CONTENT_TYPE_MULTI_ATLAS;
+                                    }
                                 }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;
@@ -1247,9 +1268,14 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (Array.isArray(data.entities) && Array.isArray(data.layer)) {
-                                return contentTypes.CONTENT_TYPE_TILEMAP_IMPACT;
+                            try {
+                                const data = JSON.parse(content);
+                                if (Array.isArray(data.entities) && Array.isArray(data.layer)) {
+                                    return contentTypes.CONTENT_TYPE_TILEMAP_IMPACT;
+                                }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;
@@ -1277,12 +1303,17 @@ var phasereditor2d;
                     async computeContentType(file) {
                         if (file.getExtension() === "json") {
                             const content = await ide.FileUtils.preloadAndGetFileString(file);
-                            const data = JSON.parse(content);
-                            if (Array.isArray(data.layers)
-                                && Array.isArray(data.tilesets)
-                                && typeof (data.tilewidth === "number")
-                                && typeof (data.tileheight)) {
-                                return contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON;
+                            try {
+                                const data = JSON.parse(content);
+                                if (Array.isArray(data.layers)
+                                    && Array.isArray(data.tilesets)
+                                    && typeof (data.tilewidth === "number")
+                                    && typeof (data.tileheight)) {
+                                    return contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON;
+                                }
+                            }
+                            catch (e) {
+                                // nothing
                             }
                         }
                         return colibri.core.CONTENT_TYPE_ANY;

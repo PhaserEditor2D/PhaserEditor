@@ -218,6 +218,10 @@ namespace colibri.ui.ide {
             return this._fileStringCache;
         }
 
+        getFileStorage() {
+            return this._fileStorage;
+        }
+
         getCommandManager() {
             return this._commandManager;
         }

@@ -125,7 +125,25 @@ namespace colibri.core.io {
             return new FileStorageChange(modified, added, deleted);
         }
 
+        async createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath> {
+
+            const file = folder.makeFile({
+                children: [],
+                isFile: true,
+                name: fileName,
+                size: 0,
+                modTime: 0
+            });
+
+            await this.setFileString_priv(file, content);
+
+            this.fireChange(new FileStorageChange([], [file], []));
+
+            return file;
+        }
+
         async getFileString(file: FilePath): Promise<string> {
+
             const data = await apiRequest("GetFileString", {
                 path: file.getFullName()
             });
@@ -142,6 +160,13 @@ namespace colibri.core.io {
 
         async setFileString(file: FilePath, content: string): Promise<void> {
 
+            await this.setFileString_priv(file, content);
+
+            this.fireChange(new FileStorageChange([file], [], []));
+        }
+
+        private async setFileString_priv(file: FilePath, content: string) : Promise<void> {
+
             const data = await apiRequest("SetFileString", {
                 path: file.getFullName(),
                 content: content
@@ -153,9 +178,6 @@ namespace colibri.core.io {
             }
 
             file["_modTime"] = data["modTime"];
-            
-            this.fireChange(new FileStorageChange([file], [], []));
         }
     }
-
 }

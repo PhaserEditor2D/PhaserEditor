@@ -7,7 +7,7 @@ namespace colibri.ui.ide {
         }
 
         static async preloadAndGetFileString(file: core.io.FilePath): Promise<string> {
-            
+
             await this.preloadFileString(file);
 
             return this.getFileString(file);
@@ -19,6 +19,13 @@ namespace colibri.ui.ide {
 
         static setFileString_async(file: core.io.FilePath, content: string): Promise<void> {
             return Workbench.getWorkbench().getFileStringCache().setContent(file, content);
+        }
+
+        static async createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<void> {
+            
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            await storage.createFile(folder, fileName, content);
         }
 
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {

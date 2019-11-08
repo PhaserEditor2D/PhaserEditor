@@ -1,4 +1,4 @@
-namespace phasereditor2d.pack.core.contentTypes{
+namespace phasereditor2d.pack.core.contentTypes {
 
     import ide = colibri.ui.ide;
     import core = colibri.core;
@@ -12,6 +12,7 @@ namespace phasereditor2d.pack.core.contentTypes{
         }
 
         async computeContentType(file: core.io.FilePath): Promise<string> {
+
             if (file.getExtension() === "json") {
 
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
@@ -28,6 +29,7 @@ namespace phasereditor2d.pack.core.contentTypes{
                         }
 
                     } catch (e) {
+                        // nothing
                     }
                 }
             }

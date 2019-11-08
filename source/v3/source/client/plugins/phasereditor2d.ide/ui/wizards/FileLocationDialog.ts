@@ -5,14 +5,21 @@ namespace phasereditor2d.ide.ui.wizards {
     import dialogs = colibri.ui.controls.dialogs;
     import io = colibri.core.io;
 
+    export declare type CreateFileCallback = (folder : io.FilePath, filename : string) => void;
+
     export class FileLocationDialog extends dialogs.Dialog {
 
         private _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
         private _fileNameText: HTMLInputElement;
         private _createBtn: HTMLButtonElement;
+        private _fileExtension: string;
+        private _fileContent : string;
 
         constructor() {
             super("FileLocationDialog");
+
+            this._fileExtension = "";
+            this._fileContent = "";
         }
 
         protected createDialogArea() {
@@ -75,6 +82,16 @@ namespace phasereditor2d.ide.ui.wizards {
             return bottomArea;
         }
 
+        private normalizedFileName() {
+            let name = this._fileNameText.value;
+
+            if (name.endsWith("." + this._fileExtension)) {
+                return name;
+            }
+
+            return name + "." + this._fileExtension;
+        }
+
         private validate() {
             const folder = this._filteredViewer.getViewer().getSelectionFirstElement() as io.FilePath;
 
@@ -82,7 +99,7 @@ namespace phasereditor2d.ide.ui.wizards {
 
             if (valid) {
 
-                const name = this._fileNameText.value;
+                const name = this.normalizedFileName();
 
                 if (name.indexOf("/") >= 0 || name.trim() === "") {
 
@@ -101,12 +118,19 @@ namespace phasereditor2d.ide.ui.wizards {
             this._createBtn.disabled = !valid;
         }
 
+        setFileContent(fileContent : string) {
+            this._fileContent = fileContent;
+        }
+
         setInitialFileName(filename: string) {
             this._fileNameText.value = filename;
         }
 
-        setInitialLocation(folder : io.FilePath) {
-            console.log(folder.getFullName());
+        setFileExtension(fileExtension: string) {
+            this._fileExtension = fileExtension;
+        }
+
+        setInitialLocation(folder: io.FilePath) {
             this._filteredViewer.getViewer().setSelection([folder]);
             this._filteredViewer.getViewer().reveal(folder);
         }
@@ -115,11 +139,22 @@ namespace phasereditor2d.ide.ui.wizards {
 
             super.create();
 
-            this._createBtn = this.addButton("Create", () => { });
+            this._createBtn = this.addButton("Create", () => this.createFile());
 
             this.addButton("Cancel", () => this.close());
 
             this.validate();
+        }
+
+        private createFile() {
+
+            const folder = this._filteredViewer.getViewer().getSelectionFirstElement() as io.FilePath;
+
+            const name = this.normalizedFileName();
+
+            console.debug(`Creating file '${folder.getFullName()}/${name}'`);
+
+            colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
         }
 
         private createCenterArea() {

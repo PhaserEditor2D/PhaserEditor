@@ -15,14 +15,20 @@ namespace phasereditor2d.pack.core.contentTypes {
 
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
 
-                const data = JSON.parse(content);
+                try {
 
-                if (Array.isArray(data.layers)
-                    && Array.isArray(data.tilesets)
-                    && typeof (data.tilewidth === "number")
-                    && typeof (data.tileheight)) {
+                    const data = JSON.parse(content);
 
-                    return CONTENT_TYPE_TILEMAP_TILED_JSON;
+                    if (Array.isArray(data.layers)
+                        && Array.isArray(data.tilesets)
+                        && typeof (data.tilewidth === "number")
+                        && typeof (data.tileheight)) {
+
+                        return CONTENT_TYPE_TILEMAP_TILED_JSON;
+                    }
+                    
+                } catch (e) {
+                    // nothing
                 }
             }
 

@@ -98,6 +98,7 @@ declare namespace colibri.core.io {
         getFullName(): any;
         getUrl(): any;
         getSibling(name: string): FilePath;
+        makeFile(fileData: FileData): FilePath;
         getFile(name: string): FilePath;
         getParent(): FilePath;
         isFile(): boolean;
@@ -139,8 +140,10 @@ declare namespace colibri.core.io {
         reload(): Promise<void>;
         private fireChange;
         private static compare;
+        createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath>;
         getFileString(file: FilePath): Promise<string>;
         setFileString(file: FilePath, content: string): Promise<void>;
+        private setFileString_priv;
     }
 }
 declare namespace colibri.core.io {
@@ -150,6 +153,7 @@ declare namespace colibri.core.io {
         getRoot(): FilePath;
         getFileString(file: FilePath): Promise<string>;
         setFileString(file: FilePath, content: string): Promise<void>;
+        createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath>;
         addChangeListener(listener: ChangeListenerFunc): any;
     }
 }
@@ -1036,6 +1040,7 @@ declare namespace colibri.ui.ide {
         static preloadAndGetFileString(file: core.io.FilePath): Promise<string>;
         static getFileString(file: core.io.FilePath): string;
         static setFileString_async(file: core.io.FilePath, content: string): Promise<void>;
+        static createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<void>;
         static preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string): core.io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;
@@ -1189,6 +1194,7 @@ declare namespace colibri.ui.ide {
         private initEvents;
         private registerEditors;
         getFileStringCache(): core.io.FileStringCache;
+        getFileStorage(): core.io.IFileStorage;
         getCommandManager(): commands.CommandManager;
         getActiveWindow(): WorkbenchWindow;
         getActiveElement(): HTMLElement;

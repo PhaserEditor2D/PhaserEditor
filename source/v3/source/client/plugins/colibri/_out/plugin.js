@@ -142,9 +142,14 @@ var colibri;
             constructor(registry) {
                 super(async (file) => {
                     for (const resolver of registry.getResolvers()) {
-                        const ct = await resolver.computeContentType(file);
-                        if (ct !== core.CONTENT_TYPE_ANY) {
-                            return ct;
+                        try {
+                            const ct = await resolver.computeContentType(file);
+                            if (ct !== core.CONTENT_TYPE_ANY) {
+                                return ct;
+                            }
+                        }
+                        catch (e) {
+                            // nothing
                         }
                     }
                     return core.CONTENT_TYPE_ANY;
@@ -278,6 +283,11 @@ var colibri;
                         return parent.getFile(name);
                     }
                     return null;
+                }
+                makeFile(fileData) {
+                    const file = new FilePath(this, fileData);
+                    this._files.push(file);
+                    return file;
                 }
                 getFile(name) {
                     return this.getFiles().find(file => file.getName() === name);
@@ -475,6 +485,18 @@ var colibri;
                     }
                     return new io.FileStorageChange(modified, added, deleted);
                 }
+                async createFile(folder, fileName, content) {
+                    const file = folder.makeFile({
+                        children: [],
+                        isFile: true,
+                        name: fileName,
+                        size: 0,
+                        modTime: 0
+                    });
+                    await this.setFileString_priv(file, content);
+                    this.fireChange(new io.FileStorageChange([], [file], []));
+                    return file;
+                }
                 async getFileString(file) {
                     const data = await apiRequest("GetFileString", {
                         path: file.getFullName()
@@ -487,6 +509,10 @@ var colibri;
                     return content;
                 }
                 async setFileString(file, content) {
+                    await this.setFileString_priv(file, content);
+                    this.fireChange(new io.FileStorageChange([file], [], []));
+                }
+                async setFileString_priv(file, content) {
                     const data = await apiRequest("SetFileString", {
                         path: file.getFullName(),
                         content: content
@@ -496,7 +522,6 @@ var colibri;
                         throw new Error(data.error);
                     }
                     file["_modTime"] = data["modTime"];
-                    this.fireChange(new io.FileStorageChange([file], [], []));
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
@@ -4181,6 +4206,10 @@ var colibri;
                 static setFileString_async(file, content) {
                     return ide.Workbench.getWorkbench().getFileStringCache().setContent(file, content);
                 }
+                static async createFile_async(folder, fileName, content) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    await storage.createFile(folder, fileName, content);
+                }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();
                     return cache.preload(file);
@@ -4693,6 +4722,9 @@ var colibri;
                 }
                 getFileStringCache() {
                     return this._fileStringCache;
+                }
+                getFileStorage() {
+                    return this._fileStorage;
                 }
                 getCommandManager() {
                     return this._commandManager;

@@ -15,10 +15,16 @@ namespace phasereditor2d.pack.core.contentTypes {
 
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
 
-                const data = JSON.parse(content);
+                try {
 
-                if (Array.isArray(data.entities) && Array.isArray(data.layer)) {
-                    return CONTENT_TYPE_TILEMAP_IMPACT;
+                    const data = JSON.parse(content);
+
+                    if (Array.isArray(data.entities) && Array.isArray(data.layer)) {
+                        return CONTENT_TYPE_TILEMAP_IMPACT;
+                    }
+
+                } catch (e) {
+                    // nothing
                 }
             }
 

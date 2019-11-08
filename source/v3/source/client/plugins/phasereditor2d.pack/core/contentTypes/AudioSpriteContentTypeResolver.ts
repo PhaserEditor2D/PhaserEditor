@@ -16,10 +16,17 @@ namespace phasereditor2d.pack.core.contentTypes {
             if (file.getExtension() === "json") {
 
                 const content = await ide.FileUtils.preloadAndGetFileString(file);
-                const data = JSON.parse(content);
 
-                if (Array.isArray(data.resources) && typeof(data.spritemap) === "object") {
+                try {
+
+                    const data = JSON.parse(content);
+
+                    if (Array.isArray(data.resources) && typeof (data.spritemap) === "object") {
                         return CONTENT_TYPE_AUDIO_SPRITE;
+                    }
+
+                } catch (e) {
+                    // nothing
                 }
             }
 
