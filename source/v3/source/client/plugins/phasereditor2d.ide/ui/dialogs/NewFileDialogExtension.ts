@@ -1,11 +1,11 @@
-namespace phasereditor2d.ide.ui.wizards {
+namespace phasereditor2d.ide.ui.dialogs {
 
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
 
-    export class NewWizardExtension extends colibri.core.extensions.Extension {
+    export class NewFileDialogExtension extends colibri.core.extensions.Extension {
 
-        static POINT = "phasereditor2d.ide.ui.wizards.new";
+        static POINT = "phasereditor2d.ide.ui.dialogs.NewFileDialogExtension";
 
         private _wizardName: string;
         private _icon: controls.IImage;

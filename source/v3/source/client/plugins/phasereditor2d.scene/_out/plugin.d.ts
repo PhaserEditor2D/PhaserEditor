@@ -151,6 +151,12 @@ declare namespace phasereditor2d.scene.ui.blocks {
         constructor(viewer: controls.viewers.TreeViewer);
     }
 }
+declare namespace phasereditor2d.scene.ui.dialogs {
+    class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileDialogExtension {
+        constructor();
+        getInitialFileLocation(): colibri.core.io.FilePath;
+    }
+}
 declare namespace phasereditor2d.scene.ui.editor {
     class ActionManager {
         private _editor;
@@ -459,12 +465,6 @@ declare namespace phasereditor2d.scene.ui.viewers {
         renderCell(args: controls.viewers.RenderCellArgs): void;
         cellHeight(args: controls.viewers.RenderCellArgs): number;
         preload(obj: any): Promise<controls.PreloadResult>;
-    }
-}
-declare namespace phasereditor2d.scene.ui.wizards {
-    class NewSceneFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
-        constructor();
-        getInitialFileLocation(): colibri.core.io.FilePath;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

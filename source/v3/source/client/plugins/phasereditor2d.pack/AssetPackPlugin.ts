@@ -144,10 +144,10 @@ namespace phasereditor2d.pack {
                 new ide.commands.CommandExtension("phasereditor2d.scene.commands",
                     ui.editor.AssetPackEditor.registerCommands));
 
-            // new file wizards
+            // new file dialog
 
-            reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT,
-                new ui.wizards.NewAssetPackFileWizardExtension());
+            reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT,
+                new ui.dialogs.NewAssetPackFileWizardExtension());
         }
     }
 

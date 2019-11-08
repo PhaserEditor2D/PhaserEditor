@@ -58,7 +58,7 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new WizardCellRendererProvider());
                         const extensions = colibri.ui.ide.Workbench.getWorkbench()
                             .getExtensionRegistry()
-                            .getExtensions(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT);
+                            .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT);
                         viewer.setInput(extensions);
                         const dlg = new controls.dialogs.ViewerDialog(viewer);
                         dlg.create();
@@ -78,7 +78,7 @@ var phasereditor2d;
                         dlg.addButton("Cancel", () => dlg.close());
                     }
                     openFileDialog(extension) {
-                        const dlg = new ui.wizards.NewFileDialog();
+                        const dlg = new ui.dialogs.NewFileDialog();
                         dlg.create();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(extension.getInitialFileName());
@@ -116,65 +116,14 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var ide;
-    (function (ide_2) {
-        var ui;
-        (function (ui) {
-            var windows;
-            (function (windows) {
-                var controls = colibri.ui.controls;
-                var ide = colibri.ui.ide;
-                class DesignWindow extends ide.WorkbenchWindow {
-                    constructor() {
-                        super();
-                        this._outlineView = new phasereditor2d.outline.ui.views.OutlineView();
-                        this._filesView = new phasereditor2d.files.ui.views.FilesView();
-                        this._inspectorView = new phasereditor2d.inspector.ui.views.InspectorView();
-                        this._blocksView = new phasereditor2d.blocks.ui.views.BlocksView();
-                        this._editorArea = new ide.EditorArea();
-                        this._split_Files_Blocks = new controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
-                        this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
-                        this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
-                        this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
-                        this.getClientArea().add(this._split_OutlineEditorFilesBlocks_Inspector);
-                        this.initToolbar();
-                        this.initialLayout();
-                    }
-                    initToolbar() {
-                        const toolbar = this.getToolbar();
-                        const leftArea = toolbar.getLeftArea();
-                        const manager = new controls.ToolbarManager(leftArea);
-                        manager.add(new ui.actions.OpenNewFileDialogAction());
-                    }
-                    getEditorArea() {
-                        return this._editorArea;
-                    }
-                    initialLayout() {
-                        //const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-                        this._split_Files_Blocks.setSplitFactor(0.2);
-                        this._split_Editor_FilesBlocks.setSplitFactor(0.6);
-                        this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
-                        this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
-                        //this.setBounds(b);
-                        this.layout();
-                    }
-                }
-                windows.DesignWindow = DesignWindow;
-            })(windows = ui.windows || (ui.windows = {}));
-        })(ui = ide_2.ui || (ide_2.ui = {}));
-    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var ide;
     (function (ide) {
         var ui;
         (function (ui) {
-            var wizards;
-            (function (wizards) {
+            var dialogs;
+            (function (dialogs) {
                 var controls = colibri.ui.controls;
                 var viewers = colibri.ui.controls.viewers;
-                var dialogs = colibri.ui.controls.dialogs;
-                class NewFileDialog extends dialogs.Dialog {
+                class NewFileDialog extends controls.dialogs.Dialog {
                     constructor() {
                         super("NewFileDialog");
                         this._fileExtension = "";
@@ -302,8 +251,8 @@ var phasereditor2d;
                         });
                     }
                 }
-                wizards.NewFileDialog = NewFileDialog;
-            })(wizards = ui.wizards || (ui.wizards = {}));
+                dialogs.NewFileDialog = NewFileDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -313,9 +262,9 @@ var phasereditor2d;
     (function (ide) {
         var ui;
         (function (ui) {
-            var wizards;
-            (function (wizards) {
-                class NewWizardExtension extends colibri.core.extensions.Extension {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileDialogExtension extends colibri.core.extensions.Extension {
                     constructor(config) {
                         super(config.id);
                         this._wizardName = config.wizardName;
@@ -357,9 +306,59 @@ var phasereditor2d;
                         return root;
                     }
                 }
-                NewWizardExtension.POINT = "phasereditor2d.ide.ui.wizards.new";
-                wizards.NewWizardExtension = NewWizardExtension;
-            })(wizards = ui.wizards || (ui.wizards = {}));
+                NewFileDialogExtension.POINT = "phasereditor2d.ide.ui.dialogs.NewFileDialogExtension";
+                dialogs.NewFileDialogExtension = NewFileDialogExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide_2) {
+        var ui;
+        (function (ui) {
+            var windows;
+            (function (windows) {
+                var controls = colibri.ui.controls;
+                var ide = colibri.ui.ide;
+                class DesignWindow extends ide.WorkbenchWindow {
+                    constructor() {
+                        super();
+                        this._outlineView = new phasereditor2d.outline.ui.views.OutlineView();
+                        this._filesView = new phasereditor2d.files.ui.views.FilesView();
+                        this._inspectorView = new phasereditor2d.inspector.ui.views.InspectorView();
+                        this._blocksView = new phasereditor2d.blocks.ui.views.BlocksView();
+                        this._editorArea = new ide.EditorArea();
+                        this._split_Files_Blocks = new controls.SplitPanel(this.createViewFolder(this._filesView), this.createViewFolder(this._blocksView));
+                        this._split_Editor_FilesBlocks = new controls.SplitPanel(this._editorArea, this._split_Files_Blocks, false);
+                        this._split_Outline_EditorFilesBlocks = new controls.SplitPanel(this.createViewFolder(this._outlineView), this._split_Editor_FilesBlocks);
+                        this._split_OutlineEditorFilesBlocks_Inspector = new controls.SplitPanel(this._split_Outline_EditorFilesBlocks, this.createViewFolder(this._inspectorView));
+                        this.getClientArea().add(this._split_OutlineEditorFilesBlocks_Inspector);
+                        this.initToolbar();
+                        this.initialLayout();
+                    }
+                    initToolbar() {
+                        const toolbar = this.getToolbar();
+                        const leftArea = toolbar.getLeftArea();
+                        const manager = new controls.ToolbarManager(leftArea);
+                        manager.add(new ui.actions.OpenNewFileDialogAction());
+                    }
+                    getEditorArea() {
+                        return this._editorArea;
+                    }
+                    initialLayout() {
+                        //const b = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+                        this._split_Files_Blocks.setSplitFactor(0.2);
+                        this._split_Editor_FilesBlocks.setSplitFactor(0.6);
+                        this._split_Outline_EditorFilesBlocks.setSplitFactor(0.15);
+                        this._split_OutlineEditorFilesBlocks_Inspector.setSplitFactor(0.8);
+                        //this.setBounds(b);
+                        this.layout();
+                    }
+                }
+                windows.DesignWindow = DesignWindow;
+            })(windows = ui.windows || (ui.windows = {}));
+        })(ui = ide_2.ui || (ide_2.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
 })(phasereditor2d || (phasereditor2d = {}));

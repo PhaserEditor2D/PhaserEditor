@@ -21,7 +21,7 @@ namespace phasereditor2d.ide.ui.actions {
 
             const extensions = colibri.ui.ide.Workbench.getWorkbench()
                 .getExtensionRegistry()
-                .getExtensions(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT);
+                .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT);
 
             viewer.setInput(extensions);
 
@@ -53,9 +53,9 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.addButton("Cancel", () => dlg.close());
         }
 
-        private openFileDialog(extension: ide.ui.wizards.NewWizardExtension) {
+        private openFileDialog(extension: ide.ui.dialogs.NewFileDialogExtension) {
 
-            const dlg = new wizards.NewFileDialog();
+            const dlg = new dialogs.NewFileDialog();
 
             dlg.create();
 
@@ -82,7 +82,7 @@ namespace phasereditor2d.ide.ui.actions {
     class WizardLabelProvider implements controls.viewers.ILabelProvider {
 
         getLabel(obj: any): string {
-            return (obj as wizards.NewWizardExtension).getWizardName();
+            return (obj as dialogs.NewFileDialogExtension).getWizardName();
         }
 
     }
@@ -91,7 +91,7 @@ namespace phasereditor2d.ide.ui.actions {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
-            const ext = element as wizards.NewWizardExtension;
+            const ext = element as dialogs.NewFileDialogExtension;
 
             return new controls.viewers.IconImageCellRenderer(ext.getIcon());
         }

@@ -19,29 +19,11 @@ declare namespace phasereditor2d.ide.ui.actions {
         private openFileDialog;
     }
 }
-declare namespace phasereditor2d.ide.ui.windows {
-    import ide = colibri.ui.ide;
-    class DesignWindow extends ide.WorkbenchWindow {
-        private _outlineView;
-        private _filesView;
-        private _inspectorView;
-        private _blocksView;
-        private _editorArea;
-        private _split_Files_Blocks;
-        private _split_Editor_FilesBlocks;
-        private _split_Outline_EditorFilesBlocks;
-        private _split_OutlineEditorFilesBlocks_Inspector;
-        constructor();
-        private initToolbar;
-        getEditorArea(): ide.EditorArea;
-        private initialLayout;
-    }
-}
-declare namespace phasereditor2d.ide.ui.wizards {
-    import dialogs = colibri.ui.controls.dialogs;
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import controls = colibri.ui.controls;
     import io = colibri.core.io;
     type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
-    class NewFileDialog extends dialogs.Dialog {
+    class NewFileDialog extends controls.dialogs.Dialog {
         private _filteredViewer;
         private _fileNameText;
         private _createBtn;
@@ -64,10 +46,10 @@ declare namespace phasereditor2d.ide.ui.wizards {
         private createFilteredViewer;
     }
 }
-declare namespace phasereditor2d.ide.ui.wizards {
+declare namespace phasereditor2d.ide.ui.dialogs {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
-    class NewWizardExtension extends colibri.core.extensions.Extension {
+    class NewFileDialogExtension extends colibri.core.extensions.Extension {
         static POINT: string;
         private _wizardName;
         private _icon;
@@ -89,6 +71,24 @@ declare namespace phasereditor2d.ide.ui.wizards {
         getIcon(): controls.IImage;
         getInitialFileLocation(): io.FilePath;
         findInitialFileLocationBasedOnContentType(contentType: string): io.FilePath;
+    }
+}
+declare namespace phasereditor2d.ide.ui.windows {
+    import ide = colibri.ui.ide;
+    class DesignWindow extends ide.WorkbenchWindow {
+        private _outlineView;
+        private _filesView;
+        private _inspectorView;
+        private _blocksView;
+        private _editorArea;
+        private _split_Files_Blocks;
+        private _split_Editor_FilesBlocks;
+        private _split_Outline_EditorFilesBlocks;
+        private _split_OutlineEditorFilesBlocks_Inspector;
+        constructor();
+        private initToolbar;
+        getEditorArea(): ide.EditorArea;
+        private initialLayout;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

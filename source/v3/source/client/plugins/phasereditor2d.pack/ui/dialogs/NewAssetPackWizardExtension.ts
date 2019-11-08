@@ -1,8 +1,8 @@
-namespace phasereditor2d.pack.ui.wizards {
+namespace phasereditor2d.pack.ui.dialogs {
 
     import io = colibri.core.io;
 
-    export class NewAssetPackFileWizardExtension extends ide.ui.wizards.NewWizardExtension {
+    export class NewAssetPackFileWizardExtension extends ide.ui.dialogs.NewFileDialogExtension {
 
         constructor() {
             super({

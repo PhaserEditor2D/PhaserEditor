@@ -89,8 +89,8 @@ var phasereditor2d;
                     pack.ui.editor.AssetPackEditor.getFactory()
                 ]));
                 reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", pack.ui.editor.AssetPackEditor.registerCommands));
-                // new file wizards
-                reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT, new pack.ui.wizards.NewAssetPackFileWizardExtension());
+                // new file dialog
+                reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT, new pack.ui.dialogs.NewAssetPackFileWizardExtension());
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -1863,6 +1863,45 @@ TextureImporter:
   spritePackingTag: Asteroids
 
   */ 
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewAssetPackFileWizardExtension extends phasereditor2d.ide.ui.dialogs.NewFileDialogExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.pack.ui.wizards.NewAssetPackFileWizardExtension",
+                            wizardName: "Asset Pack File",
+                            icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
+                            fileExtension: "json",
+                            initialFileName: "asset-pack",
+                            fileContent: `{
+                    "section1": {
+                        "files": [
+                        ]
+                    },
+                    "meta": {
+                        "app": "Phaser Editor 2D - Asset Pack Editor",
+                        "contentType": "Phaser v3 Asset Pack",
+                        "url": "https://phasereditor2d.com",
+                        "version": "2"
+                    }
+                }`
+                        });
+                    }
+                    getInitialFileLocation() {
+                        return super.findInitialFileLocationBasedOnContentType(pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK);
+                    }
+                }
+                dialogs.NewAssetPackFileWizardExtension = NewAssetPackFileWizardExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var pack;
@@ -4169,45 +4208,6 @@ var phasereditor2d;
                 }
                 viewers.ImageFrameContainerIconCellRenderer = ImageFrameContainerIconCellRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = pack.ui || (pack.ui = {}));
-    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var pack;
-    (function (pack) {
-        var ui;
-        (function (ui) {
-            var wizards;
-            (function (wizards) {
-                class NewAssetPackFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
-                    constructor() {
-                        super({
-                            id: "phasereditor2d.pack.ui.wizards.NewAssetPackFileWizardExtension",
-                            wizardName: "Asset Pack File",
-                            icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
-                            fileExtension: "json",
-                            initialFileName: "asset-pack",
-                            fileContent: `{
-                    "section1": {
-                        "files": [
-                        ]
-                    },
-                    "meta": {
-                        "app": "Phaser Editor 2D - Asset Pack Editor",
-                        "contentType": "Phaser v3 Asset Pack",
-                        "url": "https://phasereditor2d.com",
-                        "version": "2"
-                    }
-                }`
-                        });
-                    }
-                    getInitialFileLocation() {
-                        return super.findInitialFileLocationBasedOnContentType(pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK);
-                    }
-                }
-                wizards.NewAssetPackFileWizardExtension = NewAssetPackFileWizardExtension;
-            })(wizards = ui.wizards || (ui.wizards = {}));
         })(ui = pack.ui || (pack.ui = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));

@@ -452,6 +452,13 @@ declare namespace phasereditor2d.pack.core.parsers {
         private addFrame;
     }
 }
+declare namespace phasereditor2d.pack.ui.dialogs {
+    import io = colibri.core.io;
+    class NewAssetPackFileWizardExtension extends ide.ui.dialogs.NewFileDialogExtension {
+        constructor();
+        getInitialFileLocation(): io.FilePath;
+    }
+}
 declare namespace phasereditor2d.pack.ui.editor {
     import ide = colibri.ui.ide;
     import controls = colibri.ui.controls;
@@ -972,13 +979,6 @@ declare namespace phasereditor2d.pack.ui.viewers {
         renderCell(args: controls.viewers.RenderCellArgs): void;
         cellHeight(args: controls.viewers.RenderCellArgs): number;
         preload(obj: any): Promise<controls.PreloadResult>;
-    }
-}
-declare namespace phasereditor2d.pack.ui.wizards {
-    import io = colibri.core.io;
-    class NewAssetPackFileWizardExtension extends ide.ui.wizards.NewWizardExtension {
-        constructor();
-        getInitialFileLocation(): io.FilePath;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

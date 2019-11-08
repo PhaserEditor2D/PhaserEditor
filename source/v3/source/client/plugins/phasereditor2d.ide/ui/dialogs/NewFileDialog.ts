@@ -1,13 +1,12 @@
-namespace phasereditor2d.ide.ui.wizards {
+namespace phasereditor2d.ide.ui.dialogs {
 
     import controls = colibri.ui.controls;
     import viewers = colibri.ui.controls.viewers;
-    import dialogs = colibri.ui.controls.dialogs;
     import io = colibri.core.io;
 
     export declare type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
 
-    export class NewFileDialog extends dialogs.Dialog {
+    export class NewFileDialog extends controls.dialogs.Dialog {
 
         private _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
         private _fileNameText: HTMLInputElement;

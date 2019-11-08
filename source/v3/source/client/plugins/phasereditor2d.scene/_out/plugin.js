@@ -27,7 +27,7 @@ var phasereditor2d;
                     scene.ui.editor.SceneEditor.getFactory()
                 ]));
                 // new file wizards
-                reg.addExtension(phasereditor2d.ide.ui.wizards.NewWizardExtension.POINT, new scene.ui.wizards.NewSceneFileWizardExtension());
+                reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT, new scene.ui.dialogs.NewSceneFileDialogExtension());
             }
         }
         ScenePlugin._instance = new ScenePlugin();
@@ -643,6 +643,37 @@ var phasereditor2d;
                 }
                 blocks.SceneEditorBlocksTreeRendererProvider = SceneEditorBlocksTreeRendererProvider;
             })(blocks = ui.blocks || (ui.blocks = {}));
+        })(ui = scene.ui || (scene.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileDialogExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.scene.ui.wizards.NewSceneFileWizardExtension",
+                            wizardName: "Scene File",
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP),
+                            fileExtension: "scene",
+                            initialFileName: "Scene",
+                            fileContent: `{
+                    "sceneType": "Scene",
+                    "displayList": []
+                }`
+                        });
+                    }
+                    getInitialFileLocation() {
+                        return super.findInitialFileLocationBasedOnContentType(scene.core.CONTENT_TYPE_SCENE);
+                    }
+                }
+                dialogs.NewSceneFileDialogExtension = NewSceneFileDialogExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -2260,37 +2291,6 @@ var phasereditor2d;
                 }
                 viewers.SceneFileCellRenderer = SceneFileCellRenderer;
             })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = scene.ui || (scene.ui = {}));
-    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var scene;
-    (function (scene) {
-        var ui;
-        (function (ui) {
-            var wizards;
-            (function (wizards) {
-                class NewSceneFileWizardExtension extends phasereditor2d.ide.ui.wizards.NewWizardExtension {
-                    constructor() {
-                        super({
-                            id: "phasereditor2d.scene.ui.wizards.NewSceneFileWizardExtension",
-                            wizardName: "Scene File",
-                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP),
-                            fileExtension: "scene",
-                            initialFileName: "Scene",
-                            fileContent: `{
-                    "sceneType": "Scene",
-                    "displayList": []
-                }`
-                        });
-                    }
-                    getInitialFileLocation() {
-                        return super.findInitialFileLocationBasedOnContentType(scene.core.CONTENT_TYPE_SCENE);
-                    }
-                }
-                wizards.NewSceneFileWizardExtension = NewSceneFileWizardExtension;
-            })(wizards = ui.wizards || (ui.wizards = {}));
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
