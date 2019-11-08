@@ -71,13 +71,16 @@ declare namespace phasereditor2d.ide.ui.wizards {
         private _icon;
         private _initialFileName;
         private _fileExtension;
+        private _fileContent;
         constructor(config: {
             id: string;
             wizardName: string;
             icon: controls.IImage;
             initialFileName: string;
             fileExtension: string;
+            fileContent: string;
         });
+        getFileContent(): string;
         getInitialFileName(): string;
         getFileExtension(): string;
         getWizardName(): string;

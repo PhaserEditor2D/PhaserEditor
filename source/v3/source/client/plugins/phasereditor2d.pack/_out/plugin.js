@@ -4187,7 +4187,19 @@ var phasereditor2d;
                             wizardName: "Asset Pack File",
                             icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
                             fileExtension: "json",
-                            initialFileName: "asset-pack"
+                            initialFileName: "asset-pack",
+                            fileContent: `{
+                    "section1": {
+                        "files": [
+                        ]
+                    },
+                    "meta": {
+                        "app": "Phaser Editor 2D - Asset Pack Editor",
+                        "contentType": "Phaser v3 Asset Pack",
+                        "url": "https://phasereditor2d.com",
+                        "version": "2"
+                    }
+                }`
                         });
                     }
                     getInitialFileLocation() {

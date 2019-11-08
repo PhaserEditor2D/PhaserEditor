@@ -63,6 +63,7 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
             dlg.setInitialLocation(extension.getInitialFileLocation());
             dlg.setFileExtension(extension.getFileExtension());
+            dlg.setFileContent(extension.getFileContent());
         }
     }
 

@@ -8,7 +8,11 @@ namespace phasereditor2d.scene.ui.wizards {
                 wizardName: "Scene File",
                 icon: ScenePlugin.getInstance().getIcon(ICON_GROUP),
                 fileExtension: "scene",
-                initialFileName: "Scene"
+                initialFileName: "Scene",
+                fileContent: `{
+                    "sceneType": "Scene",
+                    "displayList": []
+                }`
             });
         }
 

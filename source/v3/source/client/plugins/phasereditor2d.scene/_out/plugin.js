@@ -2278,7 +2278,11 @@ var phasereditor2d;
                             wizardName: "Scene File",
                             icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP),
                             fileExtension: "scene",
-                            initialFileName: "Scene"
+                            initialFileName: "Scene",
+                            fileContent: `{
+                    "sceneType": "Scene",
+                    "displayList": []
+                }`
                         });
                     }
                     getInitialFileLocation() {

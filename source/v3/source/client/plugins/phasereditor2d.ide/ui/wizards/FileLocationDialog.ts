@@ -152,9 +152,9 @@ namespace phasereditor2d.ide.ui.wizards {
 
             const name = this.normalizedFileName();
 
-            console.debug(`Creating file '${folder.getFullName()}/${name}'`);
-
             colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+
+            this.close();
         }
 
         private createCenterArea() {

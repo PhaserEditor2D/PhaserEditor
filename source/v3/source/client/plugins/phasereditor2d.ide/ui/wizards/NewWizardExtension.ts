@@ -11,13 +11,15 @@ namespace phasereditor2d.ide.ui.wizards {
         private _icon: controls.IImage;
         private _initialFileName: string;
         private _fileExtension: string;
+        private _fileContent: string;
 
         constructor(config: {
             id: string,
             wizardName: string,
             icon: controls.IImage,
             initialFileName: string,
-            fileExtension: string
+            fileExtension: string,
+            fileContent: string
         }) {
             super(config.id);
 
@@ -25,6 +27,11 @@ namespace phasereditor2d.ide.ui.wizards {
             this._icon = config.icon;
             this._initialFileName = config.initialFileName;
             this._fileExtension = config.fileExtension;
+            this._fileContent = config.fileContent;
+        }
+
+        getFileContent() {
+            return this._fileContent;
         }
 
         getInitialFileName() {

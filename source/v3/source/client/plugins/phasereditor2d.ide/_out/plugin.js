@@ -84,6 +84,7 @@ var phasereditor2d;
                         dlg.setInitialFileName(`${extension.getInitialFileName()}.${extension.getFileExtension()}`);
                         dlg.setInitialLocation(extension.getInitialFileLocation());
                         dlg.setFileExtension(extension.getFileExtension());
+                        dlg.setFileContent(extension.getFileContent());
                     }
                 }
                 actions.OpenNewWizardAction = OpenNewWizardAction;
@@ -264,8 +265,8 @@ var phasereditor2d;
                     createFile() {
                         const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
                         const name = this.normalizedFileName();
-                        console.debug(`Creating file '${folder.getFullName()}/${name}'`);
                         colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+                        this.close();
                     }
                     createCenterArea() {
                         const centerArea = document.createElement("div");
@@ -308,6 +309,10 @@ var phasereditor2d;
                         this._icon = config.icon;
                         this._initialFileName = config.initialFileName;
                         this._fileExtension = config.fileExtension;
+                        this._fileContent = config.fileContent;
+                    }
+                    getFileContent() {
+                        return this._fileContent;
                     }
                     getInitialFileName() {
                         return this._initialFileName;
