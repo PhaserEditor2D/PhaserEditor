@@ -50,11 +50,6 @@ namespace colibri.ui.controls.dialogs {
             Dialog._dialogs.push(this);
         }
 
-        layout() {
-            console.log("here man!!!");
-            super.layout();
-        }
-
         getParentDialog() {
             return this._parentDialog;
         }

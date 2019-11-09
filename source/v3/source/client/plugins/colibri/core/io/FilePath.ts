@@ -102,15 +102,6 @@ namespace colibri.core.io {
             return null;
         }
 
-        makeFile(fileData : FileData) {
-            
-            const file = new FilePath(this, fileData);
-            
-            this._files.push(file);
-
-            return file;
-        }
-
         getFile(name: string) {
             return this.getFiles().find(file => file.getName() === name);
         }

@@ -98,7 +98,6 @@ declare namespace colibri.core.io {
         getFullName(): any;
         getUrl(): any;
         getSibling(name: string): FilePath;
-        makeFile(fileData: FileData): FilePath;
         getFile(name: string): FilePath;
         getParent(): FilePath;
         isFile(): boolean;
@@ -523,7 +522,6 @@ declare namespace colibri.ui.controls.dialogs {
         private static _firstTime;
         private _parentDialog;
         constructor(...classList: string[]);
-        layout(): void;
         getParentDialog(): Dialog;
         create(): void;
         setTitle(title: string): void;

@@ -127,7 +127,7 @@ namespace colibri.core.io {
 
         async createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath> {
 
-            const file = folder.makeFile({
+            const file = new FilePath(folder, {
                 children: [],
                 isFile: true,
                 name: fileName,
@@ -136,6 +136,9 @@ namespace colibri.core.io {
             });
 
             await this.setFileString_priv(file, content);
+
+            folder["_files"].push(file);
+            folder["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
 
             this.fireChange(new FileStorageChange([], [file], []));
 
@@ -165,7 +168,7 @@ namespace colibri.core.io {
             this.fireChange(new FileStorageChange([file], [], []));
         }
 
-        private async setFileString_priv(file: FilePath, content: string) : Promise<void> {
+        private async setFileString_priv(file: FilePath, content: string): Promise<void> {
 
             const data = await apiRequest("SetFileString", {
                 path: file.getFullName(),

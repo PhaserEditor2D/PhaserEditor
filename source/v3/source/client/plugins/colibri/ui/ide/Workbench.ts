@@ -415,6 +415,7 @@ namespace colibri.ui.ide {
                     if (editor.getInput() === input) {
 
                         editorArea.activateEditor(editor);
+
                         this.setActivePart(editor);
                         
                         return;
@@ -423,12 +424,19 @@ namespace colibri.ui.ide {
             }
 
             const factory = this._editorRegistry.getFactoryForInput(input);
+
             if (factory) {
+
                 const editor = factory.createEditor();
-                editorArea.addPart(editor, true);
+
                 editor.setInput(input);
+                
+                editorArea.addPart(editor, true);
+
                 editorArea.activateEditor(editor);
+                
                 this.setActivePart(editor);
+
             } else {
                 alert("No editor available for the given input.");
             }

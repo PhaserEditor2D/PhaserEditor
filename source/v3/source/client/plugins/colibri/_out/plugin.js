@@ -284,11 +284,6 @@ var colibri;
                     }
                     return null;
                 }
-                makeFile(fileData) {
-                    const file = new FilePath(this, fileData);
-                    this._files.push(file);
-                    return file;
-                }
                 getFile(name) {
                     return this.getFiles().find(file => file.getName() === name);
                 }
@@ -486,7 +481,7 @@ var colibri;
                     return new io.FileStorageChange(modified, added, deleted);
                 }
                 async createFile(folder, fileName, content) {
-                    const file = folder.makeFile({
+                    const file = new io.FilePath(folder, {
                         children: [],
                         isFile: true,
                         name: fileName,
@@ -494,6 +489,8 @@ var colibri;
                         modTime: 0
                     });
                     await this.setFileString_priv(file, content);
+                    folder["_files"].push(file);
+                    folder["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
                     this.fireChange(new io.FileStorageChange([], [file], []));
                     return file;
                 }
@@ -1991,10 +1988,6 @@ var colibri;
                             });
                         }
                         Dialog._dialogs.push(this);
-                    }
-                    layout() {
-                        console.log("here man!!!");
-                        super.layout();
                     }
                     getParentDialog() {
                         return this._parentDialog;
@@ -4888,8 +4881,8 @@ var colibri;
                     const factory = this._editorRegistry.getFactoryForInput(input);
                     if (factory) {
                         const editor = factory.createEditor();
-                        editorArea.addPart(editor, true);
                         editor.setInput(input);
+                        editorArea.addPart(editor, true);
                         editorArea.activateEditor(editor);
                         this.setActivePart(editor);
                     }

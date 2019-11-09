@@ -45,7 +45,9 @@ namespace phasereditor2d.files.ui.views {
             });
 
             wb.getFileStorage().addChangeListener(change => {
+                
                 viewer.setInput(ide.FileUtils.getRoot());
+
                 viewer.repaint();
             });
 
@@ -54,10 +56,11 @@ namespace phasereditor2d.files.ui.views {
                 const editor = wb.getActiveEditor();
 
                 if (editor) {
+
                     const input = editor.getInput();
 
                     if (input instanceof io.FilePath) {
-                        
+                    
                         viewer.setSelection([input]);
                         viewer.reveal(input);
                     }
