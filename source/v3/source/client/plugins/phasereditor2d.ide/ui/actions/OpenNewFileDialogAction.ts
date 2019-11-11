@@ -21,7 +21,7 @@ namespace phasereditor2d.ide.ui.actions {
 
             const extensions = colibri.ui.ide.Workbench.getWorkbench()
                 .getExtensionRegistry()
-                .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT);
+                .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT);
 
             viewer.setInput(extensions);
 
@@ -53,27 +53,13 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.addButton("Cancel", () => dlg.close());
         }
 
-        private openFileDialog(extension: ide.ui.dialogs.NewFileDialogExtension) {
+        private openFileDialog(extension: ide.ui.dialogs.NewFileExtension) {
 
-            const dlg = new dialogs.NewFileDialog();
-
-            dlg.create();
+            const dlg = extension.createDialog();
 
             dlg.setTitle(`New ${extension.getWizardName()}`);
             dlg.setInitialFileName(extension.getInitialFileName());
             dlg.setInitialLocation(extension.getInitialFileLocation());
-            dlg.setFileExtension(extension.getFileExtension());
-            dlg.setFileContent(extension.getFileContent());
-            dlg.setFileCreatedCallback(async (file) => {
-
-                const wb = colibri.ui.ide.Workbench.getWorkbench();
-
-                const reg = wb.getContentTypeRegistry();
-
-                await reg.preload(file);
-
-                wb.openEditor(file);
-            });
 
             dlg.validate();
         }
@@ -82,7 +68,7 @@ namespace phasereditor2d.ide.ui.actions {
     class WizardLabelProvider implements controls.viewers.ILabelProvider {
 
         getLabel(obj: any): string {
-            return (obj as dialogs.NewFileDialogExtension).getWizardName();
+            return (obj as dialogs.NewFileExtension).getWizardName();
         }
 
     }
@@ -91,7 +77,7 @@ namespace phasereditor2d.ide.ui.actions {
 
         getCellRenderer(element: any): controls.viewers.ICellRenderer {
 
-            const ext = element as dialogs.NewFileDialogExtension;
+            const ext = element as dialogs.NewFileExtension;
 
             return new controls.viewers.IconImageCellRenderer(ext.getIcon());
         }

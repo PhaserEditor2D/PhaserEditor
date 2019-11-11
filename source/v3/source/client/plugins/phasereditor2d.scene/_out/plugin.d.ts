@@ -152,7 +152,7 @@ declare namespace phasereditor2d.scene.ui.blocks {
     }
 }
 declare namespace phasereditor2d.scene.ui.dialogs {
-    class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileDialogExtension {
+    class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileContentExtension {
         constructor();
         getInitialFileLocation(): colibri.core.io.FilePath;
     }

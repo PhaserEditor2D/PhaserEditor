@@ -20,24 +20,22 @@ namespace phasereditor2d.ide {
 
             // icons loader
 
-            // icons loader
-
             reg.addExtension(
                 ide.IconLoaderExtension.POINT_ID,
                 ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_NEW_FILE
                 ])
             );
+
+            // new file
+
+            reg.addExtension(ui.dialogs.NewFileExtension.POINT,
+                new ui.dialogs.NewFolderExtension());
         }
 
         createWindow(windows: ide.WorkbenchWindow[]): void {
             windows.push(new ui.windows.DesignWindow());
         }
-
-        openNewWizard() {
-            
-        }
-
     }
 
     ide.Workbench.getWorkbench().addPlugin(IDEPlugin.getInstance());

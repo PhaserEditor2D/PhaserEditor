@@ -90,7 +90,7 @@ var phasereditor2d;
                 ]));
                 reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", pack.ui.editor.AssetPackEditor.registerCommands));
                 // new file dialog
-                reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT, new pack.ui.dialogs.NewAssetPackFileWizardExtension());
+                reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT, new pack.ui.dialogs.NewAssetPackFileWizardExtension());
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
@@ -1871,14 +1871,14 @@ var phasereditor2d;
         (function (ui) {
             var dialogs;
             (function (dialogs) {
-                class NewAssetPackFileWizardExtension extends phasereditor2d.ide.ui.dialogs.NewFileDialogExtension {
+                class NewAssetPackFileWizardExtension extends phasereditor2d.ide.ui.dialogs.NewFileContentExtension {
                     constructor() {
                         super({
                             id: "phasereditor2d.pack.ui.wizards.NewAssetPackFileWizardExtension",
                             wizardName: "Asset Pack File",
                             icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
-                            fileExtension: "json",
                             initialFileName: "asset-pack",
+                            fileExtension: "json",
                             fileContent: `{
                     "section1": {
                         "files": [

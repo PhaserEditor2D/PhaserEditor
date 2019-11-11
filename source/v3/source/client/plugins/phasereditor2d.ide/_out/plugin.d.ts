@@ -7,7 +7,6 @@ declare namespace phasereditor2d.ide {
         private constructor();
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
         createWindow(windows: ide.WorkbenchWindow[]): void;
-        openNewWizard(): void;
     }
     const VER = "3.0.0";
 }
@@ -23,25 +22,22 @@ declare namespace phasereditor2d.ide.ui.dialogs {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
     type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
-    class NewFileDialog extends controls.dialogs.Dialog {
-        private _filteredViewer;
-        private _fileNameText;
+    abstract class BaseNewFileDialog extends controls.dialogs.Dialog {
+        protected _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
+        protected _fileNameText: HTMLInputElement;
         private _createBtn;
-        private _fileExtension;
-        private _fileContent;
         private _fileCreatedCallback;
         constructor();
         protected createDialogArea(): void;
         private createBottomArea;
-        private normalizedFileName;
+        protected normalizedFileName(): string;
         validate(): void;
         setFileCreatedCallback(callback: (file: io.FilePath) => void): void;
-        setFileContent(fileContent: string): void;
         setInitialFileName(filename: string): void;
-        setFileExtension(fileExtension: string): void;
         setInitialLocation(folder: io.FilePath): void;
         create(): void;
-        private createFile;
+        private createFile_priv;
+        protected abstract createFile(folder: io.FilePath, name: string): Promise<io.FilePath>;
         private createCenterArea;
         private createFilteredViewer;
         layout(): void;
@@ -50,11 +46,28 @@ declare namespace phasereditor2d.ide.ui.dialogs {
 declare namespace phasereditor2d.ide.ui.dialogs {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
-    class NewFileDialogExtension extends colibri.core.extensions.Extension {
+    abstract class NewFileExtension extends colibri.core.extensions.Extension {
         static POINT: string;
         private _wizardName;
         private _icon;
         private _initialFileName;
+        constructor(config: {
+            id: string;
+            wizardName: string;
+            icon: controls.IImage;
+            initialFileName: string;
+        });
+        abstract createDialog(): BaseNewFileDialog;
+        getInitialFileName(): string;
+        getWizardName(): string;
+        getIcon(): controls.IImage;
+        getInitialFileLocation(): io.FilePath;
+        findInitialFileLocationBasedOnContentType(contentType: string): io.FilePath;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import controls = colibri.ui.controls;
+    abstract class NewFileContentExtension extends NewFileExtension {
         private _fileExtension;
         private _fileContent;
         constructor(config: {
@@ -65,13 +78,30 @@ declare namespace phasereditor2d.ide.ui.dialogs {
             fileExtension: string;
             fileContent: string;
         });
-        getFileContent(): string;
-        getInitialFileName(): string;
-        getFileExtension(): string;
-        getWizardName(): string;
-        getIcon(): controls.IImage;
-        getInitialFileLocation(): io.FilePath;
-        findInitialFileLocationBasedOnContentType(contentType: string): io.FilePath;
+        createDialog(): NewFileDialog;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import io = colibri.core.io;
+    class NewFileDialog extends BaseNewFileDialog {
+        private _fileExtension;
+        private _fileContent;
+        constructor();
+        protected normalizedFileName(): string;
+        setFileContent(fileContent: string): void;
+        setFileExtension(fileExtension: string): void;
+        protected createFile(folder: io.FilePath, name: string): Promise<io.FilePath>;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    class NewFolderDialog extends BaseNewFileDialog {
+        protected createFile(folder: colibri.core.io.FilePath, name: string): Promise<colibri.core.io.FilePath>;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    class NewFolderExtension extends NewFileExtension {
+        constructor();
+        createDialog(): BaseNewFileDialog;
     }
 }
 declare namespace phasereditor2d.ide.ui.windows {

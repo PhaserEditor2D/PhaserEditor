@@ -146,7 +146,7 @@ namespace phasereditor2d.pack {
 
             // new file dialog
 
-            reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT,
+            reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT,
                 new ui.dialogs.NewAssetPackFileWizardExtension());
         }
     }

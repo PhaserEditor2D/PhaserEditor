@@ -13,15 +13,14 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // icons loader
-                // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
                     ide_1.ICON_NEW_FILE
                 ]));
+                // new file
+                reg.addExtension(ide_1.ui.dialogs.NewFileExtension.POINT, new ide_1.ui.dialogs.NewFolderExtension());
             }
             createWindow(windows) {
                 windows.push(new ide_1.ui.windows.DesignWindow());
-            }
-            openNewWizard() {
             }
         }
         IDEPlugin._instance = new IDEPlugin();
@@ -58,7 +57,7 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new WizardCellRendererProvider());
                         const extensions = colibri.ui.ide.Workbench.getWorkbench()
                             .getExtensionRegistry()
-                            .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileDialogExtension.POINT);
+                            .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT);
                         viewer.setInput(extensions);
                         const dlg = new controls.dialogs.ViewerDialog(viewer);
                         dlg.create();
@@ -78,19 +77,10 @@ var phasereditor2d;
                         dlg.addButton("Cancel", () => dlg.close());
                     }
                     openFileDialog(extension) {
-                        const dlg = new ui.dialogs.NewFileDialog();
-                        dlg.create();
+                        const dlg = extension.createDialog();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(extension.getInitialFileName());
                         dlg.setInitialLocation(extension.getInitialFileLocation());
-                        dlg.setFileExtension(extension.getFileExtension());
-                        dlg.setFileContent(extension.getFileContent());
-                        dlg.setFileCreatedCallback(async (file) => {
-                            const wb = colibri.ui.ide.Workbench.getWorkbench();
-                            const reg = wb.getContentTypeRegistry();
-                            await reg.preload(file);
-                            wb.openEditor(file);
-                        });
                         dlg.validate();
                     }
                 }
@@ -123,11 +113,9 @@ var phasereditor2d;
             (function (dialogs) {
                 var controls = colibri.ui.controls;
                 var viewers = colibri.ui.controls.viewers;
-                class NewFileDialog extends controls.dialogs.Dialog {
+                class BaseNewFileDialog extends controls.dialogs.Dialog {
                     constructor() {
                         super("NewFileDialog");
-                        this._fileExtension = "";
-                        this._fileContent = "";
                     }
                     createDialogArea() {
                         const clientArea = document.createElement("div");
@@ -176,11 +164,7 @@ var phasereditor2d;
                         return bottomArea;
                     }
                     normalizedFileName() {
-                        let name = this._fileNameText.value;
-                        if (name.endsWith("." + this._fileExtension)) {
-                            return name;
-                        }
-                        return name + "." + this._fileExtension;
+                        return this._fileNameText.value;
                     }
                     validate() {
                         const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
@@ -202,14 +186,8 @@ var phasereditor2d;
                     setFileCreatedCallback(callback) {
                         this._fileCreatedCallback = callback;
                     }
-                    setFileContent(fileContent) {
-                        this._fileContent = fileContent;
-                    }
                     setInitialFileName(filename) {
                         this._fileNameText.value = filename;
-                    }
-                    setFileExtension(fileExtension) {
-                        this._fileExtension = fileExtension;
                     }
                     setInitialLocation(folder) {
                         this._filteredViewer.getViewer().setSelection([folder]);
@@ -217,14 +195,14 @@ var phasereditor2d;
                     }
                     create() {
                         super.create();
-                        this._createBtn = this.addButton("Create", () => this.createFile());
+                        this._createBtn = this.addButton("Create", () => this.createFile_priv());
                         this.addButton("Cancel", () => this.close());
                         this.validate();
                     }
-                    async createFile() {
+                    async createFile_priv() {
                         const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
                         const name = this.normalizedFileName();
-                        const file = await colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+                        const file = await this.createFile(folder, name);
                         this.close();
                         if (this._fileCreatedCallback) {
                             this._fileCreatedCallback(file);
@@ -252,7 +230,7 @@ var phasereditor2d;
                         this._filteredViewer.resizeTo();
                     }
                 }
-                dialogs.NewFileDialog = NewFileDialog;
+                dialogs.BaseNewFileDialog = BaseNewFileDialog;
             })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
@@ -265,23 +243,15 @@ var phasereditor2d;
         (function (ui) {
             var dialogs;
             (function (dialogs) {
-                class NewFileDialogExtension extends colibri.core.extensions.Extension {
+                class NewFileExtension extends colibri.core.extensions.Extension {
                     constructor(config) {
                         super(config.id);
                         this._wizardName = config.wizardName;
                         this._icon = config.icon;
                         this._initialFileName = config.initialFileName;
-                        this._fileExtension = config.fileExtension;
-                        this._fileContent = config.fileContent;
-                    }
-                    getFileContent() {
-                        return this._fileContent;
                     }
                     getInitialFileName() {
                         return this._initialFileName;
-                    }
-                    getFileExtension() {
-                        return this._fileExtension;
                     }
                     getWizardName() {
                         return this._wizardName;
@@ -307,8 +277,126 @@ var phasereditor2d;
                         return root;
                     }
                 }
-                NewFileDialogExtension.POINT = "phasereditor2d.ide.ui.dialogs.NewFileDialogExtension";
-                dialogs.NewFileDialogExtension = NewFileDialogExtension;
+                NewFileExtension.POINT = "phasereditor2d.ide.ui.dialogs.NewFileDialogExtension";
+                dialogs.NewFileExtension = NewFileExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./NewFileExtension.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileContentExtension extends dialogs.NewFileExtension {
+                    constructor(config) {
+                        super(config);
+                        this._fileExtension = config.fileExtension;
+                        this._fileContent = config.fileContent;
+                    }
+                    createDialog() {
+                        const dlg = new ide.ui.dialogs.NewFileDialog();
+                        dlg.create();
+                        dlg.setFileExtension(this._fileExtension);
+                        dlg.setFileContent(this._fileContent);
+                        dlg.setFileCreatedCallback(async (file) => {
+                            const wb = colibri.ui.ide.Workbench.getWorkbench();
+                            const reg = wb.getContentTypeRegistry();
+                            await reg.preload(file);
+                            wb.openEditor(file);
+                        });
+                        return dlg;
+                    }
+                }
+                dialogs.NewFileContentExtension = NewFileContentExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseNewFileDialog.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileDialog extends dialogs.BaseNewFileDialog {
+                    constructor() {
+                        super();
+                        this._fileExtension = "";
+                        this._fileContent = "";
+                    }
+                    normalizedFileName() {
+                        const name = super.normalizedFileName();
+                        if (name.endsWith("." + this._fileExtension)) {
+                            return name;
+                        }
+                        return name + "." + this._fileExtension;
+                    }
+                    setFileContent(fileContent) {
+                        this._fileContent = fileContent;
+                    }
+                    setFileExtension(fileExtension) {
+                        this._fileExtension = fileExtension;
+                    }
+                    createFile(folder, name) {
+                        return colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+                    }
+                }
+                dialogs.NewFileDialog = NewFileDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFolderDialog extends dialogs.BaseNewFileDialog {
+                    createFile(folder, name) {
+                        //TODO: create folder
+                        return null;
+                    }
+                }
+                dialogs.NewFolderDialog = NewFolderDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFolderExtension extends dialogs.NewFileExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.ide.ui.dialogs.NewFolderExtension",
+                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
+                            initialFileName: "folder",
+                            wizardName: "Folder"
+                        });
+                    }
+                    createDialog() {
+                        const dlg = new dialogs.NewFolderDialog();
+                        dlg.create();
+                        return dlg;
+                    }
+                }
+                dialogs.NewFolderExtension = NewFolderExtension;
             })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));

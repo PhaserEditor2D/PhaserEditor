@@ -2,15 +2,15 @@ namespace phasereditor2d.pack.ui.dialogs {
 
     import io = colibri.core.io;
 
-    export class NewAssetPackFileWizardExtension extends ide.ui.dialogs.NewFileDialogExtension {
+    export class NewAssetPackFileWizardExtension extends ide.ui.dialogs.NewFileContentExtension {
 
         constructor() {
             super({
                 id: "phasereditor2d.pack.ui.wizards.NewAssetPackFileWizardExtension",
                 wizardName: "Asset Pack File",
                 icon: AssetPackPlugin.getInstance().getIcon(ICON_ASSET_PACK),
-                fileExtension: "json",
                 initialFileName: "asset-pack",
+                fileExtension: "json",
                 fileContent: `{
                     "section1": {
                         "files": [
@@ -26,8 +26,10 @@ namespace phasereditor2d.pack.ui.dialogs {
             });
         }
 
+      
         getInitialFileLocation() {
             return super.findInitialFileLocationBasedOnContentType(pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK);
         }
     }
 }
+
