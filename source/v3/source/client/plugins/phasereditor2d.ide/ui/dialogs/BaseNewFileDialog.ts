@@ -149,7 +149,7 @@ namespace phasereditor2d.ide.ui.dialogs {
             }
         }
 
-        protected abstract async createFile(folder: io.FilePath, name: string): Promise<io.FilePath>;
+        protected abstract async createFile(container: io.FilePath, name: string): Promise<io.FilePath>;
 
         private createCenterArea() {
 

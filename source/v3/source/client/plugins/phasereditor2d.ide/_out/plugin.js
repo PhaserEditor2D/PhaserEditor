@@ -363,9 +363,8 @@ var phasereditor2d;
             var dialogs;
             (function (dialogs) {
                 class NewFolderDialog extends dialogs.BaseNewFileDialog {
-                    createFile(folder, name) {
-                        //TODO: create folder
-                        return null;
+                    createFile(container, name) {
+                        return colibri.ui.ide.FileUtils.createFolder_async(container, name);
                     }
                 }
                 dialogs.NewFolderDialog = NewFolderDialog;

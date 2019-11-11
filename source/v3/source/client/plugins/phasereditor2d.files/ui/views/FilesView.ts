@@ -45,10 +45,25 @@ namespace phasereditor2d.files.ui.views {
             });
 
             wb.getFileStorage().addChangeListener(change => {
-                
+
                 viewer.setInput(ide.FileUtils.getRoot());
 
                 viewer.repaint();
+
+                if (change.getAddedFiles().length === 1) {
+
+                    const file = change.getAddedFiles()[0];
+
+                    if (file.isFolder()) {
+
+                        setTimeout(() => {
+
+                            viewer.reveal(file);
+                            viewer.setSelection([file]);
+
+                        }, 100);
+                    }
+                }
             });
 
             wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
@@ -60,7 +75,7 @@ namespace phasereditor2d.files.ui.views {
                     const input = editor.getInput();
 
                     if (input instanceof io.FilePath) {
-                    
+
                         viewer.setSelection([input]);
                         viewer.reveal(input);
                     }

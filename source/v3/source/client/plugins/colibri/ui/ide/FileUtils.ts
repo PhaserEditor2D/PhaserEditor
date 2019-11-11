@@ -30,6 +30,15 @@ namespace colibri.ui.ide {
             return file;
         }
 
+        static async createFolder_async(container : core.io.FilePath, folderName: string) : Promise<core.io.FilePath> {
+
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            const folder = await storage.createFolder(container, folderName);
+
+            return folder;
+        }
+
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
 
             const cache = Workbench.getWorkbench().getFileStringCache();

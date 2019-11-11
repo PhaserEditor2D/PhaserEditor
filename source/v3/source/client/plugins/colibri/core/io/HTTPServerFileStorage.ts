@@ -145,6 +145,35 @@ namespace colibri.core.io {
             return file;
         }
 
+        async createFolder(container: FilePath, folderName: string): Promise<FilePath> {
+            const newFolder = new FilePath(container, {
+                children: [],
+                isFile: false,
+                name: folderName,
+                size: 0,
+                modTime: 0
+            });
+
+            const path = container.getFullName() + "/" + folderName;
+
+            const data = await apiRequest("CreateFolder", {
+                path: path
+            });
+
+            if (data.error) {
+                alert(`Cannot create folder at '${path}'`);
+                throw new Error(data.error);
+            }
+
+            newFolder["_modTime"] = data["modTime"];
+            container["_files"].push(newFolder);
+            container["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
+
+            this.fireChange(new FileStorageChange([], [newFolder], []));
+
+            return newFolder;
+        }
+
         async getFileString(file: FilePath): Promise<string> {
 
             const data = await apiRequest("GetFileString", {

@@ -494,6 +494,28 @@ var colibri;
                     this.fireChange(new io.FileStorageChange([], [file], []));
                     return file;
                 }
+                async createFolder(container, folderName) {
+                    const newFolder = new io.FilePath(container, {
+                        children: [],
+                        isFile: false,
+                        name: folderName,
+                        size: 0,
+                        modTime: 0
+                    });
+                    const path = container.getFullName() + "/" + folderName;
+                    const data = await apiRequest("CreateFolder", {
+                        path: path
+                    });
+                    if (data.error) {
+                        alert(`Cannot create folder at '${path}'`);
+                        throw new Error(data.error);
+                    }
+                    newFolder["_modTime"] = data["modTime"];
+                    container["_files"].push(newFolder);
+                    container["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
+                    this.fireChange(new io.FileStorageChange([], [newFolder], []));
+                    return newFolder;
+                }
                 async getFileString(file) {
                     const data = await apiRequest("GetFileString", {
                         path: file.getFullName()
@@ -4213,6 +4235,11 @@ var colibri;
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     const file = await storage.createFile(folder, fileName, content);
                     return file;
+                }
+                static async createFolder_async(container, folderName) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    const folder = await storage.createFolder(container, folderName);
+                    return folder;
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();

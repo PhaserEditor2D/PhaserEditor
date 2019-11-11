@@ -37,7 +37,7 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         setInitialLocation(folder: io.FilePath): void;
         create(): void;
         private createFile_priv;
-        protected abstract createFile(folder: io.FilePath, name: string): Promise<io.FilePath>;
+        protected abstract createFile(container: io.FilePath, name: string): Promise<io.FilePath>;
         private createCenterArea;
         private createFilteredViewer;
         layout(): void;
@@ -95,7 +95,7 @@ declare namespace phasereditor2d.ide.ui.dialogs {
 }
 declare namespace phasereditor2d.ide.ui.dialogs {
     class NewFolderDialog extends BaseNewFileDialog {
-        protected createFile(folder: colibri.core.io.FilePath, name: string): Promise<colibri.core.io.FilePath>;
+        protected createFile(container: colibri.core.io.FilePath, name: string): Promise<colibri.core.io.FilePath>;
     }
 }
 declare namespace phasereditor2d.ide.ui.dialogs {
