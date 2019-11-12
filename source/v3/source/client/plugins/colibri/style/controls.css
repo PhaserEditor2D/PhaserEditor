@@ -267,3 +267,17 @@ canvas {
     float: right;
     margin-left: 10px;
 }
+
+/* Menu */
+
+.Menu {
+    position: fixed;
+}
+
+.MenuContainer {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+}

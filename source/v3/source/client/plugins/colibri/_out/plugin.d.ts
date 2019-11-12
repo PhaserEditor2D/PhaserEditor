@@ -179,12 +179,15 @@ declare namespace colibri.ui.controls {
     class Action extends EventTarget {
         private _text;
         private _icon;
+        private _enabled;
         private _callback;
         constructor(config: {
             text?: string;
             icon?: IImage;
+            enabled?: boolean;
             callback?: () => void;
         });
+        isEnabled(): boolean;
         getText(): string;
         getIcon(): IImage;
         run(): void;
@@ -383,6 +386,21 @@ declare namespace colibri.ui.controls {
         preload(): Promise<PreloadResult>;
         getWidth(): number;
         getHeight(): number;
+    }
+}
+declare namespace colibri.ui.controls {
+    class Menu {
+        private _actions;
+        private _element;
+        private _bgElement;
+        private _menuCloseCallback;
+        constructor();
+        setMenuClosedCallback(callback: () => void): void;
+        add(action: Action): void;
+        isEmpty(): boolean;
+        getElement(): HTMLUListElement;
+        create(): void;
+        close(): void;
     }
 }
 declare namespace colibri.ui.controls {
@@ -742,9 +760,12 @@ declare namespace colibri.ui.controls.viewers {
         protected _contentHeight: number;
         private _filterText;
         protected _filterIncludeSet: Set<any>;
+        private _menu;
         constructor(...classList: string[]);
         private initListeners;
         private onDragStart;
+        getMenu(): Menu;
+        setMenu(menu: controls.Menu): void;
         getLabelProvider(): ILabelProvider;
         setLabelProvider(labelProvider: ILabelProvider): void;
         setFilterText(filterText: string): void;
@@ -763,7 +784,7 @@ declare namespace colibri.ui.controls.viewers {
         private onWheel;
         private onDoubleClick;
         protected abstract canSelectAtPoint(e: MouseEvent): boolean;
-        private onMouseUp;
+        onMouseUp(e: MouseEvent): void;
         private initContext;
         setExpanded(obj: any, expanded: boolean): void;
         isExpanded(obj: any): boolean;
@@ -1004,6 +1025,8 @@ declare namespace colibri.ui.ide {
         constructor(id: string);
         protected abstract createViewer(): controls.viewers.TreeViewer;
         protected createPart(): void;
+        protected fillContextMenu(menu: controls.Menu): void;
+        private onMenu;
         getViewer(): controls.viewers.TreeViewer;
         layout(): void;
     }

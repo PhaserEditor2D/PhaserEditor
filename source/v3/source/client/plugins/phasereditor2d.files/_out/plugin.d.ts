@@ -115,6 +115,7 @@ declare namespace phasereditor2d.files.ui.views {
         private _propertyProvider;
         constructor();
         protected createViewer(): controls.viewers.TreeViewer;
+        fillContextMenu(menu: controls.Menu): void;
         getPropertyProvider(): FilePropertySectionProvider;
         protected createPart(): void;
         getIcon(): controls.IImage;

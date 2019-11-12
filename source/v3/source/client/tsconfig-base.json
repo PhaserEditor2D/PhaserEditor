@@ -4,7 +4,7 @@
             "es2019",
             "dom"
         ],
-        "target": "esnext",
+        "target": "es2019",
         "composite": true,
         "declaration": true,
         "declarationMap": true,

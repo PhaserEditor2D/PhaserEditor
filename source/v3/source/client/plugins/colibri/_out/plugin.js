@@ -640,10 +640,15 @@ var colibri;
             controls.EVENT_ACTION_CHANGED = "actionChanged";
             class Action extends EventTarget {
                 constructor(config) {
+                    var _a, _b, _c;
                     super();
-                    this._text = config.text || "";
-                    this._icon = config.icon || null;
-                    this._callback = config.callback || null;
+                    this._text = (_a = config.text, (_a !== null && _a !== void 0 ? _a : ""));
+                    this._icon = (_b = config.icon, (_b !== null && _b !== void 0 ? _b : null));
+                    this._enabled = config.enabled === undefined || config.enabled;
+                    this._callback = (_c = config.callback, (_c !== null && _c !== void 0 ? _c : null));
+                }
+                isEnabled() {
+                    return this._enabled;
                 }
                 getText() {
                     return this._text;
@@ -1332,6 +1337,68 @@ var colibri;
                 }
             }
             controls.ImageWrapper = ImageWrapper;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            class Menu {
+                constructor() {
+                    this._actions = [];
+                }
+                setMenuClosedCallback(callback) {
+                    this._menuCloseCallback = callback;
+                }
+                add(action) {
+                    this._actions.push(action);
+                }
+                isEmpty() {
+                    return this._actions.length === 0;
+                }
+                getElement() {
+                    return this._element;
+                }
+                create() {
+                    this._element = document.createElement("ul");
+                    this._element.classList.add("Menu");
+                    for (const action of this._actions) {
+                        const item = document.createElement("li");
+                        item.classList.add("MenuItem");
+                        item.innerText = action.getText();
+                        if (action.isEnabled()) {
+                            item.addEventListener("click", e => {
+                                this.close();
+                                action.run();
+                            });
+                        }
+                        else {
+                            item.classList.add("MenuItemDisabled");
+                        }
+                        this._element.appendChild(item);
+                    }
+                    this._bgElement = document.createElement("div");
+                    this._bgElement.classList.add("MenuContainer");
+                    this._bgElement.addEventListener("mousedown", e => {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        this.close();
+                    });
+                    document.body.appendChild(this._bgElement);
+                    document.body.appendChild(this._element);
+                }
+                close() {
+                    this._bgElement.remove();
+                    this._element.remove();
+                    if (this._menuCloseCallback) {
+                        this._menuCloseCallback();
+                    }
+                }
+            }
+            controls.Menu = Menu;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -3081,6 +3148,17 @@ var colibri;
                             e.preventDefault();
                         }
                     }
+                    getMenu() {
+                        return this._menu;
+                    }
+                    setMenu(menu) {
+                        this._menu = menu;
+                        if (this._menu) {
+                            this._menu.setMenuClosedCallback(() => {
+                                this._menu = null;
+                            });
+                        }
+                    }
                     getLabelProvider() {
                         return this._labelProvider;
                     }
@@ -3152,6 +3230,10 @@ var colibri;
                     }
                     onKeyDown(e) {
                         if (e.key === "Escape") {
+                            if (this._menu) {
+                                this._menu.close();
+                                return;
+                            }
                             if (this._selectedObjects.size > 0) {
                                 this._selectedObjects.clear();
                                 this.repaint();
@@ -3180,7 +3262,7 @@ var colibri;
                         }
                     }
                     onMouseUp(e) {
-                        if (e.button !== 0) {
+                        if (e.button !== 0 && e.button !== 2) {
                             return;
                         }
                         if (!this.canSelectAtPoint(e)) {
@@ -3194,30 +3276,38 @@ var colibri;
                         }
                         else {
                             const data = item.data;
-                            if (e.ctrlKey || e.metaKey) {
-                                if (this._selectedObjects.has(data)) {
-                                    this._selectedObjects.delete(data);
-                                }
-                                else {
+                            if (e.button === 2) {
+                                if (!this._selectedObjects.has(data)) {
                                     this._selectedObjects.add(data);
-                                }
-                                selChanged = true;
-                            }
-                            else if (e.shiftKey) {
-                                if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
-                                    const start = Math.min(this._lastSelectedItemIndex, item.index);
-                                    const end = Math.max(this._lastSelectedItemIndex, item.index);
-                                    for (let i = start; i <= end; i++) {
-                                        const obj = this._paintItems[i].data;
-                                        this._selectedObjects.add(obj);
-                                    }
                                     selChanged = true;
                                 }
                             }
                             else {
-                                this._selectedObjects.clear();
-                                this._selectedObjects.add(data);
-                                selChanged = true;
+                                if (e.ctrlKey || e.metaKey) {
+                                    if (this._selectedObjects.has(data)) {
+                                        this._selectedObjects.delete(data);
+                                    }
+                                    else {
+                                        this._selectedObjects.add(data);
+                                    }
+                                    selChanged = true;
+                                }
+                                else if (e.shiftKey) {
+                                    if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
+                                        const start = Math.min(this._lastSelectedItemIndex, item.index);
+                                        const end = Math.max(this._lastSelectedItemIndex, item.index);
+                                        for (let i = start; i <= end; i++) {
+                                            const obj = this._paintItems[i].data;
+                                            this._selectedObjects.add(obj);
+                                        }
+                                        selChanged = true;
+                                    }
+                                }
+                                else {
+                                    this._selectedObjects.clear();
+                                    this._selectedObjects.add(data);
+                                    selChanged = true;
+                                }
                             }
                         }
                         if (selChanged) {
@@ -4086,6 +4176,20 @@ var colibri;
                     this._viewer.addEventListener(ui.controls.EVENT_SELECTION_CHANGED, (e) => {
                         this.setSelection(e.detail);
                     });
+                    this._viewer.getElement().addEventListener("contextmenu", e => this.onMenu(e));
+                }
+                fillContextMenu(menu) {
+                }
+                onMenu(e) {
+                    e.preventDefault();
+                    this._viewer.onMouseUp(e);
+                    const menu = new ui.controls.Menu();
+                    this._viewer.setMenu(menu);
+                    this.fillContextMenu(menu);
+                    menu.create();
+                    const element = menu.getElement();
+                    element.style.left = e.clientX + "px";
+                    element.style.top = e.clientY + "px";
                 }
                 getViewer() {
                     return this._viewer;

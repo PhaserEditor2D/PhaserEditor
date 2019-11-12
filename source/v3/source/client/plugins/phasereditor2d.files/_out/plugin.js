@@ -453,6 +453,24 @@ var phasereditor2d;
                     createViewer() {
                         return new controls.viewers.TreeViewer();
                     }
+                    fillContextMenu(menu) {
+                        const sel = this._viewer.getSelection();
+                        menu.add(new controls.Action({
+                            text: "New"
+                        }));
+                        menu.add(new controls.Action({
+                            text: "Rename",
+                            enabled: sel.length === 1
+                        }));
+                        menu.add(new controls.Action({
+                            text: "Move",
+                            enabled: sel.length > 0
+                        }));
+                        menu.add(new controls.Action({
+                            text: "Delete",
+                            enabled: sel.length > 0
+                        }));
+                    }
                     getPropertyProvider() {
                         return this._propertyProvider;
                     }

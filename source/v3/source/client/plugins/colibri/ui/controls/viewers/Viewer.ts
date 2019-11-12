@@ -22,6 +22,7 @@ namespace colibri.ui.controls.viewers {
         protected _contentHeight: number = 0;
         private _filterText: string;
         protected _filterIncludeSet: Set<any>;
+        private _menu: controls.Menu;
 
 
         constructor(...classList: string[]) {
@@ -86,6 +87,21 @@ namespace colibri.ui.controls.viewers {
 
             } else {
                 e.preventDefault();
+            }
+        }
+
+        getMenu() {
+            return this._menu;
+        }
+
+        setMenu(menu: controls.Menu) {
+
+            this._menu = menu;
+
+            if (this._menu) {
+                this._menu.setMenuClosedCallback(() => {
+                    this._menu = null
+                });
             }
         }
 
@@ -169,7 +185,7 @@ namespace colibri.ui.controls.viewers {
             this._selectedObjects = new Set(selection);
 
             if (notify) {
-                
+
                 this.fireSelectionChanged();
                 this.repaint();
             }
@@ -184,7 +200,14 @@ namespace colibri.ui.controls.viewers {
         }
 
         private onKeyDown(e: KeyboardEvent): void {
+
             if (e.key === "Escape") {
+
+                if (this._menu) {
+                    this._menu.close();
+                    return;
+                }
+
                 if (this._selectedObjects.size > 0) {
                     this._selectedObjects.clear();
                     this.repaint();
@@ -221,8 +244,9 @@ namespace colibri.ui.controls.viewers {
 
         protected abstract canSelectAtPoint(e: MouseEvent): boolean;
 
-        private onMouseUp(e: MouseEvent): void {
-            if (e.button !== 0) {
+        onMouseUp(e: MouseEvent): void {
+
+            if (e.button !== 0 && e.button !== 2) {
                 return;
             }
 
@@ -235,39 +259,64 @@ namespace colibri.ui.controls.viewers {
             let selChanged = false;
 
             if (item === null) {
+
                 this._selectedObjects.clear();
                 selChanged = true;
+
             } else {
 
                 const data = item.data;
 
-                if (e.ctrlKey || e.metaKey) {
-                    if (this._selectedObjects.has(data)) {
-                        this._selectedObjects.delete(data);
-                    } else {
+                if (e.button === 2) {
+
+                    if (!this._selectedObjects.has(data)) {
+
                         this._selectedObjects.add(data);
-                    }
-                    selChanged = true;
-                } else if (e.shiftKey) {
-                    if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
-                        const start = Math.min(this._lastSelectedItemIndex, item.index);
-                        const end = Math.max(this._lastSelectedItemIndex, item.index);
-                        for (let i = start; i <= end; i++) {
-                            const obj = this._paintItems[i].data;
-                            this._selectedObjects.add(obj);
-                        }
                         selChanged = true;
                     }
+
                 } else {
-                    this._selectedObjects.clear();
-                    this._selectedObjects.add(data);
-                    selChanged = true;
+
+                    if (e.ctrlKey || e.metaKey) {
+
+                        if (this._selectedObjects.has(data)) {
+                            this._selectedObjects.delete(data);
+                        } else {
+                            this._selectedObjects.add(data);
+                        }
+
+                        selChanged = true;
+
+                    } else if (e.shiftKey) {
+
+                        if (this._lastSelectedItemIndex >= 0 && this._lastSelectedItemIndex != item.index) {
+
+                            const start = Math.min(this._lastSelectedItemIndex, item.index);
+                            const end = Math.max(this._lastSelectedItemIndex, item.index);
+
+                            for (let i = start; i <= end; i++) {
+
+                                const obj = this._paintItems[i].data;
+                                this._selectedObjects.add(obj);
+                            }
+
+                            selChanged = true;
+                        }
+                    } else {
+
+                        this._selectedObjects.clear();
+                        this._selectedObjects.add(data);
+                        selChanged = true;
+                    }
                 }
             }
 
             if (selChanged) {
+
                 this.repaint();
+
                 this.fireSelectionChanged();
+
                 this._lastSelectedItemIndex = item ? item.index : 0;
             }
         }

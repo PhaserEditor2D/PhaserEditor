@@ -156,3 +156,31 @@ Important:
 .dark .Dialog .DialogSection {
     background: #3f3f3f;
 }
+
+/* Menu */
+
+.dark .Menu {
+    list-style-type: none;
+    background: #2f2f2f;
+    padding: 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #4f4f4f;
+}
+
+.dark .MenuItem {
+    padding: 5px 20px;
+}
+
+.dark .MenuItem:hover {
+    background: #f0a050;
+    color: #0e0e0e;
+}
+
+.dark .MenuItemDisabled {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .MenuItemDisabled:hover {
+    color: #3e3e3e;
+}

@@ -5,15 +5,15 @@ namespace colibri.ui.ide {
     export abstract class ViewerView extends ViewPart {
 
         protected _filteredViewer: controls.viewers.FilteredViewer<any>;
-        protected _viewer : controls.viewers.TreeViewer;
+        protected _viewer: controls.viewers.TreeViewer;
 
-        constructor(id : string) {
+        constructor(id: string) {
             super(id)
         }
 
-        protected abstract  createViewer() : controls.viewers.TreeViewer;
+        protected abstract createViewer(): controls.viewers.TreeViewer;
 
-        protected createPart() : void {
+        protected createPart(): void {
 
             this._viewer = this.createViewer();
 
@@ -25,6 +25,32 @@ namespace colibri.ui.ide {
             this._viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, (e: CustomEvent) => {
                 this.setSelection(e.detail);
             });
+
+            this._viewer.getElement().addEventListener("contextmenu", e => this.onMenu(e));
+        }
+
+        protected fillContextMenu(menu: controls.Menu) {
+
+        }
+
+        private onMenu(e : MouseEvent) {
+
+                e.preventDefault();
+
+                this._viewer.onMouseUp(e);
+
+                const menu = new controls.Menu();
+
+                this._viewer.setMenu(menu);
+
+                this.fillContextMenu(menu);
+
+                menu.create();
+
+                const element = menu.getElement();
+
+                element.style.left = e.clientX + "px";
+                element.style.top = e.clientY + "px";
         }
 
         getViewer() {
