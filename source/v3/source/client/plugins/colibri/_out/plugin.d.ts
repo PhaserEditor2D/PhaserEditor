@@ -399,7 +399,7 @@ declare namespace colibri.ui.controls {
         add(action: Action): void;
         isEmpty(): boolean;
         getElement(): HTMLUListElement;
-        create(): void;
+        create(e: MouseEvent): void;
         close(): void;
     }
 }

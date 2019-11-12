@@ -27,7 +27,7 @@ namespace colibri.ui.controls {
             return this._element;
         }
 
-        create() {
+        create(e: MouseEvent) {
 
             this._element = document.createElement("ul");
             this._element.classList.add("Menu");
@@ -60,7 +60,7 @@ namespace colibri.ui.controls {
             this._bgElement.classList.add("MenuContainer");
 
             this._bgElement.addEventListener("mousedown", e => {
-                
+
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
@@ -70,6 +70,31 @@ namespace colibri.ui.controls {
             document.body.appendChild(this._bgElement);
 
             document.body.appendChild(this._element);
+
+            let x = e.clientX;
+            let y = e.clientY;
+
+            const rect = this._element.getClientRects()[0];
+
+            {
+                const extra = y + rect.height - window.innerHeight;
+
+                if (extra > 0) {
+                    y -= extra;
+                }
+            }
+
+
+            {
+                const extra = x + rect.width - window.innerWidth;
+
+                if (extra > 0) {
+                    x -= extra;
+                }
+            }
+
+            this._element.style.left = x + "px";
+            this._element.style.top = y + "px";
         }
 
         close() {

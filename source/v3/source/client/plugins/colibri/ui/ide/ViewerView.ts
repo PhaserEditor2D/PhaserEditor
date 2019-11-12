@@ -33,24 +33,19 @@ namespace colibri.ui.ide {
 
         }
 
-        private onMenu(e : MouseEvent) {
+        private onMenu(e: MouseEvent) {
 
-                e.preventDefault();
+            e.preventDefault();
 
-                this._viewer.onMouseUp(e);
+            this._viewer.onMouseUp(e);
 
-                const menu = new controls.Menu();
+            const menu = new controls.Menu();
 
-                this._viewer.setMenu(menu);
+            this._viewer.setMenu(menu);
 
-                this.fillContextMenu(menu);
+            this.fillContextMenu(menu);
 
-                menu.create();
-
-                const element = menu.getElement();
-
-                element.style.left = e.clientX + "px";
-                element.style.top = e.clientY + "px";
+            menu.create(e);
         }
 
         getViewer() {

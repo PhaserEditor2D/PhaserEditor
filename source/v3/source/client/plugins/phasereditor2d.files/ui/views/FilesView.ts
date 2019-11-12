@@ -24,10 +24,6 @@ namespace phasereditor2d.files.ui.views {
             const sel = this._viewer.getSelection();
 
             menu.add(new controls.Action({
-                text: "New"
-            }));
-
-            menu.add(new controls.Action({
                 text: "Rename",
                 enabled: sel.length === 1
             }));
@@ -110,6 +106,5 @@ namespace phasereditor2d.files.ui.views {
         getIcon() {
             return controls.Controls.getIcon(ide.ICON_FOLDER);
         }
-
     }
 }
