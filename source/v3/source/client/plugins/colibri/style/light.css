@@ -123,11 +123,11 @@ Important:
 }
 
 .light .PropertyTitleArea label {
-    color: rgba(0, 0, 0, 0.75);
+    /* color: rgba(0, 0, 0, 0.75); */
 }
 
 .light .PropertySectionPane {
-    background: #d5d5d5;
+    /* background: #d5d5d5; */
 }
 
 /* Toolbar */
