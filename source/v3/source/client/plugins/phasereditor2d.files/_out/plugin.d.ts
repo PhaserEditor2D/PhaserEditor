@@ -1,5 +1,6 @@
 declare namespace phasereditor2d.files {
     import ide = colibri.ui.ide;
+    const ICON_NEW_FILE = "file-new";
     const ICON_FILE_FONT = "file-font";
     const ICON_FILE_IMAGE = "file-image";
     const ICON_FILE_VIDEO = "file-movie";
@@ -37,6 +38,100 @@ declare namespace phasereditor2d.files.core {
     const CONTENT_TYPE_GLSL = "glsl";
     class DefaultExtensionTypeResolver extends ExtensionContentTypeResolver {
         constructor();
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
+    import controls = colibri.ui.controls;
+    class OpenNewFileDialogAction extends controls.Action {
+        constructor();
+        run(): void;
+        private openFileDialog;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    type CreateFileCallback = (folder: io.FilePath, filename: string) => void;
+    abstract class BaseNewFileDialog extends controls.dialogs.Dialog {
+        protected _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
+        protected _fileNameText: HTMLInputElement;
+        private _createBtn;
+        private _fileCreatedCallback;
+        constructor();
+        protected createDialogArea(): void;
+        private createBottomArea;
+        protected normalizedFileName(): string;
+        validate(): void;
+        setFileCreatedCallback(callback: (file: io.FilePath) => void): void;
+        setInitialFileName(filename: string): void;
+        setInitialLocation(folder: io.FilePath): void;
+        create(): void;
+        private createFile_priv;
+        protected abstract createFile(container: io.FilePath, name: string): Promise<io.FilePath>;
+        private createCenterArea;
+        private createFilteredViewer;
+        layout(): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    abstract class NewFileExtension extends colibri.core.extensions.Extension {
+        static POINT: string;
+        private _wizardName;
+        private _icon;
+        private _initialFileName;
+        constructor(config: {
+            id: string;
+            wizardName: string;
+            icon: controls.IImage;
+            initialFileName: string;
+        });
+        abstract createDialog(): BaseNewFileDialog;
+        getInitialFileName(): string;
+        getWizardName(): string;
+        getIcon(): controls.IImage;
+        getInitialFileLocation(): io.FilePath;
+        findInitialFileLocationBasedOnContentType(contentType: string): io.FilePath;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    import controls = colibri.ui.controls;
+    abstract class NewFileContentExtension extends NewFileExtension {
+        private _fileExtension;
+        private _fileContent;
+        constructor(config: {
+            id: string;
+            wizardName: string;
+            icon: controls.IImage;
+            initialFileName: string;
+            fileExtension: string;
+            fileContent: string;
+        });
+        createDialog(): NewFileDialog;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    import io = colibri.core.io;
+    class NewFileDialog extends BaseNewFileDialog {
+        private _fileExtension;
+        private _fileContent;
+        constructor();
+        protected normalizedFileName(): string;
+        setFileContent(fileContent: string): void;
+        setFileExtension(fileExtension: string): void;
+        protected createFile(folder: io.FilePath, name: string): Promise<io.FilePath>;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    class NewFolderDialog extends BaseNewFileDialog {
+        protected createFile(container: colibri.core.io.FilePath, name: string): Promise<colibri.core.io.FilePath>;
+    }
+}
+declare namespace phasereditor2d.files.ui.dialogs {
+    class NewFolderExtension extends NewFileExtension {
+        constructor();
+        createDialog(): BaseNewFileDialog;
     }
 }
 declare namespace phasereditor2d.files.ui.viewers {

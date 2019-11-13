@@ -1,4 +1,4 @@
-namespace phasereditor2d.ide.ui.dialogs {
+namespace phasereditor2d.files.ui.dialogs {
 
     export class NewFolderDialog extends BaseNewFileDialog {
 

@@ -27,7 +27,7 @@ var phasereditor2d;
                     scene.ui.editor.SceneEditor.getFactory()
                 ]));
                 // new file wizards
-                reg.addExtension(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT, new scene.ui.dialogs.NewSceneFileDialogExtension());
+                reg.addExtension(phasereditor2d.files.ui.dialogs.NewFileExtension.POINT, new scene.ui.dialogs.NewSceneFileDialogExtension());
             }
         }
         ScenePlugin._instance = new ScenePlugin();
@@ -654,7 +654,7 @@ var phasereditor2d;
         (function (ui) {
             var dialogs;
             (function (dialogs) {
-                class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileContentExtension {
+                class NewSceneFileDialogExtension extends phasereditor2d.files.ui.dialogs.NewFileContentExtension {
                     constructor() {
                         super({
                             id: "phasereditor2d.scene.ui.wizards.NewSceneFileWizardExtension",

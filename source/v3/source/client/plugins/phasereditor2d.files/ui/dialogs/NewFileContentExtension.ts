@@ -1,6 +1,6 @@
 /// <reference path="./NewFileExtension.ts" />
 
-namespace phasereditor2d.ide.ui.dialogs {
+namespace phasereditor2d.files.ui.dialogs {
 
     import controls = colibri.ui.controls;
 
@@ -24,7 +24,7 @@ namespace phasereditor2d.ide.ui.dialogs {
         }
 
         createDialog() {
-            const dlg = new ide.ui.dialogs.NewFileDialog();
+            const dlg = new files.ui.dialogs.NewFileDialog();
 
             dlg.create();
 

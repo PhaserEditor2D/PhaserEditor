@@ -1,6 +1,6 @@
 namespace phasereditor2d.scene.ui.dialogs {
 
-    export class NewSceneFileDialogExtension extends phasereditor2d.ide.ui.dialogs.NewFileContentExtension {
+    export class NewSceneFileDialogExtension extends files.ui.dialogs.NewFileContentExtension {
 
         constructor() {
             super({

@@ -1,10 +1,10 @@
-namespace phasereditor2d.ide.ui.dialogs {
+namespace phasereditor2d.files.ui.dialogs {
 
     export class NewFolderExtension extends NewFileExtension {
 
         constructor() {
             super({
-                id: "phasereditor2d.ide.ui.dialogs.NewFolderExtension",
+                id: "phasereditor2d.files.ui.dialogs.NewFolderExtension",
                 icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
                 initialFileName: "folder",
                 wizardName: "Folder"

@@ -3,6 +3,7 @@ var phasereditor2d;
     var files;
     (function (files) {
         var ide = colibri.ui.ide;
+        files.ICON_NEW_FILE = "file-new";
         files.ICON_FILE_FONT = "file-font";
         files.ICON_FILE_IMAGE = "file-image";
         files.ICON_FILE_VIDEO = "file-movie";
@@ -24,7 +25,8 @@ var phasereditor2d;
                     files.ICON_FILE_VIDEO,
                     files.ICON_FILE_SCRIPT,
                     files.ICON_FILE_TEXT,
-                    files.ICON_FILE_FONT
+                    files.ICON_FILE_FONT,
+                    files.ICON_NEW_FILE
                 ]));
                 // content type resolvers
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()], 1000));
@@ -71,6 +73,8 @@ var phasereditor2d;
                         contentType: files.core.CONTENT_TYPE_TEXT
                     }
                 ]));
+                // new files
+                reg.addExtension(files.ui.dialogs.NewFileExtension.POINT, new files.ui.dialogs.NewFolderExtension());
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -155,6 +159,372 @@ var phasereditor2d;
             }
             core.DefaultExtensionTypeResolver = DefaultExtensionTypeResolver;
         })(core = files.core || (files.core = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class OpenNewFileDialogAction extends controls.Action {
+                    constructor() {
+                        super({
+                            text: "New",
+                            icon: files.FilesPlugin.getInstance().getIcon(files.ICON_NEW_FILE)
+                        });
+                    }
+                    run() {
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setLabelProvider(new WizardLabelProvider());
+                        viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+                        viewer.setCellRendererProvider(new WizardCellRendererProvider());
+                        const extensions = colibri.ui.ide.Workbench.getWorkbench()
+                            .getExtensionRegistry()
+                            .getExtensions(files.ui.dialogs.NewFileExtension.POINT);
+                        viewer.setInput(extensions);
+                        const dlg = new controls.dialogs.ViewerDialog(viewer);
+                        dlg.create();
+                        dlg.setTitle("New");
+                        {
+                            const selectCallback = () => {
+                                dlg.close();
+                                this.openFileDialog(viewer.getSelectionFirstElement());
+                            };
+                            const btn = dlg.addButton("Select", () => selectCallback());
+                            btn.disabled = true;
+                            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                                btn.disabled = viewer.getSelection().length !== 1;
+                            });
+                            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => selectCallback());
+                        }
+                        dlg.addButton("Cancel", () => dlg.close());
+                    }
+                    openFileDialog(extension) {
+                        const dlg = extension.createDialog();
+                        dlg.setTitle(`New ${extension.getWizardName()}`);
+                        dlg.setInitialFileName(extension.getInitialFileName());
+                        dlg.setInitialLocation(extension.getInitialFileLocation());
+                        dlg.validate();
+                    }
+                }
+                actions.OpenNewFileDialogAction = OpenNewFileDialogAction;
+                class WizardLabelProvider {
+                    getLabel(obj) {
+                        return obj.getWizardName();
+                    }
+                }
+                class WizardCellRendererProvider {
+                    getCellRenderer(element) {
+                        const ext = element;
+                        return new controls.viewers.IconImageCellRenderer(ext.getIcon());
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                var controls = colibri.ui.controls;
+                var viewers = colibri.ui.controls.viewers;
+                class BaseNewFileDialog extends controls.dialogs.Dialog {
+                    constructor() {
+                        super("NewFileDialog");
+                    }
+                    createDialogArea() {
+                        const clientArea = document.createElement("div");
+                        clientArea.classList.add("DialogClientArea");
+                        clientArea.style.display = "grid";
+                        clientArea.style.gridTemplateRows = "1fr auto";
+                        clientArea.style.gridTemplateRows = "1fr";
+                        clientArea.style.gridRowGap = "5px";
+                        clientArea.appendChild(this.createCenterArea());
+                        clientArea.appendChild(this.createBottomArea());
+                        this.getElement().appendChild(clientArea);
+                    }
+                    createBottomArea() {
+                        const bottomArea = document.createElement("div");
+                        bottomArea.classList.add("DialogSection");
+                        bottomArea.style.display = "grid";
+                        bottomArea.style.gridTemplateColumns = "auto 1fr";
+                        bottomArea.style.gridTemplateRows = "auto";
+                        bottomArea.style.columnGap = "10px";
+                        bottomArea.style.rowGap = "10px";
+                        bottomArea.style.alignItems = "center";
+                        {
+                            const label = document.createElement("label");
+                            label.innerText = "Location";
+                            bottomArea.appendChild(label);
+                            const text = document.createElement("input");
+                            text.type = "text";
+                            text.readOnly = true;
+                            bottomArea.appendChild(text);
+                            this._filteredViewer.getViewer().addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                                const file = this._filteredViewer.getViewer().getSelectionFirstElement();
+                                text.value = file === null ? "" : `${file.getFullName()}/`;
+                            });
+                        }
+                        {
+                            const label = document.createElement("label");
+                            label.innerText = "Name";
+                            bottomArea.appendChild(label);
+                            const text = document.createElement("input");
+                            text.type = "text";
+                            bottomArea.appendChild(text);
+                            setTimeout(() => text.focus(), 10);
+                            text.addEventListener("keyup", e => this.validate());
+                            this._fileNameText = text;
+                        }
+                        return bottomArea;
+                    }
+                    normalizedFileName() {
+                        return this._fileNameText.value;
+                    }
+                    validate() {
+                        const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
+                        let valid = folder !== null;
+                        if (valid) {
+                            const name = this.normalizedFileName();
+                            if (name.indexOf("/") >= 0 || name.trim() === "") {
+                                valid = false;
+                            }
+                            else {
+                                const file = folder.getFile(name);
+                                if (file) {
+                                    valid = false;
+                                }
+                            }
+                        }
+                        this._createBtn.disabled = !valid;
+                    }
+                    setFileCreatedCallback(callback) {
+                        this._fileCreatedCallback = callback;
+                    }
+                    setInitialFileName(filename) {
+                        this._fileNameText.value = filename;
+                    }
+                    setInitialLocation(folder) {
+                        this._filteredViewer.getViewer().setSelection([folder]);
+                        this._filteredViewer.getViewer().reveal(folder);
+                    }
+                    create() {
+                        super.create();
+                        this._createBtn = this.addButton("Create", () => this.createFile_priv());
+                        this.addButton("Cancel", () => this.close());
+                        this.validate();
+                    }
+                    async createFile_priv() {
+                        const folder = this._filteredViewer.getViewer().getSelectionFirstElement();
+                        const name = this.normalizedFileName();
+                        const file = await this.createFile(folder, name);
+                        this.close();
+                        if (this._fileCreatedCallback) {
+                            this._fileCreatedCallback(file);
+                        }
+                    }
+                    createCenterArea() {
+                        const centerArea = document.createElement("div");
+                        this.createFilteredViewer();
+                        centerArea.appendChild(this._filteredViewer.getElement());
+                        return centerArea;
+                    }
+                    createFilteredViewer() {
+                        const viewer = new viewers.TreeViewer();
+                        viewer.setLabelProvider(new files.ui.viewers.FileLabelProvider());
+                        viewer.setContentProvider(new files.ui.viewers.FileTreeContentProvider(true));
+                        viewer.setCellRendererProvider(new files.ui.viewers.FileCellRendererProvider());
+                        viewer.setInput(colibri.ui.ide.Workbench.getWorkbench().getProjectRoot());
+                        viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                            this.validate();
+                        });
+                        this._filteredViewer = new viewers.FilteredViewerInElement(viewer);
+                    }
+                    layout() {
+                        super.layout();
+                        this._filteredViewer.resizeTo();
+                    }
+                }
+                dialogs.BaseNewFileDialog = BaseNewFileDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files_1) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileExtension extends colibri.core.extensions.Extension {
+                    constructor(config) {
+                        super(config.id);
+                        this._wizardName = config.wizardName;
+                        this._icon = config.icon;
+                        this._initialFileName = config.initialFileName;
+                    }
+                    getInitialFileName() {
+                        return this._initialFileName;
+                    }
+                    getWizardName() {
+                        return this._wizardName;
+                    }
+                    getIcon() {
+                        return this._icon;
+                    }
+                    getInitialFileLocation() {
+                        return colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                    }
+                    findInitialFileLocationBasedOnContentType(contentType) {
+                        const root = colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                        const files = [];
+                        root.flatTree(files, false);
+                        const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry();
+                        const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
+                        if (targetFiles.length > 0) {
+                            targetFiles.sort((a, b) => {
+                                return b.getModTime() - a.getModTime();
+                            });
+                            return targetFiles[0].getParent();
+                        }
+                        return root;
+                    }
+                }
+                NewFileExtension.POINT = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
+                dialogs.NewFileExtension = NewFileExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files_1.ui || (files_1.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./NewFileExtension.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileContentExtension extends dialogs.NewFileExtension {
+                    constructor(config) {
+                        super(config);
+                        this._fileExtension = config.fileExtension;
+                        this._fileContent = config.fileContent;
+                    }
+                    createDialog() {
+                        const dlg = new files.ui.dialogs.NewFileDialog();
+                        dlg.create();
+                        dlg.setFileExtension(this._fileExtension);
+                        dlg.setFileContent(this._fileContent);
+                        dlg.setFileCreatedCallback(async (file) => {
+                            const wb = colibri.ui.ide.Workbench.getWorkbench();
+                            const reg = wb.getContentTypeRegistry();
+                            await reg.preload(file);
+                            wb.openEditor(file);
+                        });
+                        return dlg;
+                    }
+                }
+                dialogs.NewFileContentExtension = NewFileContentExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./BaseNewFileDialog.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFileDialog extends dialogs.BaseNewFileDialog {
+                    constructor() {
+                        super();
+                        this._fileExtension = "";
+                        this._fileContent = "";
+                    }
+                    normalizedFileName() {
+                        const name = super.normalizedFileName();
+                        if (name.endsWith("." + this._fileExtension)) {
+                            return name;
+                        }
+                        return name + "." + this._fileExtension;
+                    }
+                    setFileContent(fileContent) {
+                        this._fileContent = fileContent;
+                    }
+                    setFileExtension(fileExtension) {
+                        this._fileExtension = fileExtension;
+                    }
+                    createFile(folder, name) {
+                        return colibri.ui.ide.FileUtils.createFile_async(folder, name, this._fileContent);
+                    }
+                }
+                dialogs.NewFileDialog = NewFileDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFolderDialog extends dialogs.BaseNewFileDialog {
+                    createFile(container, name) {
+                        return colibri.ui.ide.FileUtils.createFolder_async(container, name);
+                    }
+                }
+                dialogs.NewFolderDialog = NewFolderDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                class NewFolderExtension extends dialogs.NewFileExtension {
+                    constructor() {
+                        super({
+                            id: "phasereditor2d.files.ui.dialogs.NewFolderExtension",
+                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
+                            initialFileName: "folder",
+                            wizardName: "Folder"
+                        });
+                    }
+                    createDialog() {
+                        const dlg = new dialogs.NewFolderDialog();
+                        dlg.create();
+                        return dlg;
+                    }
+                }
+                dialogs.NewFolderExtension = NewFolderExtension;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -275,7 +645,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_1) {
+    (function (files_2) {
         var ui;
         (function (ui) {
             var viewers;
@@ -313,7 +683,7 @@ var phasereditor2d;
                 }
                 viewers.FileTreeContentProvider = FileTreeContentProvider;
             })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = files_1.ui || (files_1.ui = {}));
+        })(ui = files_2.ui || (files_2.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -435,7 +805,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_2) {
+    (function (files_3) {
         var ui;
         (function (ui) {
             var views;
@@ -547,7 +917,7 @@ var phasereditor2d;
                 }
                 views.FilesView = FilesView;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files_2.ui || (files_2.ui = {}));
+        })(ui = files_3.ui || (files_3.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

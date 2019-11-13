@@ -3,6 +3,7 @@ namespace phasereditor2d.files {
     import ide = colibri.ui.ide;
     import controls = colibri.ui.controls;
 
+    export const ICON_NEW_FILE = "file-new";
     export const ICON_FILE_FONT = "file-font";
     export const ICON_FILE_IMAGE = "file-image";
     export const ICON_FILE_VIDEO = "file-movie";
@@ -34,7 +35,8 @@ namespace phasereditor2d.files {
                     ICON_FILE_VIDEO,
                     ICON_FILE_SCRIPT,
                     ICON_FILE_TEXT,
-                    ICON_FILE_FONT
+                    ICON_FILE_FONT,
+                    ICON_NEW_FILE
                 ])
             );
 
@@ -93,6 +95,11 @@ namespace phasereditor2d.files {
                         contentType: core.CONTENT_TYPE_TEXT
                     }
                 ]));
+
+            // new files
+
+            reg.addExtension(ui.dialogs.NewFileExtension.POINT,
+                new ui.dialogs.NewFolderExtension());
         }
     }
 

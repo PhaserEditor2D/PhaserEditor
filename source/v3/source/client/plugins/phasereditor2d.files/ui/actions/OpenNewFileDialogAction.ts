@@ -1,4 +1,4 @@
-namespace phasereditor2d.ide.ui.actions {
+namespace phasereditor2d.files.ui.actions {
 
     import controls = colibri.ui.controls;
 
@@ -7,7 +7,7 @@ namespace phasereditor2d.ide.ui.actions {
         constructor() {
             super({
                 text: "New",
-                icon: IDEPlugin.getInstance().getIcon(ICON_NEW_FILE)
+                icon: FilesPlugin.getInstance().getIcon(ICON_NEW_FILE)
             });
         }
 
@@ -21,7 +21,7 @@ namespace phasereditor2d.ide.ui.actions {
 
             const extensions = colibri.ui.ide.Workbench.getWorkbench()
                 .getExtensionRegistry()
-                .getExtensions(phasereditor2d.ide.ui.dialogs.NewFileExtension.POINT);
+                .getExtensions(files.ui.dialogs.NewFileExtension.POINT);
 
             viewer.setInput(extensions);
 
@@ -53,7 +53,7 @@ namespace phasereditor2d.ide.ui.actions {
             dlg.addButton("Cancel", () => dlg.close());
         }
 
-        private openFileDialog(extension: ide.ui.dialogs.NewFileExtension) {
+        private openFileDialog(extension: ui.dialogs.NewFileExtension) {
 
             const dlg = extension.createDialog();
 

@@ -2,7 +2,7 @@ namespace phasereditor2d.pack.ui.dialogs {
 
     import io = colibri.core.io;
 
-    export class NewAssetPackFileWizardExtension extends ide.ui.dialogs.NewFileContentExtension {
+    export class NewAssetPackFileWizardExtension extends files.ui.dialogs.NewFileContentExtension {
 
         constructor() {
             super({
