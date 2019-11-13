@@ -18,6 +18,8 @@ namespace colibri.core.io {
 
         deleteFiles(files : FilePath[]);
 
+        renameFile(file : FilePath, newName : string);
+
         addChangeListener(listener : ChangeListenerFunc);
 
     }

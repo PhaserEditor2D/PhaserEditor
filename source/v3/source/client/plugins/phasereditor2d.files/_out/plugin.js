@@ -457,7 +457,8 @@ var phasereditor2d;
                         const sel = this._viewer.getSelection();
                         menu.add(new controls.Action({
                             text: "Rename",
-                            enabled: sel.length === 1
+                            enabled: sel.length === 1,
+                            callback: () => this.onRenameFile()
                         }));
                         menu.add(new controls.Action({
                             text: "Move",
@@ -475,6 +476,30 @@ var phasereditor2d;
                                 }
                             }
                         }));
+                    }
+                    onRenameFile() {
+                        const file = this._viewer.getSelectionFirstElement();
+                        const parent = file.getParent();
+                        const dlg = new controls.dialogs.InputDialog();
+                        dlg.create();
+                        dlg.setTitle("Rename");
+                        dlg.setMessage("Enter the new name");
+                        dlg.setInitialValue(file.getName());
+                        dlg.setInputValidator(value => {
+                            var _a;
+                            if (value.indexOf("/") >= 0) {
+                                return false;
+                            }
+                            if (parent) {
+                                const file2 = (_a = parent.getFile(value), (_a !== null && _a !== void 0 ? _a : null));
+                                return file2 === null;
+                            }
+                            return false;
+                        });
+                        dlg.setResultCallback(result => {
+                            ide.FileUtils.renameFile_async(file, result);
+                        });
+                        dlg.validate();
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;

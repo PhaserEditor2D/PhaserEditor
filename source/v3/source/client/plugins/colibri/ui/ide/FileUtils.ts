@@ -46,6 +46,13 @@ namespace colibri.ui.ide {
             await storage.deleteFiles(files);
         }
 
+        static async renameFile_async(file : core.io.FilePath, newName : string) : Promise<void> {
+
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            await storage.renameFile(file, newName);
+        }
+
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
 
             const cache = Workbench.getWorkbench().getFileStringCache();

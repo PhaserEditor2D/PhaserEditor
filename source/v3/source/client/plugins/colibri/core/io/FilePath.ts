@@ -16,21 +16,11 @@ namespace colibri.core.io {
         constructor(parent: FilePath, fileData: FileData) {
 
             this._parent = parent;
-            this._name = fileData.name;
             this._isFile = fileData.isFile;
             this._fileSize = fileData.size;
             this._modTime = fileData.modTime;
 
-            {
-                const i = this._name.lastIndexOf(".");
-                if (i >= 0) {
-                    this._ext = this._name.substring(i + 1);
-                    this._nameWithoutExtension = this._name.substring(0, i);
-                } else {
-                    this._ext = "";
-                    this._nameWithoutExtension = this._name;
-                }
-            }
+            this.setName(fileData.name);
 
             if (fileData.children) {
 
@@ -55,6 +45,24 @@ namespace colibri.core.io {
             }
         }
 
+        private setName(name: string) {
+
+            this._name = name;
+
+            const i = this._name.lastIndexOf(".");
+
+            if (i >= 0) {
+
+                this._ext = this._name.substring(i + 1);
+                this._nameWithoutExtension = this._name.substring(0, i);
+
+            } else {
+
+                this._ext = "";
+                this._nameWithoutExtension = this._name;
+            }
+        }
+
         getExtension() {
             return this._ext;
         }
@@ -76,7 +84,7 @@ namespace colibri.core.io {
         }
 
         getFullName() {
-            
+
             if (this._parent) {
                 return this._parent.getFullName() + "/" + this._name;
             }
@@ -93,7 +101,7 @@ namespace colibri.core.io {
         }
 
         getSibling(name: string) {
-            
+
             const parent = this.getParent();
 
             if (parent) {

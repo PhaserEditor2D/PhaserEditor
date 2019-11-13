@@ -246,5 +246,28 @@ namespace colibri.core.io {
 
             this.fireChange(new FileStorageChange([], [], deletedList));
         }
+
+        async renameFile(file : FilePath, newName : string) {
+            
+            const oldName = file.getName();
+
+            const data = await apiRequest("RenameFile", {
+                oldPath: file.getFullName(),
+                newPath: file.getParent().getFullName() + "/" + newName
+            });
+
+            if (data.error) {
+                alert(`Cannot rename the file.`);
+                throw new Error(data.error);
+            }
+
+            file["setName"](newName);
+
+            const change = new FileStorageChange([], [file], []);
+            
+            change.addRenameData(file, oldName);
+
+            this.fireChange(change);
+        }
     }
 }

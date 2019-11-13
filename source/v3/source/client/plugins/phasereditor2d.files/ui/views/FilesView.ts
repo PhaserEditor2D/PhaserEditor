@@ -25,7 +25,8 @@ namespace phasereditor2d.files.ui.views {
 
             menu.add(new controls.Action({
                 text: "Rename",
-                enabled: sel.length === 1
+                enabled: sel.length === 1,
+                callback: () => this.onRenameFile()
             }));
 
             menu.add(new controls.Action({
@@ -39,15 +40,55 @@ namespace phasereditor2d.files.ui.views {
                 callback: () => {
 
                     const files = this._viewer.getSelection();
-                    
+
                     if (confirm(`Do you want to delete ${files.length} files?`)) {
-                        
+
                         if (files.length > 0) {
                             ide.FileUtils.deleteFiles_async(files);
                         }
                     }
                 }
             }));
+        }
+
+        private onRenameFile() {
+
+            const file: io.FilePath = this._viewer.getSelectionFirstElement();
+
+            const parent = file.getParent();
+
+            const dlg = new controls.dialogs.InputDialog();
+
+            dlg.create();
+
+            dlg.setTitle("Rename");
+
+            dlg.setMessage("Enter the new name");
+
+            dlg.setInitialValue(file.getName());
+
+            dlg.setInputValidator(value => {
+
+                if (value.indexOf("/") >= 0) {
+                    return false;
+                }
+
+                if (parent) {
+
+                    const file2 = parent.getFile(value) ?? null;
+
+                    return file2 === null;
+                }
+
+                return false;
+            });
+
+            dlg.setResultCallback(result => {
+                ide.FileUtils.renameFile_async(file, result);
+            });
+
+            dlg.validate();
+
         }
 
         getPropertyProvider() {

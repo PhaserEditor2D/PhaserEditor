@@ -90,6 +90,7 @@ declare namespace colibri.core.io {
         private _modTime;
         private _fileSize;
         constructor(parent: FilePath, fileData: FileData);
+        private setName;
         getExtension(): string;
         getSize(): number;
         getName(): string;
@@ -111,13 +112,20 @@ declare namespace colibri.core.io {
     }
 }
 declare namespace colibri.core.io {
+    type RenameData = {
+        oldName: string;
+        newFile: FilePath;
+    };
     class FileStorageChange {
         private _modified;
         private _modifiedFileNameSet;
         private _added;
         private _deleted;
         private _deletedFileNameSet;
+        private _renameData;
         constructor(modified: FilePath[], added: FilePath[], deleted: FilePath[]);
+        addRenameData(newFile: FilePath, oldName: string): void;
+        getRenamedFile(oldFile: FilePath): FilePath;
         isModified(file: FilePath): boolean;
         isDeleted(file: FilePath): boolean;
         getAddedFiles(): FilePath[];
@@ -146,6 +154,7 @@ declare namespace colibri.core.io {
         setFileString(file: FilePath, content: string): Promise<void>;
         private setFileString_priv;
         deleteFiles(files: FilePath[]): Promise<void>;
+        renameFile(file: FilePath, newName: string): Promise<void>;
     }
 }
 declare namespace colibri.core.io {
@@ -158,6 +167,7 @@ declare namespace colibri.core.io {
         createFile(container: FilePath, fileName: string, content: string): Promise<FilePath>;
         createFolder(container: FilePath, folderName: string): Promise<FilePath>;
         deleteFiles(files: FilePath[]): any;
+        renameFile(file: FilePath, newName: string): any;
         addChangeListener(listener: ChangeListenerFunc): any;
     }
 }
@@ -553,6 +563,25 @@ declare namespace colibri.ui.controls.dialogs {
         protected resize(): void;
         close(): void;
         closeAll(): void;
+    }
+}
+declare namespace colibri.ui.controls.dialogs {
+    type InputValidator = (input: string) => boolean;
+    type ResultCallback = (value: string) => void;
+    class InputDialog extends Dialog {
+        private _textElement;
+        private _messageElement;
+        private _acceptButton;
+        private _validator;
+        private _resultCallback;
+        constructor();
+        setInputValidator(validator: InputValidator): void;
+        setResultCallback(callback: ResultCallback): void;
+        setMessage(message: string): void;
+        setInitialValue(value: string): void;
+        createDialogArea(): void;
+        validate(): void;
+        create(): void;
     }
 }
 declare namespace colibri.ui.controls.dialogs {
@@ -1067,6 +1096,7 @@ declare namespace colibri.ui.ide {
         static createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<core.io.FilePath>;
         static createFolder_async(container: core.io.FilePath, folderName: string): Promise<core.io.FilePath>;
         static deleteFiles_async(files: core.io.FilePath[]): Promise<void>;
+        static renameFile_async(file: core.io.FilePath, newName: string): Promise<void>;
         static preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string): core.io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;

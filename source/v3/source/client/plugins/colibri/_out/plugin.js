@@ -220,21 +220,10 @@ var colibri;
             class FilePath {
                 constructor(parent, fileData) {
                     this._parent = parent;
-                    this._name = fileData.name;
                     this._isFile = fileData.isFile;
                     this._fileSize = fileData.size;
                     this._modTime = fileData.modTime;
-                    {
-                        const i = this._name.lastIndexOf(".");
-                        if (i >= 0) {
-                            this._ext = this._name.substring(i + 1);
-                            this._nameWithoutExtension = this._name.substring(0, i);
-                        }
-                        else {
-                            this._ext = "";
-                            this._nameWithoutExtension = this._name;
-                        }
-                    }
+                    this.setName(fileData.name);
                     if (fileData.children) {
                         this._files = [];
                         for (let child of fileData.children) {
@@ -248,6 +237,18 @@ var colibri;
                     }
                     else {
                         this._files = EMPTY_FILES;
+                    }
+                }
+                setName(name) {
+                    this._name = name;
+                    const i = this._name.lastIndexOf(".");
+                    if (i >= 0) {
+                        this._ext = this._name.substring(i + 1);
+                        this._nameWithoutExtension = this._name.substring(0, i);
+                    }
+                    else {
+                        this._ext = "";
+                        this._nameWithoutExtension = this._name;
                     }
                 }
                 getExtension() {
@@ -359,6 +360,22 @@ var colibri;
                     this._added = added;
                     this._deleted = deleted;
                     this._deletedFileNameSet = new Set(deleted.map(file => file.getFullName()));
+                    this._renameData = [];
+                }
+                addRenameData(newFile, oldName) {
+                    this._renameData.push({
+                        newFile: newFile,
+                        oldName: oldName
+                    });
+                }
+                getRenamedFile(oldFile) {
+                    for (const data of this._renameData) {
+                        const parent = data.newFile.getParent();
+                        if (oldFile.getParent() === parent && oldFile.getName() === data.oldName) {
+                            return data.newFile;
+                        }
+                    }
+                    return null;
                 }
                 isModified(file) {
                     return this._modifiedFileNameSet.has(file.getFullName());
@@ -575,6 +592,21 @@ var colibri;
                         file.remove();
                     }
                     this.fireChange(new io.FileStorageChange([], [], deletedList));
+                }
+                async renameFile(file, newName) {
+                    const oldName = file.getName();
+                    const data = await apiRequest("RenameFile", {
+                        oldPath: file.getFullName(),
+                        newPath: file.getParent().getFullName() + "/" + newName
+                    });
+                    if (data.error) {
+                        alert(`Cannot rename the file.`);
+                        throw new Error(data.error);
+                    }
+                    file["setName"](newName);
+                    const change = new io.FileStorageChange([], [file], []);
+                    change.addRenameData(file, oldName);
+                    this.fireChange(change);
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
@@ -2183,6 +2215,70 @@ var colibri;
                 Dialog._dialogs = [];
                 Dialog._firstTime = true;
                 dialogs.Dialog = Dialog;
+            })(dialogs = controls.dialogs || (controls.dialogs = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var dialogs;
+            (function (dialogs) {
+                class InputDialog extends dialogs.Dialog {
+                    constructor() {
+                        super("InputDialog");
+                    }
+                    setInputValidator(validator) {
+                        this._validator = validator;
+                    }
+                    setResultCallback(callback) {
+                        this._resultCallback = callback;
+                    }
+                    setMessage(message) {
+                        this._messageElement.innerText = message + ":";
+                    }
+                    setInitialValue(value) {
+                        this._textElement.value = value;
+                    }
+                    createDialogArea() {
+                        const area = document.createElement("div");
+                        area.classList.add("DialogClientArea", "DialogSection");
+                        area.style.display = "grid";
+                        area.style.gridTemplateColumns = "1fr";
+                        area.style.gridTemplateRows = "min-content min-content";
+                        this.getElement().appendChild(area);
+                        this._messageElement = document.createElement("label");
+                        this._messageElement.innerText = "Enter value:";
+                        this._messageElement.classList.add("InputDialogLabel");
+                        area.appendChild(this._messageElement);
+                        this._textElement = document.createElement("input");
+                        this._textElement.type = "text";
+                        this._textElement.addEventListener("keyup", e => this.validate());
+                        area.appendChild(this._textElement);
+                    }
+                    validate() {
+                        let valid = false;
+                        if (this._validator) {
+                            valid = this._validator(this._textElement.value);
+                        }
+                        this._acceptButton.disabled = !valid;
+                    }
+                    create() {
+                        super.create();
+                        this._acceptButton = this.addButton("Accept", () => {
+                            if (this._resultCallback) {
+                                this._resultCallback(this._textElement.value);
+                            }
+                            this.close();
+                        });
+                        this.addButton("Cancel", () => this.close());
+                        setTimeout(() => this._textElement.focus(), 100);
+                    }
+                }
+                dialogs.InputDialog = InputDialog;
             })(dialogs = controls.dialogs || (controls.dialogs = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -4395,6 +4491,10 @@ var colibri;
                 static async deleteFiles_async(files) {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     await storage.deleteFiles(files);
+                }
+                static async renameFile_async(file, newName) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    await storage.renameFile(file, newName);
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();
