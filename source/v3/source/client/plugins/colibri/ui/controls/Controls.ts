@@ -137,8 +137,8 @@ namespace colibri.ui.controls {
         }
 
         private static LIGHT_THEME: Theme = {
-            //treeItemSelectionBackground: "#4242ff",
-            treeItemSelectionBackground: "#525252",
+            treeItemSelectionBackground: "#4242ff",
+            //treeItemSelectionBackground: "#525252",
             treeItemSelectionForeground: "#f0f0f0",
             treeItemForeground: "#000000"
         };

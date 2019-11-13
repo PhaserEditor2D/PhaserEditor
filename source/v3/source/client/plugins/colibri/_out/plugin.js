@@ -1062,8 +1062,8 @@ var colibri;
             Controls._images = new Map();
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
-                //treeItemSelectionBackground: "#4242ff",
-                treeItemSelectionBackground: "#525252",
+                treeItemSelectionBackground: "#4242ff",
+                //treeItemSelectionBackground: "#525252",
                 treeItemSelectionForeground: "#f0f0f0",
                 treeItemForeground: "#000000"
             };
@@ -3024,7 +3024,7 @@ var colibri;
                                 ctx.save();
                                 ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
                                 ctx.fillRect(0, y2 - 16, b.width, controls.ROW_HEIGHT);
-                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "66";
+                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "aa";
                                 const m = ctx.measureText(label);
                                 ctx.fillText(label, b.width / 2 - m.width / 2, y2);
                                 ctx.restore();

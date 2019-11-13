@@ -75,7 +75,7 @@ namespace colibri.ui.controls.viewers {
 
                     ctx.fillRect(0, y2 - 16, b.width, ROW_HEIGHT);
 
-                    ctx.fillStyle = controls.Controls.theme.treeItemForeground + "66";
+                    ctx.fillStyle = controls.Controls.theme.treeItemForeground + "aa";
                     
                     const m = ctx.measureText(label);
 
