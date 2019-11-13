@@ -39,6 +39,13 @@ namespace colibri.ui.ide {
             return folder;
         }
 
+        static async deleteFiles_async(files : core.io.FilePath[]) : Promise<void> {
+
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            await storage.deleteFiles(files);
+        }
+
         static async preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult> {
 
             const cache = Workbench.getWorkbench().getFileStringCache();

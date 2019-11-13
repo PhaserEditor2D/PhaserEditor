@@ -435,7 +435,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files) {
+    (function (files_2) {
         var ui;
         (function (ui) {
             var views;
@@ -465,7 +465,15 @@ var phasereditor2d;
                         }));
                         menu.add(new controls.Action({
                             text: "Delete",
-                            enabled: sel.length > 0
+                            enabled: sel.length > 0,
+                            callback: () => {
+                                const files = this._viewer.getSelection();
+                                if (confirm(`Do you want to delete ${files.length} files?`)) {
+                                    if (files.length > 0) {
+                                        ide.FileUtils.deleteFiles_async(files);
+                                    }
+                                }
+                            }
                         }));
                     }
                     getPropertyProvider() {
@@ -514,7 +522,7 @@ var phasereditor2d;
                 }
                 views.FilesView = FilesView;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files.ui || (files.ui = {}));
+        })(ui = files_2.ui || (files_2.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

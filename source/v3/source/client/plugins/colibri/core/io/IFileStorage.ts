@@ -16,6 +16,8 @@ namespace colibri.core.io {
 
         createFolder(container : FilePath, folderName : string) : Promise<FilePath>;
 
+        deleteFiles(files : FilePath[]);
+
         addChangeListener(listener : ChangeListenerFunc);
 
     }

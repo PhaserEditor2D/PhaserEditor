@@ -212,5 +212,39 @@ namespace colibri.core.io {
             file["_modTime"] = data["modTime"];
             file["_fileSize"] = data["size"];
         }
+
+        async deleteFiles(files: FilePath[]) {
+            const data = await apiRequest("DeleteFiles", {
+                paths: files.map(file => file.getFullName())
+            });
+
+            if (data.error) {
+                alert(`Cannot delete the files.`);
+                throw new Error(data.error);
+            }
+
+            const deletedSet = new Set<FilePath>();
+
+            for (const file of files) {
+
+                deletedSet.add(file);
+
+                for (const file2 of file.flatTree([], true)) {
+                    deletedSet.add(file2);
+                }
+            }
+
+            const deletedList: FilePath[] = [];
+
+            for (const file of deletedSet) {
+                deletedList.push(file);
+            }
+
+            for(const file of deletedList) {
+                file.remove();
+            }
+
+            this.fireChange(new FileStorageChange([], [], deletedList));
+        }
     }
 }

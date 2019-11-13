@@ -299,6 +299,15 @@ var colibri;
                 getFiles() {
                     return this._files;
                 }
+                remove() {
+                    if (this._parent) {
+                        const list = this._parent._files;
+                        const i = list.indexOf(this);
+                        if (i >= 0) {
+                            list.splice(i, 1);
+                        }
+                    }
+                }
                 flatTree(files, includeFolders) {
                     if (this.isFolder()) {
                         if (includeFolders) {
@@ -542,6 +551,30 @@ var colibri;
                     }
                     file["_modTime"] = data["modTime"];
                     file["_fileSize"] = data["size"];
+                }
+                async deleteFiles(files) {
+                    const data = await apiRequest("DeleteFiles", {
+                        paths: files.map(file => file.getFullName())
+                    });
+                    if (data.error) {
+                        alert(`Cannot delete the files.`);
+                        throw new Error(data.error);
+                    }
+                    const deletedSet = new Set();
+                    for (const file of files) {
+                        deletedSet.add(file);
+                        for (const file2 of file.flatTree([], true)) {
+                            deletedSet.add(file2);
+                        }
+                    }
+                    const deletedList = [];
+                    for (const file of deletedSet) {
+                        deletedList.push(file);
+                    }
+                    for (const file of deletedList) {
+                        file.remove();
+                    }
+                    this.fireChange(new io.FileStorageChange([], [], deletedList));
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
@@ -4358,6 +4391,10 @@ var colibri;
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     const folder = await storage.createFolder(container, folderName);
                     return folder;
+                }
+                static async deleteFiles_async(files) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    await storage.deleteFiles(files);
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();

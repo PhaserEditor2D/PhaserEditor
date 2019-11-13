@@ -103,6 +103,7 @@ declare namespace colibri.core.io {
         isFile(): boolean;
         isFolder(): boolean;
         getFiles(): FilePath[];
+        remove(): void;
         flatTree(files: FilePath[], includeFolders: boolean): FilePath[];
         toString(): any;
         toStringTree(): string;
@@ -144,6 +145,7 @@ declare namespace colibri.core.io {
         getFileString(file: FilePath): Promise<string>;
         setFileString(file: FilePath, content: string): Promise<void>;
         private setFileString_priv;
+        deleteFiles(files: FilePath[]): Promise<void>;
     }
 }
 declare namespace colibri.core.io {
@@ -155,6 +157,7 @@ declare namespace colibri.core.io {
         setFileString(file: FilePath, content: string): Promise<void>;
         createFile(container: FilePath, fileName: string, content: string): Promise<FilePath>;
         createFolder(container: FilePath, folderName: string): Promise<FilePath>;
+        deleteFiles(files: FilePath[]): any;
         addChangeListener(listener: ChangeListenerFunc): any;
     }
 }
@@ -1063,6 +1066,7 @@ declare namespace colibri.ui.ide {
         static setFileString_async(file: core.io.FilePath, content: string): Promise<void>;
         static createFile_async(folder: core.io.FilePath, fileName: string, content: string): Promise<core.io.FilePath>;
         static createFolder_async(container: core.io.FilePath, folderName: string): Promise<core.io.FilePath>;
+        static deleteFiles_async(files: core.io.FilePath[]): Promise<void>;
         static preloadFileString(file: core.io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string): core.io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<core.io.FilePath[]>;

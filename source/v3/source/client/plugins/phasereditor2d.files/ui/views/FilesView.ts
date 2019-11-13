@@ -19,8 +19,8 @@ namespace phasereditor2d.files.ui.views {
             return new controls.viewers.TreeViewer();
         }
 
-        fillContextMenu(menu : controls.Menu) {
-            
+        fillContextMenu(menu: controls.Menu) {
+
             const sel = this._viewer.getSelection();
 
             menu.add(new controls.Action({
@@ -35,7 +35,18 @@ namespace phasereditor2d.files.ui.views {
 
             menu.add(new controls.Action({
                 text: "Delete",
-                enabled: sel.length > 0
+                enabled: sel.length > 0,
+                callback: () => {
+
+                    const files = this._viewer.getSelection();
+                    
+                    if (confirm(`Do you want to delete ${files.length} files?`)) {
+                        
+                        if (files.length > 0) {
+                            ide.FileUtils.deleteFiles_async(files);
+                        }
+                    }
+                }
             }));
         }
 

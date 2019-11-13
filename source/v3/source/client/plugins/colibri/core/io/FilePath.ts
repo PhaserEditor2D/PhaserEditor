@@ -122,6 +122,19 @@ namespace colibri.core.io {
             return this._files;
         }
 
+        remove() {
+
+            if (this._parent) {
+
+                const list = this._parent._files;
+                const i = list.indexOf(this);
+
+                if (i >= 0) {
+                    list.splice(i, 1);
+                }
+            }
+        }
+
         flatTree(files: FilePath[], includeFolders: boolean): FilePath[] {
 
             if (this.isFolder()) {
