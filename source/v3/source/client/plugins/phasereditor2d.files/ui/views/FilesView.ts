@@ -25,7 +25,7 @@ namespace phasereditor2d.files.ui.views {
 
             menu.add(new controls.Action({
                 text: "New...",
-                enabled: sel.length === 1,
+                enabled: true,
                 callback: () => this.onNewFile()
             }));
 

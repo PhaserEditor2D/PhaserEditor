@@ -831,7 +831,7 @@ var phasereditor2d;
                         const sel = this._viewer.getSelection();
                         menu.add(new controls.Action({
                             text: "New...",
-                            enabled: sel.length === 1,
+                            enabled: true,
                             callback: () => this.onNewFile()
                         }));
                         menu.add(new controls.Action({
