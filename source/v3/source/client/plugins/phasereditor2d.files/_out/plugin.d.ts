@@ -42,10 +42,13 @@ declare namespace phasereditor2d.files.core {
 }
 declare namespace phasereditor2d.files.ui.actions {
     import controls = colibri.ui.controls;
+    import io = colibri.core.io;
     class OpenNewFileDialogAction extends controls.Action {
+        private _initialLocation;
         constructor();
         run(): void;
         private openFileDialog;
+        setInitialLocation(folder: io.FilePath): void;
     }
 }
 declare namespace phasereditor2d.files.ui.dialogs {
@@ -211,6 +214,7 @@ declare namespace phasereditor2d.files.ui.views {
         constructor();
         protected createViewer(): controls.viewers.TreeViewer;
         fillContextMenu(menu: controls.Menu): void;
+        private onNewFile;
         private onRenameFile;
         getPropertyProvider(): FilePropertySectionProvider;
         protected createPart(): void;

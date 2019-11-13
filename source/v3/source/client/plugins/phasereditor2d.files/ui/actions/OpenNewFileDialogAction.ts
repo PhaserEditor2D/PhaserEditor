@@ -1,8 +1,11 @@
 namespace phasereditor2d.files.ui.actions {
 
     import controls = colibri.ui.controls;
+    import io = colibri.core.io;
 
     export class OpenNewFileDialogAction extends controls.Action {
+
+        private _initialLocation: io.FilePath;
 
         constructor() {
             super({
@@ -59,9 +62,13 @@ namespace phasereditor2d.files.ui.actions {
 
             dlg.setTitle(`New ${extension.getWizardName()}`);
             dlg.setInitialFileName(extension.getInitialFileName());
-            dlg.setInitialLocation(extension.getInitialFileLocation());
+            dlg.setInitialLocation(this._initialLocation ?? extension.getInitialFileLocation());
 
             dlg.validate();
+        }
+
+        setInitialLocation(folder: io.FilePath) {
+            this._initialLocation = folder;
         }
     }
 

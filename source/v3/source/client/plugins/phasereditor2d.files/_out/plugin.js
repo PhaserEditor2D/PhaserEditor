@@ -204,11 +204,15 @@ var phasereditor2d;
                         dlg.addButton("Cancel", () => dlg.close());
                     }
                     openFileDialog(extension) {
+                        var _a;
                         const dlg = extension.createDialog();
                         dlg.setTitle(`New ${extension.getWizardName()}`);
                         dlg.setInitialFileName(extension.getInitialFileName());
-                        dlg.setInitialLocation(extension.getInitialFileLocation());
+                        dlg.setInitialLocation((_a = this._initialLocation, (_a !== null && _a !== void 0 ? _a : extension.getInitialFileLocation())));
                         dlg.validate();
+                    }
+                    setInitialLocation(folder) {
+                        this._initialLocation = folder;
                     }
                 }
                 actions.OpenNewFileDialogAction = OpenNewFileDialogAction;
@@ -826,6 +830,11 @@ var phasereditor2d;
                     fillContextMenu(menu) {
                         const sel = this._viewer.getSelection();
                         menu.add(new controls.Action({
+                            text: "New...",
+                            enabled: sel.length === 1,
+                            callback: () => this.onNewFile()
+                        }));
+                        menu.add(new controls.Action({
                             text: "Rename",
                             enabled: sel.length === 1,
                             callback: () => this.onRenameFile()
@@ -846,6 +855,17 @@ var phasereditor2d;
                                 }
                             }
                         }));
+                    }
+                    onNewFile() {
+                        const action = new ui.actions.OpenNewFileDialogAction();
+                        let folder = this._viewer.getSelectionFirstElement();
+                        if (folder) {
+                            if (folder.isFile()) {
+                                folder = folder.getParent();
+                            }
+                            action.setInitialLocation(folder);
+                        }
+                        action.run();
                     }
                     onRenameFile() {
                         const file = this._viewer.getSelectionFirstElement();

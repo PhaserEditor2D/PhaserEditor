@@ -24,6 +24,12 @@ namespace phasereditor2d.files.ui.views {
             const sel = this._viewer.getSelection();
 
             menu.add(new controls.Action({
+                text: "New...",
+                enabled: sel.length === 1,
+                callback: () => this.onNewFile()
+            }));
+
+            menu.add(new controls.Action({
                 text: "Rename",
                 enabled: sel.length === 1,
                 callback: () => this.onRenameFile()
@@ -49,6 +55,25 @@ namespace phasereditor2d.files.ui.views {
                     }
                 }
             }));
+        }
+
+        private onNewFile() {
+            
+            const action = new actions.OpenNewFileDialogAction();
+
+            let folder = this._viewer.getSelectionFirstElement() as io.FilePath;
+
+            if (folder) {
+                
+                if (folder.isFile()) {
+                    folder = folder.getParent();
+                }
+
+                action.setInitialLocation(folder);
+            }
+
+
+            action.run();
         }
 
         private onRenameFile() {
