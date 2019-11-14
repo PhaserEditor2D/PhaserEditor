@@ -138,7 +138,7 @@ namespace colibri.core.io {
             await this.setFileString_priv(file, content);
 
             folder["_files"].push(file);
-            folder["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
+            folder["sort"]();
 
             this.fireChange(new FileStorageChange([], [file], []));
 
@@ -240,15 +240,15 @@ namespace colibri.core.io {
                 deletedList.push(file);
             }
 
-            for(const file of deletedList) {
+            for (const file of deletedList) {
                 file.remove();
             }
 
             this.fireChange(new FileStorageChange([], [], deletedList));
         }
 
-        async renameFile(file : FilePath, newName : string) {
-            
+        async renameFile(file: FilePath, newName: string) {
+
             const oldName = file.getName();
 
             const data = await apiRequest("RenameFile", {
@@ -264,8 +264,37 @@ namespace colibri.core.io {
             file["setName"](newName);
 
             const change = new FileStorageChange([], [file], []);
-            
+
             change.addRenameData(file, oldName);
+
+            this.fireChange(change);
+        }
+
+        async moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void> {
+
+            const data = await apiRequest("MoveFiles", {
+                movingPaths: movingFiles.map(file => file.getFullName()),
+                movingToPath: moveTo.getFullName()
+            });
+
+            if (data.error) {
+                alert(`Cannot move the files.`);
+                throw new Error(data.error);
+            }
+
+            for (const srcFile of movingFiles) {
+
+                const i = srcFile.getParent().getFiles().indexOf(srcFile);
+                srcFile.getParent().getFiles().splice(i, 1);
+                
+                srcFile["_parent"] = moveTo;
+                
+                moveTo.getFiles().push(srcFile);
+            }
+
+            moveTo["sort"]();
+
+            const change = new FileStorageChange([], [], movingFiles);
 
             this.fireChange(change);
         }

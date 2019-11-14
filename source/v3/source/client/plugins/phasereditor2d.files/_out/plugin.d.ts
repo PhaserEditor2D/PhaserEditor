@@ -214,6 +214,7 @@ declare namespace phasereditor2d.files.ui.views {
         constructor();
         protected createViewer(): controls.viewers.TreeViewer;
         fillContextMenu(menu: controls.Menu): void;
+        private onMoveFiles;
         private onNewFile;
         private onRenameFile;
         getPropertyProvider(): FilePropertySectionProvider;

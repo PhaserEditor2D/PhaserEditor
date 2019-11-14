@@ -229,15 +229,21 @@ var colibri;
                         for (let child of fileData.children) {
                             this._files.push(new FilePath(this, child));
                         }
-                        this._files.sort((a, b) => {
-                            const a1 = a._isFile ? 1 : 0;
-                            const b1 = b._isFile ? 1 : 0;
-                            return a1 - b1;
-                        });
+                        this.sort();
                     }
                     else {
                         this._files = EMPTY_FILES;
                     }
+                }
+                sort() {
+                    this._files.sort((a, b) => {
+                        const a1 = a._isFile ? 1 : 0;
+                        const b1 = b._isFile ? 1 : 0;
+                        if (a1 === b1) {
+                            return a._name.localeCompare(b._name);
+                        }
+                        return a1 - b1;
+                    });
                 }
                 setName(name) {
                     this._name = name;
@@ -516,7 +522,7 @@ var colibri;
                     });
                     await this.setFileString_priv(file, content);
                     folder["_files"].push(file);
-                    folder["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
+                    folder["sort"]();
                     this.fireChange(new io.FileStorageChange([], [file], []));
                     return file;
                 }
@@ -606,6 +612,25 @@ var colibri;
                     file["setName"](newName);
                     const change = new io.FileStorageChange([], [file], []);
                     change.addRenameData(file, oldName);
+                    this.fireChange(change);
+                }
+                async moveFiles(movingFiles, moveTo) {
+                    const data = await apiRequest("MoveFiles", {
+                        movingPaths: movingFiles.map(file => file.getFullName()),
+                        movingToPath: moveTo.getFullName()
+                    });
+                    if (data.error) {
+                        alert(`Cannot move the files.`);
+                        throw new Error(data.error);
+                    }
+                    for (const srcFile of movingFiles) {
+                        const i = srcFile.getParent().getFiles().indexOf(srcFile);
+                        srcFile.getParent().getFiles().splice(i, 1);
+                        srcFile["_parent"] = moveTo;
+                        moveTo.getFiles().push(srcFile);
+                    }
+                    moveTo["sort"]();
+                    const change = new io.FileStorageChange([], [], movingFiles);
                     this.fireChange(change);
                 }
             }
@@ -4495,6 +4520,10 @@ var colibri;
                 static async renameFile_async(file, newName) {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     await storage.renameFile(file, newName);
+                }
+                static async moveFiles_async(movingFiles, moveTo) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    await storage.moveFiles(movingFiles, moveTo);
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();

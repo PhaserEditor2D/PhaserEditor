@@ -16,11 +16,13 @@ namespace colibri.core.io {
 
         createFolder(container : FilePath, folderName : string) : Promise<FilePath>;
 
-        deleteFiles(files : FilePath[]);
+        deleteFiles(files : FilePath[]) : Promise<void>;
 
-        renameFile(file : FilePath, newName : string);
+        renameFile(file : FilePath, newName : string) : Promise<void>;
 
-        addChangeListener(listener : ChangeListenerFunc);
+        moveFiles(movingFiles: FilePath[], moveTo: FilePath) : Promise<void>;
+
+        addChangeListener(listener : ChangeListenerFunc) : void;
 
     }
 

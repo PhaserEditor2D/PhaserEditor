@@ -30,19 +30,27 @@ namespace colibri.core.io {
                     this._files.push(new FilePath(this, child));
                 }
 
-                this._files.sort((a, b) => {
-
-                    const a1 = a._isFile ? 1 : 0;
-                    const b1 = b._isFile ? 1 : 0;
-
-                    return a1 - b1;
-                });
+                this.sort();
 
             } else {
 
                 this._files = EMPTY_FILES;
 
             }
+        }
+
+        private sort() {
+            this._files.sort((a, b) => {
+
+                const a1 = a._isFile ? 1 : 0;
+                const b1 = b._isFile ? 1 : 0;
+
+                if (a1 === b1) {
+                    return a._name.localeCompare(b._name);
+                }
+
+                return a1 - b1;
+            });
         }
 
         private setName(name: string) {

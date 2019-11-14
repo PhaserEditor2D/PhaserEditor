@@ -37,7 +37,8 @@ namespace phasereditor2d.files.ui.views {
 
             menu.add(new controls.Action({
                 text: "Move",
-                enabled: sel.length > 0
+                enabled: sel.length > 0,
+                callback: () => this.onMoveFiles()
             }));
 
             menu.add(new controls.Action({
@@ -57,14 +58,84 @@ namespace phasereditor2d.files.ui.views {
             }));
         }
 
+        private onMoveFiles() {
+
+            const rootFolder = colibri.ui.ide.FileUtils.getRoot();
+
+            const viewer = new controls.viewers.TreeViewer();
+
+            viewer.setLabelProvider(new viewers.FileLabelProvider());
+            viewer.setCellRendererProvider(new viewers.FileCellRendererProvider());
+            viewer.setContentProvider(new viewers.FileTreeContentProvider(true));
+            viewer.setInput(rootFolder);
+            viewer.setExpanded(rootFolder, true);
+
+            const dlg = new controls.dialogs.ViewerDialog(viewer);
+
+            dlg.create();
+
+            dlg.setTitle("Move Files");
+
+            {
+                const btn = dlg.addButton("Move", () => { });
+
+                btn.disabled = true;
+
+                viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+
+                    const sel = viewer.getSelection();
+
+                    let enabled = true;
+
+                    if (sel.length !== 1) {
+
+                        enabled = false;
+
+                    } else {
+
+                        const moveTo = sel[0] as io.FilePath;
+
+                        for (const obj of this.getViewer().getSelection()) {
+
+                            const file = obj as io.FilePath;
+
+                            if (
+                                moveTo.getFullName().startsWith(file.getFullName())
+                                || moveTo === file.getParent()
+                                || moveTo.getFile(file.getName())
+                            ) {
+                                enabled = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    btn.disabled = !enabled;
+                });
+
+                btn.addEventListener("click", () => {
+                    
+                    const moveTo = viewer.getSelectionFirstElement() as io.FilePath;
+                    
+                    const movingFiles = this.getViewer().getSelection();
+                    
+                    colibri.ui.ide.FileUtils.moveFiles_async(movingFiles, moveTo);
+
+                    dlg.close();
+                });
+            }
+
+            dlg.addButton("Cancel", () => dlg.close());
+        }
+
         private onNewFile() {
-            
+
             const action = new actions.OpenNewFileDialogAction();
 
             let folder = this._viewer.getSelectionFirstElement() as io.FilePath;
 
             if (folder) {
-                
+
                 if (folder.isFile()) {
                     folder = folder.getParent();
                 }

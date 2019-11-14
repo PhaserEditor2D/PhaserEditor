@@ -841,7 +841,8 @@ var phasereditor2d;
                         }));
                         menu.add(new controls.Action({
                             text: "Move",
-                            enabled: sel.length > 0
+                            enabled: sel.length > 0,
+                            callback: () => this.onMoveFiles()
                         }));
                         menu.add(new controls.Action({
                             text: "Delete",
@@ -855,6 +856,49 @@ var phasereditor2d;
                                 }
                             }
                         }));
+                    }
+                    onMoveFiles() {
+                        const rootFolder = colibri.ui.ide.FileUtils.getRoot();
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setLabelProvider(new ui.viewers.FileLabelProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
+                        viewer.setContentProvider(new ui.viewers.FileTreeContentProvider(true));
+                        viewer.setInput(rootFolder);
+                        viewer.setExpanded(rootFolder, true);
+                        const dlg = new controls.dialogs.ViewerDialog(viewer);
+                        dlg.create();
+                        dlg.setTitle("Move Files");
+                        {
+                            const btn = dlg.addButton("Move", () => { });
+                            btn.disabled = true;
+                            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                                const sel = viewer.getSelection();
+                                let enabled = true;
+                                if (sel.length !== 1) {
+                                    enabled = false;
+                                }
+                                else {
+                                    const moveTo = sel[0];
+                                    for (const obj of this.getViewer().getSelection()) {
+                                        const file = obj;
+                                        if (moveTo.getFullName().startsWith(file.getFullName())
+                                            || moveTo === file.getParent()
+                                            || moveTo.getFile(file.getName())) {
+                                            enabled = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                btn.disabled = !enabled;
+                            });
+                            btn.addEventListener("click", () => {
+                                const moveTo = viewer.getSelectionFirstElement();
+                                const movingFiles = this.getViewer().getSelection();
+                                colibri.ui.ide.FileUtils.moveFiles_async(movingFiles, moveTo);
+                                dlg.close();
+                            });
+                        }
+                        dlg.addButton("Cancel", () => dlg.close());
                     }
                     onNewFile() {
                         const action = new ui.actions.OpenNewFileDialogAction();
