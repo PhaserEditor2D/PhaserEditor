@@ -218,9 +218,18 @@ namespace phasereditor2d.files.ui.views {
 
                 viewer.repaint();
 
-                if (change.getAddedFiles().length === 1) {
+                const files : io.FilePath[] = [];
 
-                    const file = change.getAddedFiles()[0];
+                for(const filePath of change.getAddRecords()) {
+
+                    const file = ide.FileUtils.getFileFromPath(filePath, true);
+
+                    files.push(file);
+                }
+
+                if (files.length === 1) {
+
+                    const file = files[0];
 
                     if (file.isFolder()) {
 

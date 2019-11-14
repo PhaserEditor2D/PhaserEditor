@@ -69,18 +69,27 @@ namespace colibri.ui.ide {
             return cache.preload(file);
         }
 
-        static getFileFromPath(path: string): io.FilePath {
+        static getFileFromPath(path: string, pathStartsInRoot = false): io.FilePath {
             const root = Workbench.getWorkbench().getProjectRoot();
 
             const names = path.split("/");
 
+            if (pathStartsInRoot) {
+                names.shift();
+            }
+
             let result = root;
 
             for (const name of names) {
+
                 const child = result.getFile(name);
+
                 if (child) {
+
                     result = child;
+
                 } else {
+
                     return null;
                 }
             }

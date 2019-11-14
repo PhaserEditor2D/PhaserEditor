@@ -122,7 +122,21 @@ namespace colibri.core.io {
                 }
             }
 
-            return new FileStorageChange(modified, added, deleted);
+            const change = new FileStorageChange();
+
+            for (const file of modified) {
+                change.recordModify(file.getFullName());
+            }
+
+            for (const file of added) {
+                change.recordAdd(file.getFullName());
+            }
+
+            for (const file of deleted) {
+                change.recordDelete(file.getFullName());
+            }
+
+            return change;
         }
 
         async createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath> {
@@ -140,7 +154,11 @@ namespace colibri.core.io {
             folder["_files"].push(file);
             folder["sort"]();
 
-            this.fireChange(new FileStorageChange([], [file], []));
+            const change = new FileStorageChange();
+
+            change.recordAdd(file.getFullName());
+
+            this.fireChange(change);
 
             return file;
         }
@@ -169,7 +187,11 @@ namespace colibri.core.io {
             container["_files"].push(newFolder);
             container["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
 
-            this.fireChange(new FileStorageChange([], [newFolder], []));
+            const change = new FileStorageChange();
+
+            change.recordAdd(newFolder.getFullName());
+
+            this.fireChange(change);
 
             return newFolder;
         }
@@ -194,7 +216,11 @@ namespace colibri.core.io {
 
             await this.setFileString_priv(file, content);
 
-            this.fireChange(new FileStorageChange([file], [], []));
+            const change = new FileStorageChange();
+
+            change.recordModify(file.getFullName());
+
+            this.fireChange(change);
         }
 
         private async setFileString_priv(file: FilePath, content: string): Promise<void> {
@@ -234,22 +260,19 @@ namespace colibri.core.io {
                 }
             }
 
-            const deletedList: FilePath[] = [];
+            const change = new FileStorageChange();
 
             for (const file of deletedSet) {
-                deletedList.push(file);
-            }
 
-            for (const file of deletedList) {
                 file.remove();
+
+                change.recordDelete(file.getFullName());
             }
 
-            this.fireChange(new FileStorageChange([], [], deletedList));
+            this.fireChange(change);
         }
 
         async renameFile(file: FilePath, newName: string) {
-
-            const oldName = file.getName();
 
             const data = await apiRequest("RenameFile", {
                 oldPath: file.getFullName(),
@@ -261,11 +284,13 @@ namespace colibri.core.io {
                 throw new Error(data.error);
             }
 
+            const fromPath = file.getFullName();
+
             file["setName"](newName);
 
-            const change = new FileStorageChange([], [file], []);
+            const change = new FileStorageChange();
 
-            change.addRenameData(file, oldName);
+            change.recordRename(fromPath, file.getFullName());
 
             this.fireChange(change);
         }
@@ -277,6 +302,13 @@ namespace colibri.core.io {
                 movingToPath: moveTo.getFullName()
             });
 
+            const records = movingFiles.map(file => {
+                return {
+                    from: file.getFullName(),
+                    to: moveTo.getParent().getFullName() + "/" + file.getName()
+                };
+            });
+
             if (data.error) {
                 alert(`Cannot move the files.`);
                 throw new Error(data.error);
@@ -286,15 +318,19 @@ namespace colibri.core.io {
 
                 const i = srcFile.getParent().getFiles().indexOf(srcFile);
                 srcFile.getParent().getFiles().splice(i, 1);
-                
+
                 srcFile["_parent"] = moveTo;
-                
+
                 moveTo.getFiles().push(srcFile);
             }
 
             moveTo["sort"]();
 
-            const change = new FileStorageChange([], [], movingFiles);
+            const change = new FileStorageChange();
+
+            for(const record of records) {
+                change.recordRename(record.from, record.to);
+            }
 
             this.fireChange(change);
         }

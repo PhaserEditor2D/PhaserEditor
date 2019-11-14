@@ -9,69 +9,55 @@ namespace colibri.core.io {
 
     export class FileStorageChange {
 
-        private _modified: FilePath[];
-        private _modifiedFileNameSet: Set<string>;
-        private _added: FilePath[];
-        private _deleted: FilePath[];
-        private _deletedFileNameSet: Set<string>;
-        private _renameData: RenameData[];
+        private _renameRecords: Set<string>;
+        private _renameFromToMap: Map<string, string>;
+        private _deletedRecords: Set<string>;
+        private _addedRecords: Set<string>;
+        private _modifiedRecords: Set<string>;
 
-        constructor(modified: FilePath[], added: FilePath[], deleted: FilePath[]) {
+        constructor() {
 
-            this._modified = modified;
-
-            this._modifiedFileNameSet = new Set(modified.map(file => file.getFullName()));
-
-            this._added = added;
-
-            this._deleted = deleted;
-
-            this._deletedFileNameSet = new Set(deleted.map(file => file.getFullName()));
-
-            this._renameData = [];
+            this._renameRecords = new Set();
+            this._deletedRecords = new Set();
+            this._addedRecords = new Set();
+            this._modifiedRecords = new Set();
         }
 
-        addRenameData(newFile: FilePath, oldName: string) {
-            this._renameData.push({
-                newFile: newFile,
-                oldName: oldName
-            });
+        recordRename(fromPath: string, toPath: string) {
+            this._renameRecords.add(fromPath);
+            this._renameFromToMap[fromPath] = toPath;
         }
 
-        getRenamedFile(oldFile : FilePath) : FilePath {
-
-            for(const data of this._renameData) {
-                
-                const parent = data.newFile.getParent();
-
-                if (oldFile.getParent() === parent && oldFile.getName() === data.oldName) {
-                    return data.newFile;
-                }
-            }
-
-            return null;
+        getRenameTo(fromPath: string) {
+            return this._renameFromToMap[fromPath];
         }
 
-        isModified(file: FilePath): boolean {
-            return this._modifiedFileNameSet.has(file.getFullName());
+        recordDelete(path : string) {
+            this._deletedRecords.add(path);
         }
 
-        isDeleted(file: FilePath): boolean {
-            return this._deletedFileNameSet.has(file.getFullName());
+        isDeleted(path : string) {
+            return this._deletedRecords.has(path);
         }
 
-        getAddedFiles(): FilePath[] {
-            return this._added;
+        recordAdd(path : string) {
+            this._addedRecords.add(path);
         }
 
-        getModifiedFiles(): FilePath[] {
-            return this._modified;
+        isAdded(path : string) {
+            return this._addedRecords.has(path);
         }
 
-        getDeletedFiles(): FilePath[] {
-            return this._deleted;
+        getAddRecords() {
+            return this._addedRecords;
         }
 
+        recordModify(path : string) {
+            this._modifiedRecords.add(path);
+        }
+
+        isModified(path : string) {
+            return this._modifiedRecords.has(path);
+        }
     }
-
 }

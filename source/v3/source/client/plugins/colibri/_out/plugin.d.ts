@@ -118,20 +118,21 @@ declare namespace colibri.core.io {
         newFile: FilePath;
     };
     class FileStorageChange {
-        private _modified;
-        private _modifiedFileNameSet;
-        private _added;
-        private _deleted;
-        private _deletedFileNameSet;
-        private _renameData;
-        constructor(modified: FilePath[], added: FilePath[], deleted: FilePath[]);
-        addRenameData(newFile: FilePath, oldName: string): void;
-        getRenamedFile(oldFile: FilePath): FilePath;
-        isModified(file: FilePath): boolean;
-        isDeleted(file: FilePath): boolean;
-        getAddedFiles(): FilePath[];
-        getModifiedFiles(): FilePath[];
-        getDeletedFiles(): FilePath[];
+        private _renameRecords;
+        private _renameFromToMap;
+        private _deletedRecords;
+        private _addedRecords;
+        private _modifiedRecords;
+        constructor();
+        recordRename(fromPath: string, toPath: string): void;
+        getRenameTo(fromPath: string): any;
+        recordDelete(path: string): void;
+        isDeleted(path: string): boolean;
+        recordAdd(path: string): void;
+        isAdded(path: string): boolean;
+        getAddRecords(): Set<string>;
+        recordModify(path: string): void;
+        isModified(path: string): boolean;
     }
 }
 declare namespace colibri.core.io {
@@ -1103,7 +1104,7 @@ declare namespace colibri.ui.ide {
         static renameFile_async(file: io.FilePath, newName: string): Promise<void>;
         static moveFiles_async(movingFiles: io.FilePath[], moveTo: io.FilePath): Promise<void>;
         static preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult>;
-        static getFileFromPath(path: string): io.FilePath;
+        static getFileFromPath(path: string, pathStartsInRoot?: boolean): io.FilePath;
         static getFilesWithContentType(contentType: string): Promise<io.FilePath[]>;
         static getAllFiles(): io.FilePath[];
         static getRoot(): io.FilePath;

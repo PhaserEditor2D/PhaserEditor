@@ -360,43 +360,39 @@ var colibri;
         var io;
         (function (io) {
             class FileStorageChange {
-                constructor(modified, added, deleted) {
-                    this._modified = modified;
-                    this._modifiedFileNameSet = new Set(modified.map(file => file.getFullName()));
-                    this._added = added;
-                    this._deleted = deleted;
-                    this._deletedFileNameSet = new Set(deleted.map(file => file.getFullName()));
-                    this._renameData = [];
+                constructor() {
+                    this._renameRecords = new Set();
+                    this._deletedRecords = new Set();
+                    this._addedRecords = new Set();
+                    this._modifiedRecords = new Set();
                 }
-                addRenameData(newFile, oldName) {
-                    this._renameData.push({
-                        newFile: newFile,
-                        oldName: oldName
-                    });
+                recordRename(fromPath, toPath) {
+                    this._renameRecords.add(fromPath);
+                    this._renameFromToMap[fromPath] = toPath;
                 }
-                getRenamedFile(oldFile) {
-                    for (const data of this._renameData) {
-                        const parent = data.newFile.getParent();
-                        if (oldFile.getParent() === parent && oldFile.getName() === data.oldName) {
-                            return data.newFile;
-                        }
-                    }
-                    return null;
+                getRenameTo(fromPath) {
+                    return this._renameFromToMap[fromPath];
                 }
-                isModified(file) {
-                    return this._modifiedFileNameSet.has(file.getFullName());
+                recordDelete(path) {
+                    this._deletedRecords.add(path);
                 }
-                isDeleted(file) {
-                    return this._deletedFileNameSet.has(file.getFullName());
+                isDeleted(path) {
+                    return this._deletedRecords.has(path);
                 }
-                getAddedFiles() {
-                    return this._added;
+                recordAdd(path) {
+                    this._addedRecords.add(path);
                 }
-                getModifiedFiles() {
-                    return this._modified;
+                isAdded(path) {
+                    return this._addedRecords.has(path);
                 }
-                getDeletedFiles() {
-                    return this._deleted;
+                getAddRecords() {
+                    return this._addedRecords;
+                }
+                recordModify(path) {
+                    this._modifiedRecords.add(path);
+                }
+                isModified(path) {
+                    return this._modifiedRecords.has(path);
                 }
             }
             io.FileStorageChange = FileStorageChange;
@@ -510,7 +506,17 @@ var colibri;
                             added.push(newFile);
                         }
                     }
-                    return new io.FileStorageChange(modified, added, deleted);
+                    const change = new io.FileStorageChange();
+                    for (const file of modified) {
+                        change.recordModify(file.getFullName());
+                    }
+                    for (const file of added) {
+                        change.recordAdd(file.getFullName());
+                    }
+                    for (const file of deleted) {
+                        change.recordDelete(file.getFullName());
+                    }
+                    return change;
                 }
                 async createFile(folder, fileName, content) {
                     const file = new io.FilePath(folder, {
@@ -523,7 +529,9 @@ var colibri;
                     await this.setFileString_priv(file, content);
                     folder["_files"].push(file);
                     folder["sort"]();
-                    this.fireChange(new io.FileStorageChange([], [file], []));
+                    const change = new io.FileStorageChange();
+                    change.recordAdd(file.getFullName());
+                    this.fireChange(change);
                     return file;
                 }
                 async createFolder(container, folderName) {
@@ -545,7 +553,9 @@ var colibri;
                     newFolder["_modTime"] = data["modTime"];
                     container["_files"].push(newFolder);
                     container["_files"].sort((a, b) => a.getName().localeCompare(b.getName()));
-                    this.fireChange(new io.FileStorageChange([], [newFolder], []));
+                    const change = new io.FileStorageChange();
+                    change.recordAdd(newFolder.getFullName());
+                    this.fireChange(change);
                     return newFolder;
                 }
                 async getFileString(file) {
@@ -561,7 +571,9 @@ var colibri;
                 }
                 async setFileString(file, content) {
                     await this.setFileString_priv(file, content);
-                    this.fireChange(new io.FileStorageChange([file], [], []));
+                    const change = new io.FileStorageChange();
+                    change.recordModify(file.getFullName());
+                    this.fireChange(change);
                 }
                 async setFileString_priv(file, content) {
                     const data = await apiRequest("SetFileString", {
@@ -590,17 +602,14 @@ var colibri;
                             deletedSet.add(file2);
                         }
                     }
-                    const deletedList = [];
+                    const change = new io.FileStorageChange();
                     for (const file of deletedSet) {
-                        deletedList.push(file);
-                    }
-                    for (const file of deletedList) {
                         file.remove();
+                        change.recordDelete(file.getFullName());
                     }
-                    this.fireChange(new io.FileStorageChange([], [], deletedList));
+                    this.fireChange(change);
                 }
                 async renameFile(file, newName) {
-                    const oldName = file.getName();
                     const data = await apiRequest("RenameFile", {
                         oldPath: file.getFullName(),
                         newPath: file.getParent().getFullName() + "/" + newName
@@ -609,15 +618,22 @@ var colibri;
                         alert(`Cannot rename the file.`);
                         throw new Error(data.error);
                     }
+                    const fromPath = file.getFullName();
                     file["setName"](newName);
-                    const change = new io.FileStorageChange([], [file], []);
-                    change.addRenameData(file, oldName);
+                    const change = new io.FileStorageChange();
+                    change.recordRename(fromPath, file.getFullName());
                     this.fireChange(change);
                 }
                 async moveFiles(movingFiles, moveTo) {
                     const data = await apiRequest("MoveFiles", {
                         movingPaths: movingFiles.map(file => file.getFullName()),
                         movingToPath: moveTo.getFullName()
+                    });
+                    const records = movingFiles.map(file => {
+                        return {
+                            from: file.getFullName(),
+                            to: moveTo.getParent().getFullName() + "/" + file.getName()
+                        };
                     });
                     if (data.error) {
                         alert(`Cannot move the files.`);
@@ -630,7 +646,10 @@ var colibri;
                         moveTo.getFiles().push(srcFile);
                     }
                     moveTo["sort"]();
-                    const change = new io.FileStorageChange([], [], movingFiles);
+                    const change = new io.FileStorageChange();
+                    for (const record of records) {
+                        change.recordRename(record.from, record.to);
+                    }
                     this.fireChange(change);
                 }
             }
@@ -4529,9 +4548,12 @@ var colibri;
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();
                     return cache.preload(file);
                 }
-                static getFileFromPath(path) {
+                static getFileFromPath(path, pathStartsInRoot = false) {
                     const root = ide.Workbench.getWorkbench().getProjectRoot();
                     const names = path.split("/");
+                    if (pathStartsInRoot) {
+                        names.shift();
+                    }
                     let result = root;
                     for (const name of names) {
                         const child = result.getFile(name);

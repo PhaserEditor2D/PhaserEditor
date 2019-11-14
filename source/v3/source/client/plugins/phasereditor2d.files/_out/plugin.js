@@ -954,8 +954,13 @@ var phasereditor2d;
                         wb.getFileStorage().addChangeListener(change => {
                             viewer.setInput(ide.FileUtils.getRoot());
                             viewer.repaint();
-                            if (change.getAddedFiles().length === 1) {
-                                const file = change.getAddedFiles()[0];
+                            const files = [];
+                            for (const filePath of change.getAddRecords()) {
+                                const file = ide.FileUtils.getFileFromPath(filePath, true);
+                                files.push(file);
+                            }
+                            if (files.length === 1) {
+                                const file = files[0];
                                 if (file.isFolder()) {
                                     setTimeout(() => {
                                         viewer.reveal(file);
