@@ -201,6 +201,12 @@ canvas {
     margin-right: 3px;
 }
 
+/* ProgressBar */
+
+.ProgressBar {
+    height: 10px;
+}
+
 /* Dialog */
 
 .DialogContainer {
@@ -270,12 +276,25 @@ canvas {
     margin-left: 10px;
 }
 
+/* InputDialog */
+
 .InputDialog {
     height: auto !important;
 }
 
 .InputDialogLabel {
     padding: 1em 0px;
+}
+
+/* ProgressDialog */
+
+.ProgressDialog {
+    height: auto !important;
+}
+
+.ProgressDialog .ProgressBar {
+    margin: 0px 10px;
+    border-radius: 3px;
 }
 
 /* Menu */

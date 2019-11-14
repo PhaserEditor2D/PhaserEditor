@@ -1140,19 +1140,20 @@ var phasereditor2d;
             (function (views) {
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
+                var io = colibri.core.io;
                 class UploadSection extends controls.properties.PropertySection {
                     constructor(page) {
                         super(page, "phasereditor2d.files.ui.views", "Upload", true);
                     }
                     createForm(parent) {
-                        const comp = document.createElement("div");
+                        const comp = this.createGridElement(parent, 1);
                         comp.classList.add("UploadSection");
                         comp.style.display = "grid";
                         comp.style.gridTemplateColumns = "1fr";
                         comp.style.gridTemplateRows = "auto 1fr auto";
                         comp.style.gridGap = "5px";
-                        parent.appendChild(comp);
                         const filesInput = document.createElement("input");
+                        const uploadBtn = document.createElement("button");
                         const filesViewer = new controls.viewers.TreeViewer();
                         const filesFilteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), filesViewer);
                         {
@@ -1187,6 +1188,7 @@ var phasereditor2d;
                                 }
                                 filesViewer.setInput(input);
                                 filesViewer.repaint();
+                                uploadBtn.disabled = input.length === 0;
                             });
                             comp.appendChild(filesInput);
                             this.addUpdater(() => {
@@ -1194,13 +1196,34 @@ var phasereditor2d;
                             });
                             {
                                 // submit button
-                                const uploadBtn = document.createElement("button");
+                                uploadBtn.disabled = true;
                                 uploadBtn.innerText = "Upload";
                                 uploadBtn.addEventListener("click", async (e) => {
                                     const input = filesViewer.getInput();
                                     const files = input.slice();
                                     const uploadFolder = this.getSelection()[0];
+                                    const cancelFlag = {
+                                        canceled: false
+                                    };
+                                    const dlg = new controls.dialogs.ProgressDialog();
+                                    dlg.create();
+                                    dlg.setTitle("Uploading");
+                                    dlg.setCloseWithEscapeKey(false);
+                                    {
+                                        const btn = dlg.addButton("Cancel", () => {
+                                            if (cancelFlag.canceled) {
+                                                return;
+                                            }
+                                            cancelFlag.canceled = true;
+                                            btn.innerText = "Canceling";
+                                        });
+                                    }
+                                    dlg.setProgress(0);
                                     for (const file of files) {
+                                        if (cancelFlag.canceled) {
+                                            dlg.close();
+                                            break;
+                                        }
                                         const formData = new FormData();
                                         formData.append("files", file);
                                         formData.append("uploadTo", uploadFolder.getFullName());
@@ -1211,18 +1234,21 @@ var phasereditor2d;
                                         const respData = await resp.json();
                                         if (respData.error) {
                                             alert(`Error sending file ${file.name}`);
-                                            return;
+                                            break;
                                         }
                                         input.shift();
                                         filesViewer.repaint();
+                                        dlg.setProgress(1 - (input.length / files.length));
                                     }
+                                    dlg.close();
+                                    uploadBtn.disabled = filesViewer.getInput().length === 0;
                                 });
                                 comp.appendChild(uploadBtn);
                             }
                         }
                     }
-                    canEdit(file, n) {
-                        return file.isFolder();
+                    canEdit(obj, n) {
+                        return obj instanceof io.FilePath && obj.isFolder();
                     }
                     canEditNumber(n) {
                         return n === 1;

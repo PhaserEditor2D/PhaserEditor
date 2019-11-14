@@ -147,6 +147,12 @@ Important:
     background: rgba(255, 255, 255, 0.3);
 }
 
+/* ProgressBar */
+
+.ProgressBar {
+    background: #f0a050;
+}
+
 /* Dialog */
 
 .dark .Dialog {

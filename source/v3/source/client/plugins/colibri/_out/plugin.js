@@ -2179,6 +2179,7 @@ var colibri;
                 class Dialog extends controls.Control {
                     constructor(...classList) {
                         super("div", "Dialog", ...classList);
+                        this._closeWithEscapeKey = true;
                         this._parentDialog = Dialog._dialogs.length === 0 ?
                             null : Dialog._dialogs[Dialog._dialogs.length - 1];
                         if (Dialog._firstTime) {
@@ -2187,7 +2188,9 @@ var colibri;
                                 if (e.code === "Escape") {
                                     if (Dialog._dialogs.length > 0) {
                                         const dlg = Dialog._dialogs[Dialog._dialogs.length - 1];
-                                        dlg.close();
+                                        if (dlg.isCloseWithEscapeKey()) {
+                                            dlg.close();
+                                        }
                                     }
                                 }
                             });
@@ -2203,6 +2206,12 @@ var colibri;
                             });
                         }
                         Dialog._dialogs.push(this);
+                    }
+                    setCloseWithEscapeKey(closeWithEscapeKey) {
+                        this._closeWithEscapeKey = closeWithEscapeKey;
+                    }
+                    isCloseWithEscapeKey() {
+                        return this._closeWithEscapeKey;
                     }
                     getParentDialog() {
                         return this._parentDialog;
@@ -2335,6 +2344,40 @@ var colibri;
         (function (controls) {
             var dialogs;
             (function (dialogs) {
+                class ProgressDialog extends dialogs.Dialog {
+                    constructor() {
+                        super("ProgressDialog");
+                    }
+                    createDialogArea() {
+                        this._progressElement = document.createElement("div");
+                        this._progressElement.classList.add("ProgressBar");
+                        const area = document.createElement("div");
+                        area.classList.add("DialogClientArea");
+                        area.style.paddingTop = "10px";
+                        area.appendChild(this._progressElement);
+                        this.getElement().appendChild(area);
+                    }
+                    create() {
+                        super.create();
+                        this.getElement().style.height = "auto !important";
+                    }
+                    setProgress(progress) {
+                        this._progressElement.style.width = progress * 100 + "%";
+                    }
+                }
+                dialogs.ProgressDialog = ProgressDialog;
+            })(dialogs = controls.dialogs || (controls.dialogs = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var dialogs;
+            (function (dialogs) {
                 class ViewerDialog extends dialogs.Dialog {
                     constructor(viewer) {
                         super("ViewerDialog");
@@ -2400,7 +2443,7 @@ var colibri;
                             this._expandIconElement.classList.remove("expanded");
                         }
                         else {
-                            this._formArea.style.display = "initial";
+                            this._formArea.style.display = "grid";
                             this._expandIconElement.classList.add("expanded");
                         }
                         this._page.updateExpandStatus();

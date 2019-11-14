@@ -261,7 +261,7 @@ declare namespace phasereditor2d.files.ui.views {
     class UploadSection extends controls.properties.PropertySection<io.FilePath> {
         constructor(page: controls.properties.PropertyPage);
         protected createForm(parent: HTMLDivElement): void;
-        canEdit(file: io.FilePath, n: number): boolean;
+        canEdit(obj: any, n: number): boolean;
         canEditNumber(n: number): boolean;
     }
 }

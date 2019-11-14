@@ -5,21 +5,23 @@ namespace phasereditor2d.files.ui.views {
     import io = colibri.core.io;
 
     export class UploadSection extends controls.properties.PropertySection<io.FilePath> {
+
         constructor(page: controls.properties.PropertyPage) {
             super(page, "phasereditor2d.files.ui.views", "Upload", true);
         }
 
         protected createForm(parent: HTMLDivElement) {
 
-            const comp = document.createElement("div");
+            const comp = this.createGridElement(parent, 1);
             comp.classList.add("UploadSection");
             comp.style.display = "grid";
             comp.style.gridTemplateColumns = "1fr";
             comp.style.gridTemplateRows = "auto 1fr auto";
             comp.style.gridGap = "5px";
-            parent.appendChild(comp);
 
             const filesInput = document.createElement("input");
+
+            const uploadBtn = document.createElement("button");
 
             const filesViewer = new controls.viewers.TreeViewer();
             const filesFilteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), filesViewer);
@@ -69,6 +71,8 @@ namespace phasereditor2d.files.ui.views {
                     filesViewer.setInput(input);
 
                     filesViewer.repaint();
+
+                    uploadBtn.disabled = input.length === 0;
                 });
 
                 comp.appendChild(filesInput);
@@ -81,7 +85,7 @@ namespace phasereditor2d.files.ui.views {
 
                     // submit button
 
-                    const uploadBtn = document.createElement("button");
+                    uploadBtn.disabled = true;
                     uploadBtn.innerText = "Upload";
                     uploadBtn.addEventListener("click", async (e) => {
 
@@ -91,8 +95,37 @@ namespace phasereditor2d.files.ui.views {
 
                         const uploadFolder = this.getSelection()[0] as io.FilePath;
 
+                        const cancelFlag = {
+                            canceled: false
+                        };
+
+                        const dlg = new controls.dialogs.ProgressDialog();
+                        dlg.create();
+                        dlg.setTitle("Uploading");
+                        dlg.setCloseWithEscapeKey(false);
+
+                        {
+                            const btn = dlg.addButton("Cancel", () => {
+
+                                if (cancelFlag.canceled) {
+                                    return;
+                                }
+
+                                cancelFlag.canceled = true;
+
+                                btn.innerText = "Canceling";
+                            });
+                        }
+
+                        dlg.setProgress(0);
+
                         for (const file of files) {
-                            
+
+                            if (cancelFlag.canceled) {
+                                dlg.close();
+                                break;
+                            }
+
                             const formData = new FormData();
                             formData.append("files", file);
                             formData.append("uploadTo", uploadFolder.getFullName());
@@ -105,23 +138,30 @@ namespace phasereditor2d.files.ui.views {
                             const respData = await resp.json();
 
                             if (respData.error) {
+
                                 alert(`Error sending file ${file.name}`);
-                                return;
+                                break;
                             }
 
                             input.shift();
 
                             filesViewer.repaint();
+
+                            dlg.setProgress(1 - (input.length / files.length));
                         }
+
+                        dlg.close();
+                        
+                        uploadBtn.disabled = (filesViewer.getInput() as File[]).length === 0;
                     });
+
                     comp.appendChild(uploadBtn);
                 }
             }
-
         }
 
-        canEdit(file: io.FilePath, n: number): boolean {
-            return file.isFolder();
+        canEdit(obj: any, n: number): boolean {
+            return obj instanceof io.FilePath && obj.isFolder();
         }
 
         canEditNumber(n: number): boolean {

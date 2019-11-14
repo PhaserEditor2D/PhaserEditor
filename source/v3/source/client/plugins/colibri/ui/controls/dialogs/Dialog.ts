@@ -10,9 +10,12 @@ namespace colibri.ui.controls.dialogs {
         private static _dialogs: Dialog[] = [];
         private static _firstTime = true;
         private _parentDialog: Dialog;
+        private _closeWithEscapeKey: boolean;
 
         constructor(...classList: string[]) {
             super("div", "Dialog", ...classList);
+
+            this._closeWithEscapeKey = true;
 
             this._parentDialog = Dialog._dialogs.length === 0 ?
                 null : Dialog._dialogs[Dialog._dialogs.length - 1];
@@ -26,8 +29,12 @@ namespace colibri.ui.controls.dialogs {
                     if (e.code === "Escape") {
 
                         if (Dialog._dialogs.length > 0) {
+                            
                             const dlg = Dialog._dialogs[Dialog._dialogs.length - 1];
-                            dlg.close();
+
+                            if (dlg.isCloseWithEscapeKey()) {
+                                dlg.close();
+                            }
                         }
                     }
                 });
@@ -48,6 +55,14 @@ namespace colibri.ui.controls.dialogs {
             }
 
             Dialog._dialogs.push(this);
+        }
+
+        setCloseWithEscapeKey(closeWithEscapeKey : boolean) {
+            this._closeWithEscapeKey = closeWithEscapeKey;
+        }
+
+        isCloseWithEscapeKey() {
+            return this._closeWithEscapeKey;
         }
 
         getParentDialog() {

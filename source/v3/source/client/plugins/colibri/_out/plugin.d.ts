@@ -558,7 +558,10 @@ declare namespace colibri.ui.controls.dialogs {
         private static _dialogs;
         private static _firstTime;
         private _parentDialog;
+        private _closeWithEscapeKey;
         constructor(...classList: string[]);
+        setCloseWithEscapeKey(closeWithEscapeKey: boolean): void;
+        isCloseWithEscapeKey(): boolean;
         getParentDialog(): Dialog;
         create(): void;
         setTitle(title: string): void;
@@ -586,6 +589,15 @@ declare namespace colibri.ui.controls.dialogs {
         createDialogArea(): void;
         validate(): void;
         create(): void;
+    }
+}
+declare namespace colibri.ui.controls.dialogs {
+    class ProgressDialog extends Dialog {
+        private _progressElement;
+        constructor();
+        createDialogArea(): void;
+        create(): void;
+        setProgress(progress: number): void;
     }
 }
 declare namespace colibri.ui.controls.dialogs {

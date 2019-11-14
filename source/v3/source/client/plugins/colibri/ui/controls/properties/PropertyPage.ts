@@ -66,7 +66,7 @@ namespace colibri.ui.controls.properties {
                 this._formArea.style.display = "none";
                 this._expandIconElement.classList.remove("expanded");
             } else {
-                this._formArea.style.display = "initial";
+                this._formArea.style.display = "grid";
                 this._expandIconElement.classList.add("expanded");
             }
 
