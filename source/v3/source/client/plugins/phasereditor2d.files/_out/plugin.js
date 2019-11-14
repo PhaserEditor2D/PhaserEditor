@@ -699,6 +699,46 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 var controls = colibri.ui.controls;
+                class InputFileCellRendererProvider {
+                    getCellRenderer(element) {
+                        return new controls.viewers.IconImageCellRenderer(colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FILE));
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                viewers.InputFileCellRendererProvider = InputFileCellRendererProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                class InputFileLabelProvider {
+                    getLabel(file) {
+                        return file.name;
+                    }
+                }
+                viewers.InputFileLabelProvider = InputFileLabelProvider;
+            })(viewers = ui.viewers || (ui.viewers = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var viewers;
+            (function (viewers) {
+                var controls = colibri.ui.controls;
                 class Provider {
                     constructor(_renderer) {
                         this._renderer = _renderer;
@@ -742,6 +782,7 @@ var phasereditor2d;
                         sections.push(new views.FileSection(page));
                         sections.push(new views.ImageFileSection(page));
                         sections.push(new views.ManyImageFileSection(page));
+                        sections.push(new views.UploadSection(page));
                     }
                 }
                 views.FilePropertySectionProvider = FilePropertySectionProvider;
@@ -1087,5 +1128,108 @@ var phasereditor2d;
                 views.ManyImageFileSection = ManyImageFileSection;
             })(views = ui.views || (ui.views = {}));
         })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files_4) {
+        var ui;
+        (function (ui) {
+            var views;
+            (function (views) {
+                var controls = colibri.ui.controls;
+                var ide = colibri.ui.ide;
+                class UploadSection extends controls.properties.PropertySection {
+                    constructor(page) {
+                        super(page, "phasereditor2d.files.ui.views", "Upload", true);
+                    }
+                    createForm(parent) {
+                        const comp = document.createElement("div");
+                        comp.classList.add("UploadSection");
+                        comp.style.display = "grid";
+                        comp.style.gridTemplateColumns = "1fr";
+                        comp.style.gridTemplateRows = "auto 1fr auto";
+                        comp.style.gridGap = "5px";
+                        parent.appendChild(comp);
+                        const filesInput = document.createElement("input");
+                        const filesViewer = new controls.viewers.TreeViewer();
+                        const filesFilteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), filesViewer);
+                        {
+                            // browse button
+                            const browseBtn = document.createElement("button");
+                            browseBtn.innerText = "Browse";
+                            browseBtn.style.alignItems = "start";
+                            browseBtn.addEventListener("click", e => filesInput.click());
+                            comp.appendChild(browseBtn);
+                        }
+                        {
+                            // file list
+                            filesViewer.setLabelProvider(new ui.viewers.InputFileLabelProvider());
+                            filesViewer.setCellRendererProvider(new ui.viewers.InputFileCellRendererProvider());
+                            filesViewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+                            filesViewer.setInput([]);
+                            comp.appendChild(filesFilteredViewer.getElement());
+                            this.addUpdater(() => {
+                                filesViewer.setInput([]);
+                                filesViewer.repaint();
+                            });
+                        }
+                        {
+                            filesInput.type = "file";
+                            filesInput.name = "files";
+                            filesInput.multiple = true;
+                            filesInput.addEventListener("change", e => {
+                                const files = filesInput.files;
+                                const input = [];
+                                for (let i = 0; i < files.length; i++) {
+                                    input.push(files.item(i));
+                                }
+                                filesViewer.setInput(input);
+                                filesViewer.repaint();
+                            });
+                            comp.appendChild(filesInput);
+                            this.addUpdater(() => {
+                                filesInput.value = "";
+                            });
+                            {
+                                // submit button
+                                const uploadBtn = document.createElement("button");
+                                uploadBtn.innerText = "Upload";
+                                uploadBtn.addEventListener("click", async (e) => {
+                                    const input = filesViewer.getInput();
+                                    const files = input.slice();
+                                    const uploadFolder = this.getSelection()[0];
+                                    for (const file of files) {
+                                        const formData = new FormData();
+                                        formData.append("files", file);
+                                        formData.append("uploadTo", uploadFolder.getFullName());
+                                        const resp = await fetch("upload", {
+                                            method: "POST",
+                                            body: formData
+                                        });
+                                        const respData = await resp.json();
+                                        if (respData.error) {
+                                            alert(`Error sending file ${file.name}`);
+                                            return;
+                                        }
+                                        input.shift();
+                                        filesViewer.repaint();
+                                    }
+                                });
+                                comp.appendChild(uploadBtn);
+                            }
+                        }
+                    }
+                    canEdit(file, n) {
+                        return file.isFolder();
+                    }
+                    canEditNumber(n) {
+                        return n === 1;
+                    }
+                }
+                views.UploadSection = UploadSection;
+            })(views = ui.views || (ui.views = {}));
+        })(ui = files_4.ui || (files_4.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));

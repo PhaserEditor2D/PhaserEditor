@@ -3,7 +3,9 @@ namespace colibri.ui.controls.viewers {
     export abstract class LabelCellRenderer implements ICellRenderer {
 
         renderCell(args: RenderCellArgs): void {
+            
             const img = this.getImage(args.obj);
+
             let x = args.x;
 
             const ctx = args.canvasContext;

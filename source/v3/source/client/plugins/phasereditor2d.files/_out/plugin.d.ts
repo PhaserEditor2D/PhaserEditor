@@ -183,6 +183,19 @@ declare namespace phasereditor2d.files.ui.viewers {
 }
 declare namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
+    class InputFileCellRendererProvider implements controls.viewers.ICellRendererProvider {
+        getCellRenderer(element: any): controls.viewers.ICellRenderer;
+        preload(element: any): Promise<controls.PreloadResult>;
+    }
+}
+declare namespace phasereditor2d.files.ui.viewers {
+    import controls = colibri.ui.controls;
+    class InputFileLabelProvider implements controls.viewers.ILabelProvider {
+        getLabel(file: File): string;
+    }
+}
+declare namespace phasereditor2d.files.ui.viewers {
+    import controls = colibri.ui.controls;
     class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
         private _contentType;
         private _cellRenderer;
@@ -239,6 +252,16 @@ declare namespace phasereditor2d.files.ui.views {
         constructor(page: controls.properties.PropertyPage);
         protected createForm(parent: HTMLDivElement): void;
         canEdit(obj: any): boolean;
+        canEditNumber(n: number): boolean;
+    }
+}
+declare namespace phasereditor2d.files.ui.views {
+    import controls = colibri.ui.controls;
+    import io = colibri.core.io;
+    class UploadSection extends controls.properties.PropertySection<io.FilePath> {
+        constructor(page: controls.properties.PropertyPage);
+        protected createForm(parent: HTMLDivElement): void;
+        canEdit(file: io.FilePath, n: number): boolean;
         canEditNumber(n: number): boolean;
     }
 }

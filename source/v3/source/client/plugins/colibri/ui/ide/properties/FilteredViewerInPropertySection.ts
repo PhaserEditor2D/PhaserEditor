@@ -13,7 +13,7 @@ namespace colibri.ui.ide.properties {
 
             page.addEventListener(controls.EVENT_CONTROL_LAYOUT, (e: CustomEvent) => {
                 this.resizeTo();
-            })
+            });
         }
 
         resizeTo() {

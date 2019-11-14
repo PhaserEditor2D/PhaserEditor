@@ -20,17 +20,22 @@ Important:
     background: #b5b5b5;
 }
 
+.dark input[type="file"] {
+    display: none;
+}
+
 .dark input:focus {
     background: #d5d5d5;
 }
 
 /* button */
 
-.dark button {
+.dark button,
+.dark input[type="submit"] {
     background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.1);
-    text-shadow: 1px 1px #0e0e0e;
     color: #f0f0f0;
+    border-color: rgba(255, 255, 255, 0.1);
+    text-shadow: 1px 1px #0e0e0e;    
     border-style: solid;
     border-width: 1px;
     border-radius: 3px;

@@ -27,7 +27,8 @@ Important:
 
 /* button */
 
-.light button {
+.light button,
+.light input[type="submit"] {
     background: rgba(255, 255, 255, 0.4);
     border-color: rgba(255, 255, 255, 0.05);
     text-shadow: 1px 1px #ffffff;

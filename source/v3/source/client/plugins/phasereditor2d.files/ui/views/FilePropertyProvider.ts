@@ -11,7 +11,8 @@ namespace phasereditor2d.files.ui.views {
             sections.push(new ImageFileSection(page));
 
             sections.push(new ManyImageFileSection(page));
-        }
 
+            sections.push(new UploadSection(page));
+        }
     }
 }
