@@ -151,8 +151,7 @@ namespace colibri.core.io {
 
             await this.setFileString_priv(file, content);
 
-            folder["_files"].push(file);
-            folder["sort"]();
+            folder._add(file);
 
             const change = new FileStorageChange();
 
@@ -235,8 +234,10 @@ namespace colibri.core.io {
                 throw new Error(data.error);
             }
 
-            file["_modTime"] = data["modTime"];
-            file["_fileSize"] = data["size"];
+            const fileData = data as FileData;
+
+            file._setModTime(fileData.modTime);
+            file._setSize(fileData.size);
         }
 
         async deleteFiles(files: FilePath[]) {
@@ -264,7 +265,7 @@ namespace colibri.core.io {
 
             for (const file of deletedSet) {
 
-                file.remove();
+                file._remove();
 
                 change.recordDelete(file.getFullName());
             }
@@ -319,20 +320,63 @@ namespace colibri.core.io {
                 const i = srcFile.getParent().getFiles().indexOf(srcFile);
                 srcFile.getParent().getFiles().splice(i, 1);
 
-                srcFile["_parent"] = moveTo;
-
-                moveTo.getFiles().push(srcFile);
+                moveTo._add(srcFile);
             }
-
-            moveTo["sort"]();
 
             const change = new FileStorageChange();
 
-            for(const record of records) {
+            for (const record of records) {
                 change.recordRename(record.from, record.to);
             }
 
             this.fireChange(change);
+        }
+
+        async uploadFile(uploadFolder: FilePath, htmlFile: File): Promise<FilePath> {
+
+            const formData = new FormData();
+
+            formData.append("uploadTo", uploadFolder.getFullName());
+            formData.append("file", htmlFile);
+
+            const resp = await fetch("upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await resp.json();
+
+            if (data.error) {
+
+                alert(`Error sending file ${htmlFile.name}`);
+
+                throw new Error(data.error);
+            }
+
+            const fileData = data.file as FileData;
+
+            let file = uploadFolder.getFile(htmlFile.name);
+
+            const change = new FileStorageChange();
+
+            if (file) {
+
+                file._setModTime(fileData.modTime);
+                file._setSize(fileData.size);
+
+                change.recordModify(file.getFullName());
+
+            } else {
+
+                file = new FilePath(uploadFolder, fileData);
+                uploadFolder._add(file);
+
+                change.recordAdd(file.getFullName());
+            }
+
+            this.fireChange(change);
+
+            return file;
         }
     }
 }

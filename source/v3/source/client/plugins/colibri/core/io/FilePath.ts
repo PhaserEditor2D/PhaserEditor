@@ -30,7 +30,7 @@ namespace colibri.core.io {
                     this._files.push(new FilePath(this, child));
                 }
 
-                this.sort();
+                this._sort();
 
             } else {
 
@@ -39,7 +39,7 @@ namespace colibri.core.io {
             }
         }
 
-        private sort() {
+        _sort() {
             this._files.sort((a, b) => {
 
                 const a1 = a._isFile ? 1 : 0;
@@ -79,6 +79,10 @@ namespace colibri.core.io {
             return this.isFile() ? this._fileSize : 0;
         }
 
+        _setSize(size : number) {
+            this._fileSize = size;
+        }
+
         getName() {
             return this._name;
         }
@@ -89,6 +93,10 @@ namespace colibri.core.io {
 
         getModTime() {
             return this._modTime;
+        }
+
+        _setModTime(modTime : number) {
+            this._modTime = modTime;
         }
 
         getFullName() {
@@ -138,7 +146,18 @@ namespace colibri.core.io {
             return this._files;
         }
 
-        remove() {
+        _add(file : FilePath) {
+            
+            file._remove();
+            
+            file._parent = this;
+
+            this._files.push(file);
+
+            this._sort();
+        }
+
+        _remove() {
 
             if (this._parent) {
 

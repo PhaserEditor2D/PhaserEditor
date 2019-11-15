@@ -97,6 +97,13 @@ namespace colibri.ui.ide {
             return result;
         }
 
+        static async uploadFile_async(uploadFolder : io.FilePath, file : File) {
+
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            return storage.uploadFile(uploadFolder, file);
+        }
+
         static async getFilesWithContentType(contentType: string) {
 
             const reg = Workbench.getWorkbench().getContentTypeRegistry();

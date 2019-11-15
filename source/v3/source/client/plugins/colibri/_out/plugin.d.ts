@@ -90,13 +90,15 @@ declare namespace colibri.core.io {
         private _modTime;
         private _fileSize;
         constructor(parent: FilePath, fileData: FileData);
-        private sort;
+        _sort(): void;
         private setName;
         getExtension(): string;
         getSize(): number;
+        _setSize(size: number): void;
         getName(): string;
         getNameWithoutExtension(): string;
         getModTime(): number;
+        _setModTime(modTime: number): void;
         getFullName(): any;
         getUrl(): any;
         getSibling(name: string): FilePath;
@@ -105,7 +107,8 @@ declare namespace colibri.core.io {
         isFile(): boolean;
         isFolder(): boolean;
         getFiles(): FilePath[];
-        remove(): void;
+        _add(file: FilePath): void;
+        _remove(): void;
         flatTree(files: FilePath[], includeFolders: boolean): FilePath[];
         toString(): any;
         toStringTree(): string;
@@ -158,6 +161,7 @@ declare namespace colibri.core.io {
         deleteFiles(files: FilePath[]): Promise<void>;
         renameFile(file: FilePath, newName: string): Promise<void>;
         moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void>;
+        uploadFile(uploadFolder: FilePath, htmlFile: File): Promise<FilePath>;
     }
 }
 declare namespace colibri.core.io {
@@ -172,6 +176,7 @@ declare namespace colibri.core.io {
         deleteFiles(files: FilePath[]): Promise<void>;
         renameFile(file: FilePath, newName: string): Promise<void>;
         moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void>;
+        uploadFile(uploadFolder: FilePath, file: File): Promise<FilePath>;
         addChangeListener(listener: ChangeListenerFunc): void;
     }
 }
@@ -1117,6 +1122,7 @@ declare namespace colibri.ui.ide {
         static moveFiles_async(movingFiles: io.FilePath[], moveTo: io.FilePath): Promise<void>;
         static preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string, pathStartsInRoot?: boolean): io.FilePath;
+        static uploadFile_async(uploadFolder: io.FilePath, file: File): Promise<io.FilePath>;
         static getFilesWithContentType(contentType: string): Promise<io.FilePath[]>;
         static getAllFiles(): io.FilePath[];
         static getRoot(): io.FilePath;

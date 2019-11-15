@@ -229,13 +229,13 @@ var colibri;
                         for (let child of fileData.children) {
                             this._files.push(new FilePath(this, child));
                         }
-                        this.sort();
+                        this._sort();
                     }
                     else {
                         this._files = EMPTY_FILES;
                     }
                 }
-                sort() {
+                _sort() {
                     this._files.sort((a, b) => {
                         const a1 = a._isFile ? 1 : 0;
                         const b1 = b._isFile ? 1 : 0;
@@ -263,6 +263,9 @@ var colibri;
                 getSize() {
                     return this.isFile() ? this._fileSize : 0;
                 }
+                _setSize(size) {
+                    this._fileSize = size;
+                }
                 getName() {
                     return this._name;
                 }
@@ -271,6 +274,9 @@ var colibri;
                 }
                 getModTime() {
                     return this._modTime;
+                }
+                _setModTime(modTime) {
+                    this._modTime = modTime;
                 }
                 getFullName() {
                     if (this._parent) {
@@ -306,7 +312,13 @@ var colibri;
                 getFiles() {
                     return this._files;
                 }
-                remove() {
+                _add(file) {
+                    file._remove();
+                    file._parent = this;
+                    this._files.push(file);
+                    this._sort();
+                }
+                _remove() {
                     if (this._parent) {
                         const list = this._parent._files;
                         const i = list.indexOf(this);
@@ -527,8 +539,7 @@ var colibri;
                         modTime: 0
                     });
                     await this.setFileString_priv(file, content);
-                    folder["_files"].push(file);
-                    folder["sort"]();
+                    folder._add(file);
                     const change = new io.FileStorageChange();
                     change.recordAdd(file.getFullName());
                     this.fireChange(change);
@@ -584,8 +595,9 @@ var colibri;
                         alert(`Cannot set file content to '${file.getFullName()}'`);
                         throw new Error(data.error);
                     }
-                    file["_modTime"] = data["modTime"];
-                    file["_fileSize"] = data["size"];
+                    const fileData = data;
+                    file._setModTime(fileData.modTime);
+                    file._setSize(fileData.size);
                 }
                 async deleteFiles(files) {
                     const data = await apiRequest("DeleteFiles", {
@@ -604,7 +616,7 @@ var colibri;
                     }
                     const change = new io.FileStorageChange();
                     for (const file of deletedSet) {
-                        file.remove();
+                        file._remove();
                         change.recordDelete(file.getFullName());
                     }
                     this.fireChange(change);
@@ -642,15 +654,42 @@ var colibri;
                     for (const srcFile of movingFiles) {
                         const i = srcFile.getParent().getFiles().indexOf(srcFile);
                         srcFile.getParent().getFiles().splice(i, 1);
-                        srcFile["_parent"] = moveTo;
-                        moveTo.getFiles().push(srcFile);
+                        moveTo._add(srcFile);
                     }
-                    moveTo["sort"]();
                     const change = new io.FileStorageChange();
                     for (const record of records) {
                         change.recordRename(record.from, record.to);
                     }
                     this.fireChange(change);
+                }
+                async uploadFile(uploadFolder, htmlFile) {
+                    const formData = new FormData();
+                    formData.append("uploadTo", uploadFolder.getFullName());
+                    formData.append("file", htmlFile);
+                    const resp = await fetch("upload", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const data = await resp.json();
+                    if (data.error) {
+                        alert(`Error sending file ${htmlFile.name}`);
+                        throw new Error(data.error);
+                    }
+                    const fileData = data.file;
+                    let file = uploadFolder.getFile(htmlFile.name);
+                    const change = new io.FileStorageChange();
+                    if (file) {
+                        file._setModTime(fileData.modTime);
+                        file._setSize(fileData.size);
+                        change.recordModify(file.getFullName());
+                    }
+                    else {
+                        file = new io.FilePath(uploadFolder, fileData);
+                        uploadFolder._add(file);
+                        change.recordAdd(file.getFullName());
+                    }
+                    this.fireChange(change);
+                    return file;
                 }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
@@ -4608,6 +4647,10 @@ var colibri;
                         }
                     }
                     return result;
+                }
+                static async uploadFile_async(uploadFolder, file) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    return storage.uploadFile(uploadFolder, file);
                 }
                 static async getFilesWithContentType(contentType) {
                     const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();

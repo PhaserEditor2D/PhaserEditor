@@ -1000,14 +1000,13 @@ var phasereditor2d;
                                 const file = ide.FileUtils.getFileFromPath(filePath, true);
                                 files.push(file);
                             }
-                            if (files.length === 1) {
-                                const file = files[0];
-                                if (file.isFolder()) {
-                                    setTimeout(() => {
-                                        viewer.reveal(file);
-                                        viewer.setSelection([file]);
-                                    }, 100);
-                                }
+                            if (files.length > 0) {
+                                const firstFile = files[0];
+                                setTimeout(() => {
+                                    viewer.reveal(firstFile);
+                                    viewer.setSelection(files);
+                                    viewer.repaint();
+                                }, 100);
                             }
                         });
                         wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
@@ -1224,16 +1223,10 @@ var phasereditor2d;
                                             dlg.close();
                                             break;
                                         }
-                                        const formData = new FormData();
-                                        formData.append("files", file);
-                                        formData.append("uploadTo", uploadFolder.getFullName());
-                                        const resp = await fetch("upload", {
-                                            method: "POST",
-                                            body: formData
-                                        });
-                                        const respData = await resp.json();
-                                        if (respData.error) {
-                                            alert(`Error sending file ${file.name}`);
+                                        try {
+                                            await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
+                                        }
+                                        catch (error) {
                                             break;
                                         }
                                         input.shift();

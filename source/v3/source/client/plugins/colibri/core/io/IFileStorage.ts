@@ -22,6 +22,8 @@ namespace colibri.core.io {
 
         moveFiles(movingFiles: FilePath[], moveTo: FilePath) : Promise<void>;
 
+        uploadFile(uploadFolder : FilePath, file : File) : Promise<FilePath>;
+
         addChangeListener(listener : ChangeListenerFunc) : void;
 
     }

@@ -126,20 +126,11 @@ namespace phasereditor2d.files.ui.views {
                                 break;
                             }
 
-                            const formData = new FormData();
-                            formData.append("files", file);
-                            formData.append("uploadTo", uploadFolder.getFullName());
+                            try {
+                                
+                                await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
 
-                            const resp = await fetch("upload", {
-                                method: "POST",
-                                body: formData
-                            });
-
-                            const respData = await resp.json();
-
-                            if (respData.error) {
-
-                                alert(`Error sending file ${file.name}`);
+                            } catch (error) {
                                 break;
                             }
 
@@ -151,7 +142,7 @@ namespace phasereditor2d.files.ui.views {
                         }
 
                         dlg.close();
-                        
+
                         uploadBtn.disabled = (filesViewer.getInput() as File[]).length === 0;
                     });
 

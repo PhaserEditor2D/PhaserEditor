@@ -114,11 +114,11 @@ namespace phasereditor2d.files.ui.views {
                 });
 
                 btn.addEventListener("click", () => {
-                    
+
                     const moveTo = viewer.getSelectionFirstElement() as io.FilePath;
-                    
+
                     const movingFiles = this.getViewer().getSelection();
-                    
+
                     colibri.ui.ide.FileUtils.moveFiles_async(movingFiles, moveTo);
 
                     dlg.close();
@@ -218,28 +218,28 @@ namespace phasereditor2d.files.ui.views {
 
                 viewer.repaint();
 
-                const files : io.FilePath[] = [];
+                const files: io.FilePath[] = [];
 
-                for(const filePath of change.getAddRecords()) {
+                for (const filePath of change.getAddRecords()) {
 
                     const file = ide.FileUtils.getFileFromPath(filePath, true);
 
                     files.push(file);
                 }
 
-                if (files.length === 1) {
+                if (files.length > 0) {
 
-                    const file = files[0];
+                    const firstFile = files[0];
 
-                    if (file.isFolder()) {
+                    setTimeout(() => {
 
-                        setTimeout(() => {
+                        viewer.reveal(firstFile);
+                        
+                        viewer.setSelection(files);
 
-                            viewer.reveal(file);
-                            viewer.setSelection([file]);
+                        viewer.repaint();
 
-                        }, 100);
-                    }
+                    }, 100);
                 }
             });
 
