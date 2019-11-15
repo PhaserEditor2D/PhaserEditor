@@ -100,6 +100,11 @@ namespace phasereditor2d.files {
 
             reg.addExtension(ui.dialogs.NewFileExtension.POINT,
                 new ui.dialogs.NewFolderExtension());
+
+            // commands
+
+            reg.addExtension(ide.commands.CommandExtension.POINT_ID,
+                new ide.commands.CommandExtension("phasereditor2d.files.commands", ui.actions.FilesViewCommands.registerCommands));
         }
     }
 

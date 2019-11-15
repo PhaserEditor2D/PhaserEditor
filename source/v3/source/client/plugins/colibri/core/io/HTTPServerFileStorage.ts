@@ -287,7 +287,9 @@ namespace colibri.core.io {
 
             const fromPath = file.getFullName();
 
-            file["setName"](newName);
+            file._setName(newName);
+
+            file.getParent()._sort();
 
             const change = new FileStorageChange();
 
@@ -306,7 +308,7 @@ namespace colibri.core.io {
             const records = movingFiles.map(file => {
                 return {
                     from: file.getFullName(),
-                    to: moveTo.getParent().getFullName() + "/" + file.getName()
+                    to: moveTo.getFullName() + "/" + file.getName()
                 };
             });
 

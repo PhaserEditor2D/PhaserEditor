@@ -223,7 +223,7 @@ var colibri;
                     this._isFile = fileData.isFile;
                     this._fileSize = fileData.size;
                     this._modTime = fileData.modTime;
-                    this.setName(fileData.name);
+                    this._setName(fileData.name);
                     if (fileData.children) {
                         this._files = [];
                         for (let child of fileData.children) {
@@ -245,7 +245,7 @@ var colibri;
                         return a1 - b1;
                     });
                 }
-                setName(name) {
+                _setName(name) {
                     this._name = name;
                     const i = this._name.lastIndexOf(".");
                     if (i >= 0) {
@@ -377,6 +377,7 @@ var colibri;
                     this._deletedRecords = new Set();
                     this._addedRecords = new Set();
                     this._modifiedRecords = new Set();
+                    this._renameFromToMap = new Map();
                 }
                 recordRename(fromPath, toPath) {
                     this._renameRecords.add(fromPath);
@@ -631,7 +632,8 @@ var colibri;
                         throw new Error(data.error);
                     }
                     const fromPath = file.getFullName();
-                    file["setName"](newName);
+                    file._setName(newName);
+                    file.getParent()._sort();
                     const change = new io.FileStorageChange();
                     change.recordRename(fromPath, file.getFullName());
                     this.fireChange(change);
@@ -644,7 +646,7 @@ var colibri;
                     const records = movingFiles.map(file => {
                         return {
                             from: file.getFullName(),
-                            to: moveTo.getParent().getFullName() + "/" + file.getName()
+                            to: moveTo.getFullName() + "/" + file.getName()
                         };
                     });
                     if (data.error) {
@@ -5388,6 +5390,52 @@ var colibri;
         var ide;
         (function (ide) {
             ide.IMG_SECTION_PADDING = 10;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var actions;
+            (function (actions) {
+                class PartAction extends ui.controls.Action {
+                    constructor(part, config) {
+                        super(config);
+                        this._part = part;
+                    }
+                    getPart() {
+                        return this._part;
+                    }
+                }
+                actions.PartAction = PartAction;
+            })(actions = ide.actions || (ide.actions = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var actions;
+            (function (actions) {
+                class ViewerViewAction extends actions.PartAction {
+                    constructor(view, config) {
+                        super(view, config);
+                    }
+                    getViewViewer() {
+                        return this.getPart().getViewer();
+                    }
+                    getViewViewerSelection() {
+                        return this.getViewViewer().getSelection();
+                    }
+                }
+                actions.ViewerViewAction = ViewerViewAction;
+            })(actions = ide.actions || (ide.actions = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));

@@ -91,7 +91,7 @@ declare namespace colibri.core.io {
         private _fileSize;
         constructor(parent: FilePath, fileData: FileData);
         _sort(): void;
-        private setName;
+        _setName(name: string): void;
         getExtension(): string;
         getSize(): number;
         _setSize(size: number): void;
@@ -198,17 +198,18 @@ declare namespace colibri.core.json {
 }
 declare namespace colibri.ui.controls {
     const EVENT_ACTION_CHANGED = "actionChanged";
+    type ActionConfig = {
+        text?: string;
+        icon?: IImage;
+        enabled?: boolean;
+        callback?: () => void;
+    };
     class Action extends EventTarget {
         private _text;
         private _icon;
         private _enabled;
         private _callback;
-        constructor(config: {
-            text?: string;
-            icon?: IImage;
-            enabled?: boolean;
-            callback?: () => void;
-        });
+        constructor(config: ActionConfig);
         isEnabled(): boolean;
         getText(): string;
         getIcon(): IImage;
@@ -1319,6 +1320,20 @@ declare namespace colibri.ui.ide {
 }
 declare namespace colibri.ui.ide {
     const IMG_SECTION_PADDING = 10;
+}
+declare namespace colibri.ui.ide.actions {
+    abstract class PartAction<T extends ide.Part> extends controls.Action {
+        private _part;
+        constructor(part: T, config: controls.ActionConfig);
+        getPart(): T;
+    }
+}
+declare namespace colibri.ui.ide.actions {
+    abstract class ViewerViewAction<T extends ide.ViewerView> extends PartAction<T> {
+        constructor(view: T, config: controls.ActionConfig);
+        getViewViewer(): controls.viewers.TreeViewer;
+        getViewViewerSelection(): any[];
+    }
 }
 declare namespace colibri.ui.ide.commands {
     class Command {

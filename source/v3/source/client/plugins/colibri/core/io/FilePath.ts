@@ -20,7 +20,7 @@ namespace colibri.core.io {
             this._fileSize = fileData.size;
             this._modTime = fileData.modTime;
 
-            this.setName(fileData.name);
+            this._setName(fileData.name);
 
             if (fileData.children) {
 
@@ -53,7 +53,7 @@ namespace colibri.core.io {
             });
         }
 
-        private setName(name: string) {
+        _setName(name: string) {
 
             this._name = name;
 

@@ -75,6 +75,8 @@ var phasereditor2d;
                 ]));
                 // new files
                 reg.addExtension(files.ui.dialogs.NewFileExtension.POINT, new files.ui.dialogs.NewFolderExtension());
+                // commands
+                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.files.commands", files.ui.actions.FilesViewCommands.registerCommands));
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -164,6 +166,176 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
+    (function (files_1) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                class DeleteFilesAction extends colibri.ui.ide.actions.ViewerViewAction {
+                    static isEnabled(view) {
+                        const sel = view.getViewer().getSelection();
+                        if (sel.length > 0) {
+                            for (const obj of sel) {
+                                const file = obj;
+                                if (!file.getParent()) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                    constructor(view) {
+                        super(view, {
+                            text: "Delete",
+                            enabled: DeleteFilesAction.isEnabled(view)
+                        });
+                    }
+                    run() {
+                        const files = this.getViewViewerSelection();
+                        if (confirm(`Do you want to delete ${files.length} files?\This operation cannot be undone.`)) {
+                            if (files.length > 0) {
+                                colibri.ui.ide.FileUtils.deleteFiles_async(files);
+                            }
+                        }
+                    }
+                }
+                actions.DeleteFilesAction = DeleteFilesAction;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files_1.ui || (files_1.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                function isFilesViewScope(args) {
+                    return args.activePart instanceof ui.views.FilesView;
+                }
+                class FilesViewCommands {
+                    static registerCommands(manager) {
+                        manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE, args => isFilesViewScope(args) && actions.DeleteFilesAction.isEnabled(args.activePart), args => {
+                            new actions.DeleteFilesAction(args.activePart).run();
+                        });
+                        manager.addHandlerHelper(colibri.ui.ide.CMD_RENAME, args => isFilesViewScope(args) && actions.RenameFileAction.isEnabled(args.activePart), args => {
+                            new actions.RenameFileAction(args.activePart).run();
+                        });
+                    }
+                }
+                actions.FilesViewCommands = FilesViewCommands;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class MoveFilesAction extends colibri.ui.ide.actions.ViewerViewAction {
+                    static isEnabled(view) {
+                        return view.getViewer().getSelection().length > 0;
+                    }
+                    constructor(view) {
+                        super(view, {
+                            text: "Move",
+                            enabled: MoveFilesAction.isEnabled(view)
+                        });
+                    }
+                    run() {
+                        const rootFolder = colibri.ui.ide.FileUtils.getRoot();
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setLabelProvider(new ui.viewers.FileLabelProvider());
+                        viewer.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
+                        viewer.setContentProvider(new ui.viewers.FileTreeContentProvider(true));
+                        viewer.setInput(rootFolder);
+                        viewer.setExpanded(rootFolder, true);
+                        const dlg = new controls.dialogs.ViewerDialog(viewer);
+                        dlg.create();
+                        dlg.setTitle("Move Files");
+                        {
+                            const btn = dlg.addButton("Move", () => { });
+                            btn.disabled = true;
+                            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                                const sel = viewer.getSelection();
+                                let enabled = true;
+                                if (sel.length !== 1) {
+                                    enabled = false;
+                                }
+                                else {
+                                    const moveTo = sel[0];
+                                    for (const obj of this.getViewViewerSelection()) {
+                                        const file = obj;
+                                        if (moveTo.getFullName().startsWith(file.getFullName())
+                                            || moveTo === file.getParent()
+                                            || moveTo.getFile(file.getName())) {
+                                            enabled = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                btn.disabled = !enabled;
+                            });
+                            btn.addEventListener("click", async () => {
+                                const moveTo = viewer.getSelectionFirstElement();
+                                const movingFiles = this.getViewViewer().getSelection();
+                                await colibri.ui.ide.FileUtils.moveFiles_async(movingFiles, moveTo);
+                                this.getViewViewer().reveal(movingFiles[0]);
+                                this.getViewViewer().repaint();
+                                dlg.close();
+                            });
+                        }
+                        dlg.addButton("Cancel", () => dlg.close());
+                    }
+                }
+                actions.MoveFilesAction = MoveFilesAction;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                class NewFileAction extends colibri.ui.ide.actions.ViewerViewAction {
+                    constructor(view) {
+                        super(view, {
+                            text: "New...",
+                            enabled: true
+                        });
+                    }
+                    run() {
+                        const openDialogAction = new actions.OpenNewFileDialogAction();
+                        let folder = this.getViewViewer().getSelectionFirstElement();
+                        if (folder) {
+                            if (folder.isFile()) {
+                                folder = folder.getParent();
+                            }
+                            openDialogAction.setInitialLocation(folder);
+                        }
+                        openDialogAction.run();
+                    }
+                }
+                actions.NewFileAction = NewFileAction;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
     (function (files) {
         var ui;
         (function (ui) {
@@ -230,6 +402,55 @@ var phasereditor2d;
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = files.ui || (files.ui = {}));
+    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var files;
+    (function (files) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class RenameFileAction extends colibri.ui.ide.actions.ViewerViewAction {
+                    static isEnabled(view) {
+                        return view.getViewer().getSelection().length === 1;
+                    }
+                    constructor(view) {
+                        super(view, {
+                            text: "Rename",
+                            enabled: RenameFileAction.isEnabled(view)
+                        });
+                    }
+                    run() {
+                        const file = this.getViewViewer().getSelectionFirstElement();
+                        const parent = file.getParent();
+                        const dlg = new controls.dialogs.InputDialog();
+                        dlg.create();
+                        dlg.setTitle("Rename");
+                        dlg.setMessage("Enter the new name");
+                        dlg.setInitialValue(file.getName());
+                        dlg.setInputValidator(value => {
+                            var _a;
+                            if (value.indexOf("/") >= 0) {
+                                return false;
+                            }
+                            if (parent) {
+                                const file2 = (_a = parent.getFile(value), (_a !== null && _a !== void 0 ? _a : null));
+                                return file2 === null;
+                            }
+                            return false;
+                        });
+                        dlg.setResultCallback(result => {
+                            colibri.ui.ide.FileUtils.renameFile_async(file, result);
+                        });
+                        dlg.validate();
+                    }
+                }
+                actions.RenameFileAction = RenameFileAction;
             })(actions = ui.actions || (ui.actions = {}));
         })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
@@ -369,7 +590,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_1) {
+    (function (files_2) {
         var ui;
         (function (ui) {
             var dialogs;
@@ -411,7 +632,7 @@ var phasereditor2d;
                 NewFileExtension.POINT = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
                 dialogs.NewFileExtension = NewFileExtension;
             })(dialogs = ui.dialogs || (ui.dialogs = {}));
-        })(ui = files_1.ui || (files_1.ui = {}));
+        })(ui = files_2.ui || (files_2.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./NewFileExtension.ts" />
@@ -649,7 +870,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_2) {
+    (function (files_3) {
         var ui;
         (function (ui) {
             var viewers;
@@ -687,7 +908,7 @@ var phasereditor2d;
                 }
                 viewers.FileTreeContentProvider = FileTreeContentProvider;
             })(viewers = ui.viewers || (ui.viewers = {}));
-        })(ui = files_2.ui || (files_2.ui = {}));
+        })(ui = files_3.ui || (files_3.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -850,7 +1071,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_3) {
+    (function (files_4) {
         var ui;
         (function (ui) {
             var views;
@@ -870,111 +1091,10 @@ var phasereditor2d;
                     }
                     fillContextMenu(menu) {
                         const sel = this._viewer.getSelection();
-                        menu.add(new controls.Action({
-                            text: "New...",
-                            enabled: true,
-                            callback: () => this.onNewFile()
-                        }));
-                        menu.add(new controls.Action({
-                            text: "Rename",
-                            enabled: sel.length === 1,
-                            callback: () => this.onRenameFile()
-                        }));
-                        menu.add(new controls.Action({
-                            text: "Move",
-                            enabled: sel.length > 0,
-                            callback: () => this.onMoveFiles()
-                        }));
-                        menu.add(new controls.Action({
-                            text: "Delete",
-                            enabled: sel.length > 0,
-                            callback: () => {
-                                const files = this._viewer.getSelection();
-                                if (confirm(`Do you want to delete ${files.length} files?`)) {
-                                    if (files.length > 0) {
-                                        ide.FileUtils.deleteFiles_async(files);
-                                    }
-                                }
-                            }
-                        }));
-                    }
-                    onMoveFiles() {
-                        const rootFolder = colibri.ui.ide.FileUtils.getRoot();
-                        const viewer = new controls.viewers.TreeViewer();
-                        viewer.setLabelProvider(new ui.viewers.FileLabelProvider());
-                        viewer.setCellRendererProvider(new ui.viewers.FileCellRendererProvider());
-                        viewer.setContentProvider(new ui.viewers.FileTreeContentProvider(true));
-                        viewer.setInput(rootFolder);
-                        viewer.setExpanded(rootFolder, true);
-                        const dlg = new controls.dialogs.ViewerDialog(viewer);
-                        dlg.create();
-                        dlg.setTitle("Move Files");
-                        {
-                            const btn = dlg.addButton("Move", () => { });
-                            btn.disabled = true;
-                            viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
-                                const sel = viewer.getSelection();
-                                let enabled = true;
-                                if (sel.length !== 1) {
-                                    enabled = false;
-                                }
-                                else {
-                                    const moveTo = sel[0];
-                                    for (const obj of this.getViewer().getSelection()) {
-                                        const file = obj;
-                                        if (moveTo.getFullName().startsWith(file.getFullName())
-                                            || moveTo === file.getParent()
-                                            || moveTo.getFile(file.getName())) {
-                                            enabled = false;
-                                            break;
-                                        }
-                                    }
-                                }
-                                btn.disabled = !enabled;
-                            });
-                            btn.addEventListener("click", () => {
-                                const moveTo = viewer.getSelectionFirstElement();
-                                const movingFiles = this.getViewer().getSelection();
-                                colibri.ui.ide.FileUtils.moveFiles_async(movingFiles, moveTo);
-                                dlg.close();
-                            });
-                        }
-                        dlg.addButton("Cancel", () => dlg.close());
-                    }
-                    onNewFile() {
-                        const action = new ui.actions.OpenNewFileDialogAction();
-                        let folder = this._viewer.getSelectionFirstElement();
-                        if (folder) {
-                            if (folder.isFile()) {
-                                folder = folder.getParent();
-                            }
-                            action.setInitialLocation(folder);
-                        }
-                        action.run();
-                    }
-                    onRenameFile() {
-                        const file = this._viewer.getSelectionFirstElement();
-                        const parent = file.getParent();
-                        const dlg = new controls.dialogs.InputDialog();
-                        dlg.create();
-                        dlg.setTitle("Rename");
-                        dlg.setMessage("Enter the new name");
-                        dlg.setInitialValue(file.getName());
-                        dlg.setInputValidator(value => {
-                            var _a;
-                            if (value.indexOf("/") >= 0) {
-                                return false;
-                            }
-                            if (parent) {
-                                const file2 = (_a = parent.getFile(value), (_a !== null && _a !== void 0 ? _a : null));
-                                return file2 === null;
-                            }
-                            return false;
-                        });
-                        dlg.setResultCallback(result => {
-                            ide.FileUtils.renameFile_async(file, result);
-                        });
-                        dlg.validate();
+                        menu.add(new ui.actions.NewFileAction(this));
+                        menu.add(new ui.actions.RenameFileAction(this));
+                        menu.add(new ui.actions.MoveFilesAction(this));
+                        menu.add(new ui.actions.DeleteFilesAction(this));
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;
@@ -1026,7 +1146,7 @@ var phasereditor2d;
                 }
                 views.FilesView = FilesView;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files_3.ui || (files_3.ui = {}));
+        })(ui = files_4.ui || (files_4.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1132,7 +1252,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_4) {
+    (function (files_5) {
         var ui;
         (function (ui) {
             var views;
@@ -1249,6 +1369,6 @@ var phasereditor2d;
                 }
                 views.UploadSection = UploadSection;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files_4.ui || (files_4.ui = {}));
+        })(ui = files_5.ui || (files_5.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));

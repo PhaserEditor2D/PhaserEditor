@@ -21,6 +21,7 @@ namespace colibri.core.io {
             this._deletedRecords = new Set();
             this._addedRecords = new Set();
             this._modifiedRecords = new Set();
+            this._renameFromToMap = new Map();
         }
 
         recordRename(fromPath: string, toPath: string) {

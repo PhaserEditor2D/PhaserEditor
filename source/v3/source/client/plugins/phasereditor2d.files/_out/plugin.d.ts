@@ -41,6 +41,31 @@ declare namespace phasereditor2d.files.core {
     }
 }
 declare namespace phasereditor2d.files.ui.actions {
+    class DeleteFilesAction extends colibri.ui.ide.actions.ViewerViewAction<views.FilesView> {
+        static isEnabled(view: views.FilesView): boolean;
+        constructor(view: views.FilesView);
+        run(): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
+    class FilesViewCommands {
+        static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
+    class MoveFilesAction extends colibri.ui.ide.actions.ViewerViewAction<views.FilesView> {
+        static isEnabled(view: views.FilesView): boolean;
+        constructor(view: views.FilesView);
+        run(): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
+    class NewFileAction extends colibri.ui.ide.actions.ViewerViewAction<views.FilesView> {
+        constructor(view: views.FilesView);
+        run(): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
     class OpenNewFileDialogAction extends controls.Action {
@@ -49,6 +74,13 @@ declare namespace phasereditor2d.files.ui.actions {
         run(): void;
         private openFileDialog;
         setInitialLocation(folder: io.FilePath): void;
+    }
+}
+declare namespace phasereditor2d.files.ui.actions {
+    class RenameFileAction extends colibri.ui.ide.actions.ViewerViewAction<views.FilesView> {
+        static isEnabled(view: views.FilesView): boolean;
+        constructor(view: views.FilesView);
+        run(): void;
     }
 }
 declare namespace phasereditor2d.files.ui.dialogs {
@@ -227,9 +259,6 @@ declare namespace phasereditor2d.files.ui.views {
         constructor();
         protected createViewer(): controls.viewers.TreeViewer;
         fillContextMenu(menu: controls.Menu): void;
-        private onMoveFiles;
-        private onNewFile;
-        private onRenameFile;
         getPropertyProvider(): FilePropertySectionProvider;
         protected createPart(): void;
         getIcon(): controls.IImage;
