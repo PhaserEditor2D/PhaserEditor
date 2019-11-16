@@ -119,6 +119,8 @@ namespace phasereditor2d.files.ui.views {
 
                         dlg.setProgress(0);
 
+                        const ioFiles: io.FilePath[] = [];
+
                         for (const file of files) {
 
                             if (cancelFlag.canceled) {
@@ -127,8 +129,10 @@ namespace phasereditor2d.files.ui.views {
                             }
 
                             try {
-                                
-                                await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
+
+                                const ioFile = await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
+
+                                ioFiles.push(ioFile);
 
                             } catch (error) {
                                 break;
@@ -144,6 +148,18 @@ namespace phasereditor2d.files.ui.views {
                         dlg.close();
 
                         uploadBtn.disabled = (filesViewer.getInput() as File[]).length === 0;
+
+                        if (ioFiles.length > 0) {
+
+                            const view = colibri.ui.ide.Workbench
+                                .getWorkbench()
+                                .getActiveWindow()
+                                .getView(views.FilesView.ID) as views.FilesView;
+
+                            view.getViewer().setSelection(ioFiles);
+                            view.getViewer().reveal(ioFiles[0]);
+                            view.getViewer().repaint();
+                        }
                     });
 
                     comp.appendChild(uploadBtn);

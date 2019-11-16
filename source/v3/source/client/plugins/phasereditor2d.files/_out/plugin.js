@@ -1350,13 +1350,15 @@ var phasereditor2d;
                                         });
                                     }
                                     dlg.setProgress(0);
+                                    const ioFiles = [];
                                     for (const file of files) {
                                         if (cancelFlag.canceled) {
                                             dlg.close();
                                             break;
                                         }
                                         try {
-                                            await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
+                                            const ioFile = await colibri.ui.ide.FileUtils.uploadFile_async(uploadFolder, file);
+                                            ioFiles.push(ioFile);
                                         }
                                         catch (error) {
                                             break;
@@ -1367,6 +1369,15 @@ var phasereditor2d;
                                     }
                                     dlg.close();
                                     uploadBtn.disabled = filesViewer.getInput().length === 0;
+                                    if (ioFiles.length > 0) {
+                                        const view = colibri.ui.ide.Workbench
+                                            .getWorkbench()
+                                            .getActiveWindow()
+                                            .getView(views.FilesView.ID);
+                                        view.getViewer().setSelection(ioFiles);
+                                        view.getViewer().reveal(ioFiles[0]);
+                                        view.getViewer().repaint();
+                                    }
                                 });
                                 comp.appendChild(uploadBtn);
                             }
