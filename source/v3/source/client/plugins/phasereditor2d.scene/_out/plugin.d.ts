@@ -220,7 +220,8 @@ declare namespace phasereditor2d.scene.ui.editor {
         private _sceneRead;
         static getFactory(): colibri.ui.ide.EditorFactory;
         constructor();
-        save(): Promise<void>;
+        doSave(): Promise<void>;
+        protected onEditorInputContentChanged(): void;
         protected createPart(): void;
         setInput(file: colibri.core.io.FilePath): Promise<void>;
         private readScene;

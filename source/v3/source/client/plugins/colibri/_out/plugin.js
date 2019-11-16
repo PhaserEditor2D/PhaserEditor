@@ -4237,6 +4237,9 @@ var colibri;
                     return this._dirty;
                 }
                 save() {
+                    this.doSave();
+                }
+                doSave() {
                 }
                 onPartClosed() {
                     if (this.isDirty()) {
@@ -4584,19 +4587,31 @@ var colibri;
             class FileEditor extends ide.EditorPart {
                 constructor(id) {
                     super(id);
+                    this._isSaving = false;
                     this._onFileStorageListener = change => {
                         this.onFileStorageChanged(change);
                     };
                     ide.Workbench.getWorkbench().getFileStorage().addChangeListener(this._onFileStorageListener);
                 }
+                save() {
+                    this._isSaving = true;
+                    try {
+                        super.save();
+                    }
+                    finally {
+                        this._isSaving = false;
+                    }
+                }
                 onFileStorageChanged(change) {
                     const editorFile = this.getInput();
                     const editorFileFullName = editorFile.getFullName();
                     if (change.isDeleted(editorFileFullName)) {
-                        // close the editor
+                        this.getPartFolder().closeTab(this);
                     }
                     else if (change.isModified(editorFileFullName)) {
-                        // reload the editor, if the change is not made by the editor itself
+                        if (!this._isSaving) {
+                            this.onEditorInputContentChanged();
+                        }
                     }
                     else if (change.wasRenamed(editorFileFullName)) {
                         this.setTitle(editorFile.getName());

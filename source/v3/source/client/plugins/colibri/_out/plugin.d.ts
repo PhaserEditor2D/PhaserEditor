@@ -1008,6 +1008,7 @@ declare namespace colibri.ui.ide {
         setDirty(dirty: boolean): void;
         isDirty(): boolean;
         save(): void;
+        protected doSave(): void;
         onPartClosed(): boolean;
         getInput(): any;
         setInput(input: any): void;
@@ -1110,8 +1111,11 @@ declare namespace colibri.ui.ide {
     import io = core.io;
     abstract class FileEditor extends EditorPart {
         private _onFileStorageListener;
+        private _isSaving;
         constructor(id: string);
-        private onFileStorageChanged;
+        save(): void;
+        protected onFileStorageChanged(change: io.FileStorageChange): void;
+        protected abstract onEditorInputContentChanged(): any;
         onPartClosed(): boolean;
         setInput(file: io.FilePath): void;
         getInput(): core.io.FilePath;

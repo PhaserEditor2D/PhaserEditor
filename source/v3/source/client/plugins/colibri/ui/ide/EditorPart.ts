@@ -32,6 +32,10 @@ namespace colibri.ui.ide {
         }
 
         save() {
+            this.doSave();
+        }
+
+        protected doSave() {
 
         }
 

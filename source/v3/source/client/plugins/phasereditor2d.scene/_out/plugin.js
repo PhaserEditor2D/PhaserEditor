@@ -1074,7 +1074,7 @@ var phasereditor2d;
                     static getFactory() {
                         return new SceneEditorFactory();
                     }
-                    async save() {
+                    async doSave() {
                         const writer = new ui.json.SceneWriter(this.getGameScene());
                         const data = writer.toJSON();
                         const content = JSON.stringify(data, null, 4);
@@ -1085,6 +1085,9 @@ var phasereditor2d;
                         catch (e) {
                             console.error(e);
                         }
+                    }
+                    onEditorInputContentChanged() {
+                        //TODO: missing to implement
                     }
                     createPart() {
                         this.setLayoutChildren(false);

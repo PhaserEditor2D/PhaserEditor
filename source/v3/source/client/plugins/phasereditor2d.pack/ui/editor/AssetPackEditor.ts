@@ -140,7 +140,7 @@ namespace phasereditor2d.pack.ui.editor {
             await this.updateBlocks();
         }
 
-        async save() {
+        async doSave() {
 
             const content = JSON.stringify(this._pack.toJSON(), null, 4);
 
@@ -153,6 +153,10 @@ namespace phasereditor2d.pack.ui.editor {
             } catch (e) {
                 console.error(e);
             }
+        }
+
+        protected onEditorInputContentChanged() {
+            //TODO: missing to implement
         }
 
         getPack() {

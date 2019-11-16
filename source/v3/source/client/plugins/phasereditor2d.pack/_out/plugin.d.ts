@@ -482,7 +482,8 @@ declare namespace phasereditor2d.pack.ui.editor {
         repaintEditorAndOutline(): void;
         protected createViewer(): controls.viewers.TreeViewer;
         private updateContent;
-        save(): Promise<void>;
+        doSave(): Promise<void>;
+        protected onEditorInputContentChanged(): void;
         getPack(): core.AssetPack;
         setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;

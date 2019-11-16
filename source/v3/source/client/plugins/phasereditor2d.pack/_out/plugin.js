@@ -2001,7 +2001,7 @@ var phasereditor2d;
                         this.getViewer().repaint();
                         await this.updateBlocks();
                     }
-                    async save() {
+                    async doSave() {
                         const content = JSON.stringify(this._pack.toJSON(), null, 4);
                         try {
                             await ide.FileUtils.setFileString_async(this.getInput(), content);
@@ -2010,6 +2010,9 @@ var phasereditor2d;
                         catch (e) {
                             console.error(e);
                         }
+                    }
+                    onEditorInputContentChanged() {
+                        //TODO: missing to implement
                     }
                     getPack() {
                         return this._pack;

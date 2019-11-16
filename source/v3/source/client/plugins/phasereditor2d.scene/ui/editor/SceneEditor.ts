@@ -55,7 +55,7 @@ namespace phasereditor2d.scene.ui.editor {
             this._propertyProvider = new properties.SceneEditorSectionProvider();
         }
 
-        async save() {
+        async doSave() {
 
             const writer = new json.SceneWriter(this.getGameScene());
 
@@ -72,6 +72,10 @@ namespace phasereditor2d.scene.ui.editor {
             } catch (e) {
                 console.error(e);
             }
+        }
+
+        protected onEditorInputContentChanged() {
+            //TODO: missing to implement
         }
 
         protected createPart() {

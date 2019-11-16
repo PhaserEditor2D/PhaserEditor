@@ -5,9 +5,12 @@ namespace colibri.ui.ide {
     export abstract class FileEditor extends EditorPart {
 
         private _onFileStorageListener: io.ChangeListenerFunc;
+        private _isSaving: boolean;
 
         constructor(id: string) {
             super(id);
+
+            this._isSaving = false;
 
             this._onFileStorageListener = change => {
                 this.onFileStorageChanged(change);
@@ -16,7 +19,18 @@ namespace colibri.ui.ide {
             Workbench.getWorkbench().getFileStorage().addChangeListener(this._onFileStorageListener);
         }
 
-        private onFileStorageChanged(change: io.FileStorageChange) {
+        save() {
+
+            this._isSaving = true;
+
+            try {
+                super.save();
+            } finally {
+                this._isSaving = false;
+            }
+        }
+
+        protected onFileStorageChanged(change: io.FileStorageChange) {
 
             const editorFile = this.getInput();
 
@@ -24,17 +38,21 @@ namespace colibri.ui.ide {
 
             if (change.isDeleted(editorFileFullName)) {
 
-                // close the editor
+                this.getPartFolder().closeTab(this);
 
             } else if (change.isModified(editorFileFullName)) {
 
-                // reload the editor, if the change is not made by the editor itself
+                if (!this._isSaving) {
+                    this.onEditorInputContentChanged();
+                }
 
             } else if (change.wasRenamed(editorFileFullName)) {
 
                 this.setTitle(editorFile.getName());
             }
         }
+
+        protected abstract onEditorInputContentChanged();
 
         onPartClosed() {
 
