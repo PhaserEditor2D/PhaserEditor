@@ -1318,6 +1318,9 @@ declare namespace colibri.ui.ide {
         constructor();
         getToolbar(): MainToolbar;
         getClientArea(): controls.Control;
+        getViews(): ViewPart[];
+        getView(viewId: string): ViewPart;
+        private findViews;
         protected createViewFolder(...parts: Part[]): ViewFolder;
         abstract getEditorArea(): EditorArea;
     }

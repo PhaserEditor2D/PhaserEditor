@@ -7,10 +7,12 @@ namespace phasereditor2d.files.ui.views {
 
     export class FilesView extends ide.ViewerView {
 
+        static ID = "phasereditor2d.files.ui.views.FilesView";
+
         private _propertyProvider = new FilePropertySectionProvider();
 
         constructor() {
-            super("filesView");
+            super(FilesView.ID);
 
             this.setTitle("Files");
 
@@ -79,7 +81,7 @@ namespace phasereditor2d.files.ui.views {
         }
 
         private async onFileStorageChange(change: io.FileStorageChange) {
-            
+
             const viewer = this.getViewer();
 
             viewer.setInput(ide.FileUtils.getRoot());

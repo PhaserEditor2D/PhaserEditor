@@ -5374,7 +5374,6 @@ var colibri;
                     super("div", "Window");
                     this.setLayout(new ui.controls.FillLayout(5));
                     window.addEventListener("resize", e => {
-                        //this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
                         this.layout();
                     });
                     window.addEventListener(ui.controls.EVENT_THEME_CHANGED, e => this.layout());
@@ -5390,6 +5389,27 @@ var colibri;
                 }
                 getClientArea() {
                     return this._clientArea;
+                }
+                getViews() {
+                    const views = [];
+                    this.findViews(this.getElement(), views);
+                    return views;
+                }
+                getView(viewId) {
+                    const views = this.getViews();
+                    return views.find(view => view.getId() === viewId);
+                }
+                findViews(element, views) {
+                    const control = ui.controls.Control.getControlOf(element);
+                    if (control instanceof ide.ViewPart) {
+                        views.push(control);
+                    }
+                    else {
+                        for (let i = 0; i < element.childElementCount; i++) {
+                            const childElement = element.children.item(i);
+                            this.findViews(childElement, views);
+                        }
+                    }
                 }
                 createViewFolder(...parts) {
                     const folder = new ide.ViewFolder();

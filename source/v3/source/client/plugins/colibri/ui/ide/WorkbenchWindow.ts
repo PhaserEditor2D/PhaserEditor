@@ -13,7 +13,6 @@ namespace colibri.ui.ide {
             this.setLayout(new controls.FillLayout(5));
 
             window.addEventListener("resize", e => {
-                //this.setBoundsValues(0, 0, window.innerWidth, window.innerHeight);
                 this.layout();
             });
 
@@ -35,6 +34,39 @@ namespace colibri.ui.ide {
 
         getClientArea() {
             return this._clientArea;
+        }
+
+        getViews() {
+
+            const views: ViewPart[] = [];
+
+            this.findViews(this.getElement(), views);
+
+            return views;
+        }
+
+        getView(viewId: string) {
+
+            const views = this.getViews();
+
+            return views.find(view => view.getId() === viewId);
+        }
+
+        private findViews(element: HTMLElement, views: ViewPart[]) {
+
+            const control = controls.Control.getControlOf(element);
+
+            if (control instanceof ViewPart) {
+
+                views.push(control);
+
+            } else {
+
+                for (let i = 0; i < element.childElementCount; i++) {
+                    const childElement = element.children.item(i);
+                    this.findViews(<any>childElement, views);
+                }
+            }
         }
 
         protected createViewFolder(...parts: Part[]): ViewFolder {

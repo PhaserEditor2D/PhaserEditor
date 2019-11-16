@@ -256,6 +256,7 @@ declare namespace phasereditor2d.files.ui.views {
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
     class FilesView extends ide.ViewerView {
+        static ID: string;
         private _propertyProvider;
         constructor();
         protected createViewer(): controls.viewers.TreeViewer;

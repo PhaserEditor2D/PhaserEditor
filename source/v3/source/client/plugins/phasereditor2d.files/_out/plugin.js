@@ -729,8 +729,15 @@ var phasereditor2d;
             var dialogs;
             (function (dialogs) {
                 class NewFolderDialog extends dialogs.BaseNewFileDialog {
-                    createFile(container, name) {
-                        return colibri.ui.ide.FileUtils.createFolder_async(container, name);
+                    async createFile(container, name) {
+                        const folder = await colibri.ui.ide.FileUtils.createFolder_async(container, name);
+                        const window = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        const view = window.getView(ui.views.FilesView.ID);
+                        console.log("reveal " + folder.getFullName());
+                        view.getViewer().reveal(folder);
+                        view.getViewer().setSelection([folder]);
+                        view.getViewer().repaint();
+                        return Promise.resolve(folder);
                     }
                 }
                 dialogs.NewFolderDialog = NewFolderDialog;
@@ -1096,7 +1103,7 @@ var phasereditor2d;
                 var io = colibri.core.io;
                 class FilesView extends ide.ViewerView {
                     constructor() {
-                        super("filesView");
+                        super(FilesView.ID);
                         this._propertyProvider = new views.FilePropertySectionProvider();
                         this.setTitle("Files");
                         this.setIcon(ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER));
@@ -1148,6 +1155,7 @@ var phasereditor2d;
                         return controls.Controls.getIcon(ide.ICON_FOLDER);
                     }
                 }
+                FilesView.ID = "phasereditor2d.files.ui.views.FilesView";
                 views.FilesView = FilesView;
             })(views = ui.views || (ui.views = {}));
         })(ui = files.ui || (files.ui = {}));
