@@ -223,6 +223,7 @@ var colibri;
                     this._isFile = fileData.isFile;
                     this._fileSize = fileData.size;
                     this._modTime = fileData.modTime;
+                    this._alive = true;
                     this._setName(fileData.name);
                     if (fileData.children) {
                         this._files = [];
@@ -312,6 +313,12 @@ var colibri;
                 getFiles() {
                     return this._files;
                 }
+                _setAlive(alive) {
+                    this._alive = alive;
+                }
+                isAlive() {
+                    return this._alive;
+                }
                 _add(file) {
                     file._remove();
                     file._parent = this;
@@ -319,6 +326,7 @@ var colibri;
                     this._sort();
                 }
                 _remove() {
+                    this._alive = false;
                     if (this._parent) {
                         const list = this._parent._files;
                         const i = list.indexOf(this);

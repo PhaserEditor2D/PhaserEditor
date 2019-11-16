@@ -12,6 +12,7 @@ namespace colibri.core.io {
         private _id: string;
         private _modTime: number;
         private _fileSize: number;
+        private _alive: boolean;
 
         constructor(parent: FilePath, fileData: FileData) {
 
@@ -19,6 +20,8 @@ namespace colibri.core.io {
             this._isFile = fileData.isFile;
             this._fileSize = fileData.size;
             this._modTime = fileData.modTime;
+
+            this._alive = true;
 
             this._setName(fileData.name);
 
@@ -146,6 +149,14 @@ namespace colibri.core.io {
             return this._files;
         }
 
+        _setAlive(alive : boolean)  {
+            this._alive = alive;
+        }
+
+        isAlive() {
+            return this._alive;
+        }
+
         _add(file : FilePath) {
             
             file._remove();
@@ -158,6 +169,8 @@ namespace colibri.core.io {
         }
 
         _remove() {
+
+            this._alive = false;
 
             if (this._parent) {
 

@@ -89,6 +89,7 @@ declare namespace colibri.core.io {
         private _id;
         private _modTime;
         private _fileSize;
+        private _alive;
         constructor(parent: FilePath, fileData: FileData);
         _sort(): void;
         _setName(name: string): void;
@@ -107,6 +108,8 @@ declare namespace colibri.core.io {
         isFile(): boolean;
         isFolder(): boolean;
         getFiles(): FilePath[];
+        _setAlive(alive: boolean): void;
+        isAlive(): boolean;
         _add(file: FilePath): void;
         _remove(): void;
         flatTree(files: FilePath[], includeFolders: boolean): FilePath[];

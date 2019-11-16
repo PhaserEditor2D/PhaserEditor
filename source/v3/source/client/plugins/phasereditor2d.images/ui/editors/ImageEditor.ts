@@ -41,6 +41,10 @@ namespace phasereditor2d.images.ui.editors {
             return new ImageEditorFactory();
         }
 
+        protected onEditorInputContentChanged() {
+
+        }
+
         async createPart() {
 
             this._imageControl = new controls.ImageControl();

@@ -1149,7 +1149,15 @@ var phasereditor2d;
                     async onFileStorageChange(change) {
                         const viewer = this.getViewer();
                         viewer.setInput(ide.FileUtils.getRoot());
-                        viewer.repaint();
+                        await viewer.repaint();
+                        const oldSelection = this.getViewer().getSelection();
+                        if (oldSelection.length > 0) {
+                            const newSelection = oldSelection
+                                .map(obj => obj)
+                                .filter(file => file.isAlive());
+                            this.getViewer().setSelection(newSelection);
+                            this.getViewer().repaint();
+                        }
                     }
                     getIcon() {
                         return controls.Controls.getIcon(ide.ICON_FOLDER);

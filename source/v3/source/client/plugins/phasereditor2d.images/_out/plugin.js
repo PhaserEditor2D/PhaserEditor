@@ -64,6 +64,8 @@ var phasereditor2d;
                     static getFactory() {
                         return new ImageEditorFactory();
                     }
+                    onEditorInputContentChanged() {
+                    }
                     async createPart() {
                         this._imageControl = new controls.ImageControl();
                         const container = document.createElement("div");

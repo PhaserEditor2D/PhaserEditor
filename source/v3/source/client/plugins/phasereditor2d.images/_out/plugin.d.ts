@@ -15,6 +15,7 @@ declare namespace phasereditor2d.images.ui.editors {
         private _imageControl;
         constructor();
         static getFactory(): ide.EditorFactory;
+        protected onEditorInputContentChanged(): void;
         createPart(): Promise<void>;
         private updateImage;
         getIcon(): controls.IImage;

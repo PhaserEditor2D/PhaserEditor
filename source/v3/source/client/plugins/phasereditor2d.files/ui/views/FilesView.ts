@@ -86,7 +86,18 @@ namespace phasereditor2d.files.ui.views {
 
             viewer.setInput(ide.FileUtils.getRoot());
 
-            viewer.repaint();
+            await viewer.repaint();
+
+            const oldSelection = this.getViewer().getSelection();
+
+            if (oldSelection.length > 0) {
+                const newSelection = oldSelection
+                    .map(obj => obj as io.FilePath)
+                    .filter(file => file.isAlive());
+
+                this.getViewer().setSelection(newSelection);
+                this.getViewer().repaint();
+            }
         }
 
         getIcon() {
