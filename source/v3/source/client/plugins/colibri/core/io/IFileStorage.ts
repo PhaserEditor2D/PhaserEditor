@@ -26,6 +26,7 @@ namespace colibri.core.io {
 
         addChangeListener(listener : ChangeListenerFunc) : void;
 
+        removeChangeListener(listener : ChangeListenerFunc): void;
     }
 
 }

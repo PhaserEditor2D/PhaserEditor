@@ -45,6 +45,13 @@ namespace colibri.core.io {
             this._changeListeners.push(listener);
         }
 
+        removeChangeListener(listener: ChangeListenerFunc) {
+
+            const i = this._changeListeners.indexOf(listener);
+            
+            this._changeListeners.splice(i, 1);
+        }
+
         getRoot(): FilePath {
             return this._root;
         }

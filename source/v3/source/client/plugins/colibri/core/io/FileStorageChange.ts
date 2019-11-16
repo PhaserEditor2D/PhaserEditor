@@ -9,7 +9,8 @@ namespace colibri.core.io {
 
     export class FileStorageChange {
 
-        private _renameRecords: Set<string>;
+        private _renameRecords_fromPath: Set<string>;
+        private _renameRecords_toPath: Set<string>;
         private _renameFromToMap: Map<string, string>;
         private _deletedRecords: Set<string>;
         private _addedRecords: Set<string>;
@@ -17,7 +18,8 @@ namespace colibri.core.io {
 
         constructor() {
 
-            this._renameRecords = new Set();
+            this._renameRecords_fromPath = new Set();
+            this._renameRecords_toPath = new Set();
             this._deletedRecords = new Set();
             this._addedRecords = new Set();
             this._modifiedRecords = new Set();
@@ -25,12 +27,23 @@ namespace colibri.core.io {
         }
 
         recordRename(fromPath: string, toPath: string) {
-            this._renameRecords.add(fromPath);
+            
+            this._renameRecords_fromPath.add(fromPath);
+            this._renameRecords_toPath.add(toPath);
+
             this._renameFromToMap[fromPath] = toPath;
         }
 
         getRenameTo(fromPath: string) {
             return this._renameFromToMap[fromPath];
+        }
+
+        isRenamed(fromPath: string) {
+            return this._renameFromToMap.has(fromPath);
+        }
+
+        wasRenamed(toPath: string) {
+            return this._renameRecords_toPath.has(toPath);
         }
 
         recordDelete(path : string) {

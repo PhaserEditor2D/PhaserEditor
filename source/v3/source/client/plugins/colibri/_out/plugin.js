@@ -373,18 +373,26 @@ var colibri;
         (function (io) {
             class FileStorageChange {
                 constructor() {
-                    this._renameRecords = new Set();
+                    this._renameRecords_fromPath = new Set();
+                    this._renameRecords_toPath = new Set();
                     this._deletedRecords = new Set();
                     this._addedRecords = new Set();
                     this._modifiedRecords = new Set();
                     this._renameFromToMap = new Map();
                 }
                 recordRename(fromPath, toPath) {
-                    this._renameRecords.add(fromPath);
+                    this._renameRecords_fromPath.add(fromPath);
+                    this._renameRecords_toPath.add(toPath);
                     this._renameFromToMap[fromPath] = toPath;
                 }
                 getRenameTo(fromPath) {
                     return this._renameFromToMap[fromPath];
+                }
+                isRenamed(fromPath) {
+                    return this._renameFromToMap.has(fromPath);
+                }
+                wasRenamed(toPath) {
+                    return this._renameRecords_toPath.has(toPath);
                 }
                 recordDelete(path) {
                     this._deletedRecords.add(path);
@@ -464,6 +472,10 @@ var colibri;
                 }
                 addChangeListener(listener) {
                     this._changeListeners.push(listener);
+                }
+                removeChangeListener(listener) {
+                    const i = this._changeListeners.indexOf(listener);
+                    this._changeListeners.splice(i, 1);
                 }
                 getRoot() {
                     return this._root;
@@ -4563,6 +4575,30 @@ var colibri;
             class FileEditor extends ide.EditorPart {
                 constructor(id) {
                     super(id);
+                    this._onFileStorageListener = change => {
+                        this.onFileStorageChanged(change);
+                    };
+                    ide.Workbench.getWorkbench().getFileStorage().addChangeListener(this._onFileStorageListener);
+                }
+                onFileStorageChanged(change) {
+                    const editorFile = this.getInput();
+                    const editorFileFullName = editorFile.getFullName();
+                    if (change.isDeleted(editorFileFullName)) {
+                        // close the editor
+                    }
+                    else if (change.isModified(editorFileFullName)) {
+                        // reload the editor, if the change is not made by the editor itself
+                    }
+                    else if (change.wasRenamed(editorFileFullName)) {
+                        this.setTitle(editorFile.getName());
+                    }
+                }
+                onPartClosed() {
+                    const closeIt = super.onPartClosed();
+                    if (closeIt) {
+                        ide.Workbench.getWorkbench().getFileStorage().removeChangeListener(this._onFileStorageListener);
+                    }
+                    return closeIt;
                 }
                 setInput(file) {
                     super.setInput(file);

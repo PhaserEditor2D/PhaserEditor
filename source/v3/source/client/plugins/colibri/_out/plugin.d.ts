@@ -121,7 +121,8 @@ declare namespace colibri.core.io {
         newFile: FilePath;
     };
     class FileStorageChange {
-        private _renameRecords;
+        private _renameRecords_fromPath;
+        private _renameRecords_toPath;
         private _renameFromToMap;
         private _deletedRecords;
         private _addedRecords;
@@ -129,6 +130,8 @@ declare namespace colibri.core.io {
         constructor();
         recordRename(fromPath: string, toPath: string): void;
         getRenameTo(fromPath: string): any;
+        isRenamed(fromPath: string): boolean;
+        wasRenamed(toPath: string): boolean;
         recordDelete(path: string): void;
         isDeleted(path: string): boolean;
         recordAdd(path: string): void;
@@ -149,6 +152,7 @@ declare namespace colibri.core.io {
         private _changeListeners;
         constructor();
         addChangeListener(listener: ChangeListenerFunc): void;
+        removeChangeListener(listener: ChangeListenerFunc): void;
         getRoot(): FilePath;
         reload(): Promise<void>;
         private fireChange;
@@ -178,6 +182,7 @@ declare namespace colibri.core.io {
         moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void>;
         uploadFile(uploadFolder: FilePath, file: File): Promise<FilePath>;
         addChangeListener(listener: ChangeListenerFunc): void;
+        removeChangeListener(listener: ChangeListenerFunc): void;
     }
 }
 declare namespace colibri.core.io {
@@ -1103,7 +1108,10 @@ declare namespace colibri.ui.ide {
 declare namespace colibri.ui.ide {
     import io = core.io;
     abstract class FileEditor extends EditorPart {
+        private _onFileStorageListener;
         constructor(id: string);
+        private onFileStorageChanged;
+        onPartClosed(): boolean;
         setInput(file: io.FilePath): void;
         getInput(): core.io.FilePath;
         getIcon(): controls.IImage;
