@@ -137,7 +137,8 @@ namespace colibri.ui.ide {
 
             manager.addKeyBinding(CMD_SAVE, new KeyMatcher({
                 control: true,
-                key: "s"
+                key: "s",
+                filterInputElements: false
             }));
 
             // delete

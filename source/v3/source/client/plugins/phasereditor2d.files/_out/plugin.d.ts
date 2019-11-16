@@ -48,6 +48,7 @@ declare namespace phasereditor2d.files.ui.actions {
     }
 }
 declare namespace phasereditor2d.files.ui.actions {
+    const CMD_NEW_FILE = "phasereditor2d.files.ui.actions.newfile";
     class FilesViewCommands {
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
     }

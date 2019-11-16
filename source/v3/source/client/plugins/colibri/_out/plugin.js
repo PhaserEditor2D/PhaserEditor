@@ -4794,7 +4794,8 @@ var colibri;
                     });
                     manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
                         control: true,
-                        key: "s"
+                        key: "s",
+                        filterInputElements: false
                     }));
                     // delete
                     manager.addCommandHelper(ide.CMD_DELETE);

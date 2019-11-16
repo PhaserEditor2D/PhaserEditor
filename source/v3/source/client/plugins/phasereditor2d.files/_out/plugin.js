@@ -213,14 +213,28 @@ var phasereditor2d;
         (function (ui) {
             var actions;
             (function (actions) {
+                actions.CMD_NEW_FILE = "phasereditor2d.files.ui.actions.newfile";
                 function isFilesViewScope(args) {
                     return args.activePart instanceof ui.views.FilesView;
                 }
                 class FilesViewCommands {
                     static registerCommands(manager) {
+                        // new file
+                        manager.addCommandHelper(actions.CMD_NEW_FILE);
+                        manager.addHandlerHelper(actions.CMD_NEW_FILE, args => true, args => {
+                            new actions.OpenNewFileDialogAction().run();
+                        });
+                        manager.addKeyBinding(actions.CMD_NEW_FILE, new colibri.ui.ide.commands.KeyMatcher({
+                            control: true,
+                            alt: true,
+                            key: "N",
+                            filterInputElements: false
+                        }));
+                        // delete file
                         manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE, args => isFilesViewScope(args) && actions.DeleteFilesAction.isEnabled(args.activePart), args => {
                             new actions.DeleteFilesAction(args.activePart).run();
                         });
+                        // rename file
                         manager.addHandlerHelper(colibri.ui.ide.CMD_RENAME, args => isFilesViewScope(args) && actions.RenameFileAction.isEnabled(args.activePart), args => {
                             new actions.RenameFileAction(args.activePart).run();
                         });
