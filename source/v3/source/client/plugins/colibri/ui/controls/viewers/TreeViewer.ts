@@ -179,15 +179,23 @@ namespace colibri.ui.controls.viewers {
         }
 
         async preload(): Promise<PreloadResult> {
-            const list: Promise<PreloadResult>[] = [];
-            this.visitObjects(obj => {
-                const provider = this.getCellRendererProvider();
-                list.push(provider.preload(obj).then(r => {
-                    const renderer = provider.getCellRenderer(obj);
-                    return renderer.preload(obj);
 
+            const list: Promise<PreloadResult>[] = [];
+
+            this.visitObjects(obj => {
+
+                const provider = this.getCellRendererProvider();
+
+                list.push(provider.preload(obj).then(r1 => {
+
+                    const renderer = provider.getCellRenderer(obj);
+
+                    return renderer.preload(obj).then(r2 => {
+                        return Math.max(r1, r2);
+                    });
                 }));
             });
+
             return Controls.resolveAll(list);
         }
 

@@ -3461,7 +3461,6 @@ var phasereditor2d;
                                 const index = this._itemIndexList[i];
                                 const item = this._editor.getPack().getItems()[index];
                                 json.setDataValue(item.getData(), this._fieldKey, values[i]);
-                                console.log(item.getData());
                                 item.resetCache();
                                 await item.preload();
                             }

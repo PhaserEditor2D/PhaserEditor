@@ -30,6 +30,7 @@ namespace colibri.core {
     }
 
     class ContentTypeFileCache extends io.FileContentCache<string> {
+
         constructor(registry: ContentTypeRegistry) {
             super(async (file) => {
 

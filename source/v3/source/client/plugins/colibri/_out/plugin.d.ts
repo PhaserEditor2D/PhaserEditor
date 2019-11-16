@@ -132,6 +132,7 @@ declare namespace colibri.core.io {
         getRenameTo(fromPath: string): any;
         isRenamed(fromPath: string): boolean;
         wasRenamed(toPath: string): boolean;
+        getRenameRecords(): Set<string>;
         recordDelete(path: string): void;
         isDeleted(path: string): boolean;
         recordAdd(path: string): void;
@@ -800,7 +801,7 @@ declare namespace colibri.ui.controls.viewers {
         getImage(obj: any): IImage;
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<any>;
+        preload(obj: any): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {

@@ -67,15 +67,20 @@ namespace colibri.ui.controls {
         }
 
 
-        static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
-            return Promise.all(list).then(results => {
-                for (const result of results) {
-                    if (result === PreloadResult.RESOURCES_LOADED) {
-                        return Promise.resolve(PreloadResult.RESOURCES_LOADED);
-                    }
+        static async resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
+            
+            let result = PreloadResult.NOTHING_LOADED;
+
+            for (const promise of list) {
+
+                const result2 = await promise;
+
+                if (result2 === PreloadResult.RESOURCES_LOADED) {
+                    result = PreloadResult.RESOURCES_LOADED;
                 }
-                return Promise.resolve(PreloadResult.NOTHING_LOADED);
-            });
+            }
+
+            return Promise.resolve(result);
         }
 
         static resolveResourceLoaded() {

@@ -817,7 +817,8 @@ var phasereditor2d;
                     preload(obj) {
                         const file = obj;
                         if (file.isFile()) {
-                            return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
+                            const result = ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
+                            return result;
                         }
                         return super.preload(obj);
                     }
@@ -1085,7 +1086,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_4) {
+    (function (files) {
         var ui;
         (function (ui) {
             var views;
@@ -1126,23 +1127,7 @@ var phasereditor2d;
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
                             wb.openEditor(e.detail);
                         });
-                        wb.getFileStorage().addChangeListener(change => {
-                            viewer.setInput(ide.FileUtils.getRoot());
-                            viewer.repaint();
-                            const files = [];
-                            for (const filePath of change.getAddRecords()) {
-                                const file = ide.FileUtils.getFileFromPath(filePath, true);
-                                files.push(file);
-                            }
-                            if (files.length > 0) {
-                                const firstFile = files[0];
-                                setTimeout(() => {
-                                    viewer.reveal(firstFile);
-                                    viewer.setSelection(files);
-                                    viewer.repaint();
-                                }, 100);
-                            }
-                        });
+                        wb.getFileStorage().addChangeListener(change => this.onFileStorageChange(change));
                         wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
                             const editor = wb.getActiveEditor();
                             if (editor) {
@@ -1154,13 +1139,18 @@ var phasereditor2d;
                             }
                         });
                     }
+                    async onFileStorageChange(change) {
+                        const viewer = this.getViewer();
+                        viewer.setInput(ide.FileUtils.getRoot());
+                        viewer.repaint();
+                    }
                     getIcon() {
                         return controls.Controls.getIcon(ide.ICON_FOLDER);
                     }
                 }
                 views.FilesView = FilesView;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files_4.ui || (files_4.ui = {}));
+        })(ui = files.ui || (files.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1266,7 +1256,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var files;
-    (function (files_5) {
+    (function (files_4) {
         var ui;
         (function (ui) {
             var views;
@@ -1383,6 +1373,6 @@ var phasereditor2d;
                 }
                 views.UploadSection = UploadSection;
             })(views = ui.views || (ui.views = {}));
-        })(ui = files_5.ui || (files_5.ui = {}));
+        })(ui = files_4.ui || (files_4.ui = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));

@@ -45,7 +45,7 @@ namespace colibri.core.io {
                         entry.modTime = file.getModTime();
                         entry.content = content;
 
-                        return ui.controls.PreloadResult.RESOURCES_LOADED;
+                        return Promise.resolve(ui.controls.PreloadResult.RESOURCES_LOADED);
                     });
 
                 this._preloadMap.set(filename, promise);

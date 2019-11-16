@@ -46,6 +46,10 @@ namespace colibri.core.io {
             return this._renameRecords_toPath.has(toPath);
         }
 
+        getRenameRecords() {
+            return this._renameRecords_toPath;
+        }
+
         recordDelete(path : string) {
             this._deletedRecords.add(path);
         }

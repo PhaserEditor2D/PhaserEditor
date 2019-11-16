@@ -66,7 +66,7 @@ var colibri;
                             this._preloadMap.delete(filename);
                             entry.modTime = file.getModTime();
                             entry.content = content;
-                            return colibri.ui.controls.PreloadResult.RESOURCES_LOADED;
+                            return Promise.resolve(colibri.ui.controls.PreloadResult.RESOURCES_LOADED);
                         });
                         this._preloadMap.set(filename, promise);
                         return promise;
@@ -393,6 +393,9 @@ var colibri;
                 }
                 wasRenamed(toPath) {
                     return this._renameRecords_toPath.has(toPath);
+                }
+                getRenameRecords() {
+                    return this._renameRecords_toPath;
                 }
                 recordDelete(path) {
                     this._deletedRecords.add(path);
@@ -1073,15 +1076,15 @@ var colibri;
                 static setApplicationDragData(data) {
                     this._applicationDragData = data;
                 }
-                static resolveAll(list) {
-                    return Promise.all(list).then(results => {
-                        for (const result of results) {
-                            if (result === PreloadResult.RESOURCES_LOADED) {
-                                return Promise.resolve(PreloadResult.RESOURCES_LOADED);
-                            }
+                static async resolveAll(list) {
+                    let result = PreloadResult.NOTHING_LOADED;
+                    for (const promise of list) {
+                        const result2 = await promise;
+                        if (result2 === PreloadResult.RESOURCES_LOADED) {
+                            result = PreloadResult.RESOURCES_LOADED;
                         }
-                        return Promise.resolve(PreloadResult.NOTHING_LOADED);
-                    });
+                    }
+                    return Promise.resolve(result);
                 }
                 static resolveResourceLoaded() {
                     return Promise.resolve(PreloadResult.RESOURCES_LOADED);
@@ -3361,7 +3364,11 @@ var colibri;
                         return args.viewer.getCellSize();
                     }
                     preload(obj) {
-                        return this.getImage(obj).preload();
+                        const img = this.getImage(obj);
+                        if (img) {
+                            return img.preload();
+                        }
+                        return controls.Controls.resolveNothingLoaded();
                     }
                 }
                 viewers.ImageCellRenderer = ImageCellRenderer;
@@ -4029,9 +4036,11 @@ var colibri;
                         const list = [];
                         this.visitObjects(obj => {
                             const provider = this.getCellRendererProvider();
-                            list.push(provider.preload(obj).then(r => {
+                            list.push(provider.preload(obj).then(r1 => {
                                 const renderer = provider.getCellRenderer(obj);
-                                return renderer.preload(obj);
+                                return renderer.preload(obj).then(r2 => {
+                                    return Math.max(r1, r2);
+                                });
                             }));
                         });
                         return controls.Controls.resolveAll(list);

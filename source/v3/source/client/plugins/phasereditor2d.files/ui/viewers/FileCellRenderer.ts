@@ -24,6 +24,7 @@ namespace phasereditor2d.files.ui.viewers {
                 if (icon) {
                     return icon;
                 }
+
             } else {
                 return controls.Controls.getIcon(ide.ICON_FOLDER);
             }
@@ -36,7 +37,8 @@ namespace phasereditor2d.files.ui.viewers {
             const file = <io.FilePath>obj;
 
             if (file.isFile()) {
-                return ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
+                const result = ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
+                return result
             }
 
             return super.preload(obj);

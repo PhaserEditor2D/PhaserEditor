@@ -380,6 +380,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         async repaint() {
+
             this.prepareFiltering();
 
             this.repaint2();

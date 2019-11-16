@@ -262,6 +262,7 @@ declare namespace phasereditor2d.files.ui.views {
         fillContextMenu(menu: controls.Menu): void;
         getPropertyProvider(): FilePropertySectionProvider;
         protected createPart(): void;
+        private onFileStorageChange;
         getIcon(): controls.IImage;
     }
 }

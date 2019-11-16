@@ -49,8 +49,6 @@ namespace phasereditor2d.pack.ui.editor.undo {
 
                 json.setDataValue(item.getData(), this._fieldKey, values[i]);
 
-                console.log(item.getData());
-
                 item.resetCache();
 
                 await item.preload();

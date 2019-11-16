@@ -26,8 +26,15 @@ namespace colibri.ui.controls.viewers {
             return args.viewer.getCellSize();
         }
 
-        preload(obj: any): Promise<any> {
-            return this.getImage(obj).preload();
+        preload(obj: any): Promise<PreloadResult> {
+
+            const img = this.getImage(obj);
+
+            if (img) {
+                return img.preload();
+            }
+
+            return Controls.resolveNothingLoaded();
         }
     }
 }
