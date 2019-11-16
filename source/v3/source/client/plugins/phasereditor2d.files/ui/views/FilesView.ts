@@ -73,8 +73,11 @@ namespace phasereditor2d.files.ui.views {
 
                     if (input instanceof io.FilePath) {
 
-                        viewer.setSelection([input]);
-                        viewer.reveal(input);
+                        // gives it a time because other listeners need to do their job.
+                        setTimeout(() => {
+                            viewer.setSelection([input]);
+                            viewer.reveal(input);
+                        }, 50);
                     }
                 }
             });
@@ -84,16 +87,20 @@ namespace phasereditor2d.files.ui.views {
 
             const viewer = this.getViewer();
 
+            const oldSelection = this.getViewer().getSelection();
+
             viewer.setInput(ide.FileUtils.getRoot());
 
             await viewer.repaint();
 
-            const oldSelection = this.getViewer().getSelection();
-
             if (oldSelection.length > 0) {
+
                 const newSelection = oldSelection
                     .map(obj => obj as io.FilePath)
-                    .filter(file => file.isAlive());
+                    .filter(file => {
+                        const file2 = colibri.ui.ide.FileUtils.getFileFromPath(file.getFullName(), true);
+                        return file2 !== null;
+                    });
 
                 this.getViewer().setSelection(newSelection);
                 this.getViewer().repaint();

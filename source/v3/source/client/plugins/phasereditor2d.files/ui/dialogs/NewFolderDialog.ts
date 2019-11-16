@@ -10,8 +10,6 @@ namespace phasereditor2d.files.ui.dialogs {
 
             const view = window.getView(views.FilesView.ID) as views.FilesView;
 
-            console.log("reveal " + folder.getFullName());
-
             view.getViewer().reveal(folder);
             
             view.getViewer().setSelection([folder]);

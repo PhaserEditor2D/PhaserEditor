@@ -1564,7 +1564,10 @@ var phasereditor2d;
                     preloadFrames() {
                         const url = this.getPackItem().getData().url;
                         const img = core.AssetPackUtils.getImageFromPackUrl(url);
-                        return img.preload();
+                        if (img) {
+                            return img.preload();
+                        }
+                        return controls.Controls.resolveNothingLoaded();
                     }
                     parseFrames() {
                         const url = this.getPackItem().getData().url;

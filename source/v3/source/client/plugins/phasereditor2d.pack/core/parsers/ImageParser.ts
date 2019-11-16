@@ -24,7 +24,11 @@ namespace phasereditor2d.pack.core.parsers {
             
             const img = AssetPackUtils.getImageFromPackUrl(url);
 
-            return img.preload();
+            if (img) {
+                return img.preload();
+            }
+
+            return controls.Controls.resolveNothingLoaded();
         }
 
         parseFrames(): AssetPackImageFrame[] {

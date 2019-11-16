@@ -733,7 +733,6 @@ var phasereditor2d;
                         const folder = await colibri.ui.ide.FileUtils.createFolder_async(container, name);
                         const window = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
                         const view = window.getView(ui.views.FilesView.ID);
-                        console.log("reveal " + folder.getFullName());
                         view.getViewer().reveal(folder);
                         view.getViewer().setSelection([folder]);
                         view.getViewer().repaint();
@@ -1140,21 +1139,27 @@ var phasereditor2d;
                             if (editor) {
                                 const input = editor.getInput();
                                 if (input instanceof io.FilePath) {
-                                    viewer.setSelection([input]);
-                                    viewer.reveal(input);
+                                    // gives it a time because other listeners need to do their job.
+                                    setTimeout(() => {
+                                        viewer.setSelection([input]);
+                                        viewer.reveal(input);
+                                    }, 50);
                                 }
                             }
                         });
                     }
                     async onFileStorageChange(change) {
                         const viewer = this.getViewer();
+                        const oldSelection = this.getViewer().getSelection();
                         viewer.setInput(ide.FileUtils.getRoot());
                         await viewer.repaint();
-                        const oldSelection = this.getViewer().getSelection();
                         if (oldSelection.length > 0) {
                             const newSelection = oldSelection
                                 .map(obj => obj)
-                                .filter(file => file.isAlive());
+                                .filter(file => {
+                                const file2 = colibri.ui.ide.FileUtils.getFileFromPath(file.getFullName(), true);
+                                return file2 !== null;
+                            });
                             this.getViewer().setSelection(newSelection);
                             this.getViewer().repaint();
                         }
