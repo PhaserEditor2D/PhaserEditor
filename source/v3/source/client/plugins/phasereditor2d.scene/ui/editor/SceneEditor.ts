@@ -227,6 +227,18 @@ namespace phasereditor2d.scene.ui.editor {
             return this._propertyProvider;
         }
 
+        async onPartActivated() {
+
+            super.onPartActivated();
+
+            if (this._blocksProvider) {
+                
+                await this._blocksProvider.preload()
+
+                this._blocksProvider.repaint();
+            }
+        }
+
         getEditorViewerProvider(key: string) {
 
             switch (key) {

@@ -235,6 +235,7 @@ declare namespace phasereditor2d.scene.ui.editor {
         getSceneMaker(): SceneMaker;
         layout(): void;
         getPropertyProvider(): properties.SceneEditorSectionProvider;
+        onPartActivated(): Promise<void>;
         getEditorViewerProvider(key: string): blocks.SceneEditorBlocksProvider | outline.SceneEditorOutlineProvider;
         getOutlineProvider(): outline.SceneEditorOutlineProvider;
         refreshOutline(): void;

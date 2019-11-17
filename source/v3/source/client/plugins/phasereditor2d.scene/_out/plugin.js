@@ -592,7 +592,7 @@ var phasereditor2d;
                         this._editor = editor;
                     }
                     async preload() {
-                        phasereditor2d.pack.core.PackFinder.preload();
+                        await phasereditor2d.pack.core.PackFinder.preload();
                     }
                     getContentProvider() {
                         return new blocks.SceneEditorBlocksContentProvider();
@@ -1194,6 +1194,13 @@ var phasereditor2d;
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;
+                    }
+                    async onPartActivated() {
+                        super.onPartActivated();
+                        if (this._blocksProvider) {
+                            await this._blocksProvider.preload();
+                            this._blocksProvider.repaint();
+                        }
                     }
                     getEditorViewerProvider(key) {
                         switch (key) {

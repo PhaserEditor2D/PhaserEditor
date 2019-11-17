@@ -14,7 +14,7 @@ namespace phasereditor2d.scene.ui.blocks {
         }
 
         async preload() {
-            pack.core.PackFinder.preload();
+            await pack.core.PackFinder.preload();
         }
 
         getContentProvider(): controls.viewers.ITreeContentProvider {

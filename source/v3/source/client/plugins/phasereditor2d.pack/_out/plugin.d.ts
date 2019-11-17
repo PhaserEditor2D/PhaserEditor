@@ -471,7 +471,7 @@ declare namespace phasereditor2d.pack.ui.editor {
     class AssetPackEditor extends ide.ViewerFileEditor {
         private _pack;
         private _outlineProvider;
-        private _blocksProviderProvider;
+        private _blocksProvider;
         private _propertyProvider;
         constructor();
         static getFactory(): AssetPackEditorFactory;
@@ -484,7 +484,7 @@ declare namespace phasereditor2d.pack.ui.editor {
         private updateContent;
         doSave(): Promise<void>;
         protected onEditorInputContentChanged(): void;
-        onPartActivated(): void;
+        onPartActivated(): Promise<void>;
         getPack(): core.AssetPack;
         setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;

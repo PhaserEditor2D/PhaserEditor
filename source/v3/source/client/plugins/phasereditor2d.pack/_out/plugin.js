@@ -1937,7 +1937,7 @@ var phasereditor2d;
                     constructor() {
                         super("phasereditor2d.AssetPackEditor");
                         this._outlineProvider = new editor_1.AssetPackEditorOutlineProvider(this);
-                        this._blocksProviderProvider = new editor_1.AssetPackEditorBlocksProvider(this);
+                        this._blocksProvider = new editor_1.AssetPackEditorBlocksProvider(this);
                         this._propertyProvider = new editor_1.properties.AssetPackEditorPropertyProvider();
                         this.addClass("AssetPackEditor");
                     }
@@ -1972,7 +1972,7 @@ var phasereditor2d;
                     }
                     updateAll() {
                         this.repaintEditorAndOutline();
-                        this._blocksProviderProvider.updateBlocks_async();
+                        this._blocksProvider.updateBlocks_async();
                         this.setSelection([]);
                     }
                     repaintEditorAndOutline() {
@@ -2017,10 +2017,11 @@ var phasereditor2d;
                     onEditorInputContentChanged() {
                         //TODO: missing to implement
                     }
-                    onPartActivated() {
+                    async onPartActivated() {
                         super.onPartActivated();
-                        if (this._blocksProviderProvider) {
-                            this._blocksProviderProvider.repaint();
+                        if (this._blocksProvider) {
+                            await this._blocksProvider.preload();
+                            this._blocksProvider.repaint();
                         }
                     }
                     getPack() {
@@ -2035,7 +2036,7 @@ var phasereditor2d;
                             case phasereditor2d.outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:
                                 return this._outlineProvider;
                             case phasereditor2d.blocks.ui.views.BlocksView.EDITOR_VIEWER_PROVIDER_KEY:
-                                return this._blocksProviderProvider;
+                                return this._blocksProvider;
                         }
                         return null;
                     }
@@ -2142,7 +2143,7 @@ var phasereditor2d;
                         this.getUndoManager().add(new editor_1.undo.AssetPackEditorOperation(this, before, after));
                     }
                     async updateBlocks() {
-                        await this._blocksProviderProvider.updateBlocks_async();
+                        await this._blocksProvider.updateBlocks_async();
                     }
                 }
                 editor_1.AssetPackEditor = AssetPackEditor;
