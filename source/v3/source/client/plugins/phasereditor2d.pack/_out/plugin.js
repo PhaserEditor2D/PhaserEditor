@@ -2017,6 +2017,12 @@ var phasereditor2d;
                     onEditorInputContentChanged() {
                         //TODO: missing to implement
                     }
+                    onPartActivated() {
+                        super.onPartActivated();
+                        if (this._blocksProviderProvider) {
+                            this._blocksProviderProvider.repaint();
+                        }
+                    }
                     getPack() {
                         return this._pack;
                     }

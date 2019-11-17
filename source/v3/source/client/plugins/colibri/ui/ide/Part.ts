@@ -5,6 +5,7 @@ namespace colibri.ui.ide {
     export const EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
 
     export abstract class Part extends controls.Control {
+        
         private _id: string;
         private _title: string;
         private _selection: any[];
@@ -103,6 +104,10 @@ namespace colibri.ui.ide {
                 this._partCreated = true;
                 this.createPart();
             }
+        }
+
+        onPartActivated() {
+            console.log("part activated " + this.getId());
         }
 
         protected abstract createPart(): void;

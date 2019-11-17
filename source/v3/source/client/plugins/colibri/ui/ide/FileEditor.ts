@@ -30,6 +30,10 @@ namespace colibri.ui.ide {
             }
         }
 
+        protected isSaving() {
+            return this._isSaving;
+        }
+
         protected onFileStorageChanged(change: io.FileStorageChange) {
 
             const editorFile = this.getInput();

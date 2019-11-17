@@ -1000,6 +1000,7 @@ declare namespace colibri.ui.ide {
         layout(): void;
         onPartClosed(): boolean;
         onPartShown(): void;
+        onPartActivated(): void;
         protected abstract createPart(): void;
     }
 }
@@ -1117,6 +1118,7 @@ declare namespace colibri.ui.ide {
         private _isSaving;
         constructor(id: string);
         save(): void;
+        protected isSaving(): boolean;
         protected onFileStorageChanged(change: io.FileStorageChange): void;
         protected abstract onEditorInputContentChanged(): any;
         onPartClosed(): boolean;

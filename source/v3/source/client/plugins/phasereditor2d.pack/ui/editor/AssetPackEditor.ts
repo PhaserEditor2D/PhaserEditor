@@ -126,6 +126,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         private async updateContent() {
+            
             const file = this.getInput();
 
             if (!file) {
@@ -157,6 +158,15 @@ namespace phasereditor2d.pack.ui.editor {
 
         protected onEditorInputContentChanged() {
             //TODO: missing to implement
+        }
+
+        onPartActivated() {
+
+            super.onPartActivated();
+
+            if (this._blocksProviderProvider) {
+                this._blocksProviderProvider.repaint();
+            }
         }
 
         getPack() {
@@ -243,7 +253,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
 
-        async createFilesViewer(filter : (file : io.FilePath) => boolean) {
+        async createFilesViewer(filter: (file: io.FilePath) => boolean) {
 
             const viewer = new controls.viewers.TreeViewer();
 
@@ -264,13 +274,13 @@ namespace phasereditor2d.pack.ui.editor {
                 .filter(file => !ignoreFileSet.has(file) && filter(file));
 
             viewer.setInput(list);
-            
+
 
             return viewer;
         }
 
         private async openSelectFileDialog_async(type: string) {
-            
+
             const importer = importers.Importers.getImporter(type);
 
             const viewer = await this.createFilesViewer(file => importer.acceptFile(file));

@@ -4216,6 +4216,9 @@ var colibri;
                         this.createPart();
                     }
                 }
+                onPartActivated() {
+                    console.log("part activated " + this.getId());
+                }
             }
             ide.Part = Part;
         })(ide = ui.ide || (ui.ide = {}));
@@ -4609,6 +4612,9 @@ var colibri;
                     finally {
                         this._isSaving = false;
                     }
+                }
+                isSaving() {
+                    return this._isSaving;
                 }
                 onFileStorageChanged(change) {
                     const editorFile = this.getInput();
@@ -5255,6 +5261,7 @@ var colibri;
                         }
                         if (part) {
                             this.toggleActivePartClass(part);
+                            part.onPartActivated();
                         }
                         this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
                     }

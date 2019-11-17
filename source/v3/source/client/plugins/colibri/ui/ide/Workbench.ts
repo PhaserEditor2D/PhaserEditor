@@ -269,7 +269,10 @@ namespace colibri.ui.ide {
                 }
 
                 if (part) {
+
                     this.toggleActivePartClass(part);
+                    
+                    part.onPartActivated();
                 }
 
                 this.dispatchEvent(new CustomEvent(EVENT_PART_ACTIVATED, { detail: part }));
