@@ -1140,10 +1140,8 @@ var phasereditor2d;
                                 const input = editor.getInput();
                                 if (input instanceof io.FilePath) {
                                     // gives it a time because other listeners need to do their job.
-                                    setTimeout(() => {
-                                        viewer.setSelection([input]);
-                                        viewer.reveal(input);
-                                    }, 50);
+                                    viewer.setSelection([input]);
+                                    viewer.reveal(input);
                                 }
                             }
                         });
@@ -1160,8 +1158,10 @@ var phasereditor2d;
                                 const file2 = colibri.ui.ide.FileUtils.getFileFromPath(file.getFullName(), true);
                                 return file2 !== null;
                             });
-                            this.getViewer().setSelection(newSelection);
-                            this.getViewer().repaint();
+                            if (newSelection.length !== oldSelection.length) {
+                                this.getViewer().setSelection(newSelection);
+                                this.getViewer().repaint();
+                            }
                         }
                     }
                     getIcon() {
