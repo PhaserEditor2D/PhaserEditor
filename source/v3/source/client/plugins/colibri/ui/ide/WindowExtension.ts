@@ -4,7 +4,7 @@ namespace colibri.ui.ide {
 
     export class WindowExtension extends core.extensions.Extension {
 
-        static ID = "colibri.ui.ide.WindowExtension";
+        static POINT_ID = "colibri.ui.ide.WindowExtension";
 
         private _createWindowFunc : CreateWindowFunc;
 

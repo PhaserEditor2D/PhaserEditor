@@ -25,11 +25,20 @@ namespace phasereditor2d.welcome {
 
             // windows
 
-            reg.addExtension(colibri.ui.ide.WindowExtension.ID,
+            reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID,
                 new colibri.ui.ide.WindowExtension(
                     "phasereditor2d.ide.ui.WelcomeWindow",
                     5,
                     () => new ui.WelcomeWindow()
+                )
+            );
+
+            // keys
+
+            reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID,
+                new colibri.ui.ide.commands.CommandExtension(
+                    "phasereditor2d.welcome.ui.actions.WelcomeActions",
+                    ui.actions.WelcomeActions.registerCommands
                 )
             );
         }

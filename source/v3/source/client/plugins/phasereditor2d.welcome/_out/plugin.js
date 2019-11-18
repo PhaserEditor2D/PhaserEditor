@@ -17,7 +17,9 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // windows
-                reg.addExtension(colibri.ui.ide.WindowExtension.ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.WelcomeWindow", 5, () => new welcome.ui.WelcomeWindow()));
+                reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.WelcomeWindow", 5, () => new welcome.ui.WelcomeWindow()));
+                // keys
+                reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID, new colibri.ui.ide.commands.CommandExtension("phasereditor2d.welcome.ui.actions.WelcomeActions", welcome.ui.actions.WelcomeActions.registerCommands));
             }
         }
         welcome.WelcomePlugin = WelcomePlugin;
@@ -52,6 +54,39 @@ var phasereditor2d;
     (function (welcome) {
         var ui;
         (function (ui) {
+            var actions;
+            (function (actions) {
+                actions.CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.welcome.ui.actions.OpenProjectsDialog";
+                class WelcomeActions {
+                    static registerCommands(manager) {
+                        manager.addCommandHelper(actions.CMD_OPEN_PROJECTS_DIALOG);
+                        manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, args => {
+                            console.log(args.activeWindow);
+                            return args.activeWindow instanceof phasereditor2d.ide.ui.DesignWindow;
+                        }, args => WelcomeActions.openProjectsDialog());
+                        manager.addKeyBinding(actions.CMD_OPEN_PROJECTS_DIALOG, new colibri.ui.ide.commands.KeyMatcher({
+                            control: true,
+                            alt: true,
+                            key: "P",
+                            filterInputElements: false
+                        }));
+                    }
+                    static openProjectsDialog() {
+                        const dlg = new ui.dialogs.ProjectsDialog();
+                        dlg.create();
+                    }
+                }
+                actions.WelcomeActions = WelcomeActions;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = welcome.ui || (welcome.ui = {}));
+    })(welcome = phasereditor2d.welcome || (phasereditor2d.welcome = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var welcome;
+    (function (welcome) {
+        var ui;
+        (function (ui) {
             var dialogs;
             (function (dialogs) {
                 var controls = colibri.ui.controls;
@@ -66,7 +101,8 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new ui.viewers.ProjectCellRendererProvider());
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         viewer.setInput([]);
-                        this.setCloseWithEscapeKey(false);
+                        const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
                         this.setTitle("Projects");
                         this.addButton("New Project", () => { });
                         {
@@ -76,7 +112,11 @@ var phasereditor2d;
                                 btn.disabled = !(viewer.getSelection().length === 1);
                             });
                         }
-                        const projects = await colibri.ui.ide.FileUtils.getProjects_async().then();
+                        let projects = await colibri.ui.ide.FileUtils.getProjects_async();
+                        const root = colibri.ui.ide.FileUtils.getRoot();
+                        if (root) {
+                            projects = projects.filter(project => root.getName() !== project);
+                        }
                         viewer.setInput(projects);
                         viewer.repaint();
                     }

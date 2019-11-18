@@ -1278,7 +1278,7 @@ declare namespace colibri.ui.ide {
 declare namespace colibri.ui.ide {
     type CreateWindowFunc = () => WorkbenchWindow;
     class WindowExtension extends core.extensions.Extension {
-        static ID: string;
+        static POINT_ID: string;
         private _createWindowFunc;
         constructor(id: string, priority: number, createWindowFunc: CreateWindowFunc);
         createWindow(): WorkbenchWindow;
@@ -1403,7 +1403,8 @@ declare namespace colibri.ui.ide.commands {
         readonly activePart: Part;
         readonly activeEditor: EditorPart;
         readonly activeElement: HTMLElement;
-        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement);
+        readonly activeWindow: ide.WorkbenchWindow;
+        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement, activeWindow: ide.WorkbenchWindow);
     }
 }
 declare namespace colibri.ui.ide.commands {

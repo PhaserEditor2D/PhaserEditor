@@ -14,6 +14,13 @@ declare namespace phasereditor2d.welcome.ui {
         protected createParts(): Promise<void>;
     }
 }
+declare namespace phasereditor2d.welcome.ui.actions {
+    const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.welcome.ui.actions.OpenProjectsDialog";
+    class WelcomeActions {
+        static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
+        private static openProjectsDialog;
+    }
+}
 declare namespace phasereditor2d.welcome.ui.dialogs {
     import controls = colibri.ui.controls;
     class ProjectsDialog extends controls.dialogs.ViewerDialog {

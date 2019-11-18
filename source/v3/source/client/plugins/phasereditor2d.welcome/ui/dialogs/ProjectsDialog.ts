@@ -21,7 +21,9 @@ namespace phasereditor2d.welcome.ui.dialogs {
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setInput([]);
 
-            this.setCloseWithEscapeKey(false);
+            const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+
+            this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
 
             this.setTitle("Projects");
 
@@ -37,7 +39,14 @@ namespace phasereditor2d.welcome.ui.dialogs {
                 });
             }
 
-            const projects = await colibri.ui.ide.FileUtils.getProjects_async().then();
+            let projects = await colibri.ui.ide.FileUtils.getProjects_async();
+
+            const root = colibri.ui.ide.FileUtils.getRoot();
+
+            if (root) {
+
+                projects = projects.filter(project => root.getName() !== project);
+            }
 
             viewer.setInput(projects);
             viewer.repaint();

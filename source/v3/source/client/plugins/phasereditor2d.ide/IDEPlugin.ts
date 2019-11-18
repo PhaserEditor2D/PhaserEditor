@@ -18,7 +18,7 @@ namespace phasereditor2d.ide {
 
             // windows
 
-            reg.addExtension(colibri.ui.ide.WindowExtension.ID,
+            reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID,
                 new colibri.ui.ide.WindowExtension(
                     "phasereditor2d.ide.ui.DesignWindow",
                     10,

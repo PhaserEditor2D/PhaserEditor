@@ -139,7 +139,7 @@ namespace colibri.ui.ide {
 
         private registerWindows() {
 
-            const extensions = this._extensionRegistry.getExtensions<WindowExtension>(WindowExtension.ID);
+            const extensions = this._extensionRegistry.getExtensions<WindowExtension>(WindowExtension.POINT_ID);
 
             console.log("Window extensions");
             console.log(extensions);
@@ -179,9 +179,10 @@ namespace colibri.ui.ide {
                     this._activeWindow.style.display = "none";
                 }
 
+                this._activeWindow = win;
+                
                 win.create();
 
-                this._activeWindow = win;
                 win.style.display = "initial";
 
             } else {

@@ -5176,7 +5176,7 @@ var colibri;
                     return this._createWindowFunc();
                 }
             }
-            WindowExtension.ID = "colibri.ui.ide.WindowExtension";
+            WindowExtension.POINT_ID = "colibri.ui.ide.WindowExtension";
             ide.WindowExtension = WindowExtension;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -5259,7 +5259,7 @@ var colibri;
                     }
                 }
                 registerWindows() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.ID);
+                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.POINT_ID);
                     console.log("Window extensions");
                     console.log(extensions);
                     this._windows = extensions.map(extension => extension.createWindow());
@@ -5283,8 +5283,8 @@ var colibri;
                         if (this._activeWindow) {
                             this._activeWindow.style.display = "none";
                         }
-                        win.create();
                         this._activeWindow = win;
+                        win.create();
                         win.style.display = "initial";
                     }
                     else {
@@ -5690,10 +5690,11 @@ var colibri;
             var commands;
             (function (commands) {
                 class CommandArgs {
-                    constructor(activePart, activeEditor, activeElement) {
+                    constructor(activePart, activeEditor, activeElement, activeWindow) {
                         this.activePart = activePart;
                         this.activeEditor = activeEditor;
                         this.activeElement = activeElement;
+                        this.activeWindow = activeWindow;
                     }
                 }
                 commands.CommandArgs = CommandArgs;
@@ -5804,7 +5805,7 @@ var colibri;
                     }
                     makeArgs() {
                         const wb = ide.Workbench.getWorkbench();
-                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement());
+                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement(), wb.getActiveWindow());
                     }
                     getCommand(id) {
                         const command = this._commandIdMap.get(id);

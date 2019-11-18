@@ -62,7 +62,7 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // windows
-                reg.addExtension(colibri.ui.ide.WindowExtension.ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.DesignWindow", 10, () => new ide_2.ui.DesignWindow()));
+                reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.DesignWindow", 10, () => new ide_2.ui.DesignWindow()));
             }
         }
         IDEPlugin._instance = new IDEPlugin();

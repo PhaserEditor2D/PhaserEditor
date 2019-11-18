@@ -75,7 +75,8 @@ namespace colibri.ui.ide.commands {
             return new CommandArgs(
                 wb.getActivePart(),
                 wb.getActiveEditor(),
-                wb.getActiveElement()
+                wb.getActiveElement(),
+                wb.getActiveWindow()
             );
         }
 
