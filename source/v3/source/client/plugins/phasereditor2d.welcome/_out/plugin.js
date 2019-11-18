@@ -101,12 +101,13 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new ui.viewers.ProjectCellRendererProvider());
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         viewer.setInput([]);
+                        viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
                         const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
                         this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
                         this.setTitle("Projects");
                         this.addButton("New Project", () => { });
                         {
-                            const btn = this.addButton("Open Project", () => this.openProject(viewer.getSelectionFirstElement()));
+                            const btn = this.addButton("Open Project", () => this.openProject());
                             btn.disabled = true;
                             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                                 btn.disabled = !(viewer.getSelection().length === 1);
@@ -120,7 +121,8 @@ var phasereditor2d;
                         viewer.setInput(projects);
                         viewer.repaint();
                     }
-                    async openProject(project) {
+                    async openProject() {
+                        const project = this.getViewer().getSelectionFirstElement();
                         const wb = colibri.ui.ide.Workbench.getWorkbench();
                         await wb.openProject(project);
                         this.close();

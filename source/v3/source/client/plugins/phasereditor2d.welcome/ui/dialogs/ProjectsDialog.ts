@@ -21,6 +21,8 @@ namespace phasereditor2d.welcome.ui.dialogs {
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setInput([]);
 
+            viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
+
             const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
 
             this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
@@ -30,7 +32,7 @@ namespace phasereditor2d.welcome.ui.dialogs {
             this.addButton("New Project", () => { });
 
             {
-                const btn = this.addButton("Open Project", () => this.openProject(viewer.getSelectionFirstElement()));
+                const btn = this.addButton("Open Project", () => this.openProject());
 
                 btn.disabled = true;
 
@@ -52,7 +54,9 @@ namespace phasereditor2d.welcome.ui.dialogs {
             viewer.repaint();
         }
 
-        private async openProject(project: string) {
+        private async openProject() {
+
+            const project = this.getViewer().getSelectionFirstElement();
 
             const wb = colibri.ui.ide.Workbench.getWorkbench();
 
