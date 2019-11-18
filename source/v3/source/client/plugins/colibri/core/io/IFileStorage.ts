@@ -6,6 +6,10 @@ namespace colibri.core.io {
 
         reload(): Promise<void>;
 
+        getProjects() : Promise<string[]>;
+
+        openProject(projectName : string) : Promise<FilePath>;
+
         getRoot(): FilePath;
 
         getFileString(file: FilePath): Promise<string>;

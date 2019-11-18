@@ -59,6 +59,10 @@ namespace colibri.ui.ide {
             this._fileImageCache = new ImageFileCache();
 
             this._extensionRegistry = new core.extensions.ExtensionRegistry();
+
+            this._fileStorage = new core.io.FileStorage_HTTPServer();
+
+            this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
         }
 
         addPlugin(plugin: ide.Plugin) {
@@ -92,19 +96,12 @@ namespace colibri.ui.ide {
 
             await this.preloadIcons();
 
-            console.log("Workbench: fetching project metadata.");
-
-            await this.preloadFileStorage();
 
             console.log("Workbench: registering content types.");
 
             this.registerContentTypes();
 
             this.registerContentTypeIcons();
-
-            console.log("Workbench: fetching required project resources.");
-
-            await this.preloadProjectResources();
 
             console.log("Workbench: initializing UI.");
 
@@ -118,6 +115,26 @@ namespace colibri.ui.ide {
 
             console.log("%cWorkbench: started.", "color:green");
 
+        }
+
+        async openProject(projectName: string) {
+
+            console.log(`Workbench: opening project ${projectName}.`);
+
+            await this._fileStorage.openProject(projectName);
+
+            console.log("Workbench: fetching required project resources.");
+
+            await this.preloadProjectResources();
+        }
+
+        private async preloadProjectResources() {
+
+            const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
+
+            for (const extension of extensions) {
+                await extension.getPreloadPromise();
+            }
         }
 
         private registerWindows() {
@@ -170,15 +187,6 @@ namespace colibri.ui.ide {
             } else {
 
                 alert(`Window ${id} not found.`);
-            }
-        }
-
-        private async preloadProjectResources() {
-
-            const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
-
-            for (const extension of extensions) {
-                await extension.getPreloadPromise();
             }
         }
 
@@ -350,15 +358,6 @@ namespace colibri.ui.ide {
             return null;
         }
 
-        private async preloadFileStorage() {
-
-            this._fileStorage = new core.io.FileStorage_HTTPServer();
-
-            this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
-
-            await this._fileStorage.reload();
-        }
-
         private registerContentTypes() {
             const extensions = this._extensionRegistry
                 .getExtensions<core.ContentTypeExtension>(core.ContentTypeExtension.POINT_ID);
@@ -426,6 +425,7 @@ namespace colibri.ui.ide {
         }
 
         getFileImage(file: core.io.FilePath) {
+            
             if (file === null) {
                 return null;
             }

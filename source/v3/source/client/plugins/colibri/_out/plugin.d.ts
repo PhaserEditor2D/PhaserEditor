@@ -102,6 +102,7 @@ declare namespace colibri.core.io {
         _setModTime(modTime: number): void;
         getFullName(): any;
         getUrl(): any;
+        getProject(): FilePath;
         getSibling(name: string): FilePath;
         getFile(name: string): FilePath;
         getParent(): FilePath;
@@ -154,13 +155,16 @@ declare namespace colibri.core.io {
     class FileStorage_HTTPServer implements IFileStorage {
         private _root;
         private _changeListeners;
+        private _projectName;
         constructor();
         addChangeListener(listener: ChangeListenerFunc): void;
         removeChangeListener(listener: ChangeListenerFunc): void;
         getRoot(): FilePath;
+        openProject(projectName: string): Promise<FilePath>;
         reload(): Promise<void>;
         private fireChange;
         private static compare;
+        getProjects(): Promise<string[]>;
         createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath>;
         createFolder(container: FilePath, folderName: string): Promise<FilePath>;
         getFileString(file: FilePath): Promise<string>;
@@ -176,6 +180,8 @@ declare namespace colibri.core.io {
     type ChangeListenerFunc = (change: FileStorageChange) => void;
     interface IFileStorage {
         reload(): Promise<void>;
+        getProjects(): Promise<string[]>;
+        openProject(projectName: string): Promise<FilePath>;
         getRoot(): FilePath;
         getFileString(file: FilePath): Promise<string>;
         setFileString(file: FilePath, content: string): Promise<void>;
@@ -371,11 +377,6 @@ declare namespace colibri.ui.controls {
         preload(): Promise<PreloadResult>;
         getWidth(): number;
         getHeight(): number;
-    }
-}
-declare namespace colibri.ui.controls.viewers {
-    interface ILabelProvider {
-        getLabel(obj: any): string;
     }
 }
 declare namespace colibri.ui.controls {
@@ -621,6 +622,7 @@ declare namespace colibri.ui.controls.dialogs {
         private _filteredViewer;
         constructor(viewer: viewers.TreeViewer);
         createDialogArea(): void;
+        getViewer(): viewers.TreeViewer;
     }
 }
 declare namespace colibri.ui.controls.properties {
@@ -687,6 +689,12 @@ declare namespace colibri.ui.controls.viewers {
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
         preload(obj: any): Promise<PreloadResult>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class EmptyCellRendererProvider implements ICellRendererProvider {
+        getCellRenderer(element: any): ICellRenderer;
+        preload(element: any): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -789,6 +797,11 @@ declare namespace colibri.ui.controls.viewers {
 }
 declare namespace colibri.ui.controls.viewers {
     interface IContentProvider {
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    interface ILabelProvider {
+        getLabel(obj: any): string;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -902,6 +915,11 @@ declare namespace colibri.ui.controls.viewers {
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
         preload(obj: any): Promise<any>;
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class LabelProvider implements ILabelProvider {
+        getLabel(obj: any): string;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1139,8 +1157,9 @@ declare namespace colibri.ui.ide {
         static deleteFiles_async(files: io.FilePath[]): Promise<void>;
         static renameFile_async(file: io.FilePath, newName: string): Promise<void>;
         static moveFiles_async(movingFiles: io.FilePath[], moveTo: io.FilePath): Promise<void>;
+        static getProjects_async(): Promise<string[]>;
         static preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult>;
-        static getFileFromPath(path: string, pathStartsInRoot?: boolean): io.FilePath;
+        static getFileFromPath(path: string): io.FilePath;
         static uploadFile_async(uploadFolder: io.FilePath, file: File): Promise<io.FilePath>;
         static getFilesWithContentType(contentType: string): Promise<io.FilePath[]>;
         static getAllFiles(): io.FilePath[];
@@ -1294,10 +1313,11 @@ declare namespace colibri.ui.ide {
         addPlugin(plugin: ide.Plugin): void;
         getPlugins(): Plugin[];
         launch(): Promise<void>;
+        openProject(projectName: string): Promise<void>;
+        private preloadProjectResources;
         private registerWindows;
         getWindows(): WorkbenchWindow[];
         activateWindow(id: string): void;
-        private preloadProjectResources;
         private preloadIcons;
         private registerContentTypeIcons;
         private initCommands;
@@ -1317,7 +1337,6 @@ declare namespace colibri.ui.ide {
         setActivePart(part: Part): void;
         private toggleActivePartClass;
         private findTabPane;
-        private preloadFileStorage;
         private registerContentTypes;
         findPart(element: HTMLElement): Part;
         getContentTypeRegistry(): core.ContentTypeRegistry;

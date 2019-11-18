@@ -62,6 +62,13 @@ namespace colibri.ui.ide {
             await storage.moveFiles(movingFiles, moveTo);
         }
 
+        static async getProjects_async() {
+            
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            return storage.getProjects();
+        }
+
         static async preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult> {
 
             const cache = Workbench.getWorkbench().getFileStringCache();
@@ -69,13 +76,16 @@ namespace colibri.ui.ide {
             return cache.preload(file);
         }
 
-        static getFileFromPath(path: string, pathStartsInRoot = false): io.FilePath {
+        static getFileFromPath(path: string): io.FilePath {
+            
             const root = Workbench.getWorkbench().getProjectRoot();
 
             const names = path.split("/");
 
-            if (pathStartsInRoot) {
-                names.shift();
+            const firstName = names.shift();
+
+            if (root.getName() !== firstName) {
+                return null;
             }
 
             let result = root;

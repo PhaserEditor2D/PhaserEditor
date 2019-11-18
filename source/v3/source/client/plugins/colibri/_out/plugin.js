@@ -289,7 +289,14 @@ var colibri;
                     if (this._parent) {
                         return this._parent.getUrl() + "/" + this._name;
                     }
-                    return "./project";
+                    const projectName = this.getProject().getName();
+                    return `./project/${projectName}`;
+                }
+                getProject() {
+                    if (this._parent) {
+                        return this._parent.getProject();
+                    }
+                    return this;
                 }
                 getSibling(name) {
                     const parent = this.getParent();
@@ -491,8 +498,15 @@ var colibri;
                 getRoot() {
                     return this._root;
                 }
+                async openProject(projectName) {
+                    this._projectName = projectName;
+                    await this.reload();
+                    return this.getRoot();
+                }
                 async reload() {
-                    const data = await apiRequest("GetProjectFiles");
+                    const data = await apiRequest("GetProjectFiles", {
+                        project: this._projectName
+                    });
                     const oldRoot = this._root;
                     const newRoot = new io.FilePath(null, data);
                     this._root = newRoot;
@@ -553,6 +567,14 @@ var colibri;
                         change.recordDelete(file.getFullName());
                     }
                     return change;
+                }
+                async getProjects() {
+                    const data = await apiRequest("GetProjects", {});
+                    if (data.error) {
+                        alert(`Cannot get the projects list`);
+                        throw new Error(data.error);
+                    }
+                    return data.projects;
                 }
                 async createFile(folder, fileName, content) {
                     const file = new io.FilePath(folder, {
@@ -2452,6 +2474,9 @@ var colibri;
                         this.add(this._filteredViewer);
                         this._filteredViewer.getFilterControl().getFilterElement().focus();
                     }
+                    getViewer() {
+                        return this._viewer;
+                    }
                 }
                 dialogs.ViewerDialog = ViewerDialog;
             })(dialogs = controls.dialogs || (controls.dialogs = {}));
@@ -2797,6 +2822,27 @@ var colibri;
                     }
                 }
                 viewers.EmptyCellRenderer = EmptyCellRenderer;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class EmptyCellRendererProvider {
+                    getCellRenderer(element) {
+                        return new viewers.EmptyCellRenderer();
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+                viewers.EmptyCellRendererProvider = EmptyCellRendererProvider;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -3878,6 +3924,27 @@ var colibri;
         (function (controls) {
             var viewers;
             (function (viewers) {
+                class LabelProvider {
+                    getLabel(obj) {
+                        if (typeof (obj) === "string") {
+                            return obj;
+                        }
+                        return "";
+                    }
+                }
+                viewers.LabelProvider = LabelProvider;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
                 class PaintItem extends controls.Rect {
                     constructor(index, data, parent = null) {
                         super();
@@ -4702,15 +4769,20 @@ var colibri;
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     await storage.moveFiles(movingFiles, moveTo);
                 }
+                static async getProjects_async() {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    return storage.getProjects();
+                }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();
                     return cache.preload(file);
                 }
-                static getFileFromPath(path, pathStartsInRoot = false) {
+                static getFileFromPath(path) {
                     const root = ide.Workbench.getWorkbench().getProjectRoot();
                     const names = path.split("/");
-                    if (pathStartsInRoot) {
-                        names.shift();
+                    const firstName = names.shift();
+                    if (root.getName() !== firstName) {
+                        return null;
                     }
                     let result = root;
                     for (const name of names) {
@@ -5134,6 +5206,8 @@ var colibri;
                     this._activeElement = null;
                     this._fileImageCache = new ide.ImageFileCache();
                     this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
+                    this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
+                    this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
@@ -5162,19 +5236,27 @@ var colibri;
                     await ui.controls.Controls.preload();
                     console.log("Workbench: fetching UI icons.");
                     await this.preloadIcons();
-                    console.log("Workbench: fetching project metadata.");
-                    await this.preloadFileStorage();
                     console.log("Workbench: registering content types.");
                     this.registerContentTypes();
                     this.registerContentTypeIcons();
-                    console.log("Workbench: fetching required project resources.");
-                    await this.preloadProjectResources();
                     console.log("Workbench: initializing UI.");
                     this.initCommands();
                     this.registerEditors();
                     this.registerWindows();
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
+                }
+                async openProject(projectName) {
+                    console.log(`Workbench: opening project ${projectName}.`);
+                    await this._fileStorage.openProject(projectName);
+                    console.log("Workbench: fetching required project resources.");
+                    await this.preloadProjectResources();
+                }
+                async preloadProjectResources() {
+                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        await extension.getPreloadPromise();
+                    }
                 }
                 registerWindows() {
                     const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.ID);
@@ -5207,12 +5289,6 @@ var colibri;
                     }
                     else {
                         alert(`Window ${id} not found.`);
-                    }
-                }
-                async preloadProjectResources() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        await extension.getPreloadPromise();
                     }
                 }
                 async preloadIcons() {
@@ -5335,11 +5411,6 @@ var colibri;
                         return this.findTabPane(element.parentElement);
                     }
                     return null;
-                }
-                async preloadFileStorage() {
-                    this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
-                    this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
-                    await this._fileStorage.reload();
                 }
                 registerContentTypes() {
                     const extensions = this._extensionRegistry

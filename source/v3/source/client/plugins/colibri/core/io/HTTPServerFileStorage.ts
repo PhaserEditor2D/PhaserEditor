@@ -32,6 +32,7 @@ namespace colibri.core.io {
 
         private _root: FilePath;
         private _changeListeners: ChangeListenerFunc[];
+        private _projectName : string;
 
         constructor() {
 
@@ -56,9 +57,20 @@ namespace colibri.core.io {
             return this._root;
         }
 
+        async openProject(projectName : string) : Promise<FilePath> {
+
+            this._projectName = projectName;
+
+            await this.reload();
+
+            return this.getRoot();
+        }
+
         async reload(): Promise<void> {
 
-            const data = await apiRequest("GetProjectFiles");
+            const data = await apiRequest("GetProjectFiles", {
+                project: this._projectName
+            });
 
             const oldRoot = this._root;
 
@@ -69,6 +81,7 @@ namespace colibri.core.io {
             if (oldRoot) {
 
                 const change = FileStorage_HTTPServer.compare(oldRoot, newRoot);
+                
                 this.fireChange(change);
             }
         }
@@ -144,6 +157,18 @@ namespace colibri.core.io {
             }
 
             return change;
+        }
+
+        async getProjects() : Promise<string[]> {
+            
+            const data = await apiRequest("GetProjects", {});
+
+            if (data.error) {
+                alert(`Cannot get the projects list`);
+                throw new Error(data.error);
+            }
+
+            return data.projects;
         }
 
         async createFile(folder: FilePath, fileName: string, content: string): Promise<FilePath> {

@@ -424,7 +424,8 @@ var phasereditor2d;
                     return packs;
                 }
                 static getFileFromPackUrl(url) {
-                    return ide.FileUtils.getFileFromPath(url);
+                    const url2 = ide.FileUtils.getRoot().getName() + "/" + url;
+                    return ide.FileUtils.getFileFromPath(url2);
                 }
                 static getFilePackUrl(file) {
                     if (file.getParent()) {

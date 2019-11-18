@@ -1,6 +1,7 @@
 declare namespace phasereditor2d.ide.ui {
     import ide = colibri.ui.ide;
     class DesignWindow extends ide.WorkbenchWindow {
+        static ID: string;
         private _outlineView;
         private _filesView;
         private _inspectorView;

@@ -6,6 +6,8 @@ namespace phasereditor2d.ide.ui {
 
     export class DesignWindow extends ide.WorkbenchWindow {
 
+        static ID = "phasereditor2d.ide.ui.DesignWindow"
+
         private _outlineView: outline.ui.views.OutlineView;
         private _filesView: files.ui.views.FilesView;
         private _inspectorView: inspector.ui.views.InspectorView;
@@ -17,8 +19,7 @@ namespace phasereditor2d.ide.ui {
         private _split_OutlineEditorFilesBlocks_Inspector: controls.SplitPanel;
 
         constructor() {
-            super("phasereditor2d.ide.ui.DesignWindow");
-
+            super(DesignWindow.ID);
         }
 
         createParts() {

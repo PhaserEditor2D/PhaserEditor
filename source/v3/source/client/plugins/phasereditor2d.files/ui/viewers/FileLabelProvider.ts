@@ -5,6 +5,7 @@ namespace phasereditor2d.files.ui.viewers {
 
 
     export class FileLabelProvider implements viewers.ILabelProvider {
+        
         getLabel(obj: io.FilePath): string {
             return obj.getName();
         }

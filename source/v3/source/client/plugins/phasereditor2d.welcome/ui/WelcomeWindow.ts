@@ -12,16 +12,11 @@ namespace phasereditor2d.welcome.ui {
             return new colibri.ui.ide.EditorArea();
         }
 
-        protected createParts() {
-
-            const dlg = new controls.dialogs.Dialog("WelcomeDialog");
+        protected async createParts() {
+        
+            const dlg = new dialogs.ProjectsDialog();
 
             dlg.create();
-
-            dlg.setTitle("Projects");
-
-            dlg.addButton("Open Project", () => { });
-            dlg.addButton("New Project", () => { });
         }
     }
 }

@@ -8,7 +8,7 @@ var phasereditor2d;
             var ide = colibri.ui.ide;
             class DesignWindow extends ide.WorkbenchWindow {
                 constructor() {
-                    super("phasereditor2d.ide.ui.DesignWindow");
+                    super(DesignWindow.ID);
                 }
                 createParts() {
                     this._outlineView = new phasereditor2d.outline.ui.views.OutlineView();
@@ -43,6 +43,7 @@ var phasereditor2d;
                     this.layout();
                 }
             }
+            DesignWindow.ID = "phasereditor2d.ide.ui.DesignWindow";
             ui.DesignWindow = DesignWindow;
         })(ui = ide_1.ui || (ide_1.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));

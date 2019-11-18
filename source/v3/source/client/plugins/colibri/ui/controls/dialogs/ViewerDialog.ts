@@ -21,6 +21,10 @@ namespace colibri.ui.controls.dialogs {
             this._filteredViewer.getFilterControl().getFilterElement().focus();
         }
 
+        getViewer() {
+            return this._viewer;
+        }
+
     }
 
 }

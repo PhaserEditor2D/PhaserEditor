@@ -99,7 +99,7 @@ namespace phasereditor2d.files.ui.views {
 
                     .filter(file => {
 
-                        const file2 = colibri.ui.ide.FileUtils.getFileFromPath(file.getFullName(), true);
+                        const file2 = colibri.ui.ide.FileUtils.getFileFromPath(file.getFullName());
 
                         return file2 !== null;
                     });

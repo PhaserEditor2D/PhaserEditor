@@ -82,7 +82,7 @@ namespace colibri.core.io {
             return this.isFile() ? this._fileSize : 0;
         }
 
-        _setSize(size : number) {
+        _setSize(size: number) {
             this._fileSize = size;
         }
 
@@ -98,7 +98,7 @@ namespace colibri.core.io {
             return this._modTime;
         }
 
-        _setModTime(modTime : number) {
+        _setModTime(modTime: number) {
             this._modTime = modTime;
         }
 
@@ -112,11 +112,23 @@ namespace colibri.core.io {
         }
 
         getUrl() {
+            
             if (this._parent) {
                 return this._parent.getUrl() + "/" + this._name;
             }
 
-            return "./project";
+            const projectName = this.getProject().getName();
+
+            return `./project/${projectName}`;
+        }
+
+        getProject(): FilePath {
+
+            if (this._parent) {
+                return this._parent.getProject();
+            }
+
+            return this;
         }
 
         getSibling(name: string) {
@@ -149,7 +161,7 @@ namespace colibri.core.io {
             return this._files;
         }
 
-        _setAlive(alive : boolean)  {
+        _setAlive(alive: boolean) {
             this._alive = alive;
         }
 
@@ -157,10 +169,10 @@ namespace colibri.core.io {
             return this._alive;
         }
 
-        _add(file : FilePath) {
-            
+        _add(file: FilePath) {
+
             file._remove();
-            
+
             file._parent = this;
 
             this._files.push(file);
