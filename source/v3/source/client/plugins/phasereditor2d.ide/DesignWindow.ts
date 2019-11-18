@@ -1,4 +1,4 @@
-namespace phasereditor2d.ide.ui.windows {
+namespace phasereditor2d.ide.ui {
 
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
@@ -17,8 +17,12 @@ namespace phasereditor2d.ide.ui.windows {
         private _split_OutlineEditorFilesBlocks_Inspector: controls.SplitPanel;
 
         constructor() {
-            super();
+            super("phasereditor2d.ide.ui.DesignWindow");
 
+        }
+
+        createParts() {
+            
             this._outlineView = new outline.ui.views.OutlineView();
             this._filesView = new files.ui.views.FilesView();
             this._inspectorView = new inspector.ui.views.InspectorView();

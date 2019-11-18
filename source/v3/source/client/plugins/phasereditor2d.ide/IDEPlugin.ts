@@ -16,10 +16,15 @@ namespace phasereditor2d.ide {
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
-        }
+            // windows
 
-        createWindow(windows: ide.WorkbenchWindow[]): void {
-            windows.push(new ui.windows.DesignWindow());
+            reg.addExtension(colibri.ui.ide.WindowExtension.ID,
+                new colibri.ui.ide.WindowExtension(
+                    "phasereditor2d.ide.ui.DesignWindow",
+                    10,
+                    () => new ui.DesignWindow()
+                )
+            );
         }
     }
 

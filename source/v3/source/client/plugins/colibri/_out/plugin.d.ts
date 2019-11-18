@@ -1229,7 +1229,6 @@ declare namespace colibri.ui.ide {
         starting(): Promise<void>;
         started(): Promise<void>;
         registerExtensions(registry: core.extensions.ExtensionRegistry): void;
-        createWindow(windows: ide.WorkbenchWindow[]): void;
         getIcon(name: string): controls.IImage;
     }
 }
@@ -1258,6 +1257,15 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
+    type CreateWindowFunc = () => WorkbenchWindow;
+    class WindowExtension extends core.extensions.Extension {
+        static ID: string;
+        private _createWindowFunc;
+        constructor(id: string, priority: number, createWindowFunc: CreateWindowFunc);
+        createWindow(): WorkbenchWindow;
+    }
+}
+declare namespace colibri.ui.ide {
     const EVENT_PART_DEACTIVATED = "partDeactivated";
     const EVENT_PART_ACTIVATED = "partActivated";
     const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
@@ -1281,11 +1289,14 @@ declare namespace colibri.ui.ide {
         private _editorRegistry;
         private _extensionRegistry;
         private _commandManager;
+        private _windows;
         private constructor();
         addPlugin(plugin: ide.Plugin): void;
         getPlugins(): Plugin[];
         launch(): Promise<void>;
-        private registerWindow;
+        private registerWindows;
+        getWindows(): WorkbenchWindow[];
+        activateWindow(id: string): void;
         private preloadProjectResources;
         private preloadIcons;
         private registerContentTypeIcons;
@@ -1324,7 +1335,12 @@ declare namespace colibri.ui.ide {
     abstract class WorkbenchWindow extends controls.Control {
         private _toolbar;
         private _clientArea;
-        constructor();
+        private _id;
+        private _created;
+        constructor(id: string);
+        create(): void;
+        protected abstract createParts(): any;
+        getId(): string;
         getToolbar(): MainToolbar;
         getClientArea(): controls.Control;
         getViews(): ViewPart[];

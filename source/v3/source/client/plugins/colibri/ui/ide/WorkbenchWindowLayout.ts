@@ -23,7 +23,5 @@ namespace colibri.ui.ide {
 
             clientArea.setBoundsValues(0, TOOLBAR_HEIGHT, b.width, b.height - TOOLBAR_HEIGHT);
         }
-
     }
-
 }

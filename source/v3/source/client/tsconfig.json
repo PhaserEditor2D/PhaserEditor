@@ -29,6 +29,9 @@
         },
         {
             "path": "./plugins/phasereditor2d.scene"
+        },
+        {
+            "path": "./plugins/phasereditor2d.welcome"
         }
     ],
     "files": []

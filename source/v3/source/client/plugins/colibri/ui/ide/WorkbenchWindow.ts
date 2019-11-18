@@ -6,11 +6,27 @@ namespace colibri.ui.ide {
 
         private _toolbar: MainToolbar;
         private _clientArea: controls.Control;
+        private _id: string;
+        private _created: boolean;
 
-        constructor() {
+        constructor(id: string) {
             super("div", "Window");
 
-            this.setLayout(new controls.FillLayout(5));
+            this.getElement().id = id;
+
+            this._id = id;
+
+            this._created = false;
+
+        }
+
+        create() {
+
+            if (this._created) {
+                return;
+            }
+
+            this._created = true;
 
             window.addEventListener("resize", e => {
                 this.layout();
@@ -26,6 +42,14 @@ namespace colibri.ui.ide {
             this.add(this._clientArea);
 
             this.setLayout(new WorkbenchWindowLayout());
+
+            this.createParts();
+        }
+
+        protected abstract createParts();
+
+        getId() {
+            return this._id;
         }
 
         getToolbar() {

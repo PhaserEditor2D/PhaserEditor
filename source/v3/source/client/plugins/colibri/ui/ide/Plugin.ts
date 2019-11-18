@@ -25,10 +25,6 @@ namespace colibri.ui.ide {
 
         }
 
-        createWindow(windows: ide.WorkbenchWindow[]): void {
-
-        }
-
         getIcon(name : string) : controls.IImage {
             return controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
         }

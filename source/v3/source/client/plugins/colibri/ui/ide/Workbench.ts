@@ -40,6 +40,7 @@ namespace colibri.ui.ide {
         private _editorRegistry: EditorRegistry;
         private _extensionRegistry: core.extensions.ExtensionRegistry;
         private _commandManager: commands.CommandManager;
+        private _windows: WorkbenchWindow[];
 
         private constructor() {
 
@@ -48,6 +49,8 @@ namespace colibri.ui.ide {
             this._plugins = [];
 
             this._editorRegistry = new EditorRegistry();
+
+            this._windows = [];
 
             this._activePart = null;
             this._activeEditor = null;
@@ -68,24 +71,26 @@ namespace colibri.ui.ide {
 
         async launch() {
 
-            const plugins = this._plugins;
-
             console.log("Workbench: starting.");
 
-            for (const plugin of plugins) {
-                plugin.registerExtensions(this._extensionRegistry);
-            }
+            {
+                const plugins = this._plugins;
 
-            for (const plugin of plugins) {
-                console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
-                await plugin.starting();
+                for (const plugin of plugins) {
+                    plugin.registerExtensions(this._extensionRegistry);
+                }
+
+                for (const plugin of plugins) {
+                    console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
+                    await plugin.starting();
+                }
             }
 
             await ui.controls.Controls.preload();
 
             console.log("Workbench: fetching UI icons.");
 
-            await this.preloadIcons(plugins);
+            await this.preloadIcons();
 
             console.log("Workbench: fetching project metadata.");
 
@@ -105,9 +110,9 @@ namespace colibri.ui.ide {
 
             this.initCommands();
 
-            this.registerEditors(plugins);
+            this.registerEditors();
 
-            this.registerWindow(plugins);
+            this.registerWindows();
 
             this.initEvents();
 
@@ -115,22 +120,56 @@ namespace colibri.ui.ide {
 
         }
 
-        private registerWindow(plugins: Plugin[]) {
+        private registerWindows() {
 
-            const windows: ide.WorkbenchWindow[] = [];
+            const extensions = this._extensionRegistry.getExtensions<WindowExtension>(WindowExtension.ID);
 
-            for (const plugin of plugins) {
-                plugin.createWindow(windows);
-            }
+            console.log("Window extensions");
+            console.log(extensions);
 
-            if (windows.length === 0) {
+            this._windows = extensions.map(extension => extension.createWindow());
+
+
+            if (this._windows.length === 0) {
 
                 alert("No workbench window provided.");
 
             } else {
 
-                this._activeWindow = windows[0];
-                document.body.appendChild(this._activeWindow.getElement());
+                for (const win of this._windows) {
+
+                    win.style.display = "none";
+
+                    document.body.appendChild(win.getElement());
+                }
+
+
+                this.activateWindow(this._windows[0].getId());
+            }
+        }
+
+        getWindows() {
+            return this._windows;
+        }
+
+        public activateWindow(id: string) {
+
+            const win = this._windows.find(win => win.getId() === id);
+
+            if (win) {
+
+                if (this._activeWindow) {
+                    this._activeWindow.style.display = "none";
+                }
+
+                win.create();
+
+                this._activeWindow = win;
+                win.style.display = "initial";
+
+            } else {
+
+                alert(`Window ${id} not found.`);
             }
         }
 
@@ -143,7 +182,7 @@ namespace colibri.ui.ide {
             }
         }
 
-        private async preloadIcons(plugins: Plugin[]) {
+        private async preloadIcons() {
 
             await this.getWorkbenchIcon(ICON_FILE).preload();
             await this.getWorkbenchIcon(ICON_FOLDER).preload();
@@ -192,7 +231,7 @@ namespace colibri.ui.ide {
 
         private initEvents() {
             window.addEventListener("mousedown", e => {
-                
+
                 this._activeElement = <HTMLElement>e.target;
 
                 const part = this.findPart(<any>e.target);
@@ -203,7 +242,7 @@ namespace colibri.ui.ide {
             });
         }
 
-        private registerEditors(plugins: Plugin[]): void {
+        private registerEditors(): void {
             const extensions = this._extensionRegistry.getExtensions<EditorExtension>(EditorExtension.POINT_ID);
 
             for (const extension of extensions) {
@@ -271,7 +310,7 @@ namespace colibri.ui.ide {
                 if (part) {
 
                     this.toggleActivePartClass(part);
-                    
+
                     part.onPartActivated();
                 }
 
@@ -420,7 +459,7 @@ namespace colibri.ui.ide {
                         editorArea.activateEditor(editor);
 
                         this.setActivePart(editor);
-                        
+
                         return;
                     }
                 }
@@ -433,11 +472,11 @@ namespace colibri.ui.ide {
                 const editor = factory.createEditor();
 
                 editor.setInput(input);
-                
+
                 editorArea.addPart(editor, true);
 
                 editorArea.activateEditor(editor);
-                
+
                 this.setActivePart(editor);
 
             } else {

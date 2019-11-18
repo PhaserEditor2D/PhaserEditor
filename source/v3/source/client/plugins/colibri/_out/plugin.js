@@ -5013,8 +5013,6 @@ var colibri;
                 }
                 registerExtensions(registry) {
                 }
-                createWindow(windows) {
-                }
                 getIcon(name) {
                     return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
                 }
@@ -5091,6 +5089,26 @@ var colibri;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class WindowExtension extends colibri.core.extensions.Extension {
+                constructor(id, priority, createWindowFunc) {
+                    super(id, priority);
+                    this._createWindowFunc = createWindowFunc;
+                }
+                createWindow() {
+                    return this._createWindowFunc();
+                }
+            }
+            WindowExtension.ID = "colibri.ui.ide.WindowExtension";
+            ide.WindowExtension = WindowExtension;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
 /// <reference path="../controls/Controls.ts"/>
 var colibri;
 (function (colibri) {
@@ -5110,6 +5128,7 @@ var colibri;
                     super();
                     this._plugins = [];
                     this._editorRegistry = new ide.EditorRegistry();
+                    this._windows = [];
                     this._activePart = null;
                     this._activeEditor = null;
                     this._activeElement = null;
@@ -5129,18 +5148,20 @@ var colibri;
                     return this._plugins;
                 }
                 async launch() {
-                    const plugins = this._plugins;
                     console.log("Workbench: starting.");
-                    for (const plugin of plugins) {
-                        plugin.registerExtensions(this._extensionRegistry);
-                    }
-                    for (const plugin of plugins) {
-                        console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
-                        await plugin.starting();
+                    {
+                        const plugins = this._plugins;
+                        for (const plugin of plugins) {
+                            plugin.registerExtensions(this._extensionRegistry);
+                        }
+                        for (const plugin of plugins) {
+                            console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
+                            await plugin.starting();
+                        }
                     }
                     await ui.controls.Controls.preload();
                     console.log("Workbench: fetching UI icons.");
-                    await this.preloadIcons(plugins);
+                    await this.preloadIcons();
                     console.log("Workbench: fetching project metadata.");
                     await this.preloadFileStorage();
                     console.log("Workbench: registering content types.");
@@ -5150,22 +5171,42 @@ var colibri;
                     await this.preloadProjectResources();
                     console.log("Workbench: initializing UI.");
                     this.initCommands();
-                    this.registerEditors(plugins);
-                    this.registerWindow(plugins);
+                    this.registerEditors();
+                    this.registerWindows();
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
                 }
-                registerWindow(plugins) {
-                    const windows = [];
-                    for (const plugin of plugins) {
-                        plugin.createWindow(windows);
-                    }
-                    if (windows.length === 0) {
+                registerWindows() {
+                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.ID);
+                    console.log("Window extensions");
+                    console.log(extensions);
+                    this._windows = extensions.map(extension => extension.createWindow());
+                    if (this._windows.length === 0) {
                         alert("No workbench window provided.");
                     }
                     else {
-                        this._activeWindow = windows[0];
-                        document.body.appendChild(this._activeWindow.getElement());
+                        for (const win of this._windows) {
+                            win.style.display = "none";
+                            document.body.appendChild(win.getElement());
+                        }
+                        this.activateWindow(this._windows[0].getId());
+                    }
+                }
+                getWindows() {
+                    return this._windows;
+                }
+                activateWindow(id) {
+                    const win = this._windows.find(win => win.getId() === id);
+                    if (win) {
+                        if (this._activeWindow) {
+                            this._activeWindow.style.display = "none";
+                        }
+                        win.create();
+                        this._activeWindow = win;
+                        win.style.display = "initial";
+                    }
+                    else {
+                        alert(`Window ${id} not found.`);
                     }
                 }
                 async preloadProjectResources() {
@@ -5174,7 +5215,7 @@ var colibri;
                         await extension.getPreloadPromise();
                     }
                 }
-                async preloadIcons(plugins) {
+                async preloadIcons() {
                     await this.getWorkbenchIcon(ide.ICON_FILE).preload();
                     await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
                     await this.getWorkbenchIcon(ide.ICON_PLUS).preload();
@@ -5213,7 +5254,7 @@ var colibri;
                         }
                     });
                 }
-                registerEditors(plugins) {
+                registerEditors() {
                     const extensions = this._extensionRegistry.getExtensions(ide.EditorExtension.POINT_ID);
                     for (const extension of extensions) {
                         for (const factory of extension.getFactories()) {
@@ -5401,9 +5442,17 @@ var colibri;
         var ide;
         (function (ide) {
             class WorkbenchWindow extends ui.controls.Control {
-                constructor() {
+                constructor(id) {
                     super("div", "Window");
-                    this.setLayout(new ui.controls.FillLayout(5));
+                    this.getElement().id = id;
+                    this._id = id;
+                    this._created = false;
+                }
+                create() {
+                    if (this._created) {
+                        return;
+                    }
+                    this._created = true;
                     window.addEventListener("resize", e => {
                         this.layout();
                     });
@@ -5414,6 +5463,10 @@ var colibri;
                     this.add(this._toolbar);
                     this.add(this._clientArea);
                     this.setLayout(new ide.WorkbenchWindowLayout());
+                    this.createParts();
+                }
+                getId() {
+                    return this._id;
                 }
                 getToolbar() {
                     return this._toolbar;
