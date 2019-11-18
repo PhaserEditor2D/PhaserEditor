@@ -82,7 +82,8 @@ namespace colibri.ui.ide {
 
             manager.addKeyBinding(CMD_SWITCH_THEME, new KeyMatcher({
                 control: true,
-                key: "2"
+                key: "2",
+                filterInputElements: false
             }));
         }
 

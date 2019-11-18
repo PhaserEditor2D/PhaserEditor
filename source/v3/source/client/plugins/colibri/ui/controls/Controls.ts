@@ -142,16 +142,16 @@ namespace colibri.ui.controls {
         }
 
         private static LIGHT_THEME: Theme = {
-            treeItemSelectionBackground: "#4242ff",
+            viewerSelectionBackground: "#4242ff",
             //treeItemSelectionBackground: "#525252",
-            treeItemSelectionForeground: "#f0f0f0",
-            treeItemForeground: "#000000"
+            viewerSelectionForeground: "#f0f0f0",
+            viewerForeground: "#000000",
         };
 
         private static DARK_THEME: Theme = {
-            treeItemSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
-            treeItemSelectionForeground: "#0e0e0e",
-            treeItemForeground: "#f0f0f0"
+            viewerSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
+            viewerSelectionForeground: "#0e0e0e",
+            viewerForeground: "#f0f0f0",
         };
 
         static theme: Theme = Controls.DARK_THEME;

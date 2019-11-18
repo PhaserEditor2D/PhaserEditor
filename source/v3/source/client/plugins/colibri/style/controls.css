@@ -24,14 +24,19 @@ input {
     box-sizing: border-box;
 }
 
-.Control {
-    position: absolute;
-    box-sizing: border-box;
+button:active, button:focus {
+    outline-width: 1px;
+    outline-color: rgba(255, 255, 255, 0.1);
 }
 
 canvas {
     outline: none;
     image-rendering: crisp-edges;
+}
+
+.Control {
+    position: absolute;
+    box-sizing: border-box;
 }
 
 .ImageControl {
@@ -173,7 +178,7 @@ canvas {
     display: inline-grid;
     grid-template-columns: 20px 1fr;
     height: 1em;
-    padding: 3px 2px;
+    padding: 5px;
     border-radius: 3px 3px 0 0;
 }
 

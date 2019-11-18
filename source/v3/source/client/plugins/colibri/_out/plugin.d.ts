@@ -535,9 +535,9 @@ declare namespace colibri.ui.controls {
 }
 declare namespace colibri.ui.controls {
     type Theme = {
-        treeItemSelectionBackground: string;
-        treeItemSelectionForeground: string;
-        treeItemForeground: string;
+        viewerSelectionBackground: string;
+        viewerSelectionForeground: string;
+        viewerForeground: string;
     };
 }
 declare namespace colibri.ui.controls {

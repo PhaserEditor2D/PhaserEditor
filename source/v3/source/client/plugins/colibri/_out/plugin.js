@@ -1170,15 +1170,15 @@ var colibri;
             Controls._images = new Map();
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
-                treeItemSelectionBackground: "#4242ff",
+                viewerSelectionBackground: "#4242ff",
                 //treeItemSelectionBackground: "#525252",
-                treeItemSelectionForeground: "#f0f0f0",
-                treeItemForeground: "#000000"
+                viewerSelectionForeground: "#f0f0f0",
+                viewerForeground: "#000000",
             };
             Controls.DARK_THEME = {
-                treeItemSelectionBackground: "#f0a050",
-                treeItemSelectionForeground: "#0e0e0e",
-                treeItemForeground: "#f0f0f0"
+                viewerSelectionBackground: "#f0a050",
+                viewerSelectionForeground: "#0e0e0e",
+                viewerForeground: "#f0f0f0",
             };
             Controls.theme = Controls.DARK_THEME;
             controls.Controls = Controls;
@@ -1279,7 +1279,7 @@ var colibri;
                 static paintEmpty(context, x, y, w, h) {
                     if (w > 10 && h > 10) {
                         context.save();
-                        context.strokeStyle = controls.Controls.theme.treeItemForeground;
+                        context.strokeStyle = controls.Controls.theme.viewerForeground;
                         const cx = x + w / 2;
                         const cy = y + h / 2;
                         context.strokeRect(cx, cy - 1, 2, 2);
@@ -3091,7 +3091,7 @@ var colibri;
                         let x = args.x;
                         let y = args.y;
                         const ctx = args.canvasContext;
-                        ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                        ctx.fillStyle = controls.Controls.theme.viewerForeground;
                         let args2;
                         if (args.h <= controls.ROW_HEIGHT) {
                             args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, controls.ICON_SIZE, args.h, args.obj, args.viewer);
@@ -3105,7 +3105,7 @@ var colibri;
                         renderer.renderCell(args2);
                         ctx.save();
                         if (args.viewer.isSelected(args.obj)) {
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                            ctx.fillStyle = controls.Controls.theme.viewerSelectionForeground;
                         }
                         ctx.fillText(label, x, y);
                         ctx.restore();
@@ -3175,7 +3175,7 @@ var colibri;
                                 ctx.save();
                                 ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
                                 ctx.fillRect(0, y2 - 16, b.width, controls.ROW_HEIGHT);
-                                ctx.fillStyle = controls.Controls.theme.treeItemForeground + "aa";
+                                ctx.fillStyle = controls.Controls.theme.viewerForeground + "aa";
                                 const m = ctx.measureText(label);
                                 ctx.fillText(label, b.width / 2 - m.width / 2, y2);
                                 ctx.restore();
@@ -3282,10 +3282,10 @@ var colibri;
                         if (visible) {
                             ctx.save();
                             if (selected) {
-                                ctx.fillStyle = controls.Controls.theme.treeItemSelectionForeground;
+                                ctx.fillStyle = controls.Controls.theme.viewerSelectionForeground;
                             }
                             else {
-                                ctx.fillStyle = controls.Controls.theme.treeItemForeground;
+                                ctx.fillStyle = controls.Controls.theme.viewerForeground;
                             }
                             const m = ctx.measureText(line);
                             const x2 = Math.max(x, x + args.w / 2 - m.width / 2);
@@ -3297,7 +3297,7 @@ var colibri;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground + "88";
+                            ctx.fillStyle = controls.Controls.theme.viewerSelectionBackground + "88";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }
@@ -3306,7 +3306,7 @@ var colibri;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.fillStyle = controls.Controls.theme.treeItemSelectionBackground + "44";
+                            ctx.fillStyle = controls.Controls.theme.viewerSelectionBackground + "44";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }
@@ -3694,7 +3694,7 @@ var colibri;
                     paintItemBackground(obj, x, y, w, h, radius = 0) {
                         let fillStyle = null;
                         if (this.isSelected(obj)) {
-                            fillStyle = controls.Controls.theme.treeItemSelectionBackground;
+                            fillStyle = controls.Controls.theme.viewerSelectionBackground;
                         }
                         if (fillStyle != null) {
                             this._context.save();
@@ -3854,7 +3854,7 @@ var colibri;
                         ctx.save();
                         ctx.lineWidth = 1;
                         ctx.globalAlpha = 0.5;
-                        ctx.strokeStyle = controls.Controls.theme.treeItemForeground;
+                        ctx.strokeStyle = controls.Controls.theme.viewerForeground;
                         ctx.strokeRect(args.x, args.y, args.w, args.h);
                         ctx.restore();
                     }
@@ -4840,7 +4840,8 @@ var colibri;
                     manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
                     manager.addKeyBinding(ide.CMD_SWITCH_THEME, new KeyMatcher({
                         control: true,
-                        key: "2"
+                        key: "2",
+                        filterInputElements: false
                     }));
                 }
                 static initUndo(manager) {

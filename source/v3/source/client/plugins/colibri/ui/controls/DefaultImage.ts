@@ -116,7 +116,7 @@ namespace colibri.ui.controls {
         static paintEmpty(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
             if (w > 10 && h > 10) {
                 context.save();
-                context.strokeStyle = Controls.theme.treeItemForeground;
+                context.strokeStyle = Controls.theme.viewerForeground;
                 const cx = x + w / 2;
                 const cy = y + h / 2;
                 context.strokeRect(cx, cy - 1, 2, 2);

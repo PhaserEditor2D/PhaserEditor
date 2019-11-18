@@ -17,7 +17,11 @@ Important:
 /* input */
 
 .dark input {
-    background: #b5b5b5;
+    background: #626262;
+    color: #f0f0f0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #6b6b6b;
 }
 
 .dark input[type="file"] {
@@ -25,21 +29,27 @@ Important:
 }
 
 .dark input:focus {
-    background: #d5d5d5;
+    background: #757575;
+    border-color: #f0a050;
 }
 
 /* button */
 
 .dark button,
 .dark input[type="submit"] {
-    background: rgba(255, 255, 255, 0.1);
+    background: #525252;
+    border-color: #646464;
     color: #f0f0f0;
-    border-color: rgba(255, 255, 255, 0.1);
     text-shadow: 1px 1px #0e0e0e;    
     border-style: solid;
     border-width: 1px;
     border-radius: 3px;
     padding: 5px;
+}
+
+.dark .DialogButtonPane button {
+    background: #6e6e6e;
+    border-color: #444444;
 }
 
 .dark button[disabled] {
@@ -48,11 +58,19 @@ Important:
 }
 
 .dark button:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #656565;
+}
+
+.dark .DialogButtonPane button:hover {
+    background: #7e7e7e;
 }
 
 .dark button[disabled]:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #525252;
+}
+
+.dark .DialogButtonPane button[disabled]:hover {
+    background: #6e6e6e;
 }
 
 .dark button:active {
@@ -134,13 +152,14 @@ Important:
 /* Toolbar */
 
 .dark .ToolbarItem {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: #525252;
+    border-color: #646464;
     text-shadow: 1px 1px #0e0e0e;
 }
 
 .dark .ToolbarItem:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #656565;
+    border-color: #757575;
 }
 
 .dark .ToolbarItem:active {

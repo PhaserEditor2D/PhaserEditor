@@ -17,20 +17,26 @@ Important:
 /* input */
 
 .light input {
-    background: #cfcfcf;
+    background: #f0f0f0;
     border: solid 1px #a0a0a0;
 }
 
+.light input[type="file"] {
+    display: none;
+}
+
+
 .light input:focus {
     background: #f6f6f6;
+    border-color: #4242ff;
 }
 
 /* button */
 
 .light button,
 .light input[type="submit"] {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: #dadada;
+    border-color: #808080;
     text-shadow: 1px 1px #ffffff;
     color: #0f0f0f;
     border-style: solid;
@@ -44,7 +50,7 @@ Important:
 }
 
 .light button:hover {
-    background: rgba(255, 255, 255, 0.7);
+    background: #eaeaea;
 }
 
 .light button:hover[disabled] {
@@ -120,7 +126,8 @@ Important:
 
 
 .light .PropertyTitleArea {
-    background: #b2b2b2;
+    background: #a2a2a2;
+    border-radius: 0px;
 }
 
 .light .PropertyTitleArea label {
@@ -134,8 +141,8 @@ Important:
 /* Toolbar */
 
 .light .ToolbarItem {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: #dadada;
+    border-color: #808080;
     text-shadow: 1px 1px #f0f0f0;
 }
 
@@ -159,7 +166,9 @@ Important:
 }
 
 .light .Dialog .FilteredViewer
-/*.light .Dialog .DialogSection*/ {
+
+/*.light .Dialog .DialogSection*/
+    {
     background: #dadada;
 }
 
