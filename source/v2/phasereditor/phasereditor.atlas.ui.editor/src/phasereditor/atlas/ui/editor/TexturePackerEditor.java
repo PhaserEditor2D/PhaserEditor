@@ -605,7 +605,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					out.println("Temporal atlas file " + libgdxAtlasFile);
 
-					// out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
+					 out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
 
 					TextureAtlasData data = new TextureAtlasData(new FileHandle(libgdxAtlasFile),
 							new FileHandle(tempDir), false);
@@ -654,11 +654,12 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								frame.setSpriteX((int) (region.offsetX));
 
 								// this happens when white spaces are stripped!
-								if (region.offsetY != 0) {
+								
+								//if (region.offsetY != 0) {
 									// LibGDX uses the OpenGL Y order (from
 									// bottom to top)
 									frame.setSpriteY((int) (region.originalHeight - region.offsetY - region.height));
-								}
+								//}
 
 								frame.setSpriteW(region.width);
 								frame.setSpriteH(region.height);
