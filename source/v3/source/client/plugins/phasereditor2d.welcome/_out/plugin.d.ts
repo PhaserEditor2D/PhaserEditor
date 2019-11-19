@@ -9,16 +9,23 @@ declare namespace phasereditor2d.welcome {
 }
 declare namespace phasereditor2d.welcome.ui {
     class WelcomeWindow extends colibri.ui.ide.WorkbenchWindow {
+        static ID: string;
         constructor();
         getEditorArea(): colibri.ui.ide.EditorArea;
         protected createParts(): Promise<void>;
     }
 }
 declare namespace phasereditor2d.welcome.ui.actions {
+    import controls = colibri.ui.controls;
+    class OpenProjectsDialogAction extends controls.Action {
+        constructor();
+        run(): void;
+    }
+}
+declare namespace phasereditor2d.welcome.ui.actions {
     const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.welcome.ui.actions.OpenProjectsDialog";
     class WelcomeActions {
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
-        private static openProjectsDialog;
     }
 }
 declare namespace phasereditor2d.welcome.ui.dialogs {

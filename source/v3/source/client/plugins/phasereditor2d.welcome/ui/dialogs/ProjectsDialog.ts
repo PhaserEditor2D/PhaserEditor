@@ -25,8 +25,6 @@ namespace phasereditor2d.welcome.ui.dialogs {
 
             const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
 
-            this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
-
             this.setTitle("Projects");
 
             this.addButton("New Project", () => { });
@@ -64,7 +62,7 @@ namespace phasereditor2d.welcome.ui.dialogs {
 
             this.close();
 
-            wb.activateWindow(ide.ui.DesignWindow.ID);
+            wb.activateWindow("phasereditor2d.ide.ui.DesignWindow");
         }
     }
 }

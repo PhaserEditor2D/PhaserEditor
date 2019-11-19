@@ -4,15 +4,16 @@ namespace phasereditor2d.welcome.ui.actions {
 
     export class WelcomeActions {
 
-        static registerCommands(manager: colibri.ui.ide.commands.CommandManager) : void {
+        static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void {
 
             manager.addCommandHelper(CMD_OPEN_PROJECTS_DIALOG);
 
             manager.addHandlerHelper(CMD_OPEN_PROJECTS_DIALOG,
                 args => {
-                    console.log(args.activeWindow);
-                    return args.activeWindow instanceof ide.ui.DesignWindow;
-                }, args => WelcomeActions.openProjectsDialog());
+                    
+                    return args.activeWindow.getId() !== ui.WelcomeWindow.ID;
+
+                }, args => new OpenProjectsDialogAction().run());
 
             manager.addKeyBinding(CMD_OPEN_PROJECTS_DIALOG, new colibri.ui.ide.commands.KeyMatcher({
                 control: true,
@@ -20,13 +21,6 @@ namespace phasereditor2d.welcome.ui.actions {
                 key: "P",
                 filterInputElements: false
             }));
-        }
-
-        private static openProjectsDialog() {
-
-            const dlg = new dialogs.ProjectsDialog();
-
-            dlg.create();
         }
     }
 }

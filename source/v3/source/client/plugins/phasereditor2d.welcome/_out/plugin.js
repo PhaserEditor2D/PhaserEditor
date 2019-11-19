@@ -34,7 +34,7 @@ var phasereditor2d;
         (function (ui) {
             class WelcomeWindow extends colibri.ui.ide.WorkbenchWindow {
                 constructor() {
-                    super("phasereditor2d.welcome.ui.WelcomeWindow");
+                    super(WelcomeWindow.ID);
                 }
                 getEditorArea() {
                     return new colibri.ui.ide.EditorArea();
@@ -42,9 +42,38 @@ var phasereditor2d;
                 async createParts() {
                     const dlg = new ui.dialogs.ProjectsDialog();
                     dlg.create();
+                    dlg.setCloseWithEscapeKey(false);
                 }
             }
+            WelcomeWindow.ID = "phasereditor2d.welcome.ui.WelcomeWindow";
             ui.WelcomeWindow = WelcomeWindow;
+        })(ui = welcome.ui || (welcome.ui = {}));
+    })(welcome = phasereditor2d.welcome || (phasereditor2d.welcome = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var welcome;
+    (function (welcome) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class OpenProjectsDialogAction extends controls.Action {
+                    constructor() {
+                        super({
+                            text: "Projects",
+                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
+                        });
+                    }
+                    run() {
+                        const dlg = new ui.dialogs.ProjectsDialog();
+                        dlg.create();
+                        dlg.addButton("Cancel", () => dlg.close());
+                    }
+                }
+                actions.OpenProjectsDialogAction = OpenProjectsDialogAction;
+            })(actions = ui.actions || (ui.actions = {}));
         })(ui = welcome.ui || (welcome.ui = {}));
     })(welcome = phasereditor2d.welcome || (phasereditor2d.welcome = {}));
 })(phasereditor2d || (phasereditor2d = {}));
@@ -61,19 +90,14 @@ var phasereditor2d;
                     static registerCommands(manager) {
                         manager.addCommandHelper(actions.CMD_OPEN_PROJECTS_DIALOG);
                         manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, args => {
-                            console.log(args.activeWindow);
-                            return args.activeWindow instanceof phasereditor2d.ide.ui.DesignWindow;
-                        }, args => WelcomeActions.openProjectsDialog());
+                            return args.activeWindow.getId() !== ui.WelcomeWindow.ID;
+                        }, args => new actions.OpenProjectsDialogAction().run());
                         manager.addKeyBinding(actions.CMD_OPEN_PROJECTS_DIALOG, new colibri.ui.ide.commands.KeyMatcher({
                             control: true,
                             alt: true,
                             key: "P",
                             filterInputElements: false
                         }));
-                    }
-                    static openProjectsDialog() {
-                        const dlg = new ui.dialogs.ProjectsDialog();
-                        dlg.create();
                     }
                 }
                 actions.WelcomeActions = WelcomeActions;
@@ -103,7 +127,6 @@ var phasereditor2d;
                         viewer.setInput([]);
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
                         const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
-                        this.setCloseWithEscapeKey(!(activeWindow instanceof ui.WelcomeWindow));
                         this.setTitle("Projects");
                         this.addButton("New Project", () => { });
                         {
@@ -126,7 +149,7 @@ var phasereditor2d;
                         const wb = colibri.ui.ide.Workbench.getWorkbench();
                         await wb.openProject(project);
                         this.close();
-                        wb.activateWindow(phasereditor2d.ide.ui.DesignWindow.ID);
+                        wb.activateWindow("phasereditor2d.ide.ui.DesignWindow");
                     }
                 }
                 dialogs.ProjectsDialog = ProjectsDialog;

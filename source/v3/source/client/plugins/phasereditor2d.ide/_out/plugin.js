@@ -29,6 +29,7 @@ var phasereditor2d;
                     const leftArea = toolbar.getLeftArea();
                     const manager = new controls.ToolbarManager(leftArea);
                     manager.add(new phasereditor2d.files.ui.actions.OpenNewFileDialogAction());
+                    manager.add(new phasereditor2d.welcome.ui.actions.OpenProjectsDialogAction());
                 }
                 getEditorArea() {
                     return this._editorArea;

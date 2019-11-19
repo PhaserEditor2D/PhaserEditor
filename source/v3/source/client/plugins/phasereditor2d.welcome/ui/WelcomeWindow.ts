@@ -4,8 +4,10 @@ namespace phasereditor2d.welcome.ui {
 
     export class WelcomeWindow extends colibri.ui.ide.WorkbenchWindow {
 
+        static ID = "phasereditor2d.welcome.ui.WelcomeWindow";
+
         constructor() {
-            super("phasereditor2d.welcome.ui.WelcomeWindow");
+            super(WelcomeWindow.ID);
         }
 
         getEditorArea(): colibri.ui.ide.EditorArea {
@@ -17,6 +19,8 @@ namespace phasereditor2d.welcome.ui {
             const dlg = new dialogs.ProjectsDialog();
 
             dlg.create();
+
+            dlg.setCloseWithEscapeKey(false);
         }
     }
 }

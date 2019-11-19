@@ -6,7 +6,7 @@ namespace phasereditor2d.ide.ui {
 
     export class DesignWindow extends ide.WorkbenchWindow {
 
-        static ID = "phasereditor2d.ide.ui.DesignWindow"
+        static ID = "phasereditor2d.ide.ui.DesignWindow";
 
         private _outlineView: outline.ui.views.OutlineView;
         private _filesView: files.ui.views.FilesView;
@@ -23,7 +23,7 @@ namespace phasereditor2d.ide.ui {
         }
 
         createParts() {
-            
+
             this._outlineView = new outline.ui.views.OutlineView();
             this._filesView = new files.ui.views.FilesView();
             this._inspectorView = new inspector.ui.views.InspectorView();
@@ -43,14 +43,16 @@ namespace phasereditor2d.ide.ui {
         }
 
         private initToolbar() {
-            
+
             const toolbar = this.getToolbar();
 
-            const leftArea  = toolbar.getLeftArea();
+            const leftArea = toolbar.getLeftArea();
 
             const manager = new controls.ToolbarManager(leftArea);
 
             manager.add(new files.ui.actions.OpenNewFileDialogAction());
+
+            manager.add(new welcome.ui.actions.OpenProjectsDialogAction());
         }
 
         getEditorArea() {
