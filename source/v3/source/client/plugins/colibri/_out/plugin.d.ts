@@ -22,8 +22,9 @@ declare namespace colibri.core.io {
         private _backendGetContent;
         private _backendSetContent;
         private _map;
-        constructor(getContent: GetFileContent<T>, setContent?: SetFileContent<T>);
         private _preloadMap;
+        constructor(getContent: GetFileContent<T>, setContent?: SetFileContent<T>);
+        reset(): void;
         preload(file: FilePath): Promise<ui.controls.PreloadResult>;
         getContent(file: FilePath): T;
         setContent(file: FilePath, content: T): Promise<void>;
@@ -36,10 +37,16 @@ declare namespace colibri.core.io {
     }
 }
 declare namespace colibri.core {
+    class ContentTypeFileCache extends io.FileContentCache<string> {
+        constructor(registry: ContentTypeRegistry);
+    }
+}
+declare namespace colibri.core {
     class ContentTypeRegistry {
         private _resolvers;
         private _cache;
         constructor();
+        resetCache(): void;
         registerResolver(resolver: IContentTypeResolver): void;
         getResolvers(): IContentTypeResolver[];
         getCachedContentType(file: io.FilePath): string;
@@ -201,6 +208,7 @@ declare namespace colibri.core.io {
         private _getContent;
         private _map;
         constructor(builder: SyncFileContentBuilder<T>);
+        reset(): void;
         getContent(file: FilePath): T;
         hasFile(file: FilePath): boolean;
     }
@@ -1331,6 +1339,7 @@ declare namespace colibri.ui.ide {
         addPlugin(plugin: ide.Plugin): void;
         getPlugins(): Plugin[];
         launch(): Promise<void>;
+        private resetCache;
         openProject(projectName: string): Promise<void>;
         private preloadProjectResources;
         private registerWindows;

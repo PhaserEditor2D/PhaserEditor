@@ -46,10 +46,13 @@ var colibri;
         (function (io) {
             class FileContentCache {
                 constructor(getContent, setContent) {
-                    this._preloadMap = new Map();
                     this._backendGetContent = getContent;
                     this._backendSetContent = setContent;
+                    this.reset();
+                }
+                reset() {
                     this._map = new Map();
+                    this._preloadMap = new Map();
                 }
                 preload(file) {
                     const filename = file.getFullName();
@@ -119,25 +122,6 @@ var colibri;
 (function (colibri) {
     var core;
     (function (core) {
-        class ContentTypeRegistry {
-            constructor() {
-                this._resolvers = [];
-                this._cache = new ContentTypeFileCache(this);
-            }
-            registerResolver(resolver) {
-                this._resolvers.push(resolver);
-            }
-            getResolvers() {
-                return this._resolvers;
-            }
-            getCachedContentType(file) {
-                return this._cache.getContent(file);
-            }
-            async preload(file) {
-                return this._cache.preload(file);
-            }
-        }
-        core.ContentTypeRegistry = ContentTypeRegistry;
         class ContentTypeFileCache extends core.io.FileContentCache {
             constructor(registry) {
                 super(async (file) => {
@@ -156,6 +140,36 @@ var colibri;
                 });
             }
         }
+        core.ContentTypeFileCache = ContentTypeFileCache;
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./io/FileContentCache.ts" />
+var colibri;
+(function (colibri) {
+    var core;
+    (function (core) {
+        class ContentTypeRegistry {
+            constructor() {
+                this._resolvers = [];
+                this._cache = new core.ContentTypeFileCache(this);
+            }
+            resetCache() {
+                this._cache.reset();
+            }
+            registerResolver(resolver) {
+                this._resolvers.push(resolver);
+            }
+            getResolvers() {
+                return this._resolvers;
+            }
+            getCachedContentType(file) {
+                return this._cache.getContent(file);
+            }
+            async preload(file) {
+                return this._cache.preload(file);
+            }
+        }
+        core.ContentTypeRegistry = ContentTypeRegistry;
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
 var colibri;
@@ -752,6 +766,9 @@ var colibri;
             class SyncFileContentCache {
                 constructor(builder) {
                     this._getContent = builder;
+                    this.reset();
+                }
+                reset() {
                     this._map = new Map();
                 }
                 getContent(file) {
@@ -5316,8 +5333,14 @@ var colibri;
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
                 }
+                resetCache() {
+                    this._fileStringCache.reset();
+                    this._fileImageCache.reset();
+                    this._contentTypeRegistry.resetCache();
+                }
                 async openProject(projectName) {
                     this._projectPreferences = new colibri.core.preferences.Preferences("__project__" + projectName);
+                    this.resetCache();
                     console.log(`Workbench: opening project ${projectName}.`);
                     await this._fileStorage.openProject(projectName);
                     console.log("Workbench: fetching required project resources.");

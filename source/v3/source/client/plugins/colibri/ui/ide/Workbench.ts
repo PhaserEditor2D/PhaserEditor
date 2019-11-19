@@ -131,9 +131,18 @@ namespace colibri.ui.ide {
 
         }
 
+        private resetCache() {
+
+            this._fileStringCache.reset();
+            this._fileImageCache.reset();
+            this._contentTypeRegistry.resetCache();
+        }
+
         async openProject(projectName: string) {
 
             this._projectPreferences = new core.preferences.Preferences("__project__" + projectName);
+
+            this.resetCache();
 
             console.log(`Workbench: opening project ${projectName}.`);
 

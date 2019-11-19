@@ -12,6 +12,10 @@ namespace colibri.core.io {
 
             this._getContent = builder;
 
+            this.reset();
+        }
+
+        reset() {
             this._map = new Map();
         }
 

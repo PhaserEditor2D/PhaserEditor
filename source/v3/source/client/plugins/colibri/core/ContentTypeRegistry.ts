@@ -12,6 +12,10 @@ namespace colibri.core {
             this._cache = new ContentTypeFileCache(this);
         }
 
+        resetCache() {
+            this._cache.reset();
+        }
+
         registerResolver(resolver: IContentTypeResolver) {
             this._resolvers.push(resolver);
         }
@@ -26,31 +30,6 @@ namespace colibri.core {
 
         async preload(file: io.FilePath): Promise<ui.controls.PreloadResult> {
             return this._cache.preload(file);
-        }
-    }
-
-    class ContentTypeFileCache extends io.FileContentCache<string> {
-
-        constructor(registry: ContentTypeRegistry) {
-            super(async (file) => {
-
-                for (const resolver of registry.getResolvers()) {
-
-                    try {
-
-                        const ct = await resolver.computeContentType(file);
-
-                        if (ct !== CONTENT_TYPE_ANY) {
-                            return ct;
-                        }
-                        
-                    } catch (e) {
-                        // nothing
-                    }
-                }
-
-                return CONTENT_TYPE_ANY;
-            });
         }
     }
 }

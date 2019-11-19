@@ -9,16 +9,21 @@ namespace colibri.core.io {
         private _backendGetContent: GetFileContent<T>;
         private _backendSetContent: SetFileContent<T>;
         private _map: Map<string, ContentEntry<T>>;
+        private _preloadMap : Map<string, Promise<ui.controls.PreloadResult>>;
 
         constructor(getContent: GetFileContent<T>, setContent?: SetFileContent<T>) {
 
             this._backendGetContent = getContent;
             this._backendSetContent = setContent;
 
-            this._map = new Map();
+            this.reset();
         }
 
-        private _preloadMap = new Map<string, Promise<ui.controls.PreloadResult>>();
+        reset() {
+
+            this._map = new Map();
+            this._preloadMap = new Map();
+        }
 
         preload(file: FilePath): Promise<ui.controls.PreloadResult> {
 
