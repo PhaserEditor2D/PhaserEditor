@@ -211,6 +211,16 @@ declare namespace colibri.core.json {
     function getDataValue(data: any, key: string): any;
     function setDataValue(data: any, key: string, value: any): void;
 }
+declare namespace colibri.core.preferences {
+    class Preferences {
+        private _preferencesSpace;
+        constructor(preferencesSpace: string);
+        private readData;
+        getPreferencesSpace(): string;
+        setValue(key: string, jsonData: any): void;
+        getValue(key: string, defaultValue?: any): any;
+    }
+}
 declare namespace colibri.ui.controls {
     const EVENT_ACTION_CHANGED = "actionChanged";
     type ActionConfig = {
@@ -1042,12 +1052,14 @@ declare namespace colibri.ui.ide {
     class PartFolder extends controls.TabPane {
         constructor(...classList: string[]);
         addPart(part: Part, closeable?: boolean): void;
+        getParts(): Part[];
     }
 }
 declare namespace colibri.ui.ide {
     class EditorArea extends PartFolder {
         constructor();
         activateEditor(editor: EditorPart): void;
+        getEditors(): EditorPart[];
     }
 }
 declare namespace colibri.ui.ide {
@@ -1280,7 +1292,7 @@ declare namespace colibri.ui.ide {
     class WindowExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _createWindowFunc;
-        constructor(id: string, priority: number, createWindowFunc: CreateWindowFunc);
+        constructor(id: string, createWindowFunc: CreateWindowFunc);
         createWindow(): WorkbenchWindow;
     }
 }
@@ -1289,6 +1301,7 @@ declare namespace colibri.ui.ide {
     const EVENT_PART_ACTIVATED = "partActivated";
     const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
     const EVENT_EDITOR_ACTIVATED = "editorActivated";
+    const EVENT_PROJECT_OPENED = "projectOpened";
     const ICON_FILE = "file";
     const ICON_FOLDER = "folder";
     const ICON_PLUS = "plus";
@@ -1309,7 +1322,11 @@ declare namespace colibri.ui.ide {
         private _extensionRegistry;
         private _commandManager;
         private _windows;
+        private _globalPreferences;
+        private _projectPreferences;
         private constructor();
+        getGlobalPreferences(): core.preferences.Preferences;
+        getProjectPreferences(): core.preferences.Preferences;
         addPlugin(plugin: ide.Plugin): void;
         getPlugins(): Plugin[];
         launch(): Promise<void>;
@@ -1317,7 +1334,7 @@ declare namespace colibri.ui.ide {
         private preloadProjectResources;
         private registerWindows;
         getWindows(): WorkbenchWindow[];
-        activateWindow(id: string): void;
+        activateWindow(id: string): WorkbenchWindow;
         private preloadIcons;
         private registerContentTypeIcons;
         private initCommands;
@@ -1347,7 +1364,7 @@ declare namespace colibri.ui.ide {
         getWorkbenchIcon(name: string): controls.IImage;
         getEditorRegistry(): EditorRegistry;
         getEditors(): EditorPart[];
-        openEditor(input: any): void;
+        openEditor(input: any): EditorPart;
     }
 }
 declare namespace colibri.ui.ide {
@@ -1357,6 +1374,10 @@ declare namespace colibri.ui.ide {
         private _id;
         private _created;
         constructor(id: string);
+        saveState(prefs: colibri.core.preferences.Preferences): void;
+        restoreState(prefs: colibri.core.preferences.Preferences): void;
+        protected saveEditorsState(prefs: colibri.core.preferences.Preferences): void;
+        protected restoreEditors(prefs: colibri.core.preferences.Preferences): void;
         create(): void;
         protected abstract createParts(): any;
         getId(): string;

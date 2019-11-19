@@ -828,6 +828,51 @@ var colibri;
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
+    var core;
+    (function (core) {
+        var preferences;
+        (function (preferences) {
+            class Preferences {
+                constructor(preferencesSpace) {
+                    this._preferencesSpace = preferencesSpace;
+                }
+                readData() {
+                    if (this._preferencesSpace in window.localStorage) {
+                        const str = window.localStorage[this._preferencesSpace];
+                        try {
+                            return JSON.parse(str);
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                    }
+                    return {};
+                }
+                getPreferencesSpace() {
+                    return this._preferencesSpace;
+                }
+                setValue(key, jsonData) {
+                    try {
+                        const data = this.readData();
+                        data[key] = jsonData;
+                        window.localStorage[this._preferencesSpace] = JSON.stringify(data);
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
+                }
+                getValue(key, defaultValue = null) {
+                    var _a;
+                    const data = this.readData();
+                    return _a = data[key], (_a !== null && _a !== void 0 ? _a : defaultValue);
+                }
+            }
+            preferences.Preferences = Preferences;
+        })(preferences = core.preferences || (core.preferences = {}));
+    })(core = colibri.core || (colibri.core = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -4292,7 +4337,6 @@ var colibri;
                     }
                 }
                 onPartActivated() {
-                    console.log("part activated " + this.getId());
                 }
             }
             ide.Part = Part;
@@ -4393,6 +4437,9 @@ var colibri;
                     this.addTab(part.getTitle(), part.getIcon(), part, closeable);
                     part.setPartFolder(this);
                 }
+                getParts() {
+                    return this.getContentList();
+                }
             }
             ide.PartFolder = PartFolder;
         })(ide = ui.ide || (ui.ide = {}));
@@ -4413,6 +4460,9 @@ var colibri;
                 }
                 activateEditor(editor) {
                     super.selectTabWithContent(editor);
+                }
+                getEditors() {
+                    return super.getParts();
                 }
             }
             ide.EditorArea = EditorArea;
@@ -5176,8 +5226,8 @@ var colibri;
         var ide;
         (function (ide) {
             class WindowExtension extends colibri.core.extensions.Extension {
-                constructor(id, priority, createWindowFunc) {
-                    super(id, priority);
+                constructor(id, createWindowFunc) {
+                    super(id, 10);
                     this._createWindowFunc = createWindowFunc;
                 }
                 createWindow() {
@@ -5200,6 +5250,7 @@ var colibri;
             ide.EVENT_PART_ACTIVATED = "partActivated";
             ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
             ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
+            ide.EVENT_PROJECT_OPENED = "projectOpened";
             ide.ICON_FILE = "file";
             ide.ICON_FOLDER = "folder";
             ide.ICON_PLUS = "plus";
@@ -5216,12 +5267,20 @@ var colibri;
                     this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
                     this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
                     this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
+                    this._globalPreferences = new colibri.core.preferences.Preferences("__global__");
+                    this._projectPreferences = null;
                 }
                 static getWorkbench() {
                     if (!Workbench._workbench) {
                         Workbench._workbench = new Workbench();
                     }
                     return this._workbench;
+                }
+                getGlobalPreferences() {
+                    return this._globalPreferences;
+                }
+                getProjectPreferences() {
+                    return this._projectPreferences;
                 }
                 addPlugin(plugin) {
                     this._plugins.push(plugin);
@@ -5255,10 +5314,14 @@ var colibri;
                     console.log("%cWorkbench: started.", "color:green");
                 }
                 async openProject(projectName) {
+                    this._projectPreferences = new colibri.core.preferences.Preferences("__project__" + projectName);
                     console.log(`Workbench: opening project ${projectName}.`);
                     await this._fileStorage.openProject(projectName);
                     console.log("Workbench: fetching required project resources.");
                     await this.preloadProjectResources();
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PROJECT_OPENED, {
+                        detail: projectName
+                    }));
                 }
                 async preloadProjectResources() {
                     const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
@@ -5268,8 +5331,6 @@ var colibri;
                 }
                 registerWindows() {
                     const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.POINT_ID);
-                    console.log("Window extensions");
-                    console.log(extensions);
                     this._windows = extensions.map(extension => extension.createWindow());
                     if (this._windows.length === 0) {
                         alert("No workbench window provided.");
@@ -5279,7 +5340,6 @@ var colibri;
                             win.style.display = "none";
                             document.body.appendChild(win.getElement());
                         }
-                        this.activateWindow(this._windows[0].getId());
                     }
                 }
                 getWindows() {
@@ -5294,10 +5354,10 @@ var colibri;
                         this._activeWindow = win;
                         win.create();
                         win.style.display = "initial";
+                        return win;
                     }
-                    else {
-                        alert(`Window ${id} not found.`);
-                    }
+                    alert(`Window ${id} not found.`);
+                    return null;
                 }
                 async preloadIcons() {
                     await this.getWorkbenchIcon(ide.ICON_FILE).preload();
@@ -5481,8 +5541,7 @@ var colibri;
                     return this._editorRegistry;
                 }
                 getEditors() {
-                    const editorArea = this.getActiveWindow().getEditorArea();
-                    return editorArea.getContentList();
+                    return this.getActiveWindow().getEditorArea().getEditors();
                 }
                 openEditor(input) {
                     const editorArea = this.getActiveWindow().getEditorArea();
@@ -5492,7 +5551,7 @@ var colibri;
                             if (editor.getInput() === input) {
                                 editorArea.activateEditor(editor);
                                 this.setActivePart(editor);
-                                return;
+                                return editor;
                             }
                         }
                     }
@@ -5503,10 +5562,12 @@ var colibri;
                         editorArea.addPart(editor, true);
                         editorArea.activateEditor(editor);
                         this.setActivePart(editor);
+                        return editor;
                     }
                     else {
                         alert("No editor available for the given input.");
                     }
+                    return null;
                 }
             }
             ide.Workbench = Workbench;
@@ -5520,12 +5581,76 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
+            var io = colibri.core.io;
             class WorkbenchWindow extends ui.controls.Control {
                 constructor(id) {
                     super("div", "Window");
                     this.getElement().id = id;
                     this._id = id;
                     this._created = false;
+                }
+                saveState(prefs) {
+                    // nothing, derived classes can use methods like saveEditorsSate()
+                }
+                restoreState(prefs) {
+                    // nothing, derived classes can use methods like restoreEditors().
+                }
+                saveEditorsState(prefs) {
+                    const editorArea = this.getEditorArea();
+                    const editors = editorArea.getEditors();
+                    let activeEditorFile = null;
+                    {
+                        const activeEditor = editorArea.getSelectedTabContent();
+                        if (activeEditor) {
+                            const input = activeEditor.getInput();
+                            if (input instanceof io.FilePath) {
+                                activeEditorFile = input.getFullName();
+                            }
+                        }
+                    }
+                    const restoreEditorData = {
+                        fileDataList: [],
+                        activeEditorFile: activeEditorFile
+                    };
+                    console.log("saveEditorsState");
+                    console.log(restoreEditorData);
+                    for (const editor of editors) {
+                        const input = editor.getInput();
+                        if (input instanceof colibri.core.io.FilePath) {
+                            restoreEditorData.fileDataList.push({
+                                fileName: input.getFullName()
+                            });
+                        }
+                    }
+                    prefs.setValue("restoreEditorData", restoreEditorData);
+                }
+                restoreEditors(prefs) {
+                    const editorArea = this.getEditorArea();
+                    const editors = editorArea.getEditors();
+                    const restoreEditorData = prefs.getValue("restoreEditorData");
+                    console.log("restore");
+                    console.log(restoreEditorData);
+                    for (const editor of editors) {
+                        editorArea.closeTab(editor);
+                    }
+                    if (restoreEditorData) {
+                        let activeEditor = null;
+                        const wb = colibri.ui.ide.Workbench.getWorkbench();
+                        for (const fileData of restoreEditorData.fileDataList) {
+                            const fileName = fileData.fileName;
+                            const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);
+                            if (file) {
+                                const editor = wb.openEditor(file);
+                                if (file.getFullName() === restoreEditorData.activeEditorFile) {
+                                    activeEditor = editor;
+                                }
+                            }
+                        }
+                        if (activeEditor) {
+                            console.log("activating " + activeEditor.getId());
+                            editorArea.activateEditor(activeEditor);
+                        }
+                    }
                 }
                 create() {
                     if (this._created) {

@@ -2,6 +2,16 @@
 
 namespace colibri.ui.ide {
 
+    import io = colibri.core.io;
+
+    declare type RestoreEditorData = {
+        fileDataList: {
+            fileName: string
+        }[],
+        activeEditorFile: string
+    }
+
+
     export abstract class WorkbenchWindow extends controls.Control {
 
         private _toolbar: MainToolbar;
@@ -18,6 +28,104 @@ namespace colibri.ui.ide {
 
             this._created = false;
 
+        }
+
+        saveState(prefs: colibri.core.preferences.Preferences) {
+            // nothing, derived classes can use methods like saveEditorsSate()
+        }
+
+        restoreState(prefs: colibri.core.preferences.Preferences) {
+            // nothing, derived classes can use methods like restoreEditors().
+        }
+
+        protected saveEditorsState(prefs: colibri.core.preferences.Preferences) {
+
+            const editorArea = this.getEditorArea();
+
+            const editors = editorArea.getEditors();
+
+            let activeEditorFile: string = null;
+
+            {
+                const activeEditor = editorArea.getSelectedTabContent() as EditorPart;
+
+                if (activeEditor) {
+
+                    const input = activeEditor.getInput();
+
+                    if (input instanceof io.FilePath) {
+
+                        activeEditorFile = input.getFullName();
+                    }
+                }
+            }
+
+            const restoreEditorData: RestoreEditorData = {
+                fileDataList: [],
+                activeEditorFile: activeEditorFile
+            };
+
+            console.log("saveEditorsState");
+            console.log(restoreEditorData);
+
+            for (const editor of editors) {
+
+                const input = editor.getInput();
+
+                if (input instanceof colibri.core.io.FilePath) {
+
+                    restoreEditorData.fileDataList.push({
+                        fileName: input.getFullName()
+                    });
+                }
+            }
+
+            prefs.setValue("restoreEditorData", restoreEditorData);
+        }
+
+        protected restoreEditors(prefs: colibri.core.preferences.Preferences) {
+
+            const editorArea = this.getEditorArea();
+
+            const editors = editorArea.getEditors();
+
+            const restoreEditorData = prefs.getValue("restoreEditorData") as RestoreEditorData;
+
+            console.log("restore");
+            console.log(restoreEditorData);
+
+            for (const editor of editors) {
+
+                editorArea.closeTab(editor);
+            }
+
+            if (restoreEditorData) {
+
+                let activeEditor: EditorPart = null;
+
+                const wb = colibri.ui.ide.Workbench.getWorkbench();
+
+                for (const fileData of restoreEditorData.fileDataList) {
+
+                    const fileName = fileData.fileName;
+
+                    const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);
+
+                    if (file) {
+
+                        const editor = wb.openEditor(file);
+
+                        if (file.getFullName() === restoreEditorData.activeEditorFile) {
+                            activeEditor = editor;
+                        }
+                    }
+                }
+
+                if (activeEditor) {
+                    console.log("activating " + activeEditor.getId());
+                    editorArea.activateEditor(activeEditor);
+                }
+            }
         }
 
         create() {

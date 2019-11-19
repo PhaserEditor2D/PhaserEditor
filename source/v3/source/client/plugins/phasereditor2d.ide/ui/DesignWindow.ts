@@ -20,6 +20,32 @@ namespace phasereditor2d.ide.ui {
 
         constructor() {
             super(DesignWindow.ID);
+
+            const wb = ide.Workbench.getWorkbench();
+
+            wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
+
+                if (IDEPlugin.getInstance().isOpeningProject()) {
+                    return;
+                }
+
+                const win = wb.getActiveWindow();
+
+                if (win instanceof DesignWindow) {
+
+                    win.saveState(wb.getProjectPreferences());
+                }
+            });
+        }
+
+
+        saveState(prefs: colibri.core.preferences.Preferences) {
+
+            this.saveEditorsState(prefs);
+        }
+
+        restoreState(prefs: colibri.core.preferences.Preferences) {
+            this.restoreEditors(prefs);
         }
 
         createParts() {
@@ -52,7 +78,7 @@ namespace phasereditor2d.ide.ui {
 
             manager.add(new files.ui.actions.OpenNewFileDialogAction());
 
-            manager.add(new welcome.ui.actions.OpenProjectsDialogAction());
+            manager.add(new ui.actions.OpenProjectsDialogAction());
 
             manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
         }

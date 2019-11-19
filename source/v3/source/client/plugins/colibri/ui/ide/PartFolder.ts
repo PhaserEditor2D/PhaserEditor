@@ -45,6 +45,10 @@ namespace colibri.ui.ide {
 
             part.setPartFolder(this);
         }
+
+        getParts() : Part[] {
+            return this.getContentList() as Part[];
+        }
     }
 
 }

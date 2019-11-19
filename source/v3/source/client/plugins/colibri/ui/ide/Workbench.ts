@@ -7,6 +7,7 @@ namespace colibri.ui.ide {
 
     export const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
     export const EVENT_EDITOR_ACTIVATED = "editorActivated";
+    export const EVENT_PROJECT_OPENED = "projectOpened";
 
     export const ICON_FILE = "file";
     export const ICON_FOLDER = "folder";
@@ -41,6 +42,8 @@ namespace colibri.ui.ide {
         private _extensionRegistry: core.extensions.ExtensionRegistry;
         private _commandManager: commands.CommandManager;
         private _windows: WorkbenchWindow[];
+        private _globalPreferences: core.preferences.Preferences;
+        private _projectPreferences: core.preferences.Preferences;
 
         private constructor() {
 
@@ -63,6 +66,18 @@ namespace colibri.ui.ide {
             this._fileStorage = new core.io.FileStorage_HTTPServer();
 
             this._fileStringCache = new core.io.FileStringCache(this._fileStorage);
+
+            this._globalPreferences = new core.preferences.Preferences("__global__");
+
+            this._projectPreferences = null;
+        }
+
+        getGlobalPreferences() {
+            return this._globalPreferences;
+        }
+
+        getProjectPreferences() {
+            return this._projectPreferences;
         }
 
         addPlugin(plugin: ide.Plugin) {
@@ -96,7 +111,6 @@ namespace colibri.ui.ide {
 
             await this.preloadIcons();
 
-
             console.log("Workbench: registering content types.");
 
             this.registerContentTypes();
@@ -119,6 +133,8 @@ namespace colibri.ui.ide {
 
         async openProject(projectName: string) {
 
+            this._projectPreferences = new core.preferences.Preferences("__project__" + projectName);
+
             console.log(`Workbench: opening project ${projectName}.`);
 
             await this._fileStorage.openProject(projectName);
@@ -126,6 +142,10 @@ namespace colibri.ui.ide {
             console.log("Workbench: fetching required project resources.");
 
             await this.preloadProjectResources();
+
+            this.dispatchEvent(new CustomEvent(EVENT_PROJECT_OPENED, {
+                detail: projectName
+            }));
         }
 
         private async preloadProjectResources() {
@@ -141,11 +161,7 @@ namespace colibri.ui.ide {
 
             const extensions = this._extensionRegistry.getExtensions<WindowExtension>(WindowExtension.POINT_ID);
 
-            console.log("Window extensions");
-            console.log(extensions);
-
             this._windows = extensions.map(extension => extension.createWindow());
-
 
             if (this._windows.length === 0) {
 
@@ -159,9 +175,6 @@ namespace colibri.ui.ide {
 
                     document.body.appendChild(win.getElement());
                 }
-
-
-                this.activateWindow(this._windows[0].getId());
             }
         }
 
@@ -169,7 +182,7 @@ namespace colibri.ui.ide {
             return this._windows;
         }
 
-        public activateWindow(id: string) {
+        public activateWindow(id: string): WorkbenchWindow {
 
             const win = this._windows.find(win => win.getId() === id);
 
@@ -180,15 +193,17 @@ namespace colibri.ui.ide {
                 }
 
                 this._activeWindow = win;
-                
+
                 win.create();
 
                 win.style.display = "initial";
 
-            } else {
-
-                alert(`Window ${id} not found.`);
+                return win;
             }
+
+            alert(`Window ${id} not found.`);
+
+            return null;
         }
 
         private async preloadIcons() {
@@ -332,6 +347,7 @@ namespace colibri.ui.ide {
         }
 
         private toggleActivePartClass(part: Part) {
+
             const tabPane = this.findTabPane(part.getElement());
 
             if (!tabPane) {
@@ -340,22 +356,30 @@ namespace colibri.ui.ide {
             }
 
             if (part.containsClass("activePart")) {
+
                 part.removeClass("activePart");
                 tabPane.removeClass("activePart");
+
             } else {
+
                 part.addClass("activePart");
                 tabPane.addClass("activePart");
             }
         }
 
         private findTabPane(element: HTMLElement) {
+
             if (element) {
+
                 const control = controls.Control.getControlOf(element);
+
                 if (control && control instanceof controls.TabPane) {
                     return control;
                 }
+
                 return this.findTabPane(element.parentElement);
             }
+
             return null;
         }
 
@@ -426,7 +450,7 @@ namespace colibri.ui.ide {
         }
 
         getFileImage(file: core.io.FilePath) {
-            
+
             if (file === null) {
                 return null;
             }
@@ -443,11 +467,11 @@ namespace colibri.ui.ide {
         }
 
         getEditors(): EditorPart[] {
-            const editorArea = this.getActiveWindow().getEditorArea();
-            return <EditorPart[]>editorArea.getContentList();
+            return this.getActiveWindow().getEditorArea().getEditors();
         }
 
-        openEditor(input: any): void {
+        openEditor(input: any): EditorPart {
+
             const editorArea = this.getActiveWindow().getEditorArea();
 
             {
@@ -461,7 +485,7 @@ namespace colibri.ui.ide {
 
                         this.setActivePart(editor);
 
-                        return;
+                        return editor;
                     }
                 }
             }
@@ -480,9 +504,13 @@ namespace colibri.ui.ide {
 
                 this.setActivePart(editor);
 
+                return editor;
+
             } else {
                 alert("No editor available for the given input.");
             }
+
+            return null;
         }
 
     }

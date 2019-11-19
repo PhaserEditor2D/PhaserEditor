@@ -1,4 +1,4 @@
-namespace phasereditor2d.welcome.ui.viewers {
+namespace phasereditor2d.ide.ui.viewers {
 
     import controls = colibri.ui.controls;
 

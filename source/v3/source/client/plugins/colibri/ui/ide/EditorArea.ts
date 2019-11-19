@@ -14,5 +14,8 @@ namespace colibri.ui.ide {
             super.selectTabWithContent(editor);
         }
 
+        getEditors() : EditorPart[] {
+            return super.getParts() as EditorPart[];
+        }
     }
 }

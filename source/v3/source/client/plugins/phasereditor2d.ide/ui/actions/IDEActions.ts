@@ -1,8 +1,8 @@
-namespace phasereditor2d.welcome.ui.actions {
+namespace phasereditor2d.ide.ui.actions {
 
-    export const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.welcome.ui.actions.OpenProjectsDialog"
+    export const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog"
 
-    export class WelcomeActions {
+    export class IDEActions {
 
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void {
 
@@ -10,7 +10,7 @@ namespace phasereditor2d.welcome.ui.actions {
 
             manager.addHandlerHelper(CMD_OPEN_PROJECTS_DIALOG,
                 args => {
-                    
+
                     return args.activeWindow.getId() !== ui.WelcomeWindow.ID;
 
                 }, args => new OpenProjectsDialogAction().run());

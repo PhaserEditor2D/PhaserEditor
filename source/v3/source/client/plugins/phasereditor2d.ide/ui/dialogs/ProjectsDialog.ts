@@ -1,4 +1,4 @@
-namespace phasereditor2d.welcome.ui.dialogs {
+namespace phasereditor2d.ide.ui.dialogs {
 
     import controls = colibri.ui.controls;
 
@@ -54,15 +54,11 @@ namespace phasereditor2d.welcome.ui.dialogs {
 
         private async openProject() {
 
-            const project = this.getViewer().getSelectionFirstElement();
-
-            const wb = colibri.ui.ide.Workbench.getWorkbench();
-
-            await wb.openProject(project);
-
             this.close();
 
-            wb.activateWindow("phasereditor2d.ide.ui.DesignWindow");
+            const project = this.getViewer().getSelectionFirstElement();
+
+            IDEPlugin.getInstance().ideOpenProject(project);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace phasereditor2d.welcome.ui {
+namespace phasereditor2d.ide.ui {
 
     import controls = colibri.ui.controls;
 
@@ -7,6 +7,7 @@ namespace phasereditor2d.welcome.ui {
         static ID = "phasereditor2d.welcome.ui.WelcomeWindow";
 
         constructor() {
+            
             super(WelcomeWindow.ID);
         }
 

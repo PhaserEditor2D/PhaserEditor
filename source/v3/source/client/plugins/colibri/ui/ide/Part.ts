@@ -107,7 +107,7 @@ namespace colibri.ui.ide {
         }
 
         onPartActivated() {
-            console.log("part activated " + this.getId());
+            
         }
 
         protected abstract createPart(): void;
