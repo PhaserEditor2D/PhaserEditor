@@ -102,7 +102,6 @@ declare namespace phasereditor2d.pack.core {
     import io = colibri.core.io;
     class AssetPackUtils {
         static isAtlasType(type: string): boolean;
-        static preloadAssetPackItems(packItems: AssetPackItem[]): Promise<void>;
         static getAllPacks(): Promise<AssetPack[]>;
         static getFileFromPackUrl(url: string): io.FilePath;
         static getFilePackUrl(file: io.FilePath): any;
@@ -236,7 +235,7 @@ declare namespace phasereditor2d.pack.core {
         private static _packs;
         private static _loaded;
         private constructor();
-        static preload(): Promise<controls.PreloadResult>;
+        static preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
         static getPacks(): AssetPack[];
         static findAssetPackItem(key: string): AssetPackItem;
         static getAssetPackItemOrFrame(key: string, frame: any): AssetPackItem | AssetPackImageFrame;

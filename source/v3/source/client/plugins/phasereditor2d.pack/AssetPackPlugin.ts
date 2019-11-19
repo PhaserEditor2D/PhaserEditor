@@ -129,7 +129,7 @@ namespace phasereditor2d.pack {
             reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID,
                 new ide.PreloadProjectResourcesExtension(
                     "phasereditor2d.pack.PreloadProjectResourcesExtension",
-                    () => pack.core.PackFinder.preload()
+                    (monitor) => pack.core.PackFinder.preload(monitor)
                 )
             );
 

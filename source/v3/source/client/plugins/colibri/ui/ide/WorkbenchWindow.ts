@@ -65,9 +65,6 @@ namespace colibri.ui.ide {
                 activeEditorFile: activeEditorFile
             };
 
-            console.log("saveEditorsState");
-            console.log(restoreEditorData);
-
             for (const editor of editors) {
 
                 const input = editor.getInput();
@@ -90,9 +87,6 @@ namespace colibri.ui.ide {
             const editors = editorArea.getEditors();
 
             const restoreEditorData = prefs.getValue("restoreEditorData") as RestoreEditorData;
-
-            console.log("restore");
-            console.log(restoreEditorData);
 
             for (const editor of editors) {
 
@@ -122,7 +116,6 @@ namespace colibri.ui.ide {
                 }
 
                 if (activeEditor) {
-                    console.log("activating " + activeEditor.getId());
                     editorArea.activateEditor(activeEditor);
                 }
             }

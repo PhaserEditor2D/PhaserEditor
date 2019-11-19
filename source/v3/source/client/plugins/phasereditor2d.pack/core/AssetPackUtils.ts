@@ -17,12 +17,6 @@ namespace phasereditor2d.pack.core {
             return ATLAS_TYPES.has(type);
         }
 
-        static async preloadAssetPackItems(packItems: AssetPackItem[]) {
-            for (const item of packItems) {
-                await item.preload();
-            }
-        }
-
         static async getAllPacks() {
             const files = await ide.FileUtils.getFilesWithContentType(contentTypes.CONTENT_TYPE_ASSET_PACK);
 

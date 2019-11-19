@@ -370,6 +370,9 @@ declare namespace colibri.ui.controls {
     }
 }
 declare namespace colibri.ui.controls {
+    const EmptyProgressMonitor: IProgressMonitor;
+}
+declare namespace colibri.ui.controls {
     class FillLayout implements ILayout {
         private _padding;
         constructor(padding?: number);
@@ -400,6 +403,12 @@ declare namespace colibri.ui.controls {
 declare namespace colibri.ui.controls {
     interface ILayout {
         layout(parent: Control): any;
+    }
+}
+declare namespace colibri.ui.controls {
+    interface IProgressMonitor {
+        addTotal(total: number): any;
+        step(): any;
     }
 }
 declare namespace colibri.ui.controls {
@@ -633,6 +642,17 @@ declare namespace colibri.ui.controls.dialogs {
         createDialogArea(): void;
         create(): void;
         setProgress(progress: number): void;
+    }
+}
+declare namespace colibri.ui.controls.dialogs {
+    class ProgressDialogMonitor implements IProgressMonitor {
+        private _dialog;
+        private _total;
+        private _step;
+        constructor(dialog: ProgressDialog);
+        private updateDialog;
+        addTotal(total: number): void;
+        step(): void;
     }
 }
 declare namespace colibri.ui.controls.dialogs {
@@ -1276,8 +1296,8 @@ declare namespace colibri.ui.ide {
     class PreloadProjectResourcesExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _getPreloadPromise;
-        constructor(id: string, getPreloadPromise: () => Promise<any>);
-        getPreloadPromise(): Promise<any>;
+        constructor(id: string, getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>);
+        getPreloadPromise(monitor: controls.IProgressMonitor): Promise<any>;
     }
 }
 declare namespace colibri.ui.ide {
@@ -1340,7 +1360,7 @@ declare namespace colibri.ui.ide {
         getPlugins(): Plugin[];
         launch(): Promise<void>;
         private resetCache;
-        openProject(projectName: string): Promise<void>;
+        openProject(projectName: string, monitor: controls.IProgressMonitor): Promise<void>;
         private preloadProjectResources;
         private registerWindows;
         getWindows(): WorkbenchWindow[];

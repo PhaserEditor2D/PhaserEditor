@@ -128,7 +128,6 @@ namespace colibri.ui.ide {
             this.initEvents();
 
             console.log("%cWorkbench: started.", "color:green");
-
         }
 
         private resetCache() {
@@ -138,7 +137,7 @@ namespace colibri.ui.ide {
             this._contentTypeRegistry.resetCache();
         }
 
-        async openProject(projectName: string) {
+        async openProject(projectName: string, monitor : controls.IProgressMonitor) {
 
             this._projectPreferences = new core.preferences.Preferences("__project__" + projectName);
 
@@ -150,19 +149,21 @@ namespace colibri.ui.ide {
 
             console.log("Workbench: fetching required project resources.");
 
-            await this.preloadProjectResources();
+            await this.preloadProjectResources(monitor);
 
             this.dispatchEvent(new CustomEvent(EVENT_PROJECT_OPENED, {
                 detail: projectName
             }));
         }
 
-        private async preloadProjectResources() {
+        private async preloadProjectResources(monitor: controls.IProgressMonitor) {
+
+            console.log("preloadProjectResources");
 
             const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
 
             for (const extension of extensions) {
-                await extension.getPreloadPromise();
+                await extension.getPreloadPromise(monitor);
             }
         }
 

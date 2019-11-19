@@ -1,6 +1,7 @@
 namespace phasereditor2d.ide {
 
     import ide = colibri.ui.ide;
+    import controls = colibri.ui.controls;
 
     export const ICON_PLAY = "play";
 
@@ -101,7 +102,9 @@ namespace phasereditor2d.ide {
             const dlg = new ui.dialogs.OpeningProjectDialog();
             dlg.create();
             dlg.setTitle("Opening " + projectName);
-            dlg.setProgress(0.3);
+            dlg.setProgress(0);
+            
+            const monitor = new controls.dialogs.ProgressDialogMonitor(dlg);
 
             try {
 
@@ -117,7 +120,7 @@ namespace phasereditor2d.ide {
 
                 console.log(`IDEPlugin: opening project ${projectName}`);
 
-                await wb.openProject(projectName);
+                await wb.openProject(projectName, monitor);
 
                 dlg.setProgress(1);
 

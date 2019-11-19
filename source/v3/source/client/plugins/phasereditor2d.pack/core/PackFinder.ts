@@ -1,5 +1,5 @@
 namespace phasereditor2d.pack.core {
-    
+
     import controls = colibri.ui.controls;
     import ide = colibri.ui.ide;
     import core = colibri.core;
@@ -10,22 +10,32 @@ namespace phasereditor2d.pack.core {
         private static _loaded: boolean = false;
 
         private constructor() {
-            
+
         }
 
-        static async preload(): Promise<controls.PreloadResult> {
+        static async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
 
             if (this._loaded) {
 
+                monitor.addTotal(1);
+                monitor.step();
+
                 return controls.Controls.resolveNothingLoaded();
-                
+
             }
 
             this._packs = await AssetPackUtils.getAllPacks();
 
             const items = this._packs.flatMap(pack => pack.getItems());
 
-            await AssetPackUtils.preloadAssetPackItems(items);
+            monitor.addTotal(items.length);
+
+            for (const item of items) {
+
+                await item.preload();
+                
+                monitor.step();
+            }
 
             return controls.Controls.resolveResourceLoaded();
         }

@@ -83,7 +83,7 @@ var phasereditor2d;
                     }
                 ]));
                 // project resources preloader
-                reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID, new ide.PreloadProjectResourcesExtension("phasereditor2d.pack.PreloadProjectResourcesExtension", () => pack.core.PackFinder.preload()));
+                reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID, new ide.PreloadProjectResourcesExtension("phasereditor2d.pack.PreloadProjectResourcesExtension", (monitor) => pack.core.PackFinder.preload(monitor)));
                 // editors
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
                     pack.ui.editor.AssetPackEditor.getFactory()
@@ -408,11 +408,6 @@ var phasereditor2d;
             class AssetPackUtils {
                 static isAtlasType(type) {
                     return ATLAS_TYPES.has(type);
-                }
-                static async preloadAssetPackItems(packItems) {
-                    for (const item of packItems) {
-                        await item.preload();
-                    }
                 }
                 static async getAllPacks() {
                     const files = await ide.FileUtils.getFilesWithContentType(core.contentTypes.CONTENT_TYPE_ASSET_PACK);
@@ -776,13 +771,19 @@ var phasereditor2d;
             class PackFinder {
                 constructor() {
                 }
-                static async preload() {
+                static async preload(monitor = controls.EmptyProgressMonitor) {
                     if (this._loaded) {
+                        monitor.addTotal(1);
+                        monitor.step();
                         return controls.Controls.resolveNothingLoaded();
                     }
                     this._packs = await core_2.AssetPackUtils.getAllPacks();
                     const items = this._packs.flatMap(pack => pack.getItems());
-                    await core_2.AssetPackUtils.preloadAssetPackItems(items);
+                    monitor.addTotal(items.length);
+                    for (const item of items) {
+                        await item.preload();
+                        monitor.step();
+                    }
                     return controls.Controls.resolveResourceLoaded();
                 }
                 static getPacks() {

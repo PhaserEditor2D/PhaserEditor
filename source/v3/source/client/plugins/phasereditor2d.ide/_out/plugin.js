@@ -3,6 +3,7 @@ var phasereditor2d;
     var ide;
     (function (ide_1) {
         var ide = colibri.ui.ide;
+        var controls = colibri.ui.controls;
         ide_1.ICON_PLAY = "play";
         class IDEPlugin extends ide.Plugin {
             constructor() {
@@ -51,7 +52,8 @@ var phasereditor2d;
                 const dlg = new ide_1.ui.dialogs.OpeningProjectDialog();
                 dlg.create();
                 dlg.setTitle("Opening " + projectName);
-                dlg.setProgress(0.3);
+                dlg.setProgress(0);
+                const monitor = new controls.dialogs.ProgressDialogMonitor(dlg);
                 try {
                     const wb = colibri.ui.ide.Workbench.getWorkbench();
                     {
@@ -61,7 +63,7 @@ var phasereditor2d;
                         }
                     }
                     console.log(`IDEPlugin: opening project ${projectName}`);
-                    await wb.openProject(projectName);
+                    await wb.openProject(projectName, monitor);
                     dlg.setProgress(1);
                     const designWindow = wb.activateWindow(ide_1.ui.DesignWindow.ID);
                     if (designWindow) {

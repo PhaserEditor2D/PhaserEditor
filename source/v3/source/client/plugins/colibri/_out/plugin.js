@@ -1394,6 +1394,19 @@ var colibri;
     (function (ui) {
         var controls;
         (function (controls) {
+            controls.EmptyProgressMonitor = {
+                addTotal: (n) => { },
+                step: () => { }
+            };
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
             class FillLayout {
                 constructor(padding = 0) {
                     this._padding = 0;
@@ -2517,6 +2530,38 @@ var colibri;
                     }
                 }
                 dialogs.ProgressDialog = ProgressDialog;
+            })(dialogs = controls.dialogs || (controls.dialogs = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var dialogs;
+            (function (dialogs) {
+                class ProgressDialogMonitor {
+                    constructor(dialog) {
+                        this._dialog = dialog;
+                        this._total = 0;
+                        this._step = 0;
+                    }
+                    updateDialog() {
+                        const p = this._step / this._total;
+                        this._dialog.setProgress(p);
+                    }
+                    addTotal(total) {
+                        this._total += total;
+                        this.updateDialog();
+                    }
+                    step() {
+                        this._step += 1;
+                        this.updateDialog();
+                    }
+                }
+                dialogs.ProgressDialogMonitor = ProgressDialogMonitor;
             })(dialogs = controls.dialogs || (controls.dialogs = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -5182,8 +5227,8 @@ var colibri;
                     super(id);
                     this._getPreloadPromise = getPreloadPromise;
                 }
-                getPreloadPromise() {
-                    return this._getPreloadPromise();
+                getPreloadPromise(monitor) {
+                    return this._getPreloadPromise(monitor);
                 }
             }
             PreloadProjectResourcesExtension.POINT_ID = "colibri.ui.ide.PreloadProjectResourcesExtension";
@@ -5338,21 +5383,22 @@ var colibri;
                     this._fileImageCache.reset();
                     this._contentTypeRegistry.resetCache();
                 }
-                async openProject(projectName) {
+                async openProject(projectName, monitor) {
                     this._projectPreferences = new colibri.core.preferences.Preferences("__project__" + projectName);
                     this.resetCache();
                     console.log(`Workbench: opening project ${projectName}.`);
                     await this._fileStorage.openProject(projectName);
                     console.log("Workbench: fetching required project resources.");
-                    await this.preloadProjectResources();
+                    await this.preloadProjectResources(monitor);
                     this.dispatchEvent(new CustomEvent(ide.EVENT_PROJECT_OPENED, {
                         detail: projectName
                     }));
                 }
-                async preloadProjectResources() {
+                async preloadProjectResources(monitor) {
+                    console.log("preloadProjectResources");
                     const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
                     for (const extension of extensions) {
-                        await extension.getPreloadPromise();
+                        await extension.getPreloadPromise(monitor);
                     }
                 }
                 registerWindows() {
@@ -5638,8 +5684,6 @@ var colibri;
                         fileDataList: [],
                         activeEditorFile: activeEditorFile
                     };
-                    console.log("saveEditorsState");
-                    console.log(restoreEditorData);
                     for (const editor of editors) {
                         const input = editor.getInput();
                         if (input instanceof colibri.core.io.FilePath) {
@@ -5654,8 +5698,6 @@ var colibri;
                     const editorArea = this.getEditorArea();
                     const editors = editorArea.getEditors();
                     const restoreEditorData = prefs.getValue("restoreEditorData");
-                    console.log("restore");
-                    console.log(restoreEditorData);
                     for (const editor of editors) {
                         editorArea.closeTab(editor);
                     }
@@ -5673,7 +5715,6 @@ var colibri;
                             }
                         }
                         if (activeEditor) {
-                            console.log("activating " + activeEditor.getId());
                             editorArea.activateEditor(activeEditor);
                         }
                     }
