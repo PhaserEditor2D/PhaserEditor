@@ -29,7 +29,7 @@ namespace colibri.ui.controls.dialogs {
                     if (e.code === "Escape") {
 
                         if (Dialog._dialogs.length > 0) {
-                            
+
                             const dlg = Dialog._dialogs[Dialog._dialogs.length - 1];
 
                             if (dlg.isCloseWithEscapeKey()) {
@@ -57,7 +57,11 @@ namespace colibri.ui.controls.dialogs {
             Dialog._dialogs.push(this);
         }
 
-        setCloseWithEscapeKey(closeWithEscapeKey : boolean) {
+        getDialogBackgroundElement() {
+            return this._containerElement;
+        }
+
+        setCloseWithEscapeKey(closeWithEscapeKey: boolean) {
             this._closeWithEscapeKey = closeWithEscapeKey;
         }
 

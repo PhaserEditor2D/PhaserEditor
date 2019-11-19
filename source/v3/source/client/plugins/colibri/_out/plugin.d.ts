@@ -586,6 +586,7 @@ declare namespace colibri.ui.controls.dialogs {
         private _parentDialog;
         private _closeWithEscapeKey;
         constructor(...classList: string[]);
+        getDialogBackgroundElement(): HTMLElement;
         setCloseWithEscapeKey(closeWithEscapeKey: boolean): void;
         isCloseWithEscapeKey(): boolean;
         getParentDialog(): Dialog;

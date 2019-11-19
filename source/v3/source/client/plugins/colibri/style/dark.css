@@ -170,6 +170,10 @@ Important:
 
 /* Dialog */
 
+.dark .DarkDialogContainer {
+    background: #262626;
+}
+
 .dark .Dialog {
     background: #6e6e6e;
 }

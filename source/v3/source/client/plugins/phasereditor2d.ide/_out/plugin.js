@@ -35,17 +35,23 @@ var phasereditor2d;
                 let win = null;
                 if (defaultProjectData) {
                     const projectName = defaultProjectData["projectName"];
-                    await this.ideOpenProject(projectName);
-                }
-                else {
-                    win = wb.activateWindow(ide_1.ui.WelcomeWindow.ID);
-                    if (win) {
-                        win.restoreState(wb.getProjectPreferences());
+                    let projects = await wb.getFileStorage().getProjects();
+                    if (projects.indexOf(projectName) >= 0) {
+                        await this.ideOpenProject(projectName);
+                        return;
                     }
+                }
+                win = wb.activateWindow(ide_1.ui.WelcomeWindow.ID);
+                if (win) {
+                    win.restoreState(wb.getProjectPreferences());
                 }
             }
             async ideOpenProject(projectName) {
                 this._openingProject = true;
+                const dlg = new ide_1.ui.dialogs.OpeningProjectDialog();
+                dlg.create();
+                dlg.setTitle("Opening " + projectName);
+                dlg.setProgress(0.3);
                 try {
                     const wb = colibri.ui.ide.Workbench.getWorkbench();
                     {
@@ -56,6 +62,7 @@ var phasereditor2d;
                     }
                     console.log(`IDEPlugin: opening project ${projectName}`);
                     await wb.openProject(projectName);
+                    dlg.setProgress(1);
                     const designWindow = wb.activateWindow(ide_1.ui.DesignWindow.ID);
                     if (designWindow) {
                         designWindow.restoreState(wb.getProjectPreferences());
@@ -63,6 +70,7 @@ var phasereditor2d;
                 }
                 finally {
                     this._openingProject = false;
+                    dlg.close();
                 }
             }
             isOpeningProject() {
@@ -256,6 +264,26 @@ var phasereditor2d;
                 }
                 actions.PlayProjectAction = PlayProjectAction;
             })(actions = ui.actions || (ui.actions = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                var controls = colibri.ui.controls;
+                class OpeningProjectDialog extends controls.dialogs.ProgressDialog {
+                    create() {
+                        super.create();
+                        this.getDialogBackgroundElement().classList.add("DarkDialogContainer");
+                    }
+                }
+                dialogs.OpeningProjectDialog = OpeningProjectDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
 })(phasereditor2d || (phasereditor2d = {}));

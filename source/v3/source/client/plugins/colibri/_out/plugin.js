@@ -2338,6 +2338,9 @@ var colibri;
                         }
                         Dialog._dialogs.push(this);
                     }
+                    getDialogBackgroundElement() {
+                        return this._containerElement;
+                    }
                     setCloseWithEscapeKey(closeWithEscapeKey) {
                         this._closeWithEscapeKey = closeWithEscapeKey;
                     }

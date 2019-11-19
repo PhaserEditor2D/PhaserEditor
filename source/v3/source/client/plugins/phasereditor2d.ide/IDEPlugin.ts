@@ -76,22 +76,32 @@ namespace phasereditor2d.ide {
 
                 const projectName = defaultProjectData["projectName"];
 
-                await this.ideOpenProject(projectName);
+                let projects = await wb.getFileStorage().getProjects();
 
-            } else {
+                if (projects.indexOf(projectName) >= 0) {
 
-                win = wb.activateWindow(ui.WelcomeWindow.ID) as ui.DesignWindow;
+                    await this.ideOpenProject(projectName);
 
-                if (win) {
-
-                    win.restoreState(wb.getProjectPreferences());
+                    return;
                 }
+            }
+
+            win = wb.activateWindow(ui.WelcomeWindow.ID) as ui.DesignWindow;
+
+            if (win) {
+
+                win.restoreState(wb.getProjectPreferences());
             }
         }
 
         async ideOpenProject(projectName: string) {
 
             this._openingProject = true;
+
+            const dlg = new ui.dialogs.OpeningProjectDialog();
+            dlg.create();
+            dlg.setTitle("Opening " + projectName);
+            dlg.setProgress(0.3);
 
             try {
 
@@ -104,10 +114,12 @@ namespace phasereditor2d.ide {
                         win.saveState(wb.getProjectPreferences());
                     }
                 }
-                
+
                 console.log(`IDEPlugin: opening project ${projectName}`);
 
                 await wb.openProject(projectName);
+
+                dlg.setProgress(1);
 
                 const designWindow = wb.activateWindow(ui.DesignWindow.ID) as ui.DesignWindow;
 
@@ -118,6 +130,8 @@ namespace phasereditor2d.ide {
             } finally {
 
                 this._openingProject = false;
+
+                dlg.close();
             }
         }
 
