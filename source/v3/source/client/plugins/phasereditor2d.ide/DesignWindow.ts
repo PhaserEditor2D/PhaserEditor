@@ -53,6 +53,8 @@ namespace phasereditor2d.ide.ui {
             manager.add(new files.ui.actions.OpenNewFileDialogAction());
 
             manager.add(new welcome.ui.actions.OpenProjectsDialogAction());
+
+            manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
         }
 
         getEditorArea() {

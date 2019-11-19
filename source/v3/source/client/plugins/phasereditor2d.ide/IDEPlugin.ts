@@ -2,6 +2,8 @@ namespace phasereditor2d.ide {
 
     import ide = colibri.ui.ide;
 
+    export const ICON_PLAY = "play";
+
     export class IDEPlugin extends ide.Plugin {
 
         private static _instance = new IDEPlugin();
@@ -25,6 +27,13 @@ namespace phasereditor2d.ide {
                     () => new ui.DesignWindow()
                 )
             );
+
+            // icons
+
+            reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID,
+                new colibri.ui.ide.IconLoaderExtension("phasereditor2d.ide.ui.IconLoader", [
+                    this.getIcon(ICON_PLAY)
+                ]));
         }
     }
 

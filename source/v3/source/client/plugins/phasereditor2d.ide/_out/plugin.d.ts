@@ -20,6 +20,7 @@ declare namespace phasereditor2d.ide.ui {
 }
 declare namespace phasereditor2d.ide {
     import ide = colibri.ui.ide;
+    const ICON_PLAY = "play";
     class IDEPlugin extends ide.Plugin {
         private static _instance;
         static getInstance(): IDEPlugin;
@@ -27,5 +28,12 @@ declare namespace phasereditor2d.ide {
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
     }
     const VER = "3.0.0";
+}
+declare namespace phasereditor2d.ide.ui.actions {
+    import controls = colibri.ui.controls;
+    class PlayProjectAction extends controls.Action {
+        constructor();
+        run(): void;
+    }
 }
 //# sourceMappingURL=plugin.d.ts.map

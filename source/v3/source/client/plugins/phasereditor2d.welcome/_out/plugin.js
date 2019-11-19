@@ -62,7 +62,7 @@ var phasereditor2d;
                 class OpenProjectsDialogAction extends controls.Action {
                     constructor() {
                         super({
-                            text: "Projects",
+                            text: "Open Project",
                             icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
                         });
                     }

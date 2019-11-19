@@ -30,6 +30,7 @@ var phasereditor2d;
                     const manager = new controls.ToolbarManager(leftArea);
                     manager.add(new phasereditor2d.files.ui.actions.OpenNewFileDialogAction());
                     manager.add(new phasereditor2d.welcome.ui.actions.OpenProjectsDialogAction());
+                    manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
                 }
                 getEditorArea() {
                     return this._editorArea;
@@ -54,6 +55,7 @@ var phasereditor2d;
     var ide;
     (function (ide_2) {
         var ide = colibri.ui.ide;
+        ide_2.ICON_PLAY = "play";
         class IDEPlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.ide");
@@ -64,6 +66,10 @@ var phasereditor2d;
             registerExtensions(reg) {
                 // windows
                 reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.DesignWindow", 10, () => new ide_2.ui.DesignWindow()));
+                // icons
+                reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, new colibri.ui.ide.IconLoaderExtension("phasereditor2d.ide.ui.IconLoader", [
+                    this.getIcon(ide_2.ICON_PLAY)
+                ]));
             }
         }
         IDEPlugin._instance = new IDEPlugin();
@@ -75,5 +81,35 @@ var phasereditor2d;
             ide.Workbench.getWorkbench().launch();
         }
         window.addEventListener("load", main);
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class PlayProjectAction extends controls.Action {
+                    constructor() {
+                        super({
+                            text: "Play Project",
+                            icon: ide.IDEPlugin.getInstance().getIcon(ide.ICON_PLAY)
+                        });
+                    }
+                    run() {
+                        const element = document.createElement("a");
+                        element.href = colibri.ui.ide.FileUtils.getRoot().getUrl();
+                        element.target = "blank";
+                        document.body.append(element);
+                        element.click();
+                        element.remove();
+                    }
+                }
+                actions.PlayProjectAction = PlayProjectAction;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
 })(phasereditor2d || (phasereditor2d = {}));
