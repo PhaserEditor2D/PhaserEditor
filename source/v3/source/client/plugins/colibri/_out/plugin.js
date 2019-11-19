@@ -3209,6 +3209,7 @@ var colibri;
                             const ctx = viewer.getContext();
                             let y2 = y + 20;
                             let x2 = x + viewers.TREE_RENDERER_GRID_PADDING;
+                            let first = true;
                             for (const section of this._sections) {
                                 const objects2 = viewer
                                     .getContentProvider()
@@ -3217,15 +3218,22 @@ var colibri;
                                 if (objects2.length === 0) {
                                     continue;
                                 }
+                                if (first) {
+                                    first = false;
+                                }
+                                else {
+                                    y2 += 20;
+                                }
                                 const label = labelProvider.getLabel(section);
                                 ctx.save();
                                 ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                                ctx.fillRect(0, y2 - 16, b.width, controls.ROW_HEIGHT);
+                                ctx.fillStyle = "#ff000";
+                                ctx.fillRect(0, y2 - 18, b.width, 25);
                                 ctx.fillStyle = controls.Controls.theme.viewerForeground + "aa";
                                 const m = ctx.measureText(label);
                                 ctx.fillText(label, b.width / 2 - m.width / 2, y2);
                                 ctx.restore();
-                                y2 += 10;
+                                y2 += 20;
                                 const result = this.paintItems2(objects2, treeIconList, paintItems, null, x2, y2, viewers.TREE_RENDERER_GRID_PADDING, 0);
                                 y2 = result.y + 20;
                                 if (result.x > viewers.TREE_RENDERER_GRID_PADDING) {

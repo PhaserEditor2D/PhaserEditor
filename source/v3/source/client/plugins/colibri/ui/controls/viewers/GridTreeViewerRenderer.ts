@@ -31,7 +31,9 @@ namespace colibri.ui.controls.viewers {
         }
 
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
+
             const viewer = this.getViewer();
+
             const labelProvider = viewer.getLabelProvider();
 
             let cellSize = viewer.getCellSize();
@@ -56,6 +58,8 @@ namespace colibri.ui.controls.viewers {
                 let y2 = y + 20;
                 let x2 = x + TREE_RENDERER_GRID_PADDING;
 
+                let first = true;
+
                 for (const section of this._sections) {
 
                     const objects2 = viewer
@@ -67,23 +71,30 @@ namespace colibri.ui.controls.viewers {
                         continue;
                     }
 
+                    if (first) {
+                        first = false;
+                    } else {
+                        y2 += 20;
+                    }
+
                     const label = labelProvider.getLabel(section);
 
                     ctx.save();
 
                     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                    ctx.fillStyle = "#ff000";
 
-                    ctx.fillRect(0, y2 - 16, b.width, ROW_HEIGHT);
+                    ctx.fillRect(0, y2 - 18, b.width, 25);
 
                     ctx.fillStyle = controls.Controls.theme.viewerForeground + "aa";
-                    
+
                     const m = ctx.measureText(label);
 
                     ctx.fillText(label, b.width / 2 - m.width / 2, y2);
 
                     ctx.restore();
 
-                    y2 += 10;
+                    y2 += 20;
 
                     const result = this.paintItems2(objects2, treeIconList, paintItems, null, x2, y2, TREE_RENDERER_GRID_PADDING, 0);
 
