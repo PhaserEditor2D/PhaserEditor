@@ -522,7 +522,20 @@ var colibri;
                         project: this._projectName
                     });
                     const oldRoot = this._root;
-                    const newRoot = new io.FilePath(null, data);
+                    let newRoot;
+                    if (data.projectNumberOfFiles > data.maxNumberOfFiles) {
+                        newRoot = new io.FilePath(null, {
+                            name: this._projectName,
+                            modTime: 0,
+                            size: 0,
+                            children: [],
+                            isFile: false
+                        });
+                        alert(`Your project exceeded the maximum number of files allowed (${data.projectNumberOfFiles} > ${data.maxNumberOfFiles})`);
+                    }
+                    else {
+                        newRoot = new io.FilePath(null, data.rootFile);
+                    }
                     this._root = newRoot;
                     if (oldRoot) {
                         const change = FileStorage_HTTPServer.compare(oldRoot, newRoot);

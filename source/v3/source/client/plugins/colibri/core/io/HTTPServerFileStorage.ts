@@ -32,7 +32,7 @@ namespace colibri.core.io {
 
         private _root: FilePath;
         private _changeListeners: ChangeListenerFunc[];
-        private _projectName : string;
+        private _projectName: string;
 
         constructor() {
 
@@ -49,7 +49,7 @@ namespace colibri.core.io {
         removeChangeListener(listener: ChangeListenerFunc) {
 
             const i = this._changeListeners.indexOf(listener);
-            
+
             this._changeListeners.splice(i, 1);
         }
 
@@ -57,7 +57,7 @@ namespace colibri.core.io {
             return this._root;
         }
 
-        async openProject(projectName : string) : Promise<FilePath> {
+        async openProject(projectName: string): Promise<FilePath> {
 
             this._projectName = projectName;
 
@@ -74,14 +74,31 @@ namespace colibri.core.io {
 
             const oldRoot = this._root;
 
-            const newRoot = new FilePath(null, data);
+            let newRoot: FilePath;
+
+            if (data.projectNumberOfFiles > data.maxNumberOfFiles) {
+
+                newRoot = new FilePath(null, {
+                    name: this._projectName,
+                    modTime: 0,
+                    size: 0,
+                    children: [],
+                    isFile: false
+                });
+
+                alert(`Your project exceeded the maximum number of files allowed (${data.projectNumberOfFiles} > ${data.maxNumberOfFiles})`);
+
+            } else {
+
+                newRoot = new FilePath(null, data.rootFile);
+            }
 
             this._root = newRoot;
 
             if (oldRoot) {
 
                 const change = FileStorage_HTTPServer.compare(oldRoot, newRoot);
-                
+
                 this.fireChange(change);
             }
         }
@@ -159,8 +176,8 @@ namespace colibri.core.io {
             return change;
         }
 
-        async getProjects() : Promise<string[]> {
-            
+        async getProjects(): Promise<string[]> {
+
             const data = await apiRequest("GetProjects", {});
 
             if (data.error) {
