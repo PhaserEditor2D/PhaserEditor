@@ -199,6 +199,10 @@ Important:
     border-color: #4f4f4f;
 }
 
+.dark .MenuItemSeparator {
+    background: #3f3f3f;
+}
+
 .dark .MenuItem {
     padding: 5px 20px;
 }

@@ -246,7 +246,7 @@ declare namespace colibri.ui.controls {
         isEnabled(): boolean;
         getText(): string;
         getIcon(): IImage;
-        run(): void;
+        run(e?: MouseEvent): void;
     }
 }
 declare namespace colibri.ui.controls {
@@ -458,6 +458,7 @@ declare namespace colibri.ui.controls {
         constructor();
         setMenuClosedCallback(callback: () => void): void;
         add(action: Action): void;
+        addSeparator(): void;
         isEmpty(): boolean;
         getElement(): HTMLUListElement;
         create(e: MouseEvent): void;

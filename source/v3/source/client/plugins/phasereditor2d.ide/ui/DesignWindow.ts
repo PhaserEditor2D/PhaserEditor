@@ -78,15 +78,29 @@ namespace phasereditor2d.ide.ui {
 
             const toolbar = this.getToolbar();
 
-            const leftArea = toolbar.getLeftArea();
+            {
+                // left area 
 
-            const manager = new controls.ToolbarManager(leftArea);
+                const area = toolbar.getLeftArea();
 
-            manager.add(new files.ui.actions.OpenNewFileDialogAction());
+                const manager = new controls.ToolbarManager(area);
 
-            manager.add(new ui.actions.OpenProjectsDialogAction());
+                manager.add(new files.ui.actions.OpenNewFileDialogAction());
 
-            manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
+                manager.add(new ui.actions.OpenProjectsDialogAction());
+
+                manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
+            }
+
+            {
+                // right area 
+
+                const area = toolbar.getRightArea();
+
+                const manager = new controls.ToolbarManager(area);
+
+                manager.add(new actions.OpenMainMenuAction());
+            }
         }
 
         getEditorArea() {

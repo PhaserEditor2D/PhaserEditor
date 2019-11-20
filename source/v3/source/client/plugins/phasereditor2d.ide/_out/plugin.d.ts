@@ -1,6 +1,7 @@
 declare namespace phasereditor2d.ide {
     import ide = colibri.ui.ide;
     const ICON_PLAY = "play";
+    const ICON_MENU = "menu";
     class IDEPlugin extends ide.Plugin {
         private static _instance;
         private _openingProject;
@@ -51,6 +52,13 @@ declare namespace phasereditor2d.ide.ui.actions {
     const CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
     class IDEActions {
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
+    }
+}
+declare namespace phasereditor2d.ide.ui.actions {
+    import controls = colibri.ui.controls;
+    class OpenMainMenuAction extends controls.Action {
+        constructor();
+        run(e: MouseEvent): void;
     }
 }
 declare namespace phasereditor2d.ide.ui.actions {

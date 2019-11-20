@@ -73,6 +73,11 @@ label {
 
 .MainToolbarRightArea {}
 
+
+.MainToolbarRightArea .ToolbarItem {
+    float: right !important;
+}
+
 /* AlertDialog */
 
 .AlertDialog pre {

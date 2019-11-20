@@ -21,7 +21,7 @@ namespace colibri.ui.controls {
             const btnElement = document.createElement("div");
             btnElement.classList.add("ToolbarItem");
             btnElement.addEventListener("click", e => {
-                action.run();
+                action.run(e);
             });
 
             if (action.getIcon()) {

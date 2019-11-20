@@ -5,6 +5,7 @@ var phasereditor2d;
         var ide = colibri.ui.ide;
         var controls = colibri.ui.controls;
         ide_1.ICON_PLAY = "play";
+        ide_1.ICON_MENU = "menu";
         class IDEPlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.ide");
@@ -19,7 +20,8 @@ var phasereditor2d;
                 reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension("phasereditor2d.ide.ui.WelcomeWindow", () => new ide_1.ui.WelcomeWindow()));
                 // icons
                 reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, new colibri.ui.ide.IconLoaderExtension("phasereditor2d.ide.ui.IconLoader", [
-                    this.getIcon(ide_1.ICON_PLAY)
+                    this.getIcon(ide_1.ICON_PLAY),
+                    this.getIcon(ide_1.ICON_MENU)
                 ]));
                 // keys
                 reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID, new colibri.ui.ide.commands.CommandExtension("phasereditor2d.welcome.ui.actions.WelcomeActions", ide_1.ui.actions.IDEActions.registerCommands));
@@ -160,11 +162,20 @@ var phasereditor2d;
                 }
                 initToolbar() {
                     const toolbar = this.getToolbar();
-                    const leftArea = toolbar.getLeftArea();
-                    const manager = new controls.ToolbarManager(leftArea);
-                    manager.add(new phasereditor2d.files.ui.actions.OpenNewFileDialogAction());
-                    manager.add(new ui.actions.OpenProjectsDialogAction());
-                    manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
+                    {
+                        // left area 
+                        const area = toolbar.getLeftArea();
+                        const manager = new controls.ToolbarManager(area);
+                        manager.add(new phasereditor2d.files.ui.actions.OpenNewFileDialogAction());
+                        manager.add(new ui.actions.OpenProjectsDialogAction());
+                        manager.add(new phasereditor2d.ide.ui.actions.PlayProjectAction());
+                    }
+                    {
+                        // right area 
+                        const area = toolbar.getRightArea();
+                        const manager = new controls.ToolbarManager(area);
+                        manager.add(new ui.actions.OpenMainMenuAction());
+                    }
                 }
                 getEditorArea() {
                     return this._editorArea;
@@ -242,6 +253,50 @@ var phasereditor2d;
                     }
                 }
                 actions.IDEActions = IDEActions;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class OpenMainMenuAction extends controls.Action {
+                    constructor() {
+                        super({
+                            //text: "Menu",
+                            icon: ide.IDEPlugin.getInstance().getIcon(ide.ICON_MENU)
+                        });
+                    }
+                    run(e) {
+                        const menu = new controls.Menu();
+                        menu.add(new controls.Action({
+                            text: "Help"
+                        }));
+                        menu.addSeparator();
+                        menu.add(new controls.Action({
+                            text: "Reload Project"
+                        }));
+                        menu.add(new controls.Action({
+                            text: controls.Controls.theme === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
+                            callback: () => ide.IDEPlugin.getInstance().switchTheme()
+                        }));
+                        menu.addSeparator();
+                        menu.add(new controls.Action({
+                            text: "Unlock Phaser Editor 2D"
+                        }));
+                        menu.add(new controls.Action({
+                            text: "About"
+                        }));
+                        menu.create(e);
+                    }
+                }
+                actions.OpenMainMenuAction = OpenMainMenuAction;
             })(actions = ui.actions || (ui.actions = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));

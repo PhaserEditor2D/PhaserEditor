@@ -926,7 +926,7 @@ var colibri;
                 getIcon() {
                     return this._icon;
                 }
-                run() {
+                run(e) {
                     if (this._callback) {
                         this._callback();
                     }
@@ -1639,6 +1639,9 @@ var colibri;
                 add(action) {
                     this._actions.push(action);
                 }
+                addSeparator() {
+                    this._actions.push(null);
+                }
                 isEmpty() {
                     return this._actions.length === 0;
                 }
@@ -1648,7 +1651,18 @@ var colibri;
                 create(e) {
                     this._element = document.createElement("ul");
                     this._element.classList.add("Menu");
+                    let lastIsSeparator = true;
                     for (const action of this._actions) {
+                        if (action === null) {
+                            if (!lastIsSeparator) {
+                                lastIsSeparator = true;
+                                const sepElement = document.createElement("li");
+                                sepElement.classList.add("MenuItemSeparator");
+                                this._element.appendChild(sepElement);
+                            }
+                            continue;
+                        }
+                        lastIsSeparator = false;
                         const item = document.createElement("li");
                         item.classList.add("MenuItem");
                         item.innerText = action.getText();
@@ -2262,7 +2276,7 @@ var colibri;
                     const btnElement = document.createElement("div");
                     btnElement.classList.add("ToolbarItem");
                     btnElement.addEventListener("click", e => {
-                        action.run();
+                        action.run(e);
                     });
                     if (action.getIcon()) {
                         const iconElement = controls.Controls.createIconElement(action.getIcon());

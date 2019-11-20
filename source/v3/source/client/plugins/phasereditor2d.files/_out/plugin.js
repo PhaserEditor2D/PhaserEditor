@@ -1113,6 +1113,7 @@ var phasereditor2d;
                     fillContextMenu(menu) {
                         const sel = this._viewer.getSelection();
                         menu.add(new ui.actions.NewFileAction(this));
+                        menu.addSeparator();
                         menu.add(new ui.actions.RenameFileAction(this));
                         menu.add(new ui.actions.MoveFilesAction(this));
                         menu.add(new ui.actions.DeleteFilesAction(this));

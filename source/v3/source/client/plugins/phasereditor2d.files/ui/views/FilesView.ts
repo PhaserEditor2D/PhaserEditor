@@ -29,6 +29,8 @@ namespace phasereditor2d.files.ui.views {
 
             menu.add(new actions.NewFileAction(this));
 
+            menu.addSeparator();
+
             menu.add(new actions.RenameFileAction(this));
 
             menu.add(new actions.MoveFilesAction(this));

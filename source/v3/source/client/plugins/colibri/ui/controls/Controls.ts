@@ -108,7 +108,9 @@ namespace colibri.ui.controls {
         }
 
         static getIcon(name: string, baseUrl: string = "plugins/colibri/ui/controls/images"): IImage {
+            
             const url = `static/${baseUrl}/${ICON_SIZE}/${name}.png`;
+
             return Controls.getImage(url, name);
         }
 

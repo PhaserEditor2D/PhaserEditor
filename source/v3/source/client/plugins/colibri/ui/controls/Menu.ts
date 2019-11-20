@@ -19,6 +19,10 @@ namespace colibri.ui.controls {
             this._actions.push(action);
         }
 
+        addSeparator() {
+            this._actions.push(null);
+        }
+
         isEmpty() {
             return this._actions.length === 0;
         }
@@ -32,7 +36,25 @@ namespace colibri.ui.controls {
             this._element = document.createElement("ul");
             this._element.classList.add("Menu");
 
+            let lastIsSeparator = true;
+
             for (const action of this._actions) {
+
+                if (action === null) {
+
+                    if (!lastIsSeparator) {
+
+                        lastIsSeparator = true;
+
+                        const sepElement = document.createElement("li");
+                        sepElement.classList.add("MenuItemSeparator");
+                        this._element.appendChild(sepElement);
+                    }
+
+                    continue;
+                }
+
+                lastIsSeparator = false;
 
                 const item = document.createElement("li");
 

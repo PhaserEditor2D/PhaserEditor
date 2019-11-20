@@ -197,6 +197,10 @@ Important:
     border-color: #a0a0a0;
 }
 
+.light .MenuItemSeparator {
+    background: #b0b0b0;
+}
+
 .light .MenuItem {
     padding: 5px 20px;
 }

@@ -37,7 +37,7 @@ namespace colibri.ui.controls {
             return this._icon;
         }
 
-        run() {
+        run(e? : MouseEvent) {
 
             if (this._callback) {
                 this._callback();
