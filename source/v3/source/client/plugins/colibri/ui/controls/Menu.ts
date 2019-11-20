@@ -65,7 +65,9 @@ namespace colibri.ui.controls {
                 if (action.isEnabled()) {
 
                     item.addEventListener("click", e => {
+
                         this.close();
+
                         action.run();
                     });
 
@@ -98,21 +100,12 @@ namespace colibri.ui.controls {
 
             const rect = this._element.getClientRects()[0];
 
-            {
-                const extra = y + rect.height - window.innerHeight;
-
-                if (extra > 0) {
-                    y -= extra;
-                }
+            if (y + rect.height > window.innerHeight) {
+                y -= rect.height;
             }
 
-
-            {
-                const extra = x + rect.width - window.innerWidth;
-
-                if (extra > 0) {
-                    x -= extra;
-                }
+            if (x + rect.width > window.innerWidth) {
+                x -= rect.width;
             }
 
             this._element.style.left = x + "px";
