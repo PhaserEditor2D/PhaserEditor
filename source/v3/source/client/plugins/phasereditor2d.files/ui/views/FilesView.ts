@@ -58,7 +58,15 @@ namespace phasereditor2d.files.ui.views {
             viewer.repaint();
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e: CustomEvent) => {
-                wb.openEditor(e.detail);
+
+                const file = e.detail as io.FilePath;
+
+                if (file.isFolder()) {
+
+                    return;
+                }
+
+                wb.openEditor(file);
             });
 
             wb.getFileStorage().addChangeListener(change => this.onFileStorageChange(change));

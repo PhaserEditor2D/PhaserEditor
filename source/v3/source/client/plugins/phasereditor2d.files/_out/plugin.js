@@ -1131,7 +1131,11 @@ var phasereditor2d;
                         viewer.setInput(root);
                         viewer.repaint();
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, (e) => {
-                            wb.openEditor(e.detail);
+                            const file = e.detail;
+                            if (file.isFolder()) {
+                                return;
+                            }
+                            wb.openEditor(file);
                         });
                         wb.getFileStorage().addChangeListener(change => this.onFileStorageChange(change));
                         wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
