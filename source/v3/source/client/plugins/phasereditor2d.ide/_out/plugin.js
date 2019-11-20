@@ -25,6 +25,7 @@ var phasereditor2d;
                 reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID, new colibri.ui.ide.commands.CommandExtension("phasereditor2d.welcome.ui.actions.WelcomeActions", ide_1.ui.actions.IDEActions.registerCommands));
             }
             async openFirstWindow() {
+                this.restoreTheme();
                 const wb = colibri.ui.ide.Workbench.getWorkbench();
                 wb.addEventListener(colibri.ui.ide.EVENT_PROJECT_OPENED, e => {
                     wb.getGlobalPreferences().setValue("defaultProjectData", {
@@ -77,6 +78,25 @@ var phasereditor2d;
             }
             isOpeningProject() {
                 return this._openingProject;
+            }
+            switchTheme() {
+                const theme = controls.Controls.switchTheme();
+                const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+                prefs.setValue("phasereditor2d.ide.theme", {
+                    theme: theme.name
+                });
+            }
+            restoreTheme() {
+                const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+                const themeData = prefs.getValue("phasereditor2d.ide.theme");
+                let theme = controls.Controls.LIGHT_THEME;
+                if (themeData) {
+                    const themeName = themeData.theme;
+                    if (themeName === "dark") {
+                        theme = controls.Controls.DARK_THEME;
+                    }
+                }
+                controls.Controls.useTheme(theme);
             }
         }
         IDEPlugin._instance = new IDEPlugin();
@@ -193,8 +213,10 @@ var phasereditor2d;
             var actions;
             (function (actions) {
                 actions.CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
+                actions.CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
                 class IDEActions {
                     static registerCommands(manager) {
+                        // open project
                         manager.addCommandHelper(actions.CMD_OPEN_PROJECTS_DIALOG);
                         manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, args => {
                             return args.activeWindow.getId() !== ui.WelcomeWindow.ID;
@@ -203,6 +225,14 @@ var phasereditor2d;
                             control: true,
                             alt: true,
                             key: "P",
+                            filterInputElements: false
+                        }));
+                        // switch theme
+                        manager.addCommandHelper(actions.CMD_SWITCH_THEME);
+                        manager.addHandlerHelper(actions.CMD_SWITCH_THEME, args => true, args => ide.IDEPlugin.getInstance().switchTheme());
+                        manager.addKeyBinding(actions.CMD_SWITCH_THEME, new colibri.ui.ide.commands.KeyMatcher({
+                            control: true,
+                            key: "2",
                             filterInputElements: false
                         }));
                     }

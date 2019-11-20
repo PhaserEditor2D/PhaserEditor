@@ -10,6 +10,8 @@ declare namespace phasereditor2d.ide {
         openFirstWindow(): Promise<void>;
         ideOpenProject(projectName: string): Promise<void>;
         isOpeningProject(): boolean;
+        switchTheme(): void;
+        restoreTheme(): void;
     }
     const VER = "3.0.0";
 }
@@ -45,6 +47,7 @@ declare namespace phasereditor2d.ide.ui {
 }
 declare namespace phasereditor2d.ide.ui.actions {
     const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
+    const CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
     class IDEActions {
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
     }

@@ -58,6 +58,8 @@ namespace phasereditor2d.ide {
 
         async openFirstWindow() {
 
+            this.restoreTheme();
+
             const wb = colibri.ui.ide.Workbench.getWorkbench();
 
             wb.addEventListener(colibri.ui.ide.EVENT_PROJECT_OPENED, e => {
@@ -103,7 +105,7 @@ namespace phasereditor2d.ide {
             dlg.create();
             dlg.setTitle("Opening " + projectName);
             dlg.setProgress(0);
-            
+
             const monitor = new controls.dialogs.ProgressDialogMonitor(dlg);
 
             try {
@@ -140,6 +142,37 @@ namespace phasereditor2d.ide {
 
         isOpeningProject() {
             return this._openingProject;
+        }
+
+        switchTheme() {
+
+            const theme = controls.Controls.switchTheme();
+
+            const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+
+            prefs.setValue("phasereditor2d.ide.theme", {
+                theme: theme.name
+            });
+        }
+
+        restoreTheme() {
+
+            const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+
+            const themeData = prefs.getValue("phasereditor2d.ide.theme");
+
+            let theme = controls.Controls.LIGHT_THEME;
+
+            if (themeData) {
+
+                const themeName = themeData.theme;
+
+                if (themeName === "dark") {
+                    theme = controls.Controls.DARK_THEME;
+                }
+            }
+
+            controls.Controls.useTheme(theme);
         }
     }
 

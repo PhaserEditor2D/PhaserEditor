@@ -9,7 +9,6 @@ namespace colibri.ui.ide {
     export const CMD_RENAME = "rename";
     export const CMD_UNDO = "undo";
     export const CMD_REDO = "redo";
-    export const CMD_SWITCH_THEME = "switchTheme";
     export const CMD_COLLAPSE_ALL = "collapseAll";
     export const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
 
@@ -21,8 +20,6 @@ namespace colibri.ui.ide {
             this.initEdit(manager);
 
             this.initUndo(manager);
-
-            this.initTheme(manager);
 
             this.initViewer(manager);
         }
@@ -69,22 +66,6 @@ namespace colibri.ui.ide {
             manager.addKeyBinding(CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
                 key: " "
             }))
-        }
-
-        private static initTheme(manager: commands.CommandManager) {
-
-            manager.addCommandHelper(CMD_SWITCH_THEME);
-
-            manager.addHandlerHelper(CMD_SWITCH_THEME,
-                args => true,
-                args => controls.Controls.switchTheme()
-            );
-
-            manager.addKeyBinding(CMD_SWITCH_THEME, new KeyMatcher({
-                control: true,
-                key: "2",
-                filterInputElements: false
-            }));
         }
 
         private static initUndo(manager: commands.CommandManager) {

@@ -1221,17 +1221,15 @@ var colibri;
                     return element;
                 }
                 static switchTheme() {
+                    const newTheme = this.theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
+                    this.useTheme(newTheme);
+                    return newTheme;
+                }
+                static useTheme(theme) {
                     const classList = document.getElementsByTagName("html")[0].classList;
-                    if (classList.contains("light")) {
-                        this.theme = this.DARK_THEME;
-                        classList.remove("light");
-                        classList.add("dark");
-                    }
-                    else {
-                        this.theme = this.LIGHT_THEME;
-                        classList.remove("dark");
-                        classList.add("light");
-                    }
+                    classList.remove(this.theme.name);
+                    classList.add(theme.name);
+                    this.theme = theme;
                     window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this.theme }));
                 }
                 static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
@@ -1254,12 +1252,14 @@ var colibri;
             Controls._images = new Map();
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
+                name: "light",
                 viewerSelectionBackground: "#4242ff",
                 //treeItemSelectionBackground: "#525252",
                 viewerSelectionForeground: "#f0f0f0",
                 viewerForeground: "#000000",
             };
             Controls.DARK_THEME = {
+                name: "dark",
                 viewerSelectionBackground: "#f0a050",
                 viewerSelectionForeground: "#0e0e0e",
                 viewerForeground: "#f0f0f0",
@@ -4993,7 +4993,6 @@ var colibri;
             ide.CMD_RENAME = "rename";
             ide.CMD_UNDO = "undo";
             ide.CMD_REDO = "redo";
-            ide.CMD_SWITCH_THEME = "switchTheme";
             ide.CMD_COLLAPSE_ALL = "collapseAll";
             ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
             class IDECommands {
@@ -5001,7 +5000,6 @@ var colibri;
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
                     this.initEdit(manager);
                     this.initUndo(manager);
-                    this.initTheme(manager);
                     this.initViewer(manager);
                 }
                 static initViewer(manager) {
@@ -5028,15 +5026,6 @@ var colibri;
                     });
                     manager.addKeyBinding(ide.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
                         key: " "
-                    }));
-                }
-                static initTheme(manager) {
-                    manager.addCommandHelper(ide.CMD_SWITCH_THEME);
-                    manager.addHandlerHelper(ide.CMD_SWITCH_THEME, args => true, args => ui.controls.Controls.switchTheme());
-                    manager.addKeyBinding(ide.CMD_SWITCH_THEME, new KeyMatcher({
-                        control: true,
-                        key: "2",
-                        filterInputElements: false
                     }));
                 }
                 static initUndo(manager) {

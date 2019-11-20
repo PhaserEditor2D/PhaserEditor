@@ -342,10 +342,11 @@ declare namespace colibri.ui.controls {
         private static getImage;
         static getIcon(name: string, baseUrl?: string): IImage;
         static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
-        private static LIGHT_THEME;
-        private static DARK_THEME;
+        static LIGHT_THEME: Theme;
+        static DARK_THEME: Theme;
         static theme: Theme;
-        static switchTheme(): void;
+        static switchTheme(): Theme;
+        static useTheme(theme: Theme): void;
         static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft?: number, topRight?: number, bottomRight?: number, bottomLeft?: number): void;
     }
 }
@@ -563,6 +564,7 @@ declare namespace colibri.ui.controls {
 }
 declare namespace colibri.ui.controls {
     type Theme = {
+        name: string;
         viewerSelectionBackground: string;
         viewerSelectionForeground: string;
         viewerForeground: string;
@@ -1233,13 +1235,11 @@ declare namespace colibri.ui.ide {
     const CMD_RENAME = "rename";
     const CMD_UNDO = "undo";
     const CMD_REDO = "redo";
-    const CMD_SWITCH_THEME = "switchTheme";
     const CMD_COLLAPSE_ALL = "collapseAll";
     const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
     class IDECommands {
         static init(): void;
         private static initViewer;
-        private static initTheme;
         private static initUndo;
         private static initEdit;
     }

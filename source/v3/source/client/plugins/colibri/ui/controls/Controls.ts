@@ -68,7 +68,7 @@ namespace colibri.ui.controls {
 
 
         static async resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult> {
-            
+
             let result = PreloadResult.NOTHING_LOADED;
 
             for (const promise of list) {
@@ -141,14 +141,16 @@ namespace colibri.ui.controls {
             return element;
         }
 
-        private static LIGHT_THEME: Theme = {
+        static LIGHT_THEME: Theme = {
+            name: "light",
             viewerSelectionBackground: "#4242ff",
             //treeItemSelectionBackground: "#525252",
             viewerSelectionForeground: "#f0f0f0",
             viewerForeground: "#000000",
         };
 
-        private static DARK_THEME: Theme = {
+        static DARK_THEME: Theme = {
+            name: "dark",
             viewerSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
             viewerSelectionForeground: "#0e0e0e",
             viewerForeground: "#f0f0f0",
@@ -156,17 +158,23 @@ namespace colibri.ui.controls {
 
         static theme: Theme = Controls.DARK_THEME;
 
-        static switchTheme() {
+        static switchTheme(): Theme {
+
+            const newTheme = this.theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
+
+            this.useTheme(newTheme);
+
+            return newTheme;
+        }
+
+        static useTheme(theme: Theme) {
+
             const classList = document.getElementsByTagName("html")[0].classList;
-            if (classList.contains("light")) {
-                this.theme = this.DARK_THEME;
-                classList.remove("light");
-                classList.add("dark");
-            } else {
-                this.theme = this.LIGHT_THEME;
-                classList.remove("dark");
-                classList.add("light");
-            }
+
+            classList.remove(this.theme.name);
+            classList.add(theme.name);
+
+            this.theme = theme;
 
             window.dispatchEvent(new CustomEvent(EVENT_THEME_CHANGED, { detail: this.theme }));
         }
