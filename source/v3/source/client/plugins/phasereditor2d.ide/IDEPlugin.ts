@@ -190,6 +190,8 @@ namespace phasereditor2d.ide {
             "background-color:silver",
         );
 
+        colibri.ui.controls.dialogs.AlertDialog.replaceConsoleAlert();
+
         const wb = ide.Workbench.getWorkbench();
 
         await wb.launch();

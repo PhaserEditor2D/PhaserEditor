@@ -619,6 +619,16 @@ declare namespace colibri.ui.controls.dialogs {
     }
 }
 declare namespace colibri.ui.controls.dialogs {
+    class AlertDialog extends Dialog {
+        private _messageElement;
+        private static _currentDialog;
+        constructor();
+        createDialogArea(): void;
+        create(): void;
+        static replaceConsoleAlert(): void;
+    }
+}
+declare namespace colibri.ui.controls.dialogs {
     type InputValidator = (input: string) => boolean;
     type ResultCallback = (value: string) => void;
     class InputDialog extends Dialog {

@@ -281,6 +281,23 @@ canvas {
     margin-left: 10px;
 }
 
+/* AlertDialog */
+
+.AlertDialog {
+    height: auto !important;
+}
+
+.AlertDialog .DialogClientArea {
+    padding: 10px;
+}
+
+.AlertDialog .DialogClientArea pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 5px 0px;
+}
+
 /* InputDialog */
 
 .InputDialog {
