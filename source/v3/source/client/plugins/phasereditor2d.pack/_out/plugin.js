@@ -433,7 +433,7 @@ var phasereditor2d;
                     return `${url}${file.getNameWithoutExtension()}.${ext}`;
                 }
                 static getFileStringFromPackUrl(url) {
-                    const file = ide.FileUtils.getFileFromPath(url);
+                    const file = this.getFileFromPackUrl(url);
                     const str = ide.FileUtils.getFileString(file);
                     return str;
                 }

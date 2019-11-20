@@ -53,7 +53,8 @@ namespace phasereditor2d.pack.core {
 
         static getFileStringFromPackUrl(url: string): string {
 
-            const file = ide.FileUtils.getFileFromPath(url);
+            const file = this.getFileFromPackUrl(url);
+            
             const str = ide.FileUtils.getFileString(file);
 
             return str;
