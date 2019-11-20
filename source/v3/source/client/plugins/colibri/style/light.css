@@ -1,8 +1,9 @@
 /*
 
-Rules to provide the dark colors
+Rules to provide the theme colors
 
 Important:   
+
     - No layout information should be provided.
     - To layout a control, see controls.css.
     - To layout a workbench UI, see workbench.css
@@ -154,12 +155,21 @@ Important:
     background: rgba(255, 255, 255, 0.7);
 }
 
+/* ProgressBar */
+
+.light .ProgressBar {
+    background: #4242ff;
+}
+
 /* Dialog */
+
+.light .DarkDialogContainer {
+    background: #a2a2a2;
+}
 
 .light .Dialog {
     background: #cacaca;
 }
-
 
 .light .Dialog .DialogTitlePane {
     text-shadow: 1px 1px #f0f0f0;

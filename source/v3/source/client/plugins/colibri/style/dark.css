@@ -164,7 +164,7 @@ Important:
 
 /* ProgressBar */
 
-.ProgressBar {
+.dark .ProgressBar {
     background: #f0a050;
 }
 
