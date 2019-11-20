@@ -33,7 +33,7 @@ namespace phasereditor2d.pack.ui.importers {
             }),
             new SpritesheetImporter(),
 
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATIONS_TYPE),
+            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATION_TYPE),
 
             new BitmapFontImporter(),
 

@@ -9,10 +9,15 @@ namespace phasereditor2d.scene.ui.dialogs {
                 icon: ScenePlugin.getInstance().getIcon(ICON_GROUP),
                 fileExtension: "scene",
                 initialFileName: "Scene",
-                fileContent: `{
-                    "sceneType": "Scene",
-                    "displayList": []
-                }`
+                fileContent: JSON.stringify({
+                    sceneType: "Scene",
+                    displayList: [],
+                    meta: {
+                        app: "Phaser Editor 2D - Scene Editor",
+                        url: "https://phasereditor2d.com",
+                        contentType: scene.core.CONTENT_TYPE_SCENE
+                    }
+                })
             });
         }
 
@@ -21,3 +26,15 @@ namespace phasereditor2d.scene.ui.dialogs {
         }
     }
 }
+
+/*
+
+`{
+                    "sceneType": "Scene",
+                    "displayList": [],
+                    "meta": {
+
+                    }
+                }`
+
+                */

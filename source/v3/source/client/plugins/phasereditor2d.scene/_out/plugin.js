@@ -42,14 +42,24 @@ var phasereditor2d;
         var core;
         (function (core_1) {
             var core = colibri.core;
-            core_1.CONTENT_TYPE_SCENE = "Scene";
+            core_1.CONTENT_TYPE_SCENE = "phasereditor2d.core.scene.SceneContentType";
             class SceneContentTypeResolver extends core.ContentTypeResolver {
                 constructor() {
                     super("phasereditor2d.scene.core.SceneContentTypeResolver");
                 }
                 async computeContentType(file) {
                     if (file.getExtension() === "scene") {
-                        return core_1.CONTENT_TYPE_SCENE;
+                        const content = await colibri.ui.ide.FileUtils.preloadAndGetFileString(file);
+                        if (content !== null) {
+                            try {
+                                const data = JSON.parse(content);
+                                if (data.meta.contentType === core_1.CONTENT_TYPE_SCENE) {
+                                    return core_1.CONTENT_TYPE_SCENE;
+                                }
+                            }
+                            catch (e) {
+                            }
+                        }
                     }
                     return core.CONTENT_TYPE_ANY;
                 }
@@ -662,10 +672,15 @@ var phasereditor2d;
                             icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP),
                             fileExtension: "scene",
                             initialFileName: "Scene",
-                            fileContent: `{
-                    "sceneType": "Scene",
-                    "displayList": []
-                }`
+                            fileContent: JSON.stringify({
+                                sceneType: "Scene",
+                                displayList: [],
+                                meta: {
+                                    app: "Phaser Editor 2D - Scene Editor",
+                                    url: "https://phasereditor2d.com",
+                                    contentType: scene.core.CONTENT_TYPE_SCENE
+                                }
+                            })
                         });
                     }
                     getInitialFileLocation() {
@@ -677,6 +692,17 @@ var phasereditor2d;
         })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
+/*
+
+`{
+                    "sceneType": "Scene",
+                    "displayList": [],
+                    "meta": {
+
+                    }
+                }`
+
+                */ 
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
@@ -2087,6 +2113,7 @@ var phasereditor2d;
                         }
                     }
                     async createSceneCache_async(data) {
+                        console.log(data);
                         for (const objData of data.displayList) {
                             await this.updateSceneCacheWithObjectData_async(objData);
                         }
@@ -2172,7 +2199,12 @@ var phasereditor2d;
                     toJSON() {
                         const sceneData = {
                             sceneType: this._scene.getSceneType(),
-                            displayList: []
+                            displayList: [],
+                            meta: {
+                                app: "Phaser Editor 2D - Scene Editor",
+                                url: "https://phasereditor2d.com",
+                                contentType: scene_7.core.CONTENT_TYPE_SCENE
+                            }
                         };
                         for (const obj of this._scene.sys.displayList.getChildren()) {
                             const objData = {};

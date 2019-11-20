@@ -28,7 +28,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "URL",
                 "url",
                 core.contentTypes.CONTENT_TYPE_ANIMATIONS,
-                core.ANIMATIONS_TYPE));
+                core.ANIMATION_TYPE));
 
             sections.push(new BitmapFontSection(page));
 

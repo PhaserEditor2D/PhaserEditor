@@ -53,7 +53,7 @@ declare namespace phasereditor2d.pack.core {
     const UNITY_ATLAS_TYPE = "unityAtlas";
     const MULTI_ATLAS_TYPE = "multiatlas";
     const SPRITESHEET_TYPE = "spritesheet";
-    const ANIMATIONS_TYPE = "animations";
+    const ANIMATION_TYPE = "animation";
     const AUDIO_TYPE = "audio";
     const AUDIO_SPRITE_TYPE = "audioSprite";
     const BINARY_TYPE = "binary";
@@ -311,7 +311,7 @@ declare namespace phasereditor2d.pack.core {
 }
 declare namespace phasereditor2d.pack.core.contentTypes {
     import core = colibri.core;
-    const CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+    const CONTENT_TYPE_ASSET_PACK = "phasereditor2d.pack.core.AssetContentType";
     class AssetPackContentTypeResolver extends core.ContentTypeResolver {
         constructor();
         computeContentType(file: core.io.FilePath): Promise<string>;

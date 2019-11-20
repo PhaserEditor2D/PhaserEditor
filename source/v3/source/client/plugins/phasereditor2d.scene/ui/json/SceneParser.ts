@@ -24,6 +24,8 @@ namespace phasereditor2d.scene.ui.json {
 
         async createSceneCache_async(data: SceneData) {
 
+            console.log(data);
+
             for (const objData of data.displayList) {
                 await this.updateSceneCacheWithObjectData_async(objData);
             }

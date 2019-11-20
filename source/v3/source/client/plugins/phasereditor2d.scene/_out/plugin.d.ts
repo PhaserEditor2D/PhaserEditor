@@ -10,7 +10,7 @@ declare namespace phasereditor2d.scene {
 }
 declare namespace phasereditor2d.scene.core {
     import core = colibri.core;
-    const CONTENT_TYPE_SCENE = "Scene";
+    const CONTENT_TYPE_SCENE = "phasereditor2d.core.scene.SceneContentType";
     class SceneContentTypeResolver extends core.ContentTypeResolver {
         constructor();
         computeContentType(file: core.io.FilePath): Promise<string>;
@@ -417,6 +417,11 @@ declare namespace phasereditor2d.scene.ui.json {
     type SceneData = {
         sceneType: SceneType;
         displayList: any[];
+        meta: {
+            app: string;
+            url: string;
+            contentType: string;
+        };
     };
 }
 declare namespace phasereditor2d.scene.ui.json {

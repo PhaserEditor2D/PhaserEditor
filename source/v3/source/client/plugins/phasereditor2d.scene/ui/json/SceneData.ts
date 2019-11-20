@@ -4,7 +4,12 @@ namespace phasereditor2d.scene.ui.json {
 
     export declare type SceneData = {
         sceneType: SceneType,
-        displayList: any[]
+        displayList: any[],
+        meta: {
+            app: string,
+            url: string,
+            contentType: string
+        }
     };
 
 }

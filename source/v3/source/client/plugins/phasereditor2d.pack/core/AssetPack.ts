@@ -10,7 +10,7 @@ namespace phasereditor2d.pack.core {
     export const UNITY_ATLAS_TYPE = "unityAtlas";
     export const MULTI_ATLAS_TYPE = "multiatlas";
     export const SPRITESHEET_TYPE = "spritesheet";
-    export const ANIMATIONS_TYPE = "animations";
+    export const ANIMATION_TYPE = "animation";
     export const AUDIO_TYPE = "audio";
     export const AUDIO_SPRITE_TYPE = "audioSprite";
     export const BINARY_TYPE = "binary";
@@ -40,7 +40,7 @@ namespace phasereditor2d.pack.core {
         UNITY_ATLAS_TYPE,
         MULTI_ATLAS_TYPE,
         SPRITESHEET_TYPE,
-        ANIMATIONS_TYPE,
+        ANIMATION_TYPE,
         BITMAP_FONT_TYPE,
         TILEMAP_CSV_TYPE,
         TILEMAP_IMPACT_TYPE,
@@ -100,16 +100,16 @@ namespace phasereditor2d.pack.core {
 
         toJSON(): any {
             return {
-                "section1": {
-                    "files": this._items.map(item => item.getData())
+                section1: {
+                    files: this._items.map(item => item.getData())
                 },
-                "meta": {
-                    "app": "Phaser Editor 2D - Asset Pack Editor",
-                    "contentType": "Phaser v3 Asset Pack",
-                    "url": "https://phasereditor2d.com",
-                    "version": "2"
+                meta: {
+                    app: "Phaser Editor 2D - Asset Pack Editor",
+                    contentType: pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK,
+                    url: "https://phasereditor2d.com",
+                    version: 2
                 }
-            }
+            };
         }
 
         fromJSON(data: any) {
@@ -152,7 +152,7 @@ namespace phasereditor2d.pack.core {
                     return new MultiatlasAssetPackItem(this, data);
                 case SPRITESHEET_TYPE:
                     return new SpritesheetAssetPackItem(this, data);
-                case ANIMATIONS_TYPE:
+                case ANIMATION_TYPE:
                     return new AnimationsAssetPackItem(this, data);
                 case BITMAP_FONT_TYPE:
                     return new BitmapFontAssetPackItem(this, data);

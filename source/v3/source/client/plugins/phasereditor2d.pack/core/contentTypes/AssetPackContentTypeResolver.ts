@@ -3,7 +3,7 @@ namespace phasereditor2d.pack.core.contentTypes {
     import ide = colibri.ui.ide;
     import core = colibri.core;
 
-    export const CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+    export const CONTENT_TYPE_ASSET_PACK = "phasereditor2d.pack.core.AssetContentType";
 
     export class AssetPackContentTypeResolver extends core.ContentTypeResolver {
 
@@ -22,12 +22,10 @@ namespace phasereditor2d.pack.core.contentTypes {
                     try {
 
                         const data = JSON.parse(content);
-                        const meta = data["meta"];
 
-                        if (meta["contentType"] === "Phaser v3 Asset Pack") {
+                        if (data.meta.contentType === CONTENT_TYPE_ASSET_PACK) {
                             return CONTENT_TYPE_ASSET_PACK;
                         }
-
                     } catch (e) {
                         // nothing
                     }
@@ -36,6 +34,5 @@ namespace phasereditor2d.pack.core.contentTypes {
 
             return core.CONTENT_TYPE_ANY;
         }
-
     }
 }

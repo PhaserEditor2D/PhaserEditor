@@ -193,7 +193,7 @@ var phasereditor2d;
             core_1.UNITY_ATLAS_TYPE = "unityAtlas";
             core_1.MULTI_ATLAS_TYPE = "multiatlas";
             core_1.SPRITESHEET_TYPE = "spritesheet";
-            core_1.ANIMATIONS_TYPE = "animations";
+            core_1.ANIMATION_TYPE = "animation";
             core_1.AUDIO_TYPE = "audio";
             core_1.AUDIO_SPRITE_TYPE = "audioSprite";
             core_1.BINARY_TYPE = "binary";
@@ -222,7 +222,7 @@ var phasereditor2d;
                 core_1.UNITY_ATLAS_TYPE,
                 core_1.MULTI_ATLAS_TYPE,
                 core_1.SPRITESHEET_TYPE,
-                core_1.ANIMATIONS_TYPE,
+                core_1.ANIMATION_TYPE,
                 core_1.BITMAP_FONT_TYPE,
                 core_1.TILEMAP_CSV_TYPE,
                 core_1.TILEMAP_IMPACT_TYPE,
@@ -267,14 +267,14 @@ var phasereditor2d;
                 }
                 toJSON() {
                     return {
-                        "section1": {
-                            "files": this._items.map(item => item.getData())
+                        section1: {
+                            files: this._items.map(item => item.getData())
                         },
-                        "meta": {
-                            "app": "Phaser Editor 2D - Asset Pack Editor",
-                            "contentType": "Phaser v3 Asset Pack",
-                            "url": "https://phasereditor2d.com",
-                            "version": "2"
+                        meta: {
+                            app: "Phaser Editor 2D - Asset Pack Editor",
+                            contentType: pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK,
+                            url: "https://phasereditor2d.com",
+                            version: 2
                         }
                     };
                 }
@@ -308,7 +308,7 @@ var phasereditor2d;
                             return new core_1.MultiatlasAssetPackItem(this, data);
                         case core_1.SPRITESHEET_TYPE:
                             return new core_1.SpritesheetAssetPackItem(this, data);
-                        case core_1.ANIMATIONS_TYPE:
+                        case core_1.ANIMATION_TYPE:
                             return new core_1.AnimationsAssetPackItem(this, data);
                         case core_1.BITMAP_FONT_TYPE:
                             return new core_1.BitmapFontAssetPackItem(this, data);
@@ -1048,7 +1048,7 @@ var phasereditor2d;
             (function (contentTypes) {
                 var ide = colibri.ui.ide;
                 var core = colibri.core;
-                contentTypes.CONTENT_TYPE_ASSET_PACK = "PhaserAssetPack";
+                contentTypes.CONTENT_TYPE_ASSET_PACK = "phasereditor2d.pack.core.AssetContentType";
                 class AssetPackContentTypeResolver extends core.ContentTypeResolver {
                     constructor() {
                         super("phasereditor2d.pack.core.AssetPackContentTypeResolver");
@@ -1059,8 +1059,7 @@ var phasereditor2d;
                             if (content !== null) {
                                 try {
                                     const data = JSON.parse(content);
-                                    const meta = data["meta"];
-                                    if (meta["contentType"] === "Phaser v3 Asset Pack") {
+                                    if (data.meta.contentType === contentTypes.CONTENT_TYPE_ASSET_PACK) {
                                         return contentTypes.CONTENT_TYPE_ASSET_PACK;
                                     }
                                 }
@@ -1884,18 +1883,17 @@ var phasereditor2d;
                             icon: pack.AssetPackPlugin.getInstance().getIcon(pack.ICON_ASSET_PACK),
                             initialFileName: "asset-pack",
                             fileExtension: "json",
-                            fileContent: `{
-                    "section1": {
-                        "files": [
-                        ]
-                    },
-                    "meta": {
-                        "app": "Phaser Editor 2D - Asset Pack Editor",
-                        "contentType": "Phaser v3 Asset Pack",
-                        "url": "https://phasereditor2d.com",
-                        "version": "2"
-                    }
-                }`
+                            fileContent: JSON.stringify({
+                                section1: {
+                                    files: []
+                                },
+                                meta: {
+                                    app: "Phaser Editor 2D - Asset Pack Editor",
+                                    url: "https://phasereditor2d.com",
+                                    contentType: pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK,
+                                    version: 2
+                                }
+                            })
                         });
                     }
                     getInitialFileLocation() {
@@ -2629,7 +2627,7 @@ var phasereditor2d;
                             sections.push(new properties.UnityAtlasSection(page));
                             sections.push(new properties.MultiatlasSection(page));
                             sections.push(new properties.SpritesheetSection(page));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.AnimationsSection", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.AnimationsSection", "Animations", "URL", "url", pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATION_TYPE));
                             sections.push(new properties.BitmapFontSection(page));
                             sections.push(new properties.TilemapCSVSection(page));
                             sections.push(new properties.TilemapImpactSection(page));
@@ -3856,7 +3854,7 @@ var phasereditor2d;
                         }
                     }),
                     new importers.SpritesheetImporter(),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATIONS_TYPE),
+                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATION_TYPE),
                     new importers.BitmapFontImporter(),
                     new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
                     new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE),
