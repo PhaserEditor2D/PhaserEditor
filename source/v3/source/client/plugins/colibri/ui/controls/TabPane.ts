@@ -77,6 +77,7 @@ namespace colibri.ui.controls {
         }
 
         addTab(label: string, icon: IImage, content: Control, closeable = false): void {
+
             const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
             labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
@@ -93,6 +94,7 @@ namespace colibri.ui.controls {
         }
 
         private makeLabel(label: string, icon: IImage, closeable: boolean): HTMLElement {
+
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
@@ -105,6 +107,7 @@ namespace colibri.ui.controls {
             labelElement.appendChild(textElement);
 
             if (closeable) {
+
                 const manager = new CloseIconManager();
                 manager.setIcon(Controls.getIcon(ICON_CONTROL_CLOSE));
                 manager.repaint();
@@ -115,7 +118,6 @@ namespace colibri.ui.controls {
                     e.stopImmediatePropagation();
                     this.closeTabLabel(labelElement);
                 });
-
             }
 
             return labelElement;
@@ -126,6 +128,7 @@ namespace colibri.ui.controls {
             const manager = <CloseIconManager>labelElement["__CloseIconManager"];
 
             if (manager) {
+
                 manager.setIcon(icon);
                 manager.setOverIcon(overIcon);
                 manager.repaint();
@@ -163,13 +166,20 @@ namespace colibri.ui.controls {
             let toSelectLabel: HTMLElement = null;
 
             const selectedLabel = this.getSelectedLabelElement();
+
             if (selectedLabel === labelElement) {
+
                 this._selectionHistoryLabelElement.pop();
-                const nextInHistory = this._selectionHistoryLabelElement.pop();;
+                const nextInHistory = this._selectionHistoryLabelElement.pop();
+
                 if (nextInHistory) {
+
                     toSelectLabel = nextInHistory;
+
                 } else {
+
                     if (this._titleBarElement.childElementCount > 0) {
+
                         toSelectLabel = <HTMLElement>this._titleBarElement.firstChild;
                     }
                 }
@@ -181,17 +191,25 @@ namespace colibri.ui.controls {
         }
 
         setTabTitle(content: Control, title: string, icon?: IImage) {
+
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
+                
                 const content2 = TabPane.getContentFromLabel(label);
+
                 if (content2 === content) {
+
                     const iconElement: HTMLCanvasElement = <HTMLCanvasElement>label.firstChild;
                     const textElement = <HTMLElement>iconElement.nextSibling;
+
                     if (icon) {
+                    
                         const context = iconElement.getContext("2d");
                         context.clearRect(0, 0, iconElement.width, iconElement.height);
                         icon.paint(context, 0, 0, iconElement.width, iconElement.height, false);
                     }
+
                     textElement.innerHTML = title;
                 }
             }
@@ -202,13 +220,18 @@ namespace colibri.ui.controls {
         }
 
         getLabelFromContent(content: Control) {
+
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
+
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
+                
                 const content2 = TabPane.getContentFromLabel(label);
+
                 if (content2 === content) {
                     return label;
                 }
             }
+
             return null;
         }
 
@@ -221,20 +244,27 @@ namespace colibri.ui.controls {
         }
 
         selectTabWithContent(content: Control) {
+
             const label = this.getLabelFromContent(content);
+
             if (label) {
                 this.selectTab(label);
             }
         }
 
         private selectTab(toSelectLabel: HTMLElement): void {
+
             const selectedLabel = this._selectionHistoryLabelElement.pop();
 
             if (selectedLabel) {
+
                 if (selectedLabel === toSelectLabel) {
+                
                     this._selectionHistoryLabelElement.push(selectedLabel);
+
                     return;
                 }
+
                 selectedLabel.classList.remove("selected");
                 const selectedContentArea = TabPane.getContentAreaFromLabel(selectedLabel);
                 selectedContentArea.classList.remove("selected");
@@ -253,20 +283,29 @@ namespace colibri.ui.controls {
         }
 
         getSelectedTabContent(): Control {
+
             const label = this.getSelectedLabelElement();
+
             if (label) {
+
                 const area = TabPane.getContentAreaFromLabel(label);
+
                 return Control.getControlOf(<HTMLElement>area.firstChild);
             }
+
             return null;
         }
 
         getContentList(): controls.Control[] {
+            
             const list: controls.Control[] = [];
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {
+
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
+                
                 const content = TabPane.getContentFromLabel(label);
+
                 list.push(content);
             }
 
@@ -274,6 +313,7 @@ namespace colibri.ui.controls {
         }
 
         private getSelectedLabelElement(): HTMLElement {
+
             return this._selectionHistoryLabelElement.length > 0 ?
                 this._selectionHistoryLabelElement[this._selectionHistoryLabelElement.length - 1]
                 : null;

@@ -124,16 +124,19 @@ var phasereditor2d;
             class DesignWindow extends ide.WorkbenchWindow {
                 constructor() {
                     super(DesignWindow.ID);
-                    const wb = ide.Workbench.getWorkbench();
-                    wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
-                        if (ide_2.IDEPlugin.getInstance().isOpeningProject()) {
-                            return;
-                        }
-                        const win = wb.getActiveWindow();
-                        if (win instanceof DesignWindow) {
-                            win.saveState(wb.getProjectPreferences());
-                        }
+                    ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => {
+                        this.saveWindowState();
                     });
+                }
+                saveWindowState() {
+                    if (ide_2.IDEPlugin.getInstance().isOpeningProject()) {
+                        return;
+                    }
+                    const wb = ide.Workbench.getWorkbench();
+                    const win = wb.getActiveWindow();
+                    if (win instanceof DesignWindow) {
+                        win.saveState(wb.getProjectPreferences());
+                    }
                 }
                 saveState(prefs) {
                     this.saveEditorsState(prefs);

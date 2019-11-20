@@ -1070,6 +1070,8 @@ declare namespace colibri.ui.ide {
         onPartClosed(): boolean;
         onPartShown(): void;
         onPartActivated(): void;
+        saveState(state: any): void;
+        restoreState(state: any): void;
         protected abstract createPart(): void;
     }
 }

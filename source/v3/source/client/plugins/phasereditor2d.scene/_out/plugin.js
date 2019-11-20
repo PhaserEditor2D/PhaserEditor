@@ -263,11 +263,21 @@ var phasereditor2d;
                 getCamera() {
                     return this.cameras.main;
                 }
+                setInitialState(state) {
+                    this._initialState = state;
+                }
                 create() {
+                    var _a, _b, _c;
                     if (this._inEditor) {
                         const camera = this.getCamera();
                         camera.setOrigin(0, 0);
                         camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+                        if (this._initialState) {
+                            camera.zoom = (_a = this._initialState.cameraZoom, (_a !== null && _a !== void 0 ? _a : camera.zoom));
+                            camera.scrollX = (_b = this._initialState.cameraScrollX, (_b !== null && _b !== void 0 ? _b : camera.scrollX));
+                            camera.scrollY = (_c = this._initialState.cameraScrollY, (_c !== null && _c !== void 0 ? _c : camera.scrollY));
+                            this._initialState = null;
+                        }
                     }
                 }
             }
@@ -1111,6 +1121,20 @@ var phasereditor2d;
                         catch (e) {
                             console.error(e);
                         }
+                        const win = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        win.saveWindowState();
+                    }
+                    saveState(state) {
+                        if (!this._gameScene) {
+                            return;
+                        }
+                        const camera = this._gameScene.cameras.main;
+                        state.cameraZoom = camera.zoom;
+                        state.cameraScrollX = camera.scrollX;
+                        state.cameraScrollY = camera.scrollY;
+                    }
+                    restoreState(state) {
+                        this._gameScene.setInitialState(state);
                     }
                     onEditorInputContentChanged() {
                         //TODO: missing to implement
@@ -2113,7 +2137,6 @@ var phasereditor2d;
                         }
                     }
                     async createSceneCache_async(data) {
-                        console.log(data);
                         for (const objData of data.displayList) {
                             await this.updateSceneCacheWithObjectData_async(objData);
                         }

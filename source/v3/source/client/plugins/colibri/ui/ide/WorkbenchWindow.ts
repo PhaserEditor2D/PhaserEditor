@@ -6,7 +6,8 @@ namespace colibri.ui.ide {
 
     declare type RestoreEditorData = {
         fileDataList: {
-            fileName: string
+            fileName: string,
+            state: any
         }[],
         activeEditorFile: string
     }
@@ -71,8 +72,13 @@ namespace colibri.ui.ide {
 
                 if (input instanceof colibri.core.io.FilePath) {
 
+                    const state = {};
+
+                    editor.saveState(state);
+
                     restoreEditorData.fileDataList.push({
-                        fileName: input.getFullName()
+                        fileName: input.getFullName(),
+                        state: state
                     });
                 }
             }
@@ -108,6 +114,16 @@ namespace colibri.ui.ide {
                     if (file) {
 
                         const editor = wb.openEditor(file);
+
+                        const state = fileData.state;
+
+                        try {
+
+                            editor.restoreState(state)
+
+                        } catch (e) {
+                            console.error(e);
+                        }
 
                         if (file.getFullName() === restoreEditorData.activeEditorFile) {
                             activeEditor = editor;

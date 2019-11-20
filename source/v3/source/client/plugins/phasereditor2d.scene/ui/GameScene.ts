@@ -5,6 +5,7 @@ namespace phasereditor2d.scene.ui {
 
         private _sceneType: json.SceneType;
         private _inEditor: boolean;
+        private _initialState: any;
 
         constructor(inEditor = true) {
             super("ObjectScene");
@@ -26,6 +27,10 @@ namespace phasereditor2d.scene.ui {
             return this.cameras.main;
         }
 
+        setInitialState(state: any) {
+            this._initialState = state;
+        }
+
         create() {
 
             if (this._inEditor) {
@@ -33,6 +38,15 @@ namespace phasereditor2d.scene.ui {
                 const camera = this.getCamera();
                 camera.setOrigin(0, 0);
                 camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+
+                if (this._initialState) {
+
+                    camera.zoom = this._initialState.cameraZoom ?? camera.zoom;
+                    camera.scrollX = this._initialState.cameraScrollX ?? camera.scrollX;
+                    camera.scrollY = this._initialState.cameraScrollY ?? camera.scrollY;
+
+                    this._initialState = null;
+                }
             }
 
         }

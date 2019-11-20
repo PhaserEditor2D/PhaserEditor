@@ -22,8 +22,6 @@ namespace phasereditor2d.scene.ui.editor {
         createEditor(): colibri.ui.ide.EditorPart {
             return new SceneEditor();
         }
-
-
     }
 
     export class SceneEditor extends colibri.ui.ide.FileEditor {
@@ -72,6 +70,28 @@ namespace phasereditor2d.scene.ui.editor {
             } catch (e) {
                 console.error(e);
             }
+
+            const win = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow() as ide.ui.DesignWindow;
+            
+            win.saveWindowState();
+        }
+
+        saveState(state: any) {
+
+            if (!this._gameScene) {
+                return;
+            }
+
+            const camera = this._gameScene.cameras.main;
+
+            state.cameraZoom = camera.zoom;
+            state.cameraScrollX = camera.scrollX;
+            state.cameraScrollY = camera.scrollY;
+        }
+
+        restoreState(state: any) {
+
+            this._gameScene.setInitialState(state);
         }
 
         protected onEditorInputContentChanged() {
@@ -232,7 +252,7 @@ namespace phasereditor2d.scene.ui.editor {
             super.onPartActivated();
 
             if (this._blocksProvider) {
-                
+
                 await this._blocksProvider.preload()
 
                 this._blocksProvider.repaint();

@@ -29,6 +29,7 @@ declare namespace phasereditor2d.ide.ui {
         private _split_Outline_EditorFilesBlocks;
         private _split_OutlineEditorFilesBlocks_Inspector;
         constructor();
+        saveWindowState(): void;
         saveState(prefs: colibri.core.preferences.Preferences): void;
         restoreState(prefs: colibri.core.preferences.Preferences): void;
         createParts(): void;

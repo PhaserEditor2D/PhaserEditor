@@ -21,21 +21,27 @@ namespace phasereditor2d.ide.ui {
         constructor() {
             super(DesignWindow.ID);
 
+
+            ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => {
+
+                this.saveWindowState();
+            });
+        }
+
+        saveWindowState() {
+
+            if (IDEPlugin.getInstance().isOpeningProject()) {
+                return;
+            }
+
             const wb = ide.Workbench.getWorkbench();
 
-            wb.addEventListener(ide.EVENT_EDITOR_ACTIVATED, e => {
+            const win = wb.getActiveWindow();
 
-                if (IDEPlugin.getInstance().isOpeningProject()) {
-                    return;
-                }
+            if (win instanceof DesignWindow) {
 
-                const win = wb.getActiveWindow();
-
-                if (win instanceof DesignWindow) {
-
-                    win.saveState(wb.getProjectPreferences());
-                }
-            });
+                win.saveState(wb.getProjectPreferences());
+            }
         }
 
 

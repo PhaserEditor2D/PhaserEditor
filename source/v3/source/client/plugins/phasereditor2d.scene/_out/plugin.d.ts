@@ -62,10 +62,12 @@ declare namespace phasereditor2d.scene.ui {
     class GameScene extends Phaser.Scene {
         private _sceneType;
         private _inEditor;
+        private _initialState;
         constructor(inEditor?: boolean);
         getSceneType(): json.SceneType;
         setSceneType(sceneType: json.SceneType): void;
         getCamera(): Phaser.Cameras.Scene2D.Camera;
+        setInitialState(state: any): void;
         create(): void;
     }
 }
@@ -221,6 +223,8 @@ declare namespace phasereditor2d.scene.ui.editor {
         static getFactory(): colibri.ui.ide.EditorFactory;
         constructor();
         doSave(): Promise<void>;
+        saveState(state: any): void;
+        restoreState(state: any): void;
         protected onEditorInputContentChanged(): void;
         protected createPart(): void;
         setInput(file: colibri.core.io.FilePath): Promise<void>;

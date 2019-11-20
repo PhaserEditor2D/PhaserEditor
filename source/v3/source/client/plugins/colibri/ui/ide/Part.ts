@@ -100,14 +100,25 @@ namespace colibri.ui.ide {
         }
 
         onPartShown(): void {
+
             if (!this._partCreated) {
+
                 this._partCreated = true;
+                
                 this.createPart();
             }
         }
 
         onPartActivated() {
             
+        }
+
+        saveState(state : any) {
+
+        }
+
+        restoreState(state : any) {
+
         }
 
         protected abstract createPart(): void;

@@ -2146,7 +2146,6 @@ var colibri;
                     if (selectedLabel === labelElement) {
                         this._selectionHistoryLabelElement.pop();
                         const nextInHistory = this._selectionHistoryLabelElement.pop();
-                        ;
                         if (nextInHistory) {
                             toSelectLabel = nextInHistory;
                         }
@@ -4459,6 +4458,10 @@ var colibri;
                 }
                 onPartActivated() {
                 }
+                saveState(state) {
+                }
+                restoreState(state) {
+                }
             }
             ide.Part = Part;
         })(ide = ui.ide || (ui.ide = {}));
@@ -5732,8 +5735,11 @@ var colibri;
                     for (const editor of editors) {
                         const input = editor.getInput();
                         if (input instanceof colibri.core.io.FilePath) {
+                            const state = {};
+                            editor.saveState(state);
                             restoreEditorData.fileDataList.push({
-                                fileName: input.getFullName()
+                                fileName: input.getFullName(),
+                                state: state
                             });
                         }
                     }
@@ -5754,6 +5760,13 @@ var colibri;
                             const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);
                             if (file) {
                                 const editor = wb.openEditor(file);
+                                const state = fileData.state;
+                                try {
+                                    editor.restoreState(state);
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
                                 if (file.getFullName() === restoreEditorData.activeEditorFile) {
                                     activeEditor = editor;
                                 }
