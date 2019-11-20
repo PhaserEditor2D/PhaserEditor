@@ -7,7 +7,7 @@ namespace phasereditor2d.ide.ui.actions {
 
         constructor() {
             super({
-                text: "Open Project",
+                // text: "Open Project",
                 icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
             });
         }

@@ -9,7 +9,7 @@ namespace phasereditor2d.files.ui.actions {
 
         constructor() {
             super({
-                text: "New File",
+                //text: "New File",
                 icon: FilesPlugin.getInstance().getIcon(ICON_NEW_FILE)
             });
         }

@@ -254,7 +254,7 @@ var phasereditor2d;
                 class OpenProjectsDialogAction extends controls.Action {
                     constructor() {
                         super({
-                            text: "Open Project",
+                            // text: "Open Project",
                             icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
                         });
                     }
@@ -281,7 +281,7 @@ var phasereditor2d;
                 class PlayProjectAction extends controls.Action {
                     constructor() {
                         super({
-                            text: "Play Project",
+                            // text: "Play Project",
                             icon: ide.IDEPlugin.getInstance().getIcon(ide.ICON_PLAY)
                         });
                     }
