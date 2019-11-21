@@ -77,6 +77,14 @@ declare namespace phasereditor2d.ide.ui.actions {
 }
 declare namespace phasereditor2d.ide.ui.dialogs {
     import controls = colibri.ui.controls;
+    class AboutDialog extends controls.dialogs.Dialog {
+        constructor();
+        createDialogArea(): void;
+        create(): void;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import controls = colibri.ui.controls;
     class OpeningProjectDialog extends controls.dialogs.ProgressDialog {
         create(): void;
     }

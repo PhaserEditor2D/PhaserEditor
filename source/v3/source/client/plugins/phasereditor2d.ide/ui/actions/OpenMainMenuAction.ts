@@ -37,7 +37,10 @@ namespace phasereditor2d.ide.ui.actions {
             }));
 
             menu.add(new controls.Action({
-                text: "About"
+                text: "About",
+                callback: () => {
+                    new dialogs.AboutDialog().create();
+                }
             }));
 
             menu.create(e);
