@@ -284,7 +284,8 @@ var phasereditor2d;
                     run(e) {
                         const menu = new controls.Menu();
                         menu.add(new controls.Action({
-                            text: "Help"
+                            text: "Help",
+                            callback: () => controls.Controls.openUrlInNewPage("https://phasereditor2d.com/docs/v3")
                         }));
                         menu.addSeparator();
                         menu.add(new controls.Action({
@@ -356,12 +357,8 @@ var phasereditor2d;
                         });
                     }
                     run() {
-                        const element = document.createElement("a");
-                        element.href = colibri.ui.ide.FileUtils.getRoot().getUrl();
-                        element.target = "blank";
-                        document.body.append(element);
-                        element.click();
-                        element.remove();
+                        const url = colibri.ui.ide.FileUtils.getRoot().getUrl();
+                        controls.Controls.openUrlInNewPage(url);
                     }
                 }
                 actions.PlayProjectAction = PlayProjectAction;

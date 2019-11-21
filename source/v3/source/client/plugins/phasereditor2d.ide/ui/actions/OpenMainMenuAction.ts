@@ -16,7 +16,8 @@ namespace phasereditor2d.ide.ui.actions {
             const menu = new controls.Menu();
 
             menu.add(new controls.Action({
-                text: "Help"
+                text: "Help",
+                callback: () => controls.Controls.openUrlInNewPage("https://phasereditor2d.com/docs/v3")
             }));
 
             menu.addSeparator();

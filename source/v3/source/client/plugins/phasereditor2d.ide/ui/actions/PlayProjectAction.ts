@@ -13,16 +13,9 @@ namespace phasereditor2d.ide.ui.actions {
 
         run() {
 
-            const element = document.createElement("a");
+            const url = colibri.ui.ide.FileUtils.getRoot().getUrl();
 
-            element.href = colibri.ui.ide.FileUtils.getRoot().getUrl();
-            element.target = "blank";
-
-            document.body.append(element);
-
-            element.click();
-
-            element.remove();
+            controls.Controls.openUrlInNewPage(url);
         }
     }
 }

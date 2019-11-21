@@ -5,14 +5,18 @@ namespace phasereditor2d.pack.ui.editor.properties {
     import controls = colibri.ui.controls;
     import json = colibri.core.json;
 
-    export class SpritesheetSection extends BaseSection {
+    export class SpritesheetFrameSection extends BaseSection {
 
         constructor(page: controls.properties.PropertyPage) {
-            super(page, "phasereditor2d.pack.ui.editor.properties.SpritesheetSection", "Spritesheet");
+            super(page, "phasereditor2d.pack.ui.editor.properties.SpritesheetFrameSection", "Spritesheet Frame");
         }
 
         canEdit(obj: any, n: number) {
-            return super.canEdit(obj, n) && obj instanceof core.SpritesheetAssetPackItem;
+            return obj instanceof core.SpritesheetAssetPackItem;
+        }
+
+        canEditNumber(n : number) {
+            return n > 0;
         }
 
         protected createForm(parent: HTMLDivElement) {
@@ -20,8 +24,6 @@ namespace phasereditor2d.pack.ui.editor.properties {
             const comp = this.createGridElement(parent, 3);
 
             comp.style.gridTemplateColumns = "auto 1fr auto";
-
-            this.createFileField(comp, "URL", "url", core.contentTypes.CONTENT_TYPE_MULTI_ATLAS);
 
             this.createSimpleIntegerField(comp, "Frame Width", "frameConfig.frameWidth");
 

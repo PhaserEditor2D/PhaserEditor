@@ -1208,6 +1208,14 @@ var colibri;
                     Controls._images.set(id, img);
                     return img;
                 }
+                static openUrlInNewPage(url) {
+                    const element = document.createElement("a");
+                    element.href = url;
+                    element.target = "blank";
+                    document.body.append(element);
+                    element.click();
+                    element.remove();
+                }
                 static getIcon(name, baseUrl = "plugins/colibri/ui/controls/images") {
                     const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);

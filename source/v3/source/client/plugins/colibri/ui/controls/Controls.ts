@@ -107,8 +107,22 @@ namespace colibri.ui.controls {
             return img;
         }
 
+        static openUrlInNewPage(url: string) {
+
+            const element = document.createElement("a");
+
+            element.href = url;
+            element.target = "blank";
+
+            document.body.append(element);
+
+            element.click();
+
+            element.remove();
+        }
+
         static getIcon(name: string, baseUrl: string = "plugins/colibri/ui/controls/images"): IImage {
-            
+
             const url = `static/${baseUrl}/${ICON_SIZE}/${name}.png`;
 
             return Controls.getImage(url, name);
