@@ -5451,7 +5451,6 @@ var colibri;
                     }));
                 }
                 async preloadProjectResources(monitor) {
-                    console.log("preloadProjectResources");
                     const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
                     for (const extension of extensions) {
                         await extension.getPreloadPromise(monitor);

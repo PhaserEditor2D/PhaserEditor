@@ -158,8 +158,6 @@ namespace colibri.ui.ide {
 
         private async preloadProjectResources(monitor: controls.IProgressMonitor) {
 
-            console.log("preloadProjectResources");
-
             const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
 
             for (const extension of extensions) {
