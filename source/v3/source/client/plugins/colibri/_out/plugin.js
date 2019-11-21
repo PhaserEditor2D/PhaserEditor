@@ -518,6 +518,27 @@ var colibri;
                     await this.reload();
                     return this.getRoot();
                 }
+                async getProjectTemplates() {
+                    const data = await apiRequest("GetProjectTemplates", {});
+                    if (data.error) {
+                        alert("Cannot get the project templates");
+                        return {
+                            providers: []
+                        };
+                    }
+                    return data["templatesData"];
+                }
+                async createProject(templatePath, projectName) {
+                    const data = await apiRequest("CreateProject", {
+                        templatePath: templatePath,
+                        projectName: projectName
+                    });
+                    if (data.error) {
+                        alert("Cannot create the project.");
+                        return false;
+                    }
+                    return true;
+                }
                 async reload() {
                     const data = await apiRequest("GetProjectFiles", {
                         project: this._projectName
@@ -4971,6 +4992,14 @@ var colibri;
                 static async getProjects_async() {
                     const storage = ide.Workbench.getWorkbench().getFileStorage();
                     return storage.getProjects();
+                }
+                static async getProjectTemplates_async() {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    return storage.getProjectTemplates();
+                }
+                static async createProject_async(templatePath, projectName) {
+                    const storage = ide.Workbench.getWorkbench().getFileStorage();
+                    return storage.createProject(templatePath, projectName);
                 }
                 static async preloadFileString(file) {
                     const cache = ide.Workbench.getWorkbench().getFileStringCache();

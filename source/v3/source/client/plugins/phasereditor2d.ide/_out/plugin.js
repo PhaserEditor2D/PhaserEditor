@@ -424,6 +424,180 @@ var phasereditor2d;
             var dialogs;
             (function (dialogs) {
                 var controls = colibri.ui.controls;
+                var viewers = colibri.ui.controls.viewers;
+                class NewProjectDialog extends controls.dialogs.Dialog {
+                    constructor() {
+                        super("NewProjectDialog");
+                        this._projectNames = new Set();
+                    }
+                    createDialogArea() {
+                        const clientArea = document.createElement("div");
+                        clientArea.classList.add("DialogClientArea");
+                        clientArea.style.display = "grid";
+                        clientArea.style.gridTemplateRows = "1fr auto";
+                        clientArea.style.gridTemplateRows = "1fr";
+                        clientArea.style.gridRowGap = "5px";
+                        clientArea.appendChild(this.createCenterArea());
+                        clientArea.appendChild(this.createBottomArea());
+                        this.getElement().appendChild(clientArea);
+                    }
+                    createBottomArea() {
+                        const bottomArea = document.createElement("div");
+                        bottomArea.classList.add("DialogSection");
+                        bottomArea.style.display = "grid";
+                        bottomArea.style.gridTemplateColumns = "auto 1fr";
+                        bottomArea.style.gridTemplateRows = "auto";
+                        bottomArea.style.columnGap = "10px";
+                        bottomArea.style.rowGap = "10px";
+                        bottomArea.style.alignItems = "center";
+                        {
+                            const label = document.createElement("label");
+                            label.innerText = "Project Name";
+                            bottomArea.appendChild(label);
+                            const text = document.createElement("input");
+                            text.type = "text";
+                            text.addEventListener("keyup", e => this.validate());
+                            setTimeout(() => text.focus(), 10);
+                            bottomArea.appendChild(text);
+                            this._projectNameText = text;
+                            this.setInitialProjectName().then(() => {
+                                this.validate();
+                            });
+                        }
+                        return bottomArea;
+                    }
+                    async setInitialProjectName() {
+                        let name = "Game";
+                        let i = 1;
+                        while (this._projectNames.has(name.toLowerCase())) {
+                            name = "Game" + i;
+                            i += 1;
+                        }
+                        this._projectNameText.value = name;
+                    }
+                    async validate() {
+                        let disabled = false;
+                        const viewer = this._filteredViewer.getViewer();
+                        if (viewer.getSelection().length !== 1) {
+                            disabled = true;
+                        }
+                        if (!disabled) {
+                            const obj = viewer.getSelectionFirstElement();
+                            if (obj.path === undefined) {
+                                disabled = true;
+                            }
+                        }
+                        if (!disabled) {
+                            const name = this._projectNameText.value;
+                            if (name.trim() === ""
+                                || name.startsWith(".")
+                                || name.indexOf("/") >= 0
+                                || name.indexOf("\\") >= 0) {
+                                disabled = true;
+                            }
+                        }
+                        if (!disabled) {
+                            if (this._projectNames.has(this._projectNameText.value.toLowerCase())) {
+                                disabled = true;
+                            }
+                        }
+                        this._createBtn.disabled = disabled;
+                    }
+                    async requestProjectsData() {
+                        const list = (await colibri.ui.ide.FileUtils.getProjects_async()).map(s => s.toLowerCase());
+                        this._projectNames = new Set(list);
+                    }
+                    create() {
+                        super.create();
+                        this.setTitle("New Project");
+                        this._createBtn = this.addButton("Create Project", () => {
+                            const template = this._filteredViewer.getViewer().getSelectionFirstElement();
+                            this.closeAll();
+                            this.createProject(template.path);
+                        });
+                        this.addButton("Cancel", () => this.close());
+                        this.requestProjectsData();
+                    }
+                    async createProject(templatePath) {
+                        const projectName = this._projectNameText.value;
+                        const ok = await colibri.ui.ide.FileUtils.createProject_async(templatePath, projectName);
+                        if (ok) {
+                            this.closeAll();
+                            ide.IDEPlugin.getInstance().ideOpenProject(projectName);
+                        }
+                    }
+                    createCenterArea() {
+                        const centerArea = document.createElement("div");
+                        this.createFilteredViewer();
+                        centerArea.appendChild(this._filteredViewer.getElement());
+                        return centerArea;
+                    }
+                    createFilteredViewer() {
+                        const viewer = new controls.viewers.TreeViewer();
+                        viewer.setLabelProvider(new TemplatesLabelProvider());
+                        viewer.setCellRendererProvider(new TemplatesCellRendererProvider());
+                        viewer.setContentProvider(new TemplatesContentProvider());
+                        viewer.setInput({
+                            providers: []
+                        });
+                        colibri.ui.ide.FileUtils.getProjectTemplates_async().then(data => {
+                            viewer.setInput(data);
+                            for (const provider of data.providers) {
+                                viewer.setExpanded(provider, true);
+                            }
+                            viewer.setSelection([data.providers[0].templates[0]]);
+                            viewer.repaint();
+                            this.validate();
+                        });
+                        viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
+                            this.validate();
+                        });
+                        this._filteredViewer = new viewers.FilteredViewerInElement(viewer);
+                    }
+                    layout() {
+                        super.layout();
+                        this._filteredViewer.resizeTo();
+                    }
+                }
+                dialogs.NewProjectDialog = NewProjectDialog;
+                class TemplatesContentProvider {
+                    getRoots(input) {
+                        const data = input;
+                        return data.providers;
+                    }
+                    getChildren(parent) {
+                        if (parent.templates) {
+                            return parent.templates;
+                        }
+                        return [];
+                    }
+                }
+                class TemplatesLabelProvider {
+                    getLabel(obj) {
+                        return obj.name;
+                    }
+                }
+                class TemplatesCellRendererProvider {
+                    getCellRenderer(element) {
+                        return new controls.viewers.IconImageCellRenderer(colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER));
+                    }
+                    preload(element) {
+                        return controls.Controls.resolveNothingLoaded();
+                    }
+                }
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                var controls = colibri.ui.controls;
                 class OpeningProjectDialog extends controls.dialogs.ProgressDialog {
                     create() {
                         super.create();
@@ -458,7 +632,7 @@ var phasereditor2d;
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
                         const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
                         this.setTitle("Projects");
-                        this.addButton("New Project", () => { });
+                        this.addButton("New Project", () => this.openNewProjectDialog());
                         {
                             const btn = this.addButton("Open Project", () => this.openProject());
                             btn.disabled = true;
@@ -478,6 +652,10 @@ var phasereditor2d;
                         this.close();
                         const project = this.getViewer().getSelectionFirstElement();
                         ide.IDEPlugin.getInstance().ideOpenProject(project);
+                    }
+                    openNewProjectDialog() {
+                        const dlg = new dialogs.NewProjectDialog();
+                        dlg.create();
                     }
                 }
                 dialogs.ProjectsDialog = ProjectsDialog;

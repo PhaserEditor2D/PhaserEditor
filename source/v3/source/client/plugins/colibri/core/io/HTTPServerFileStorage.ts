@@ -68,6 +68,39 @@ namespace colibri.core.io {
             return this.getRoot();
         }
 
+        async getProjectTemplates() : Promise<ProjectTemplatesData> {
+
+            const data = await apiRequest("GetProjectTemplates", {});
+
+            if (data.error) {
+
+                alert("Cannot get the project templates");
+
+                return {
+                    providers: []
+                };
+            }
+
+            return data["templatesData"];
+        }
+
+        async createProject(templatePath : string, projectName : string): Promise<boolean> {
+
+            const data = await apiRequest("CreateProject", {
+                templatePath: templatePath,
+                projectName: projectName
+            });
+
+            if (data.error) {
+
+                alert("Cannot create the project.");
+
+                return false;
+            }
+
+            return true;
+        }
+
         async reload(): Promise<void> {
 
             const data = await apiRequest("GetProjectFiles", {

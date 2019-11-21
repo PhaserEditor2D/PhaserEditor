@@ -69,6 +69,20 @@ namespace colibri.ui.ide {
             return storage.getProjects();
         }
 
+        static async getProjectTemplates_async() {
+            
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            return storage.getProjectTemplates();
+        }
+
+        static async createProject_async(templatePath: string, projectName : string) {
+            
+            const storage = Workbench.getWorkbench().getFileStorage();
+
+            return storage.createProject(templatePath, projectName);
+        }
+
         static async preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult> {
 
             const cache = Workbench.getWorkbench().getFileStringCache();

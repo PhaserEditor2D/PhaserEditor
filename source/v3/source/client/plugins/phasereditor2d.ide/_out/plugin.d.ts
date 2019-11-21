@@ -86,6 +86,26 @@ declare namespace phasereditor2d.ide.ui.dialogs {
 }
 declare namespace phasereditor2d.ide.ui.dialogs {
     import controls = colibri.ui.controls;
+    class NewProjectDialog extends controls.dialogs.Dialog {
+        protected _filteredViewer: controls.viewers.FilteredViewerInElement<controls.viewers.TreeViewer>;
+        protected _projectNameText: HTMLInputElement;
+        private _createBtn;
+        private _projectNames;
+        constructor();
+        protected createDialogArea(): void;
+        private createBottomArea;
+        private setInitialProjectName;
+        validate(): Promise<void>;
+        private requestProjectsData;
+        create(): void;
+        private createProject;
+        private createCenterArea;
+        private createFilteredViewer;
+        layout(): void;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import controls = colibri.ui.controls;
     class OpeningProjectDialog extends controls.dialogs.ProgressDialog {
         create(): void;
     }
@@ -96,6 +116,7 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         constructor();
         create(): Promise<void>;
         private openProject;
+        private openNewProjectDialog;
     }
 }
 declare namespace phasereditor2d.ide.ui.viewers {

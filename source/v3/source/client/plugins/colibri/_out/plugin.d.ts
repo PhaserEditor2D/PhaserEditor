@@ -169,6 +169,8 @@ declare namespace colibri.core.io {
         removeChangeListener(listener: ChangeListenerFunc): void;
         getRoot(): FilePath;
         openProject(projectName: string): Promise<FilePath>;
+        getProjectTemplates(): Promise<ProjectTemplatesData>;
+        createProject(templatePath: string, projectName: string): Promise<boolean>;
         reload(): Promise<void>;
         private fireChange;
         private static compare;
@@ -186,10 +188,21 @@ declare namespace colibri.core.io {
 }
 declare namespace colibri.core.io {
     type ChangeListenerFunc = (change: FileStorageChange) => void;
+    type ProjectTemplatesData = {
+        providers: {
+            name: string;
+            templates: {
+                name: string;
+                path: string;
+            };
+        }[];
+    };
     interface IFileStorage {
         reload(): Promise<void>;
         getProjects(): Promise<string[]>;
         openProject(projectName: string): Promise<FilePath>;
+        getProjectTemplates(): Promise<ProjectTemplatesData>;
+        createProject(templatePath: string, projectName: string): Promise<boolean>;
         getRoot(): FilePath;
         getFileString(file: FilePath): Promise<string>;
         setFileString(file: FilePath, content: string): Promise<void>;
@@ -1216,6 +1229,8 @@ declare namespace colibri.ui.ide {
         static renameFile_async(file: io.FilePath, newName: string): Promise<void>;
         static moveFiles_async(movingFiles: io.FilePath[], moveTo: io.FilePath): Promise<void>;
         static getProjects_async(): Promise<string[]>;
+        static getProjectTemplates_async(): Promise<io.ProjectTemplatesData>;
+        static createProject_async(templatePath: string, projectName: string): Promise<boolean>;
         static preloadFileString(file: io.FilePath): Promise<ui.controls.PreloadResult>;
         static getFileFromPath(path: string): io.FilePath;
         static uploadFile_async(uploadFolder: io.FilePath, file: File): Promise<io.FilePath>;

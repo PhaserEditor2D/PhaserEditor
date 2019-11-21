@@ -2,6 +2,16 @@ namespace colibri.core.io {
 
     export declare type ChangeListenerFunc = (change : FileStorageChange) => void;
 
+    export declare type ProjectTemplatesData = {
+        providers : {
+            name : string,
+            templates: {
+                name: string,
+                path: string
+            }        
+        }[]
+    }
+
     export interface IFileStorage {
 
         reload(): Promise<void>;
@@ -9,6 +19,10 @@ namespace colibri.core.io {
         getProjects() : Promise<string[]>;
 
         openProject(projectName : string) : Promise<FilePath>;
+
+        getProjectTemplates() : Promise<ProjectTemplatesData>;
+
+        createProject(templatePath : string, projectName : string): Promise<boolean>;
 
         getRoot(): FilePath;
 

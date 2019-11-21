@@ -6,8 +6,6 @@ namespace phasereditor2d.ide.ui.dialogs {
 
         constructor() {
             super(new controls.viewers.TreeViewer());
-
-
         }
 
         async create() {
@@ -27,7 +25,7 @@ namespace phasereditor2d.ide.ui.dialogs {
 
             this.setTitle("Projects");
 
-            this.addButton("New Project", () => { });
+            this.addButton("New Project", () => this.openNewProjectDialog());
 
             {
                 const btn = this.addButton("Open Project", () => this.openProject());
@@ -59,6 +57,13 @@ namespace phasereditor2d.ide.ui.dialogs {
             const project = this.getViewer().getSelectionFirstElement();
 
             IDEPlugin.getInstance().ideOpenProject(project);
+        }
+
+        private openNewProjectDialog() {
+
+            const dlg = new NewProjectDialog();
+
+            dlg.create();
         }
     }
 }
