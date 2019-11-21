@@ -7,7 +7,7 @@ namespace phasereditor2d.ide.ui {
         static ID = "phasereditor2d.welcome.ui.WelcomeWindow";
 
         constructor() {
-            
+
             super(WelcomeWindow.ID);
         }
 
@@ -16,12 +16,26 @@ namespace phasereditor2d.ide.ui {
         }
 
         protected async createParts() {
-        
-            const dlg = new dialogs.ProjectsDialog();
 
-            dlg.create();
+            const projects = await colibri.ui.ide.FileUtils.getProjects_async();
 
-            dlg.setCloseWithEscapeKey(false);
+            if (projects.length === 0) {
+
+                const dlg = new dialogs.NewProjectDialog();
+
+                dlg.setCancellable(false);
+                dlg.setCloseWithEscapeKey(false);
+
+                dlg.create();
+
+            } else {
+
+                const dlg = new dialogs.ProjectsDialog();
+
+                dlg.setCloseWithEscapeKey(false);
+
+                dlg.create();
+            }
         }
     }
 }

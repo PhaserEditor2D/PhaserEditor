@@ -10,11 +10,17 @@ namespace phasereditor2d.ide.ui.dialogs {
         protected _projectNameText: HTMLInputElement;
         private _createBtn: HTMLButtonElement;
         private _projectNames: Set<string>;
+        private _cancellable: boolean;
 
         constructor() {
             super("NewProjectDialog");
 
             this._projectNames = new Set();
+            this._cancellable = true;
+        }
+
+        setCancellable(cancellable: boolean) {
+            this._cancellable = cancellable;
         }
 
         protected createDialogArea() {
@@ -146,7 +152,10 @@ namespace phasereditor2d.ide.ui.dialogs {
                 this.createProject(template.path);
             });
 
-            this.addButton("Cancel", () => this.close());
+            if (this._cancellable) {
+                
+                this.addButton("Cancel", () => this.close());
+            }
 
             this.requestProjectsData();
         }

@@ -91,7 +91,9 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         protected _projectNameText: HTMLInputElement;
         private _createBtn;
         private _projectNames;
+        private _cancellable;
         constructor();
+        setCancellable(cancellable: boolean): void;
         protected createDialogArea(): void;
         private createBottomArea;
         private setInitialProjectName;

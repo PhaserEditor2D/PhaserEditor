@@ -217,9 +217,18 @@ var phasereditor2d;
                     return new colibri.ui.ide.EditorArea();
                 }
                 async createParts() {
-                    const dlg = new ui.dialogs.ProjectsDialog();
-                    dlg.create();
-                    dlg.setCloseWithEscapeKey(false);
+                    const projects = await colibri.ui.ide.FileUtils.getProjects_async();
+                    if (projects.length === 0) {
+                        const dlg = new ui.dialogs.NewProjectDialog();
+                        dlg.setCancellable(false);
+                        dlg.setCloseWithEscapeKey(false);
+                        dlg.create();
+                    }
+                    else {
+                        const dlg = new ui.dialogs.ProjectsDialog();
+                        dlg.setCloseWithEscapeKey(false);
+                        dlg.create();
+                    }
                 }
             }
             WelcomeWindow.ID = "phasereditor2d.welcome.ui.WelcomeWindow";
@@ -429,6 +438,10 @@ var phasereditor2d;
                     constructor() {
                         super("NewProjectDialog");
                         this._projectNames = new Set();
+                        this._cancellable = true;
+                    }
+                    setCancellable(cancellable) {
+                        this._cancellable = cancellable;
                     }
                     createDialogArea() {
                         const clientArea = document.createElement("div");
@@ -515,7 +528,9 @@ var phasereditor2d;
                             this.closeAll();
                             this.createProject(template.path);
                         });
-                        this.addButton("Cancel", () => this.close());
+                        if (this._cancellable) {
+                            this.addButton("Cancel", () => this.close());
+                        }
                         this.requestProjectsData();
                     }
                     async createProject(templatePath) {
