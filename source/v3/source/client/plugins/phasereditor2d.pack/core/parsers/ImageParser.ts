@@ -9,19 +9,25 @@ namespace phasereditor2d.pack.core.parsers {
         }
 
         addToPhaserCache(game: Phaser.Game) {
+
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
+
                 const url = item.getData().url;
+
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(url);
-                game.textures.addImage(item.getKey(), image.getImageElement());
+
+                if (image) {
+                    game.textures.addImage(item.getKey(), image.getImageElement());
+                }
             }
         }
 
         preloadFrames(): Promise<controls.PreloadResult> {
 
             const url = this.getPackItem().getData().url;
-            
+
             const img = AssetPackUtils.getImageFromPackUrl(url);
 
             if (img) {
@@ -41,7 +47,7 @@ namespace phasereditor2d.pack.core.parsers {
                 new controls.Point(img.getWidth(), img.getWidth())
             );
 
-            return [new AssetPackImageFrame( <ImageFrameContainerAssetPackItem> this.getPackItem(), this.getPackItem().getKey(), img, fd)];
+            return [new AssetPackImageFrame(<ImageFrameContainerAssetPackItem>this.getPackItem(), this.getPackItem().getKey(), img, fd)];
         }
 
 

@@ -15,23 +15,27 @@ namespace phasereditor2d.pack.core.parsers {
 
                 const data = JSON.parse(atlas);
 
-                if (Array.isArray(data.frames)) {
+                if (data) {
 
-                    for (const frame of data.frames) {
+                    if (Array.isArray(data.frames)) {
 
-                        const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
-                        imageFrames.push(frameData);
-                    }
-                } else {
+                        for (const frame of data.frames) {
 
-                    for (const name in data.frames) {
+                            const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
+                            imageFrames.push(frameData);
+                        }
+                    } else {
 
-                        const frame = data.frames[name];
-                        frame.filename = name;
-                        const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
-                        imageFrames.push(frameData);
+                        for (const name in data.frames) {
+
+                            const frame = data.frames[name];
+                            frame.filename = name;
+                            const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
+                            imageFrames.push(frameData);
+                        }
                     }
                 }
+
             } catch (e) {
                 console.error(e);
             }

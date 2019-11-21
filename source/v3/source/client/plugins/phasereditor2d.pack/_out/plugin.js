@@ -434,6 +434,9 @@ var phasereditor2d;
                 }
                 static getFileStringFromPackUrl(url) {
                     const file = this.getFileFromPackUrl(url);
+                    if (!file) {
+                        return null;
+                    }
                     const str = ide.FileUtils.getFileString(file);
                     return str;
                 }
@@ -741,15 +744,17 @@ var phasereditor2d;
                     try {
                         const urlSet = new Set();
                         const atlasFile = core.AssetPackUtils.getFileFromPackUrl(this.getData().url);
-                        const str = ide.FileUtils.getFileString(atlasFile);
-                        const data = JSON.parse(str);
-                        for (const texture of data.textures) {
-                            const url = core.AssetPackUtils.getFilePackUrl(atlasFile.getSibling(texture.image));
-                            urlSet.add(url);
-                        }
-                        for (const url of urlSet) {
-                            const file = core.AssetPackUtils.getFileFromPackUrl(url);
-                            files.add(file);
+                        if (atlasFile) {
+                            const str = ide.FileUtils.getFileString(atlasFile);
+                            const data = JSON.parse(str);
+                            for (const texture of data.textures) {
+                                const url = core.AssetPackUtils.getFilePackUrl(atlasFile.getSibling(texture.image));
+                                urlSet.add(url);
+                            }
+                            for (const url of urlSet) {
+                                const file = core.AssetPackUtils.getFileFromPackUrl(url);
+                                files.add(file);
+                            }
                         }
                     }
                     catch (e) {
@@ -1380,6 +1385,7 @@ var phasereditor2d;
         (function (core) {
             var parsers;
             (function (parsers) {
+                var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
                 class BaseAtlasParser extends parsers.ImageFrameParser {
                     constructor(packItem) {
@@ -1400,6 +1406,9 @@ var phasereditor2d;
                     async preloadFrames() {
                         const data = this.getPackItem().getData();
                         const dataFile = core.AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+                        if (!dataFile) {
+                            return controls.Controls.resolveNothingLoaded();
+                        }
                         let result1 = await ide.FileUtils.preloadFileString(dataFile);
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
                         const image = ide.FileUtils.getImage(imageFile);
@@ -1449,18 +1458,20 @@ var phasereditor2d;
                     parseFrames2(imageFrames, image, atlas) {
                         try {
                             const data = JSON.parse(atlas);
-                            if (Array.isArray(data.frames)) {
-                                for (const frame of data.frames) {
-                                    const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
-                                    imageFrames.push(frameData);
+                            if (data) {
+                                if (Array.isArray(data.frames)) {
+                                    for (const frame of data.frames) {
+                                        const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
+                                        imageFrames.push(frameData);
+                                    }
                                 }
-                            }
-                            else {
-                                for (const name in data.frames) {
-                                    const frame = data.frames[name];
-                                    frame.filename = name;
-                                    const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
-                                    imageFrames.push(frameData);
+                                else {
+                                    for (const name in data.frames) {
+                                        const frame = data.frames[name];
+                                        frame.filename = name;
+                                        const frameData = AtlasParser.buildFrameData(this.getPackItem(), image, frame, imageFrames.length);
+                                        imageFrames.push(frameData);
+                                    }
                                 }
                             }
                         }
@@ -1502,7 +1513,9 @@ var phasereditor2d;
                             const atlasData = core_4.AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
                             const textureURL = item.getData().textureURL;
                             const image = core_4.AssetPackUtils.getImageFromPackUrl(textureURL);
-                            game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+                            if (atlasData && image) {
+                                game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+                            }
                         }
                     }
                     parseFrames2(imageFrames, image, atlas) {
@@ -1559,7 +1572,9 @@ var phasereditor2d;
                         if (!game.textures.exists(item.getKey())) {
                             const url = item.getData().url;
                             const image = core.AssetPackUtils.getImageFromPackUrl(url);
-                            game.textures.addImage(item.getKey(), image.getImageElement());
+                            if (image) {
+                                game.textures.addImage(item.getKey(), image.getImageElement());
+                            }
                         }
                     }
                     preloadFrames() {
@@ -1602,16 +1617,18 @@ var phasereditor2d;
                             const packItemData = item.getData();
                             const atlasDataFile = core_5.AssetPackUtils.getFileFromPackUrl(packItemData.url);
                             const atlasData = core_5.AssetPackUtils.getFileJSONFromPackUrl(packItemData.url);
-                            const images = [];
-                            const jsonArrayData = [];
-                            for (const textureData of atlasData.textures) {
-                                const imageName = textureData.image;
-                                const imageFile = atlasDataFile.getSibling(imageName);
-                                const image = ide.FileUtils.getImage(imageFile);
-                                images.push(image.getImageElement());
-                                jsonArrayData.push(textureData);
+                            if (atlasData && atlasDataFile) {
+                                const images = [];
+                                const jsonArrayData = [];
+                                for (const textureData of atlasData.textures) {
+                                    const imageName = textureData.image;
+                                    const imageFile = atlasDataFile.getSibling(imageName);
+                                    const image = ide.FileUtils.getImage(imageFile);
+                                    images.push(image.getImageElement());
+                                    jsonArrayData.push(textureData);
+                                }
+                                game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
                             }
-                            game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
                         }
                     }
                     async preloadFrames() {
@@ -1692,13 +1709,21 @@ var phasereditor2d;
                         if (!game.textures.exists(item.getKey())) {
                             const data = item.getData();
                             const image = core.AssetPackUtils.getImageFromPackUrl(data.url);
-                            game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+                            if (image) {
+                                game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+                            }
                         }
                     }
                     async preloadFrames() {
                         const data = this.getPackItem().getData();
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.url);
+                        if (!imageFile) {
+                            return controls.Controls.resolveNothingLoaded();
+                        }
                         const image = ide.FileUtils.getImage(imageFile);
+                        if (!image) {
+                            return controls.Controls.resolveNothingLoaded();
+                        }
                         return await image.preload();
                     }
                     parseFrames() {
@@ -1706,6 +1731,9 @@ var phasereditor2d;
                         const data = this.getPackItem().getData();
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.url);
                         const image = ide.FileUtils.getImage(imageFile);
+                        if (!image) {
+                            return frames;
+                        }
                         const w = data.frameConfig.frameWidth;
                         const h = data.frameConfig.frameHeight;
                         const margin = data.frameConfig.margin || 0;
@@ -1768,7 +1796,9 @@ var phasereditor2d;
                             const atlasData = core.AssetPackUtils.getFileStringFromPackUrl(atlasURL);
                             const textureURL = item.getData().textureURL;
                             const image = core.AssetPackUtils.getImageFromPackUrl(textureURL);
-                            game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), atlasData);
+                            if (image && atlasData) {
+                                game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), atlasData);
+                            }
                         }
                     }
                     parseFrames2(imageFrames, image, atlas) {

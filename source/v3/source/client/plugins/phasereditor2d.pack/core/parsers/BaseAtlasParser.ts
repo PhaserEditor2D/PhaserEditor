@@ -32,9 +32,15 @@ namespace phasereditor2d.pack.core.parsers {
             const data = this.getPackItem().getData();
 
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);
+
+            if (!dataFile) {
+                return controls.Controls.resolveNothingLoaded();
+            }
+
             let result1 = await ide.FileUtils.preloadFileString(dataFile);
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
+            
             const image = ide.FileUtils.getImage(imageFile);
 
             if (image) {

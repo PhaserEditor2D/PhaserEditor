@@ -24,20 +24,23 @@ namespace phasereditor2d.pack.core {
 
                 const atlasFile = core.AssetPackUtils.getFileFromPackUrl(this.getData().url);
 
-                const str = ide.FileUtils.getFileString(atlasFile);
+                if (atlasFile) {
 
-                const data = JSON.parse(str);
+                    const str = ide.FileUtils.getFileString(atlasFile);
 
-                for (const texture of data.textures) {
-                    const url = core.AssetPackUtils.getFilePackUrl(atlasFile.getSibling(texture.image));
-                    urlSet.add(url)
+                    const data = JSON.parse(str);
+
+                    for (const texture of data.textures) {
+                        const url = core.AssetPackUtils.getFilePackUrl(atlasFile.getSibling(texture.image));
+                        urlSet.add(url)
+                    }
+
+                    for (const url of urlSet) {
+                        const file = core.AssetPackUtils.getFileFromPackUrl(url);
+                        files.add(file);
+                    }
                 }
-
-                for (const url of urlSet) {
-                    const file = core.AssetPackUtils.getFileFromPackUrl(url);
-                    files.add(file);
-                }
-
+                
             } catch (e) {
                 console.error(e);
             }

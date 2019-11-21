@@ -5,14 +5,23 @@ namespace phasereditor2d.pack.core.parsers {
     export class UnityAtlasParser extends BaseAtlasParser {
 
         addToPhaserCache(game: Phaser.Game) {
+
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
+
                 const atlasURL = item.getData().atlasURL;
+
                 const atlasData = AssetPackUtils.getFileStringFromPackUrl(atlasURL);
+
                 const textureURL = item.getData().textureURL;
+
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
-                game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any>atlasData);
+
+                if (image && atlasData) {
+                    
+                    game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), <any>atlasData);
+                }
             }
         }
 
@@ -82,7 +91,7 @@ namespace phasereditor2d.pack.core.parsers {
         }
 
         private addFrame(image: controls.IImage, imageFrames: AssetPackImageFrame[], spriteName: string, rect: any) {
-            
+
             if (!image) {
                 return;
             }

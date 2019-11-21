@@ -18,6 +18,7 @@ namespace phasereditor2d.pack.core {
         }
 
         static async getAllPacks() {
+
             const files = await ide.FileUtils.getFilesWithContentType(contentTypes.CONTENT_TYPE_ASSET_PACK);
 
             const packs: AssetPack[] = [];
@@ -40,6 +41,7 @@ namespace phasereditor2d.pack.core {
         static getFilePackUrl(file: io.FilePath) {
 
             if (file.getParent()) {
+                
                 return `${this.getFilePackUrl(file.getParent())}${file.getName()}${file.isFolder() ? "/" : ""}`;
             }
 
@@ -47,13 +49,20 @@ namespace phasereditor2d.pack.core {
         }
 
         static getFilePackUrlWithNewExtension(file: io.FilePath, ext : string) {
+
             const url = this.getFilePackUrl(file.getParent());
+
             return `${url}${file.getNameWithoutExtension()}.${ext}`;
         }
 
         static getFileStringFromPackUrl(url: string): string {
 
             const file = this.getFileFromPackUrl(url);
+
+            if (!file) {
+
+                return null;
+            }
             
             const str = ide.FileUtils.getFileString(file);
 

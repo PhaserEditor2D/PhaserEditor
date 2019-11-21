@@ -16,21 +16,30 @@ namespace phasereditor2d.pack.core.parsers {
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
+
                 const atlasURL = item.getData().atlasURL;
                 const atlasData = AssetPackUtils.getFileXMLFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
+
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
-                game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+
+                if (atlasData && image) {
+
+                    game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+                }
             }
         }
 
         protected parseFrames2(imageFrames: AssetPackImageFrame[], image: controls.IImage, atlas: string) {
+
             try {
+
                 const parser = new DOMParser();
                 const data = parser.parseFromString(atlas, "text/xml");
                 const elements = data.getElementsByTagName("SubTexture");
 
                 for (let i = 0; i < elements.length; i++) {
+
                     const elem = elements.item(i);
 
                     const name = elem.getAttribute("name");
@@ -46,6 +55,7 @@ namespace phasereditor2d.pack.core.parsers {
                     let spriteH = frameH;
 
                     if (elem.hasAttribute("frameX")) {
+
                         spriteX = Number.parseInt(elem.getAttribute("frameX"));
                         spriteY = Number.parseInt(elem.getAttribute("frameY"));
                         spriteW = Number.parseInt(elem.getAttribute("frameWidth"));
@@ -57,8 +67,10 @@ namespace phasereditor2d.pack.core.parsers {
                         new controls.Rect(spriteX, spriteY, spriteW, spriteH),
                         new controls.Point(frameW, frameH)
                     );
-                    imageFrames.push(new AssetPackImageFrame( <ImageFrameContainerAssetPackItem> this.getPackItem(), name, image, fd));
+
+                    imageFrames.push(new AssetPackImageFrame(<ImageFrameContainerAssetPackItem>this.getPackItem(), name, image, fd));
                 }
+
             } catch (e) {
                 console.error(e);
             }

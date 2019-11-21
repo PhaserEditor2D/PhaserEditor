@@ -18,8 +18,12 @@ namespace phasereditor2d.pack.core.parsers {
             if (!game.textures.exists(item.getKey())) {
 
                 const data = item.getData();
+
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(data.url);
-                game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+
+                if (image) {
+                    game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+                }
             }
         }
 
@@ -29,7 +33,15 @@ namespace phasereditor2d.pack.core.parsers {
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
+            if (!imageFile) {
+                return controls.Controls.resolveNothingLoaded();
+            }
+
             const image = ide.FileUtils.getImage(imageFile);
+
+            if (!image) {
+                return controls.Controls.resolveNothingLoaded();
+            }
 
             return await image.preload();
         }
@@ -42,6 +54,10 @@ namespace phasereditor2d.pack.core.parsers {
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.url);
             const image = ide.FileUtils.getImage(imageFile);
+
+            if (!image) {
+                return frames;
+            }
 
             const w = data.frameConfig.frameWidth;
             const h = data.frameConfig.frameHeight;
