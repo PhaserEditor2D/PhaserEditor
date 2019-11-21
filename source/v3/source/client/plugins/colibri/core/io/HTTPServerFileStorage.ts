@@ -1,6 +1,6 @@
 namespace colibri.core.io {
 
-    async function apiRequest(method: string, body?: any) {
+    export async function apiRequest(method: string, body?: any) {
         try {
 
             const resp = await fetch("api", {
@@ -19,7 +19,9 @@ namespace colibri.core.io {
             return json;
 
         } catch (e) {
+
             console.error(e);
+            
             return new Promise((resolve, reject) => {
                 resolve({
                     error: e.message

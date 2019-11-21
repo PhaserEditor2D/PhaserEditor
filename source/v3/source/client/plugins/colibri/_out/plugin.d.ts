@@ -159,6 +159,7 @@ declare namespace colibri.core.io {
     }
 }
 declare namespace colibri.core.io {
+    function apiRequest(method: string, body?: any): Promise<any>;
     class FileStorage_HTTPServer implements IFileStorage {
         private _root;
         private _changeListeners;

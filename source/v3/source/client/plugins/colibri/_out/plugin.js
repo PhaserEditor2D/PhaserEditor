@@ -497,6 +497,7 @@ var colibri;
                     });
                 }
             }
+            io.apiRequest = apiRequest;
             class FileStorage_HTTPServer {
                 constructor() {
                     this._root = null;
