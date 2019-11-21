@@ -68,6 +68,7 @@ var phasereditor2d;
                     console.log(`IDEPlugin: opening project ${projectName}`);
                     await wb.openProject(projectName, monitor);
                     dlg.setProgress(1);
+                    this.validateIndexFile();
                     const designWindow = wb.activateWindow(ide_1.ui.DesignWindow.ID);
                     if (designWindow) {
                         designWindow.restoreState(wb.getProjectPreferences());
@@ -76,6 +77,13 @@ var phasereditor2d;
                 finally {
                     this._openingProject = false;
                     dlg.close();
+                }
+            }
+            validateIndexFile() {
+                const root = colibri.ui.ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                const indexFile = root.getFile("index.html");
+                if (!indexFile || indexFile.isFolder()) {
+                    alert("Missing 'index.html' file at the root folder.");
                 }
             }
             isOpeningProject() {

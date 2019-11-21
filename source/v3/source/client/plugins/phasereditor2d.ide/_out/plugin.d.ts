@@ -10,6 +10,7 @@ declare namespace phasereditor2d.ide {
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
         openFirstWindow(): Promise<void>;
         ideOpenProject(projectName: string): Promise<void>;
+        private validateIndexFile;
         isOpeningProject(): boolean;
         switchTheme(): void;
         restoreTheme(): void;

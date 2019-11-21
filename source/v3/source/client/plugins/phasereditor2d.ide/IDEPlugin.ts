@@ -128,17 +128,32 @@ namespace phasereditor2d.ide {
 
                 dlg.setProgress(1);
 
+                this.validateIndexFile();
+
                 const designWindow = wb.activateWindow(ui.DesignWindow.ID) as ui.DesignWindow;
 
                 if (designWindow) {
 
                     designWindow.restoreState(wb.getProjectPreferences());
                 }
+
             } finally {
 
                 this._openingProject = false;
 
                 dlg.close();
+            }
+        }
+
+        private validateIndexFile() {
+
+            const root = colibri.ui.ide.Workbench.getWorkbench().getFileStorage().getRoot();
+
+            const indexFile = root.getFile("index.html");
+
+            if (!indexFile || indexFile.isFolder()) {
+
+                alert("Missing 'index.html' file at the root folder.");
             }
         }
 
