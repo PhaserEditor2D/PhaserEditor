@@ -473,13 +473,11 @@ var phasereditor2d;
                             setTimeout(() => text.focus(), 10);
                             bottomArea.appendChild(text);
                             this._projectNameText = text;
-                            this.setInitialProjectName().then(() => {
-                                this.validate();
-                            });
+                            this.setInitialProjectName();
                         }
                         return bottomArea;
                     }
-                    async setInitialProjectName() {
+                    setInitialProjectName() {
                         let name = "Game";
                         let i = 1;
                         while (this._projectNames.has(name.toLowerCase())) {
@@ -488,7 +486,7 @@ var phasereditor2d;
                         }
                         this._projectNameText.value = name;
                     }
-                    async validate() {
+                    validate() {
                         let disabled = false;
                         const viewer = this._filteredViewer.getViewer();
                         if (viewer.getSelection().length !== 1) {
@@ -521,17 +519,18 @@ var phasereditor2d;
                         this._projectNames = new Set(list);
                     }
                     create() {
-                        super.create();
-                        this.setTitle("New Project");
-                        this._createBtn = this.addButton("Create Project", () => {
-                            const template = this._filteredViewer.getViewer().getSelectionFirstElement();
-                            this.closeAll();
-                            this.createProject(template.path);
+                        this.requestProjectsData().then(() => {
+                            super.create();
+                            this.setTitle("New Project");
+                            this._createBtn = this.addButton("Create Project", () => {
+                                const template = this._filteredViewer.getViewer().getSelectionFirstElement();
+                                this.closeAll();
+                                this.createProject(template.path);
+                            });
+                            if (this._cancellable) {
+                                this.addButton("Cancel", () => this.close());
+                            }
                         });
-                        if (this._cancellable) {
-                            this.addButton("Cancel", () => this.close());
-                        }
-                        this.requestProjectsData();
                     }
                     async createProject(templatePath) {
                         const projectName = this._projectNameText.value;
@@ -562,7 +561,6 @@ var phasereditor2d;
                             }
                             viewer.setSelection([data.providers[0].templates[0]]);
                             viewer.repaint();
-                            this.validate();
                         });
                         viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                             this.validate();

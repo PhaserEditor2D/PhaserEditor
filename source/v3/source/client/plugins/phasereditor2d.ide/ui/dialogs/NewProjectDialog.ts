@@ -65,16 +65,13 @@ namespace phasereditor2d.ide.ui.dialogs {
                 bottomArea.appendChild(text);
                 this._projectNameText = text;
 
-                this.setInitialProjectName().then(() => {
-
-                    this.validate();
-                });
+                this.setInitialProjectName();
             }
 
             return bottomArea;
         }
 
-        private async setInitialProjectName() {
+        private setInitialProjectName() {
 
             let name = "Game";
 
@@ -88,7 +85,7 @@ namespace phasereditor2d.ide.ui.dialogs {
             this._projectNameText.value = name;
         }
 
-        async validate() {
+        private validate() {
 
             let disabled = false;
 
@@ -139,25 +136,26 @@ namespace phasereditor2d.ide.ui.dialogs {
 
         create() {
 
-            super.create();
+            this.requestProjectsData().then(() => {
 
-            this.setTitle("New Project");
+                super.create();
 
-            this._createBtn = this.addButton("Create Project", () => {
+                this.setTitle("New Project");
 
-                const template = this._filteredViewer.getViewer().getSelectionFirstElement();
+                this._createBtn = this.addButton("Create Project", () => {
 
-                this.closeAll();
+                    const template = this._filteredViewer.getViewer().getSelectionFirstElement();
 
-                this.createProject(template.path);
+                    this.closeAll();
+
+                    this.createProject(template.path);
+                });
+
+                if (this._cancellable) {
+
+                    this.addButton("Cancel", () => this.close());
+                }
             });
-
-            if (this._cancellable) {
-                
-                this.addButton("Cancel", () => this.close());
-            }
-
-            this.requestProjectsData();
         }
 
         private async createProject(templatePath: string) {
@@ -208,8 +206,6 @@ namespace phasereditor2d.ide.ui.dialogs {
                 viewer.setSelection([data.providers[0].templates[0]]);
 
                 viewer.repaint();
-
-                this.validate();
             });
 
             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {

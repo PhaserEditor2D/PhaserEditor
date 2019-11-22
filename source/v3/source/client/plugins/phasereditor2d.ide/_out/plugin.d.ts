@@ -97,7 +97,7 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         protected createDialogArea(): void;
         private createBottomArea;
         private setInitialProjectName;
-        validate(): Promise<void>;
+        private validate;
         private requestProjectsData;
         create(): void;
         private createProject;
