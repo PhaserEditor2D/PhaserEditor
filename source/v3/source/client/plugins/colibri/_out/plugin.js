@@ -230,7 +230,6 @@ var colibri;
     (function (core) {
         var io;
         (function (io) {
-            const EMPTY_FILES = [];
             class FilePath {
                 constructor(parent, fileData) {
                     this._parent = parent;
@@ -247,7 +246,7 @@ var colibri;
                         this._sort();
                     }
                     else {
-                        this._files = EMPTY_FILES;
+                        this._files = [];
                     }
                 }
                 _sort() {
@@ -343,6 +342,7 @@ var colibri;
                 _add(file) {
                     file._remove();
                     file._parent = this;
+                    const b = this._files === file._files;
                     this._files.push(file);
                     this._sort();
                 }
@@ -780,7 +780,7 @@ var colibri;
                         change.recordModify(file.getFullName());
                     }
                     else {
-                        file = new io.FilePath(uploadFolder, fileData);
+                        file = new io.FilePath(null, fileData);
                         uploadFolder._add(file);
                         change.recordAdd(file.getFullName());
                     }

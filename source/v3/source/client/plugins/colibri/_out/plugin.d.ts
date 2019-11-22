@@ -93,7 +93,6 @@ declare namespace colibri.core.io {
         private _isFile;
         private _files;
         private _ext;
-        private _id;
         private _modTime;
         private _fileSize;
         private _alive;

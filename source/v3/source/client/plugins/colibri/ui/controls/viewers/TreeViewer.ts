@@ -40,8 +40,8 @@ namespace colibri.ui.controls.viewers {
         canSelectAtPoint(e: MouseEvent) {
 
             const icon = this.getTreeIconAtPoint(e);
-            return icon === null;
 
+            return icon === null;
         }
 
         reveal(...objects: any[]): void {
@@ -209,6 +209,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         setFilterText(filter: string) {
+
             super.setFilterText(filter);
 
             if (filter !== "") {
@@ -218,12 +219,19 @@ namespace colibri.ui.controls.viewers {
         }
 
         private expandFilteredParents(objects: any[]): void {
+
             const contentProvider = this.getContentProvider();
+
             for (const obj of objects) {
+
                 if (this.isFilterIncluded(obj)) {
+
                     const children = contentProvider.getChildren(obj);
+
                     if (children.length > 0) {
+
                         this.setExpanded(obj, true);
+                        
                         this.expandFilteredParents(children);
                     }
                 }
@@ -231,18 +239,24 @@ namespace colibri.ui.controls.viewers {
         }
 
         buildFilterIncludeMap() {
+
             const provider = this.getContentProvider();
+
             const roots = provider ? provider.getRoots(this.getInput()) : [];
+
             this.buildFilterIncludeMap2(roots);
         }
 
         private buildFilterIncludeMap2(objects: any[]): boolean {
+
             let result = false;
 
             for (const obj of objects) {
+
                 let resultThis = this.matches(obj);
 
                 const children = this.getContentProvider().getChildren(obj);
+
                 const resultChildren = this.buildFilterIncludeMap2(children);
 
                 resultThis = resultThis || resultChildren;

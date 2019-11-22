@@ -454,7 +454,8 @@ namespace colibri.core.io {
 
             } else {
 
-                file = new FilePath(uploadFolder, fileData);
+                file = new FilePath(null, fileData);
+                
                 uploadFolder._add(file);
 
                 change.recordAdd(file.getFullName());

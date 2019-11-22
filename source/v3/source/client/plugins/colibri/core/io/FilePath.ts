@@ -1,5 +1,4 @@
 namespace colibri.core.io {
-    const EMPTY_FILES = [];
 
     export class FilePath {
 
@@ -9,7 +8,6 @@ namespace colibri.core.io {
         private _isFile: boolean;
         private _files: FilePath[];
         private _ext: string;
-        private _id: string;
         private _modTime: number;
         private _fileSize: number;
         private _alive: boolean;
@@ -37,7 +35,7 @@ namespace colibri.core.io {
 
             } else {
 
-                this._files = EMPTY_FILES;
+                this._files = [];
 
             }
         }
@@ -174,6 +172,8 @@ namespace colibri.core.io {
             file._remove();
 
             file._parent = this;
+
+            const b = this._files === file._files;
 
             this._files.push(file);
 
