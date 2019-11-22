@@ -26,3 +26,5 @@ hs_err_pid*
 # docs build folders
 
 *.doctree
+
+source/v3/source/server/**
