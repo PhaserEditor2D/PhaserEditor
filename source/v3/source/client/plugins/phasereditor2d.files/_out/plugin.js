@@ -217,11 +217,15 @@ var phasereditor2d;
                 function isFilesViewScope(args) {
                     return args.activePart instanceof ui.views.FilesView;
                 }
+                function isOpenProjectScope(args) {
+                    const root = colibri.ui.ide.FileUtils.getRoot();
+                    return root !== null;
+                }
                 class FilesViewCommands {
                     static registerCommands(manager) {
                         // new file
                         manager.addCommandHelper(actions.CMD_NEW_FILE);
-                        manager.addHandlerHelper(actions.CMD_NEW_FILE, args => true, args => {
+                        manager.addHandlerHelper(actions.CMD_NEW_FILE, args => isOpenProjectScope(args), args => {
                             new actions.OpenNewFileDialogAction().run();
                         });
                         manager.addKeyBinding(actions.CMD_NEW_FILE, new colibri.ui.ide.commands.KeyMatcher({

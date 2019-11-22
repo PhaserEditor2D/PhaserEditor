@@ -5,6 +5,7 @@ namespace phasereditor2d.ide.ui.actions {
 
     import controls = colibri.ui.controls;
 
+
     export class IDEActions {
 
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void {
@@ -16,7 +17,7 @@ namespace phasereditor2d.ide.ui.actions {
             manager.addHandlerHelper(CMD_OPEN_PROJECTS_DIALOG,
                 args => {
 
-                    return args.activeWindow.getId() !== ui.WelcomeWindow.ID;
+                    return !(args.activeWindow instanceof ui.WelcomeWindow);
 
                 }, args => new OpenProjectsDialogAction().run());
 
