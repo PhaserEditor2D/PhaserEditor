@@ -7,16 +7,24 @@ declare namespace phasereditor2d.code {
     }
 }
 declare namespace phasereditor2d.code.ui.editors {
-    class JavaScriptEditorFactory extends colibri.ui.ide.EditorFactory {
-        constructor();
+    import io = colibri.core.io;
+    class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
+        private _language;
+        private _fileExtension;
+        constructor(language: string, fileExtension: string);
         acceptInput(input: any): boolean;
         createEditor(): colibri.ui.ide.EditorPart;
     }
-    class JavaScriptEditor extends colibri.ui.ide.EditorPart {
+    class MonacoEditor extends colibri.ui.ide.FileEditor {
         private static _factory;
-        static getFactory(): colibri.ui.ide.EditorFactory;
-        constructor();
+        private _monacoEditor;
+        private _language;
+        constructor(language: string);
         protected createPart(): void;
+        setInput(file: io.FilePath): void;
+        private updateContent;
+        layout(): void;
+        protected onEditorInputContentChanged(): void;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

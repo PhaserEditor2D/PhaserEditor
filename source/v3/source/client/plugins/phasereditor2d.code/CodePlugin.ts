@@ -21,7 +21,13 @@ namespace phasereditor2d.code {
 
             reg.addExtension(colibri.ui.ide.EditorExtension.POINT_ID,
                 new colibri.ui.ide.EditorExtension("phasereditor2d.core.ui.editors",
-                    [ui.editors.JavaScriptEditor.getFactory()])
+                    [
+                        new ui.editors.MonacoEditorFactory("javascript", "js"),
+                        new ui.editors.MonacoEditorFactory("typescript", "ts"),
+                        new ui.editors.MonacoEditorFactory("html", "html"),
+                        new ui.editors.MonacoEditorFactory("css", "css"),
+                        new ui.editors.MonacoEditorFactory("text", "txt"),
+                    ])
             );
 
         }

@@ -181,7 +181,9 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         setInput(file: io.FilePath): void {
+
             super.setInput(file);
+            
             this.updateContent();
         }
 
