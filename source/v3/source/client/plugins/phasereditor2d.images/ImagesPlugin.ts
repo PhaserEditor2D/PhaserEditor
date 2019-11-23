@@ -24,7 +24,7 @@ namespace phasereditor2d.images {
                 .addExtension(
                     files.ui.viewers.ContentTypeCellRendererExtension.POINT,
                     new files.ui.viewers.SimpleContentTypeCellRendererExtension(
-                        files.core.CONTENT_TYPE_IMAGE,
+                        webContentTypes.core.CONTENT_TYPE_IMAGE,
                         new ui.viewers.ImageFileCellRenderer())
                 );
 
@@ -32,7 +32,7 @@ namespace phasereditor2d.images {
                 .addExtension(
                     files.ui.viewers.ContentTypeCellRendererExtension.POINT,
                     new files.ui.viewers.SimpleContentTypeCellRendererExtension(
-                        files.core.CONTENT_TYPE_SVG,
+                        webContentTypes.core.CONTENT_TYPE_SVG,
                         new ui.viewers.ImageFileCellRenderer())
                 );
 

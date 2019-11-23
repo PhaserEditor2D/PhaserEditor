@@ -13,77 +13,87 @@ namespace phasereditor2d.pack.ui.importers {
 
     export class Importers {
 
-        static LIST = [
+        private static _list: Importer[];
 
-            new AtlasImporter(),
+        static getAll() {
 
-            new MultiatlasImporter(),
+            if (!this._list) {
 
-            new AtlasXMLImporter(),
+                this._list = [
 
-            new UnityAtlasImporter(),
+                    new AtlasImporter(),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_IMAGE, core.IMAGE_TYPE),
+                    new MultiatlasImporter(),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_SVG, core.SVG_TYPE, false, {
-                svgConfig: {
-                    width: 512,
-                    height: 512
-                }
-            }),
-            new SpritesheetImporter(),
+                    new AtlasXMLImporter(),
 
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATION_TYPE),
+                    new UnityAtlasImporter(),
 
-            new BitmapFontImporter(),
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_IMAGE, core.IMAGE_TYPE),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_CSV, core.TILEMAP_CSV_TYPE),
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_SVG, core.SVG_TYPE, false, {
+                        svgConfig: {
+                            width: 512,
+                            height: 512
+                        }
+                    }),
+                    new SpritesheetImporter(),
 
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE),
+                    new SingleFileImporter(core.contentTypes.CONTENT_TYPE_ANIMATIONS, core.ANIMATION_TYPE),
 
-            new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, core.TILEMAP_TILED_JSON_TYPE),
+                    new BitmapFontImporter(),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.PLUGIN_TYPE, false, {
-                start: false,
-                mapping: ""
-            }),
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_CSV, core.TILEMAP_CSV_TYPE),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_FILE_TYPE),
+                    new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, core.TILEMAP_IMPACT_TYPE),
 
-            new ScenePluginImporter(),
+                    new SingleFileImporter(core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, core.TILEMAP_TILED_JSON_TYPE),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCRIPT_TYPE),
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, core.PLUGIN_TYPE, false, {
+                        start: false,
+                        mapping: ""
+                    }),
 
-            new SingleFileImporter(files.core.CONTENT_TYPE_AUDIO, core.AUDIO_TYPE, true),
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_FILE_TYPE),
 
-            new AudioSpriteImporter(),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_VIDEO, core.VIDEO_TYPE, true),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_TEXT, core.TEXT_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_CSS, core.CSS_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_HTML, core.HTML_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_HTML, core.HTML_TEXTURE_TYPE, false, {
-                width: 512,
-                height: 512
-            }),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_GLSL, core.GLSL_TYPE),
-            
-            new SingleFileImporter(colibri.core.CONTENT_TYPE_ANY, core.BINARY_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_JSON, core.JSON_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_XML, core.XML_TYPE),
-            
-            new SingleFileImporter(files.core.CONTENT_TYPE_GLSL, core.GLSL_TYPE),
-        ]
+                    new ScenePluginImporter(),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, core.SCRIPT_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_AUDIO, core.AUDIO_TYPE, true),
+
+                    new AudioSpriteImporter(),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_VIDEO, core.VIDEO_TYPE, true),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_TEXT, core.TEXT_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_CSS, core.CSS_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_HTML, core.HTML_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_HTML, core.HTML_TEXTURE_TYPE, false, {
+                        width: 512,
+                        height: 512
+                    }),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_GLSL, core.GLSL_TYPE),
+
+                    new SingleFileImporter(colibri.core.CONTENT_TYPE_ANY, core.BINARY_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_JSON, core.JSON_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_XML, core.XML_TYPE),
+
+                    new SingleFileImporter(webContentTypes.core.CONTENT_TYPE_GLSL, core.GLSL_TYPE),
+                ];
+            }
+
+            return this._list;
+        }
 
         static getImporter(type: string) {
-            return this.LIST.find(i => i.getType() === type);
+            return this.getAll().find(i => i.getType() === type);
         }
     }
 }

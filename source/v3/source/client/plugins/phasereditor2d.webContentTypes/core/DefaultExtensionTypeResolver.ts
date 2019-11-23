@@ -1,6 +1,6 @@
 /// <reference path="./ExtensionContentTypeResolver.ts" />
 
-namespace phasereditor2d.files.core {
+namespace phasereditor2d.webContentTypes.core {
 
     export const CONTENT_TYPE_IMAGE = "image";
     export const CONTENT_TYPE_SVG = "svg";

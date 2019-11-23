@@ -37,7 +37,7 @@ namespace phasereditor2d.files.ui.views {
 
                 const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
 
-                return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
+                return ct === webContentTypes.core.CONTENT_TYPE_IMAGE || ct === webContentTypes.core.CONTENT_TYPE_SVG;
             }
 
             return false;

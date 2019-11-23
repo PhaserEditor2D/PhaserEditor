@@ -47,7 +47,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "Scene File",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_JAVASCRIPT,
+                webContentTypes.core.CONTENT_TYPE_JAVASCRIPT,
                 core.SCENE_FILE_TYPE));
 
             sections.push(new ScenePluginSection(page));
@@ -57,7 +57,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "Script",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_JAVASCRIPT,
+                webContentTypes.core.CONTENT_TYPE_JAVASCRIPT,
                 core.SCRIPT_TYPE));
 
             sections.push(new AudioSection(page));
@@ -71,7 +71,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "Text",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_TEXT,
+                webContentTypes.core.CONTENT_TYPE_TEXT,
                 core.TEXT_TYPE));
 
             sections.push(new SimpleURLSection(page,
@@ -79,7 +79,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "CSS",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_CSS,
+                webContentTypes.core.CONTENT_TYPE_CSS,
                 core.CSS_TYPE));
 
             sections.push(new SimpleURLSection(page,
@@ -87,7 +87,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "GLSL",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_GLSL,
+                webContentTypes.core.CONTENT_TYPE_GLSL,
                 core.GLSL_TYPE));
 
             sections.push(new SimpleURLSection(page,
@@ -95,7 +95,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "HTML",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_HTML,
+                webContentTypes.core.CONTENT_TYPE_HTML,
                 core.HTML_TYPE));
 
             sections.push(new HTMLTextureSection(page));
@@ -113,7 +113,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "JSON",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_JSON,
+                webContentTypes.core.CONTENT_TYPE_JSON,
                 core.JSON_TYPE));
 
             sections.push(new SimpleURLSection(page,
@@ -121,7 +121,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
                 "XML",
                 "URL",
                 "url",
-                files.core.CONTENT_TYPE_XML,
+                webContentTypes.core.CONTENT_TYPE_XML,
                 core.XML_TYPE));
 
             // preview sections

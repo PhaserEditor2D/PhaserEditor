@@ -20,7 +20,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createFileField(comp, "JSON URL", "jsonURL", core.contentTypes.CONTENT_TYPE_AUDIO_SPRITE);
 
-            this.createMultiFileField(comp, "Audio URL", "audioURL", files.core.CONTENT_TYPE_AUDIO);
+            this.createMultiFileField(comp, "Audio URL", "audioURL", webContentTypes.core.CONTENT_TYPE_AUDIO);
         }
     }
 }

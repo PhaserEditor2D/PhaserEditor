@@ -15,7 +15,7 @@ namespace phasereditor2d.pack.ui.importers {
 
             const urls = file.getParent().getFiles()
 
-                .filter(f => reg.getCachedContentType(f) === files.core.CONTENT_TYPE_AUDIO)
+                .filter(f => reg.getCachedContentType(f) === webContentTypes.core.CONTENT_TYPE_AUDIO)
 
                 .filter(f => f.getNameWithoutExtension() === baseName)
 

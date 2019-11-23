@@ -13,9 +13,9 @@ var phasereditor2d;
             registerExtensions(reg) {
                 // file cell renderers
                 reg
-                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, new images.ui.viewers.ImageFileCellRenderer()));
+                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE, new images.ui.viewers.ImageFileCellRenderer()));
                 reg
-                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.files.core.CONTENT_TYPE_SVG, new images.ui.viewers.ImageFileCellRenderer()));
+                    .addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(phasereditor2d.webContentTypes.core.CONTENT_TYPE_SVG, new images.ui.viewers.ImageFileCellRenderer()));
                 // editors
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.images.EditorExtension", [
                     images.ui.editors.ImageEditor.getFactory()
@@ -46,7 +46,7 @@ var phasereditor2d;
                         if (input instanceof io.FilePath) {
                             const file = input;
                             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                            if (contentType === phasereditor2d.files.core.CONTENT_TYPE_IMAGE) {
+                            if (contentType === phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE) {
                                 return true;
                             }
                         }

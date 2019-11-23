@@ -4,12 +4,6 @@ var phasereditor2d;
     (function (files) {
         var ide = colibri.ui.ide;
         files.ICON_NEW_FILE = "file-new";
-        files.ICON_FILE_FONT = "file-font";
-        files.ICON_FILE_IMAGE = "file-image";
-        files.ICON_FILE_VIDEO = "file-movie";
-        files.ICON_FILE_SCRIPT = "file-script";
-        files.ICON_FILE_SOUND = "file-sound";
-        files.ICON_FILE_TEXT = "file-text";
         class FilesPlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.files");
@@ -18,60 +12,9 @@ var phasereditor2d;
                 return this._instance;
             }
             registerExtensions(reg) {
-                // icons loader
+                // icons loader 
                 reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
-                    files.ICON_FILE_IMAGE,
-                    files.ICON_FILE_SOUND,
-                    files.ICON_FILE_VIDEO,
-                    files.ICON_FILE_SCRIPT,
-                    files.ICON_FILE_TEXT,
-                    files.ICON_FILE_FONT,
                     files.ICON_NEW_FILE
-                ]));
-                // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.files.core.DefaultExtensionTypeResolver", [new files.core.DefaultExtensionTypeResolver()], 1000));
-                // content type icons
-                reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
-                    {
-                        iconName: files.ICON_FILE_IMAGE,
-                        contentType: files.core.CONTENT_TYPE_IMAGE
-                    },
-                    {
-                        iconName: files.ICON_FILE_IMAGE,
-                        contentType: files.core.CONTENT_TYPE_SVG
-                    },
-                    {
-                        iconName: files.ICON_FILE_SOUND,
-                        contentType: files.core.CONTENT_TYPE_AUDIO
-                    },
-                    {
-                        iconName: files.ICON_FILE_VIDEO,
-                        contentType: files.core.CONTENT_TYPE_VIDEO
-                    },
-                    {
-                        iconName: files.ICON_FILE_SCRIPT,
-                        contentType: files.core.CONTENT_TYPE_SCRIPT
-                    },
-                    {
-                        iconName: files.ICON_FILE_SCRIPT,
-                        contentType: files.core.CONTENT_TYPE_JAVASCRIPT
-                    },
-                    {
-                        iconName: files.ICON_FILE_SCRIPT,
-                        contentType: files.core.CONTENT_TYPE_CSS
-                    },
-                    {
-                        iconName: files.ICON_FILE_SCRIPT,
-                        contentType: files.core.CONTENT_TYPE_HTML
-                    },
-                    {
-                        iconName: files.ICON_FILE_SCRIPT,
-                        contentType: files.core.CONTENT_TYPE_XML
-                    },
-                    {
-                        iconName: files.ICON_FILE_TEXT,
-                        contentType: files.core.CONTENT_TYPE_TEXT
-                    }
                 ]));
                 // new files
                 reg.addExtension(files.ui.dialogs.NewFileExtension.POINT, new files.ui.dialogs.NewFolderExtension());
@@ -82,85 +25,6 @@ var phasereditor2d;
         FilesPlugin._instance = new FilesPlugin();
         files.FilesPlugin = FilesPlugin;
         ide.Workbench.getWorkbench().addPlugin(FilesPlugin.getInstance());
-    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-var phasereditor2d;
-(function (phasereditor2d) {
-    var files;
-    (function (files) {
-        var core;
-        (function (core) {
-            class ExtensionContentTypeResolver extends colibri.core.ContentTypeResolver {
-                constructor(id, defs) {
-                    super(id);
-                    this._map = new Map();
-                    for (const def of defs) {
-                        this._map.set(def[0].toUpperCase(), def[1]);
-                    }
-                }
-                computeContentType(file) {
-                    const ext = file.getExtension().toUpperCase();
-                    if (this._map.has(ext)) {
-                        return Promise.resolve(this._map.get(ext));
-                    }
-                    return Promise.resolve(colibri.core.CONTENT_TYPE_ANY);
-                }
-            }
-            core.ExtensionContentTypeResolver = ExtensionContentTypeResolver;
-        })(core = files.core || (files.core = {}));
-    })(files = phasereditor2d.files || (phasereditor2d.files = {}));
-})(phasereditor2d || (phasereditor2d = {}));
-/// <reference path="./ExtensionContentTypeResolver.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var files;
-    (function (files) {
-        var core;
-        (function (core) {
-            core.CONTENT_TYPE_IMAGE = "image";
-            core.CONTENT_TYPE_SVG = "svg";
-            core.CONTENT_TYPE_AUDIO = "audio";
-            core.CONTENT_TYPE_VIDEO = "video";
-            core.CONTENT_TYPE_SCRIPT = "script";
-            core.CONTENT_TYPE_TEXT = "text";
-            core.CONTENT_TYPE_CSV = "csv";
-            core.CONTENT_TYPE_JAVASCRIPT = "javascript";
-            core.CONTENT_TYPE_HTML = "html";
-            core.CONTENT_TYPE_CSS = "css";
-            core.CONTENT_TYPE_JSON = "json";
-            core.CONTENT_TYPE_XML = "xml";
-            core.CONTENT_TYPE_GLSL = "glsl";
-            class DefaultExtensionTypeResolver extends core.ExtensionContentTypeResolver {
-                constructor() {
-                    super("phasereditor2d.files.core.DefaultExtensionTypeResolver", [
-                        ["png", core.CONTENT_TYPE_IMAGE],
-                        ["jpg", core.CONTENT_TYPE_IMAGE],
-                        ["bmp", core.CONTENT_TYPE_IMAGE],
-                        ["gif", core.CONTENT_TYPE_IMAGE],
-                        ["webp", core.CONTENT_TYPE_IMAGE],
-                        ["svg", core.CONTENT_TYPE_SVG],
-                        ["mp3", core.CONTENT_TYPE_AUDIO],
-                        ["wav", core.CONTENT_TYPE_AUDIO],
-                        ["ogg", core.CONTENT_TYPE_AUDIO],
-                        ["mp4", core.CONTENT_TYPE_VIDEO],
-                        ["ogv", core.CONTENT_TYPE_VIDEO],
-                        ["mp4", core.CONTENT_TYPE_VIDEO],
-                        ["webm", core.CONTENT_TYPE_VIDEO],
-                        ["js", core.CONTENT_TYPE_JAVASCRIPT],
-                        ["html", core.CONTENT_TYPE_HTML],
-                        ["css", core.CONTENT_TYPE_CSS],
-                        ["ts", core.CONTENT_TYPE_SCRIPT],
-                        ["json", core.CONTENT_TYPE_JSON],
-                        ["xml", core.CONTENT_TYPE_XML],
-                        ["glsl", core.CONTENT_TYPE_GLSL],
-                        ["txt", core.CONTENT_TYPE_TEXT],
-                        ["md", core.CONTENT_TYPE_TEXT],
-                        ["csv", core.CONTENT_TYPE_CSV]
-                    ]);
-                }
-            }
-            core.DefaultExtensionTypeResolver = DefaultExtensionTypeResolver;
-        })(core = files.core || (files.core = {}));
     })(files = phasereditor2d.files || (phasereditor2d.files = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1216,7 +1080,7 @@ var phasereditor2d;
                     canEdit(obj) {
                         if (obj instanceof core.io.FilePath) {
                             const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
+                            return ct === phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE || ct === phasereditor2d.webContentTypes.core.CONTENT_TYPE_SVG;
                         }
                         return false;
                     }
@@ -1270,7 +1134,7 @@ var phasereditor2d;
                     canEdit(obj) {
                         if (obj instanceof core.io.FilePath) {
                             const ct = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(obj);
-                            return ct === files.core.CONTENT_TYPE_IMAGE || ct === files.core.CONTENT_TYPE_SVG;
+                            return ct === phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE || ct === phasereditor2d.webContentTypes.core.CONTENT_TYPE_SVG;
                         }
                         return false;
                     }

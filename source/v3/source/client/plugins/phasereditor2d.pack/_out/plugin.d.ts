@@ -929,8 +929,9 @@ declare namespace phasereditor2d.pack.ui.importers {
 }
 declare namespace phasereditor2d.pack.ui.importers {
     class Importers {
-        static LIST: (AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter | AudioSpriteImporter)[];
-        static getImporter(type: string): AtlasImporter | MultiatlasImporter | AtlasXMLImporter | UnityAtlasImporter | SingleFileImporter | BitmapFontImporter | AudioSpriteImporter;
+        private static _list;
+        static getAll(): Importer[];
+        static getImporter(type: string): Importer;
     }
 }
 declare namespace phasereditor2d.pack.ui.properties {

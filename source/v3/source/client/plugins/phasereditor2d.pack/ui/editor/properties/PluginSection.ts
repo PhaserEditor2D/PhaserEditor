@@ -22,7 +22,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             {
                 // URL
-                this.createFileField(comp, "URL", "url", files.core.CONTENT_TYPE_JAVASCRIPT);
+                this.createFileField(comp, "URL", "url", webContentTypes.core.CONTENT_TYPE_JAVASCRIPT);
             }
 
             {

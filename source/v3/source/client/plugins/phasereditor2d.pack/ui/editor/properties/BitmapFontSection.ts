@@ -20,9 +20,9 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createFileField(comp, "Font Data URL", "fontDataURL", core.contentTypes.CONTENT_TYPE_BITMAP_FONT);
 
-            this.createFileField(comp, "Texture URL", "textureURL", files.core.CONTENT_TYPE_IMAGE);
+            this.createFileField(comp, "Texture URL", "textureURL", webContentTypes.core.CONTENT_TYPE_IMAGE);
 
-            this.createFileField(comp, "Normal Map", "normalMap", files.core.CONTENT_TYPE_IMAGE);
+            this.createFileField(comp, "Normal Map", "normalMap", webContentTypes.core.CONTENT_TYPE_IMAGE);
         }
     }
 }

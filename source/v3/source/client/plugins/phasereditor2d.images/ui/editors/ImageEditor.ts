@@ -15,7 +15,7 @@ namespace phasereditor2d.images.ui.editors {
 
                 const file = <io.FilePath>input;
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
-                if (contentType === files.core.CONTENT_TYPE_IMAGE) {
+                if (contentType === webContentTypes.core.CONTENT_TYPE_IMAGE) {
                     return true;
                 }
             }

@@ -78,7 +78,8 @@ var phasereditor2d;
                         contentType: pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS
                     },
                     {
-                        iconName: phasereditor2d.files.ICON_FILE_FONT,
+                        plugin: phasereditor2d.webContentTypes.WebContentTypesPlugin.getInstance(),
+                        iconName: phasereditor2d.webContentTypes.ICON_FILE_FONT,
                         contentType: pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT
                     }
                 ]));
@@ -2604,7 +2605,7 @@ var phasereditor2d;
                                 comp.children.item(0).remove();
                             }
                             const importList = [];
-                            for (const importer of ui.importers.Importers.LIST) {
+                            for (const importer of ui.importers.Importers.getAll()) {
                                 const files = this.getSelection().filter(file => importer.acceptFile(file));
                                 if (files.length > 0) {
                                     importList.push({
@@ -2664,20 +2665,20 @@ var phasereditor2d;
                             sections.push(new properties.TilemapImpactSection(page));
                             sections.push(new properties.TilemapTiledJSONSection(page));
                             sections.push(new properties.PluginSection(page));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.SceneFileSection", "Scene File", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.SceneFileSection", "Scene File", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE));
                             sections.push(new properties.ScenePluginSection(page));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.ScriptSection", "Script", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.ScriptSection", "Script", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE));
                             sections.push(new properties.AudioSection(page));
                             sections.push(new properties.AudioSpriteSection(page));
                             sections.push(new properties.VideoSection(page));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.TextSection", "Text", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.CSSSection", "CSS", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.GLSLSection", "GLSL", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.HTMLSection", "HTML", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.TextSection", "Text", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.CSSSection", "CSS", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.GLSLSection", "GLSL", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.HTMLSection", "HTML", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE));
                             sections.push(new properties.HTMLTextureSection(page));
                             sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.BinarySection", "Binary", "URL", "url", colibri.core.CONTENT_TYPE_ANY, pack.core.BINARY_TYPE));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.JSONSection", "JSON", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE));
-                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.XMLSection", "XML", "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_XML, pack.core.XML_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.JSONSection", "JSON", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE));
+                            sections.push(new properties.SimpleURLSection(page, "phasereditor2d.pack.ui.editor.properties.XMLSection", "XML", "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_XML, pack.core.XML_TYPE));
                             // preview sections
                             sections.push(new ui.properties.ImagePreviewSection(page));
                             sections.push(new ui.properties.ManyImageSection(page));
@@ -2835,8 +2836,8 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_ATLAS);
-                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
-                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.AtlasSection = AtlasSection;
@@ -2867,8 +2868,8 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_ATLAS_XML);
-                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
-                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.AtlasXMLSection = AtlasXMLSection;
@@ -2897,7 +2898,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createMultiFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_AUDIO);
+                            this.createMultiFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_AUDIO);
                         }
                     }
                     properties.AudioSection = AudioSection;
@@ -2927,7 +2928,7 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "JSON URL", "jsonURL", pack.core.contentTypes.CONTENT_TYPE_AUDIO_SPRITE);
-                            this.createMultiFileField(comp, "Audio URL", "audioURL", phasereditor2d.files.core.CONTENT_TYPE_AUDIO);
+                            this.createMultiFileField(comp, "Audio URL", "audioURL", phasereditor2d.webContentTypes.core.CONTENT_TYPE_AUDIO);
                         }
                     }
                     properties.AudioSpriteSection = AudioSpriteSection;
@@ -2957,8 +2958,8 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "Font Data URL", "fontDataURL", pack.core.contentTypes.CONTENT_TYPE_BITMAP_FONT);
-                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
-                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.BitmapFontSection = BitmapFontSection;
@@ -2987,7 +2988,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_HTML);
+                            this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML);
                             this.createSimpleIntegerField(comp, "Width", "width");
                             this.createSimpleIntegerField(comp, "Height", "height");
                         }
@@ -3018,8 +3019,8 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
-                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.ImageSection = ImageSection;
@@ -3124,7 +3125,7 @@ var phasereditor2d;
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             {
                                 // URL
-                                this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT);
+                                this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT);
                             }
                             {
                                 // start
@@ -3169,7 +3170,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_SVG);
+                            this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_SVG);
                             this.createSimpleIntegerField(comp, "Width", "svgConfig.width");
                             this.createSimpleIntegerField(comp, "Height", "svgConfig.height");
                         }
@@ -3201,7 +3202,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT);
+                            this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT);
                             this.createSimpleTextField(comp, "System Key", "systemKey");
                             this.createSimpleTextField(comp, "Scene Key", "sceneKey");
                         }
@@ -3333,7 +3334,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_CSV);
+                            this.createFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSV);
                         }
                     }
                     properties.TilemapCSVSection = TilemapCSVSection;
@@ -3422,8 +3423,8 @@ var phasereditor2d;
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
                             this.createFileField(comp, "Atlas URL", "atlasURL", pack.core.contentTypes.CONTENT_TYPE_UNITY_ATLAS);
-                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
-                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.files.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Texture URL", "textureURL", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
+                            this.createFileField(comp, "Normal Map", "normalMap", phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE);
                         }
                     }
                     properties.UnityAtlasSection = UnityAtlasSection;
@@ -3452,7 +3453,7 @@ var phasereditor2d;
                         createForm(parent) {
                             const comp = this.createGridElement(parent, 3);
                             comp.style.gridTemplateColumns = "auto 1fr auto";
-                            this.createMultiFileField(comp, "URL", "url", phasereditor2d.files.core.CONTENT_TYPE_VIDEO);
+                            this.createMultiFileField(comp, "URL", "url", phasereditor2d.webContentTypes.core.CONTENT_TYPE_VIDEO);
                         }
                     }
                     properties.VideoSection = VideoSection;
@@ -3707,7 +3708,7 @@ var phasereditor2d;
                         const reg = ide.Workbench.getWorkbench().getContentTypeRegistry();
                         const baseName = file.getNameWithoutExtension();
                         const urls = file.getParent().getFiles()
-                            .filter(f => reg.getCachedContentType(f) === phasereditor2d.files.core.CONTENT_TYPE_AUDIO)
+                            .filter(f => reg.getCachedContentType(f) === phasereditor2d.webContentTypes.core.CONTENT_TYPE_AUDIO)
                             .filter(f => f.getNameWithoutExtension() === baseName)
                             .map(f => pack.core.AssetPackUtils.getFilePackUrl(f));
                         return {
@@ -3836,7 +3837,7 @@ var phasereditor2d;
             (function (importers) {
                 class SpritesheetImporter extends importers.SingleFileImporter {
                     constructor() {
-                        super(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.SPRITESHEET_TYPE);
+                        super(phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE, pack.core.SPRITESHEET_TYPE);
                     }
                     createItemData(file) {
                         const data = super.createItemData(file);
@@ -3866,7 +3867,7 @@ var phasereditor2d;
             (function (importers) {
                 class ScenePluginImporter extends importers.SingleFileImporter {
                     constructor() {
-                        super(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_PLUGIN_TYPE);
+                        super(phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_PLUGIN_TYPE);
                     }
                     createItemData(file) {
                         const data = super.createItemData(file);
@@ -3900,51 +3901,56 @@ var phasereditor2d;
             var importers;
             (function (importers) {
                 class Importers {
+                    static getAll() {
+                        if (!this._list) {
+                            this._list = [
+                                new importers.AtlasImporter(),
+                                new importers.MultiatlasImporter(),
+                                new importers.AtlasXMLImporter(),
+                                new importers.UnityAtlasImporter(),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_SVG, pack.core.SVG_TYPE, false, {
+                                    svgConfig: {
+                                        width: 512,
+                                        height: 512
+                                    }
+                                }),
+                                new importers.SpritesheetImporter(),
+                                new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATION_TYPE),
+                                new importers.BitmapFontImporter(),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
+                                new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE),
+                                new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, pack.core.TILEMAP_TILED_JSON_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.PLUGIN_TYPE, false, {
+                                    start: false,
+                                    mapping: ""
+                                }),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE),
+                                new importers.ScenePluginImporter(),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_AUDIO, pack.core.AUDIO_TYPE, true),
+                                new importers.AudioSpriteImporter(),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_VIDEO, pack.core.VIDEO_TYPE, true),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML, pack.core.HTML_TEXTURE_TYPE, false, {
+                                    width: 512,
+                                    height: 512
+                                }),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
+                                new importers.SingleFileImporter(colibri.core.CONTENT_TYPE_ANY, pack.core.BINARY_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_XML, pack.core.XML_TYPE),
+                                new importers.SingleFileImporter(phasereditor2d.webContentTypes.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
+                            ];
+                        }
+                        return this._list;
+                    }
                     static getImporter(type) {
-                        return this.LIST.find(i => i.getType() === type);
+                        return this.getAll().find(i => i.getType() === type);
                     }
                 }
-                Importers.LIST = [
-                    new importers.AtlasImporter(),
-                    new importers.MultiatlasImporter(),
-                    new importers.AtlasXMLImporter(),
-                    new importers.UnityAtlasImporter(),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_IMAGE, pack.core.IMAGE_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_SVG, pack.core.SVG_TYPE, false, {
-                        svgConfig: {
-                            width: 512,
-                            height: 512
-                        }
-                    }),
-                    new importers.SpritesheetImporter(),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_ANIMATIONS, pack.core.ANIMATION_TYPE),
-                    new importers.BitmapFontImporter(),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSV, pack.core.TILEMAP_CSV_TYPE),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_IMPACT, pack.core.TILEMAP_IMPACT_TYPE),
-                    new importers.SingleFileImporter(pack.core.contentTypes.CONTENT_TYPE_TILEMAP_TILED_JSON, pack.core.TILEMAP_TILED_JSON_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.PLUGIN_TYPE, false, {
-                        start: false,
-                        mapping: ""
-                    }),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCENE_FILE_TYPE),
-                    new importers.ScenePluginImporter(),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JAVASCRIPT, pack.core.SCRIPT_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_AUDIO, pack.core.AUDIO_TYPE, true),
-                    new importers.AudioSpriteImporter(),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_VIDEO, pack.core.VIDEO_TYPE, true),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_TEXT, pack.core.TEXT_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_CSS, pack.core.CSS_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_HTML, pack.core.HTML_TEXTURE_TYPE, false, {
-                        width: 512,
-                        height: 512
-                    }),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
-                    new importers.SingleFileImporter(colibri.core.CONTENT_TYPE_ANY, pack.core.BINARY_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_JSON, pack.core.JSON_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_XML, pack.core.XML_TYPE),
-                    new importers.SingleFileImporter(phasereditor2d.files.core.CONTENT_TYPE_GLSL, pack.core.GLSL_TYPE),
-                ];
                 importers.Importers = Importers;
             })(importers = ui.importers || (ui.importers = {}));
         })(ui = pack.ui || (pack.ui = {}));
@@ -4125,7 +4131,7 @@ var phasereditor2d;
                                 case pack.core.SPRITESHEET_TYPE:
                                     return new viewers.ImageFrameContainerIconCellRenderer();
                                 case pack.core.AUDIO_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_SOUND));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_SOUND));
                                 case pack.core.SCRIPT_TYPE:
                                 case pack.core.SCENE_FILE_TYPE:
                                 case pack.core.SCENE_PLUGIN_TYPE:
@@ -4135,15 +4141,15 @@ var phasereditor2d;
                                 case pack.core.XML_TYPE:
                                 case pack.core.HTML_TYPE:
                                 case pack.core.JSON_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_SCRIPT));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_SCRIPT));
                                 case pack.core.TEXT_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_TEXT));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_TEXT));
                                 case pack.core.HTML_TEXTURE_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_IMAGE));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_IMAGE));
                                 case pack.core.BITMAP_FONT_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_FONT));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_FONT));
                                 case pack.core.VIDEO_TYPE:
-                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.files.ICON_FILE_VIDEO));
+                                    return this.getIconRenderer(filesPlugin.getIcon(phasereditor2d.webContentTypes.ICON_FILE_VIDEO));
                                 default:
                                     break;
                             }

@@ -118,7 +118,8 @@ namespace phasereditor2d.pack {
                         contentType: core.contentTypes.CONTENT_TYPE_ANIMATIONS
                     },
                     {
-                        iconName: files.ICON_FILE_FONT,
+                        plugin: webContentTypes.WebContentTypesPlugin.getInstance(),
+                        iconName: webContentTypes.ICON_FILE_FONT,
                         contentType: core.contentTypes.CONTENT_TYPE_BITMAP_FONT
                     }
                 ]));

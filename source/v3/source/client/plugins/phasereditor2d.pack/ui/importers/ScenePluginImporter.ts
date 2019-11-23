@@ -5,7 +5,7 @@ namespace phasereditor2d.pack.ui.importers {
     export class ScenePluginImporter extends SingleFileImporter {
 
         constructor() {
-            super(files.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_PLUGIN_TYPE);
+            super(webContentTypes.core.CONTENT_TYPE_JAVASCRIPT, core.SCENE_PLUGIN_TYPE);
         }
 
         createItemData(file: io.FilePath) {

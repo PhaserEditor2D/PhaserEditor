@@ -22,9 +22,9 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             this.createFileField(comp, "Atlas URL", "atlasURL", core.contentTypes.CONTENT_TYPE_ATLAS_XML);
 
-            this.createFileField(comp, "Texture URL", "textureURL", files.core.CONTENT_TYPE_IMAGE);
+            this.createFileField(comp, "Texture URL", "textureURL", webContentTypes.core.CONTENT_TYPE_IMAGE);
 
-            this.createFileField(comp, "Normal Map", "normalMap", files.core.CONTENT_TYPE_IMAGE);
+            this.createFileField(comp, "Normal Map", "normalMap", webContentTypes.core.CONTENT_TYPE_IMAGE);
         }
     }
 }

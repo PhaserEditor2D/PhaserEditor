@@ -5,7 +5,7 @@ namespace phasereditor2d.pack.ui.importers {
     export class SpritesheetImporter extends SingleFileImporter {
 
         constructor() {
-            super(files.core.CONTENT_TYPE_IMAGE, core.SPRITESHEET_TYPE);
+            super(webContentTypes.core.CONTENT_TYPE_IMAGE, core.SPRITESHEET_TYPE);
         }
 
         createItemData(file: io.FilePath) {

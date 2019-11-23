@@ -21,7 +21,7 @@ namespace phasereditor2d.pack.ui.editor {
 
                 const importList: ImportData[] = [];
 
-                for (const importer of importers.Importers.LIST) {
+                for (const importer of importers.Importers.getAll()) {
 
                     const files = this.getSelection().filter(file => importer.acceptFile(file));
 

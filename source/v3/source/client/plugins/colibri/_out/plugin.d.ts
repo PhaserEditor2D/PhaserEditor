@@ -1053,6 +1053,7 @@ declare namespace colibri.ui.ide {
         static withPluginIcons(plugin: ide.Plugin, config: {
             iconName: string;
             contentType: string;
+            plugin?: colibri.ui.ide.Plugin;
         }[]): ContentTypeIconExtension;
         constructor(id: string, config: ContentTypeIconExtensionConfig);
         getConfig(): ContentTypeIconExtensionConfig;

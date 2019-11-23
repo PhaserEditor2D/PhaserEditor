@@ -44,7 +44,7 @@ namespace phasereditor2d.pack.ui.viewers {
                         return new viewers.ImageFrameContainerIconCellRenderer();
 
                     case core.AUDIO_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_SOUND));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_SOUND));
 
                     case core.SCRIPT_TYPE:
                     case core.SCENE_FILE_TYPE:
@@ -55,19 +55,19 @@ namespace phasereditor2d.pack.ui.viewers {
                     case core.XML_TYPE:
                     case core.HTML_TYPE:
                     case core.JSON_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_SCRIPT));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_SCRIPT));
 
                     case core.TEXT_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_TEXT));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_TEXT));
 
                     case core.HTML_TEXTURE_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_IMAGE));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_IMAGE));
 
                     case core.BITMAP_FONT_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_FONT));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_FONT));
 
                     case core.VIDEO_TYPE:
-                        return this.getIconRenderer(filesPlugin.getIcon(files.ICON_FILE_VIDEO));
+                        return this.getIconRenderer(filesPlugin.getIcon(webContentTypes.ICON_FILE_VIDEO));
 
                     default:
                         break;

@@ -1,4 +1,4 @@
-namespace phasereditor2d.files.core {
+namespace phasereditor2d.webContentTypes.core {
 
     import io = colibri.core.io;
 

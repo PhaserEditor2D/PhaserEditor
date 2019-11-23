@@ -18,7 +18,7 @@ namespace phasereditor2d.pack.ui.editor.properties {
 
             comp.style.gridTemplateColumns = "auto 1fr auto";
 
-            this.createFileField(comp, "URL", "url", files.core.CONTENT_TYPE_HTML);
+            this.createFileField(comp, "URL", "url", webContentTypes.core.CONTENT_TYPE_HTML);
 
             this.createSimpleIntegerField(comp, "Width", "width");
 

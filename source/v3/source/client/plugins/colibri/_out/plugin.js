@@ -4404,8 +4404,9 @@ var colibri;
                 }
                 static withPluginIcons(plugin, config) {
                     return new ContentTypeIconExtension(`${plugin.getId()}.ContentTypeIconExtension`, config.map(item => {
+                        var _a;
                         return {
-                            icon: plugin.getIcon(item.iconName),
+                            icon: (_a = item.plugin, (_a !== null && _a !== void 0 ? _a : plugin)).getIcon(item.iconName),
                             contentType: item.contentType
                         };
                     }));
