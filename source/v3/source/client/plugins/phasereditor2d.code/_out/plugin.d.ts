@@ -10,8 +10,8 @@ declare namespace phasereditor2d.code.ui.editors {
     import io = colibri.core.io;
     class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
         private _language;
-        private _fileExtension;
-        constructor(language: string, fileExtension: string);
+        private _contentType;
+        constructor(language: string, contentType: string);
         acceptInput(input: any): boolean;
         createEditor(): colibri.ui.ide.EditorPart;
     }

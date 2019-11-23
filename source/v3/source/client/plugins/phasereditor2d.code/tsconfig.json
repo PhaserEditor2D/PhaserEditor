@@ -3,8 +3,15 @@
     "compilerOptions": {
         "outFile": "_out/plugin.js"
     },
-    "references": [{
-        "path": "../colibri"
-    }],
-    "exclude": ["_out/plugin.d.ts"]
+    "references": [
+        {
+            "path": "../colibri"
+        },
+        {
+            "path": "../phasereditor2d.webContentTypes"
+        }
+    ],
+    "exclude": [
+        "_out/plugin.d.ts"
+    ]
 }

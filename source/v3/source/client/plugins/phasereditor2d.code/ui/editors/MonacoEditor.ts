@@ -5,20 +5,22 @@ namespace phasereditor2d.code.ui.editors {
     export class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
 
         private _language: string;
-        private _fileExtension: string;
+        private _contentType: string;
 
-        constructor(language: string, fileExtension: string) {
+        constructor(language: string, contentType: string) {
             super("phasereditor2d.core.ui.editors.MonacoEditorFactory#" + language);
 
             this._language = language;
-            this._fileExtension = fileExtension;
+            this._contentType = contentType;
         }
 
         acceptInput(input: any): boolean {
 
             if (input instanceof io.FilePath) {
 
-                return input.getExtension() === this._fileExtension;
+                const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+
+                return this._contentType === contentType;
             }
 
             return false;

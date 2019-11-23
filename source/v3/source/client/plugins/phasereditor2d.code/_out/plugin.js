@@ -14,11 +14,13 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 reg.addExtension(colibri.ui.ide.EditorExtension.POINT_ID, new colibri.ui.ide.EditorExtension("phasereditor2d.core.ui.editors", [
-                    new code.ui.editors.MonacoEditorFactory("javascript", "js"),
-                    new code.ui.editors.MonacoEditorFactory("typescript", "ts"),
-                    new code.ui.editors.MonacoEditorFactory("html", "html"),
-                    new code.ui.editors.MonacoEditorFactory("css", "css"),
-                    new code.ui.editors.MonacoEditorFactory("text", "txt"),
+                    new code.ui.editors.MonacoEditorFactory("javascript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT),
+                    new code.ui.editors.MonacoEditorFactory("typescript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_SCRIPT),
+                    new code.ui.editors.MonacoEditorFactory("html", phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML),
+                    new code.ui.editors.MonacoEditorFactory("css", phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSS),
+                    new code.ui.editors.MonacoEditorFactory("json", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JSON),
+                    new code.ui.editors.MonacoEditorFactory("xml", phasereditor2d.webContentTypes.core.CONTENT_TYPE_XML),
+                    new code.ui.editors.MonacoEditorFactory("text", phasereditor2d.webContentTypes.core.CONTENT_TYPE_TEXT),
                 ]));
             }
         }
@@ -36,14 +38,15 @@ var phasereditor2d;
             (function (editors) {
                 var io = colibri.core.io;
                 class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
-                    constructor(language, fileExtension) {
+                    constructor(language, contentType) {
                         super("phasereditor2d.core.ui.editors.MonacoEditorFactory#" + language);
                         this._language = language;
-                        this._fileExtension = fileExtension;
+                        this._contentType = contentType;
                     }
                     acceptInput(input) {
                         if (input instanceof io.FilePath) {
-                            return input.getExtension() === this._fileExtension;
+                            const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                            return this._contentType === contentType;
                         }
                         return false;
                     }

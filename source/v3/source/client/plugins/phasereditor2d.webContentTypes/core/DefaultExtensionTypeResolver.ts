@@ -10,6 +10,7 @@ namespace phasereditor2d.webContentTypes.core {
     export const CONTENT_TYPE_TEXT = "text";
     export const CONTENT_TYPE_CSV = "csv";
     export const CONTENT_TYPE_JAVASCRIPT = "javascript";
+    export const CONTENT_TYPE_TYPESCRIPT = "typescript";
     export const CONTENT_TYPE_HTML = "html";
     export const CONTENT_TYPE_CSS = "css";
     export const CONTENT_TYPE_JSON = "json";
@@ -38,6 +39,7 @@ namespace phasereditor2d.webContentTypes.core {
                 ["webm", CONTENT_TYPE_VIDEO],
 
                 ["js", CONTENT_TYPE_JAVASCRIPT],
+                ["ts", CONTENT_TYPE_TYPESCRIPT],
                 ["html", CONTENT_TYPE_HTML],
                 ["css", CONTENT_TYPE_CSS],
                 ["ts", CONTENT_TYPE_SCRIPT],

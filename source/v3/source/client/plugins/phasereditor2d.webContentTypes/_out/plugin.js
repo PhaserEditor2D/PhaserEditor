@@ -60,6 +60,10 @@ var phasereditor2d;
                     },
                     {
                         iconName: webContentTypes.ICON_FILE_SCRIPT,
+                        contentType: webContentTypes.core.CONTENT_TYPE_TYPESCRIPT
+                    },
+                    {
+                        iconName: webContentTypes.ICON_FILE_SCRIPT,
                         contentType: webContentTypes.core.CONTENT_TYPE_CSS
                     },
                     {
@@ -122,6 +126,7 @@ var phasereditor2d;
             core.CONTENT_TYPE_TEXT = "text";
             core.CONTENT_TYPE_CSV = "csv";
             core.CONTENT_TYPE_JAVASCRIPT = "javascript";
+            core.CONTENT_TYPE_TYPESCRIPT = "typescript";
             core.CONTENT_TYPE_HTML = "html";
             core.CONTENT_TYPE_CSS = "css";
             core.CONTENT_TYPE_JSON = "json";
@@ -144,6 +149,7 @@ var phasereditor2d;
                         ["mp4", core.CONTENT_TYPE_VIDEO],
                         ["webm", core.CONTENT_TYPE_VIDEO],
                         ["js", core.CONTENT_TYPE_JAVASCRIPT],
+                        ["ts", core.CONTENT_TYPE_TYPESCRIPT],
                         ["html", core.CONTENT_TYPE_HTML],
                         ["css", core.CONTENT_TYPE_CSS],
                         ["ts", core.CONTENT_TYPE_SCRIPT],

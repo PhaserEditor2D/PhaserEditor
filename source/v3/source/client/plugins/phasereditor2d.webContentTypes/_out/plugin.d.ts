@@ -29,6 +29,7 @@ declare namespace phasereditor2d.webContentTypes.core {
     const CONTENT_TYPE_TEXT = "text";
     const CONTENT_TYPE_CSV = "csv";
     const CONTENT_TYPE_JAVASCRIPT = "javascript";
+    const CONTENT_TYPE_TYPESCRIPT = "typescript";
     const CONTENT_TYPE_HTML = "html";
     const CONTENT_TYPE_CSS = "css";
     const CONTENT_TYPE_JSON = "json";
