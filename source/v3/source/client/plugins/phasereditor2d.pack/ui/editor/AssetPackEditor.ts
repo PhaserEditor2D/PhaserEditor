@@ -12,10 +12,14 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         acceptInput(input: any): boolean {
+
             if (input instanceof io.FilePath) {
+                
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                
                 return contentType === pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK;
             }
+
             return false;
         }
 
