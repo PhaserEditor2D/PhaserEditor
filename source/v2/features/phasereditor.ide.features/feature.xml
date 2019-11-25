@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.ide.features"
       label="Phaser Editor 2D - Workbench"
-      version="2.1.4.20191016"
+      version="2.1.5.20191125"
       provider-name="Arian Fornaris"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.v20181016-2210">
