@@ -78,6 +78,7 @@ public class SceneModel {
 	private String _sceneKey;
 	private SourceLang _compilerLang;
 	private boolean _debugPaintCalls;
+	private boolean _scopeBlocksToFolder;
 
 	public enum MethodContextType {
 		SCENE, OBJECT
@@ -124,6 +125,16 @@ public class SceneModel {
 		_compilerLang = SourceLang.JAVA_SCRIPT_6;
 
 		_debugPaintCalls = false;
+		
+		_scopeBlocksToFolder = false;
+	}
+	
+	public boolean isScopeBlocksToFolder() {
+		return _scopeBlocksToFolder;
+	}
+	
+	public void setScopeBlocksToFolder(boolean scopeBlocksToFolder) {
+		_scopeBlocksToFolder = scopeBlocksToFolder;
 	}
 
 	public boolean isDebugPaintCalls() {
@@ -423,6 +434,10 @@ public class SceneModel {
 			data.put("methodContextType", _methodContextType.name());
 			data.put("sceneKey", _sceneKey, "");
 		}
+		
+		{
+			data.put("scopeBlocksToFolder", _scopeBlocksToFolder, false);
+		}
 
 		{
 			data.put("debugPaintCalls", _debugPaintCalls, false);
@@ -465,6 +480,10 @@ public class SceneModel {
 			_methodContextType = MethodContextType
 					.valueOf(data.optString("methodContextType", MethodContextType.SCENE.name()));
 			_sceneKey = data.optString("sceneKey", "");
+		}
+		
+		{
+			_scopeBlocksToFolder = data.optBoolean("scopeBlocksToFolder", false);
 		}
 	}
 

@@ -514,7 +514,13 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 
 			var packs = AssetPackCore.getAssetPackModels(getProject());
 
+			var scopeToFolder = getSceneModel().isScopeBlocksToFolder();
+
+			var parentFolderPath = getEditorInput().getFile().getParent().getFullPath();
+
 			var list = packs.stream()
+
+					.filter(pack -> !scopeToFolder || parentFolderPath.isPrefixOf(pack.getFile().getFullPath()))
 
 					.flatMap(pack -> pack.getAssets().stream())
 
@@ -565,6 +571,12 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 	@Override
 	public boolean isDirty() {
 		return _dirty;
+	}
+
+	public void refreshBlocks() {
+		if (_blocksProvider != null) {
+			_blocksProvider.refresh();
+		}
 	}
 
 	public void refreshOutline() {
