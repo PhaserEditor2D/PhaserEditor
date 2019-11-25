@@ -115,6 +115,50 @@ var WebAudioSoundManager = new Class({
     },
 
     /**
+     * This method takes a new AudioContext reference and then sets
+     * this Sound Manager to use that context for all playback.
+     * 
+     * As part of this call it also disconnects the master mute and volume
+     * nodes and then re-creates them on the new given context.
+     *
+     * @method Phaser.Sound.WebAudioSoundManager#setAudioContext
+     * @since 3.21.0
+     *
+     * @param {AudioContext} context - Reference to an already created AudioContext instance.
+     *
+     * @return {this} The WebAudioSoundManager instance.
+     */
+    setAudioContext: function (context)
+    {
+        if (this.context)
+        {
+            this.context.close();
+        }
+
+        if (this.masterMuteNode)
+        {
+            this.masterMuteNode.disconnect();
+        }
+
+        if (this.masterVolumeNode)
+        {
+            this.masterVolumeNode.disconnect();
+        }
+
+        this.context = context;
+
+        this.masterMuteNode = context.createGain();
+        this.masterVolumeNode = context.createGain();
+
+        this.masterMuteNode.connect(this.masterVolumeNode);
+        this.masterVolumeNode.connect(context.destination);
+
+        this.destination = this.masterMuteNode;
+
+        return this;
+    },
+
+    /**
      * Adds a new sound into the sound manager.
      *
      * @method Phaser.Sound.WebAudioSoundManager#add
@@ -227,31 +271,36 @@ var WebAudioSoundManager = new Class({
     {
         var _this = this;
 
+        var body = document.body;
+
         var unlockHandler = function unlockHandler ()
         {
             if (_this.context)
             {
                 _this.context.resume().then(function ()
                 {
-                    document.body.removeEventListener('touchstart', unlockHandler);
-                    document.body.removeEventListener('touchend', unlockHandler);
-                    document.body.removeEventListener('click', unlockHandler);
+                    body.removeEventListener('touchstart', unlockHandler);
+                    body.removeEventListener('touchend', unlockHandler);
+                    body.removeEventListener('click', unlockHandler);
+                    body.removeEventListener('keydown', unlockHandler);
     
                     _this.unlocked = true;
                 }, function ()
                 {
-                    document.body.removeEventListener('touchstart', unlockHandler);
-                    document.body.removeEventListener('touchend', unlockHandler);
-                    document.body.removeEventListener('click', unlockHandler);
+                    body.removeEventListener('touchstart', unlockHandler);
+                    body.removeEventListener('touchend', unlockHandler);
+                    body.removeEventListener('click', unlockHandler);
+                    body.removeEventListener('keydown', unlockHandler);
                 });
             }
         };
 
-        if (document.body)
+        if (body)
         {
-            document.body.addEventListener('touchstart', unlockHandler, false);
-            document.body.addEventListener('touchend', unlockHandler, false);
-            document.body.addEventListener('click', unlockHandler, false);
+            body.addEventListener('touchstart', unlockHandler, false);
+            body.addEventListener('touchend', unlockHandler, false);
+            body.addEventListener('click', unlockHandler, false);
+            body.addEventListener('keydown', unlockHandler, false);
         }
     },
 

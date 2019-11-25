@@ -171,7 +171,7 @@ var BitmapText = new Class({
          * @private
          * @since 3.0.0
          */
-        this._bounds = GetBitmapTextSize(this, false, this._bounds);
+        this._bounds = GetBitmapTextSize();
 
         /**
          * An internal dirty flag for bounds calculation.
@@ -181,7 +181,27 @@ var BitmapText = new Class({
          * @private
          * @since 3.11.0
          */
-        this._dirty = false;
+        this._dirty = true;
+
+        /**
+         * Internal cache var holding the maxWidth.
+         * 
+         * @name Phaser.GameObjects.BitmapText#_maxWidth
+         * @type {number}
+         * @private
+         * @since 3.21.0
+         */
+        this._maxWidth = 0;
+
+        /**
+         * The character code used to detect for word wrapping.
+         * Defaults to 32 (a space character).
+         *
+         * @name Phaser.GameObjects.BitmapText#wordWrapCharCode
+         * @type {number}
+         * @since 3.21.0
+         */
+        this.wordWrapCharCode = 32;
 
         this.setTexture(entry.texture, entry.frame);
         this.setPosition(x, y);
@@ -348,12 +368,18 @@ var BitmapText = new Class({
         //  global = The BitmapText, taking into account scale and world position
         //  lines = The BitmapText line data
 
-        if (this._dirty)
+        var bounds = this._bounds;
+
+        if (this._dirty || this.scaleX !== bounds.scaleX || this.scaleY !== bounds.scaleY)
         {
-            GetBitmapTextSize(this, round, this._bounds);
+            GetBitmapTextSize(this, round, bounds);
+
+            this._dirty = false;
+
+            this.updateDisplayOrigin();
         }
 
-        return this._bounds;
+        return bounds;
     },
 
     /**
@@ -391,6 +417,40 @@ var BitmapText = new Class({
 
                 GetBitmapTextSize(this, false, this._bounds);
             }
+        }
+
+        return this;
+    },
+
+    /**
+     * Sets the maximum display width of this BitmapText in pixels.
+     *
+     * If `BitmapText.text` is longer than `maxWidth` then the lines will be automatically wrapped
+     * based on the previous whitespace character found in the line.
+     *
+     * If no whitespace was found then no wrapping will take place and consequently the `maxWidth` value will not be honored.
+     *
+     * Disable maxWidth by setting the value to 0.
+     * 
+     * You can set the whitespace character to be searched for by setting the `wordWrapCharCode` parameter or property.
+     *
+     * @method Phaser.GameObjects.BitmapText#setMaxWidth
+     * @since 3.21.0
+     *
+     * @param {number} value - The maximum display width of this BitmapText in pixels. Set to zero to disable.
+     * @param {number} [wordWrapCharCode] - The character code to check for when word wrapping. Defaults to 32 (the space character).
+     *
+     * @return {this} This BitmapText Object.
+     */
+    setMaxWidth: function (value, wordWrapCharCode)
+    {
+        this._maxWidth = value;
+
+        this._dirty = true;
+
+        if (wordWrapCharCode !== undefined)
+        {
+            this.wordWrapCharCode = wordWrapCharCode;
         }
 
         return this;
@@ -498,6 +558,35 @@ var BitmapText = new Class({
         get: function ()
         {
             return this._letterSpacing;
+        }
+
+    },
+
+    /**
+     * The maximum display width of this BitmapText in pixels.
+     *
+     * If BitmapText.text is longer than maxWidth then the lines will be automatically wrapped
+     * based on the last whitespace character found in the line.
+     *
+     * If no whitespace was found then no wrapping will take place and consequently the maxWidth value will not be honored.
+     *
+     * Disable maxWidth by setting the value to 0.
+     *
+     * @name Phaser.GameObjects.BitmapText#maxWidth
+     * @type {number}
+     * @since 3.21.0
+     */
+    maxWidth: {
+
+        set: function (value)
+        {
+            this._maxWidth = value;
+            this._dirty = true;
+        },
+
+        get: function ()
+        {
+            return this._maxWidth;
         }
 
     },

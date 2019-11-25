@@ -13,6 +13,7 @@ var GameObject = require('../GameObject');
 var SoundEvents = require('../../sound/events/');
 var UUID = require('../../utils/string/UUID');
 var VideoRender = require('./VideoRender');
+var MATH_CONST = require('../../math/const');
 
 /**
  * @classdesc
@@ -36,7 +37,7 @@ var VideoRender = require('./VideoRender');
  * physics body, etc.
  * 
  * Transparent videos are also possible via the WebM file format. Providing the video file has was encoded with
- * an alpha channel, and providing the browser supports WebM playback (not all of them do), then it willl render
+ * an alpha channel, and providing the browser supports WebM playback (not all of them do), then it will render
  * in-game with full transparency.
  * 
  * ### Autoplaying Videos
@@ -333,7 +334,7 @@ var Video = new Class({
          * @private
          * @since 3.20.0
          */
-        this._markerOut = Number.MAX_SAFE_INTEGER;
+        this._markerOut = MATH_CONST.MAX_SAFE_INTEGER;
 
         /**
          * The last time the TextureSource was updated.
@@ -364,6 +365,16 @@ var Video = new Class({
          * @since 3.20.0
          */
         this._isSeeking = false;
+
+        /**
+         * Should the Video element that this Video is using, be removed from the DOM
+         * when this Video is destroyed?
+         *
+         * @name Phaser.GameObjects.Video#removeVideoElementOnDestroy
+         * @type {boolean}
+         * @since 3.21.0
+         */
+        this.removeVideoElementOnDestroy = false;
 
         this.setPosition(x, y);
         this.initPipeline();
@@ -575,7 +586,7 @@ var Video = new Class({
      * You can then play back specific markers via the `playMarker` method.
      * 
      * Note that marker timing is _not_ frame-perfect. You should construct your videos in such a way that you allow for
-     * plenty of extra padding before and after each sequence to allow for discrepencies in browser seek and currentTime accuracy.
+     * plenty of extra padding before and after each sequence to allow for discrepancies in browser seek and currentTime accuracy.
      * 
      * See https://github.com/w3c/media-and-entertainment/issues/4 for more details about this issue.
      *
@@ -605,7 +616,7 @@ var Video = new Class({
      * specified via the `addMarker` method.
      * 
      * Note that marker timing is _not_ frame-perfect. You should construct your videos in such a way that you allow for
-     * plenty of extra padding before and after each sequence to allow for discrepencies in browser seek and currentTime accuracy.
+     * plenty of extra padding before and after each sequence to allow for discrepancies in browser seek and currentTime accuracy.
      * 
      * See https://github.com/w3c/media-and-entertainment/issues/4 for more details about this issue.
      *
@@ -1575,7 +1586,7 @@ var Video = new Class({
     },
 
     /**
-     * Stores this Video in the Texture Manager using the given key as a dyanmic texture,
+     * Stores this Video in the Texture Manager using the given key as a dynamic texture,
      * which any texture-based Game Object, such as a Sprite, can use as its texture:
      * 
      * ```javascript
@@ -1710,22 +1721,21 @@ var Video = new Class({
     },
 
     /**
-     * Destroys the Video object. This calls `Video.stop` and optionally `Video.removeVideoElement`.
+     * Handles the pre-destroy step for the Video object.
+     * 
+     * This calls `Video.stop` and optionally `Video.removeVideoElement`.
      * 
      * If any Sprites are using this Video as their texture it is up to you to manage those.
      *
-     * @method Phaser.GameObjects.Video#destroy
-     * @since 3.20.0
-     * 
-     * @param {boolean} [removeVideoElement=false] - Should the video element be removed from the DOM?
+     * @method Phaser.GameObjects.Video#preDestroy
+     * @private
+     * @since 3.21.0
      */
-    destroy: function (removeVideoElement)
+    preDestroy: function ()
     {
-        if (removeVideoElement === undefined) { removeVideoElement = false; }
-
         this.stop();
 
-        if (removeVideoElement)
+        if (this.removeVideoElementOnDestroy)
         {
             this.removeVideoElement();
         }
