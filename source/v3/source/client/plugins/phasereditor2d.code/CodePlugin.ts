@@ -1,5 +1,7 @@
 namespace phasereditor2d.code {
 
+    import controls = colibri.ui.controls;
+
     export class CodePlugin extends colibri.ui.ide.Plugin {
 
         private static _instance: CodePlugin;
@@ -31,7 +33,13 @@ namespace phasereditor2d.code {
                         new ui.editors.MonacoEditorFactory("text", webContentTypes.core.CONTENT_TYPE_TEXT),
                     ])
             );
+        }
 
+        async starting() {
+
+            monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                noSemanticValidation: true
+            });
         }
     }
 

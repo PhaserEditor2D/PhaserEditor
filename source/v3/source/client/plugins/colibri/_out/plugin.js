@@ -5477,6 +5477,9 @@ var colibri;
                     this.registerWindows();
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
+                    for (const plugin of this._plugins) {
+                        await plugin.started();
+                    }
                 }
                 resetCache() {
                     this._fileStringCache.reset();

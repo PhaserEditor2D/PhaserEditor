@@ -128,6 +128,11 @@ namespace colibri.ui.ide {
             this.initEvents();
 
             console.log("%cWorkbench: started.", "color:green");
+
+            for(const plugin of this._plugins) {
+
+                await plugin.started();
+            }
         }
 
         private resetCache() {

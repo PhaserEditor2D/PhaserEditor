@@ -23,6 +23,11 @@ var phasereditor2d;
                     new code.ui.editors.MonacoEditorFactory("text", phasereditor2d.webContentTypes.core.CONTENT_TYPE_TEXT),
                 ]));
             }
+            async starting() {
+                monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                    noSemanticValidation: true
+                });
+            }
         }
         code.CodePlugin = CodePlugin;
         colibri.ui.ide.Workbench.getWorkbench().addPlugin(CodePlugin.getInstance());

@@ -4,6 +4,7 @@ declare namespace phasereditor2d.code {
         static getInstance(): CodePlugin;
         constructor();
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        starting(): Promise<void>;
     }
 }
 declare namespace phasereditor2d.code.ui.editors {
