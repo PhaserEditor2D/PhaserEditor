@@ -12,6 +12,22 @@ namespace colibri.ui.ide {
     export const CMD_COLLAPSE_ALL = "collapseAll";
     export const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
 
+
+    function isViewerScope(args : colibri.ui.ide.commands.CommandArgs) {
+
+        if (args.activeElement) {
+
+            const control = controls.Control.getControlOf(args.activeElement);
+
+            if (control && control instanceof controls.viewers.Viewer) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     export class IDECommands {
 
         static init() {
@@ -31,7 +47,7 @@ namespace colibri.ui.ide {
             manager.addCommandHelper(CMD_COLLAPSE_ALL);
 
             manager.addHandlerHelper(CMD_COLLAPSE_ALL,
-                args => args.activeElement !== null && controls.Control.getControlOf(args.activeElement) instanceof controls.viewers.Viewer,
+                isViewerScope,
                 args => {
                     const viewer = <controls.viewers.Viewer>controls.Control.getControlOf(args.activeElement);
                     viewer.collapseAll();

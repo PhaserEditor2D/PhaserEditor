@@ -8,6 +8,7 @@ namespace colibri.ui.ide.commands {
         private _commandHandlerMap: Map<Command, CommandHandler[]>;
 
         constructor() {
+            
             this._commands = [];
             this._commandIdMap = new Map();
             this._commandMatcherMap = new Map();
@@ -34,8 +35,6 @@ namespace colibri.ui.ide.commands {
 
                     if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
 
-                        event.preventDefault();
-
                         eventMatches = true;
 
                         break;
@@ -49,7 +48,11 @@ namespace colibri.ui.ide.commands {
                     for (const handler of handlers) {
 
                         if (handler.test(args)) {
+
+                            event.preventDefault();
+
                             handler.execute(args);
+
                             return;
                         }
                     }

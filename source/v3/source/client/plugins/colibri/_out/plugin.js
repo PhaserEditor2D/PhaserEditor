@@ -5111,6 +5111,15 @@ var colibri;
             ide.CMD_REDO = "redo";
             ide.CMD_COLLAPSE_ALL = "collapseAll";
             ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
+            function isViewerScope(args) {
+                if (args.activeElement) {
+                    const control = ui.controls.Control.getControlOf(args.activeElement);
+                    if (control && control instanceof ui.controls.viewers.Viewer) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             class IDECommands {
                 static init() {
                     const manager = ide.Workbench.getWorkbench().getCommandManager();
@@ -5121,7 +5130,7 @@ var colibri;
                 static initViewer(manager) {
                     // collapse all
                     manager.addCommandHelper(ide.CMD_COLLAPSE_ALL);
-                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, isViewerScope, args => {
                         const viewer = ui.controls.Control.getControlOf(args.activeElement);
                         viewer.collapseAll();
                         viewer.repaint();
@@ -6095,7 +6104,6 @@ var colibri;
                             const matchers = this._commandMatcherMap.get(command);
                             for (const matcher of matchers) {
                                 if (matcher.matchesKeys(event) && matcher.matchesTarget(event.target)) {
-                                    event.preventDefault();
                                     eventMatches = true;
                                     break;
                                 }
@@ -6104,6 +6112,7 @@ var colibri;
                                 const handlers = this._commandHandlerMap.get(command);
                                 for (const handler of handlers) {
                                     if (handler.test(args)) {
+                                        event.preventDefault();
                                         handler.execute(args);
                                         return;
                                     }
