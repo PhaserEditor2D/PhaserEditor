@@ -13,7 +13,7 @@ namespace colibri.ui.ide {
     export const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
 
 
-    function isViewerScope(args : colibri.ui.ide.commands.CommandArgs) {
+    function isViewerScope(args: colibri.ui.ide.commands.CommandArgs) {
 
         if (args.activeElement) {
 
@@ -125,11 +125,12 @@ namespace colibri.ui.ide {
             manager.addCommandHelper(CMD_SAVE);
 
             manager.addHandlerHelper(CMD_SAVE,
-
-                args => args.activeEditor && args.activeEditor.isDirty(),
-
+                args => args.activeEditor ? true : false,
                 args => {
-                    args.activeEditor.save();
+
+                    if (args.activeEditor.isDirty()) {
+                        args.activeEditor.save();
+                    }
                 }
             );
 

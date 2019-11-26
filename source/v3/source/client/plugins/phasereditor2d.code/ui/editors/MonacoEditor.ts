@@ -62,7 +62,25 @@ namespace phasereditor2d.code.ui.editors {
                 scrollBeyondLastLine: false,
             });
 
-            this.updateContent();
+            this._monacoEditor.onDidChangeModelContent(e => {
+                this.setDirty(true);
+            });
+        }
+
+        async doSave() {
+
+            const content = this._monacoEditor.getValue();
+
+            try {
+
+                await colibri.ui.ide.FileUtils.setFileString_async(this.getInput(), content);
+
+                this.setDirty(false);
+
+            } catch (e) {
+
+                console.error(e);
+            }
         }
 
         setInput(file: io.FilePath) {
@@ -83,6 +101,8 @@ namespace phasereditor2d.code.ui.editors {
             const content = await colibri.ui.ide.FileUtils.preloadAndGetFileString(file);
 
             this._monacoEditor.setValue(content);
+
+            this.setDirty(false);
         }
 
         layout() {

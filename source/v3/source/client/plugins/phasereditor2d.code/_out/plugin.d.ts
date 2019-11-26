@@ -22,6 +22,7 @@ declare namespace phasereditor2d.code.ui.editors {
         private _language;
         constructor(language: string);
         protected createPart(): void;
+        doSave(): Promise<void>;
         setInput(file: io.FilePath): void;
         private updateContent;
         layout(): void;

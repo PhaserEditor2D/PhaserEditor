@@ -5173,8 +5173,10 @@ var colibri;
                 static initEdit(manager) {
                     // save
                     manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor && args.activeEditor.isDirty(), args => {
-                        args.activeEditor.save();
+                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor ? true : false, args => {
+                        if (args.activeEditor.isDirty()) {
+                            args.activeEditor.save();
+                        }
                     });
                     manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
                         control: true,
