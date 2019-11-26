@@ -30,6 +30,15 @@ namespace colibri.ui.controls.viewers {
             return this._sections;
         }
 
+        paint() {
+
+            const result = super.paint();
+
+            result.contentHeight += 10;
+
+            return result;
+        }
+
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number) {
 
             const viewer = this.getViewer();

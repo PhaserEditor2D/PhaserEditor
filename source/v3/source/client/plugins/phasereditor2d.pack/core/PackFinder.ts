@@ -13,6 +13,10 @@ namespace phasereditor2d.pack.core {
 
         }
 
+        static reset_temporal_method_TODO() {
+            this._loaded = false;
+        }
+
         static async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
 
             if (this._loaded) {
@@ -36,6 +40,8 @@ namespace phasereditor2d.pack.core {
                 
                 monitor.step();
             }
+
+            this._loaded = true;
 
             return controls.Controls.resolveResourceLoaded();
         }

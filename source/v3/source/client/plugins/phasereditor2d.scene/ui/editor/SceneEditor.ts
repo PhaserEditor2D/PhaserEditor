@@ -20,6 +20,10 @@ namespace phasereditor2d.scene.ui.editor {
         }
 
         createEditor(): colibri.ui.ide.EditorPart {
+            
+            // TODO: remove this
+            pack.core.PackFinder.reset_temporal_method_TODO();
+
             return new SceneEditor();
         }
     }

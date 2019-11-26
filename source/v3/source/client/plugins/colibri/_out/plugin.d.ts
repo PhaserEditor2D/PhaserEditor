@@ -838,6 +838,11 @@ declare namespace colibri.ui.controls.viewers {
         isFlat(): boolean;
         setSections(sections: any[]): void;
         getSections(): any[];
+        paint(): {
+            contentHeight: number;
+            paintItems: PaintItem[];
+            treeIconList: TreeIconInfo[];
+        };
         protected paintItems(objects: any[], treeIconList: TreeIconInfo[], paintItems: PaintItem[], parentPaintItem: PaintItem, x: number, y: number): {
             x: number;
             y: number;

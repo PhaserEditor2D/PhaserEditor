@@ -777,6 +777,9 @@ var phasereditor2d;
             class PackFinder {
                 constructor() {
                 }
+                static reset_temporal_method_TODO() {
+                    this._loaded = false;
+                }
                 static async preload(monitor = controls.EmptyProgressMonitor) {
                     if (this._loaded) {
                         monitor.addTotal(1);
@@ -790,6 +793,7 @@ var phasereditor2d;
                         await item.preload();
                         monitor.step();
                     }
+                    this._loaded = true;
                     return controls.Controls.resolveResourceLoaded();
                 }
                 static getPacks() {

@@ -1,5 +1,6 @@
 namespace phasereditor2d.code.ui.editors {
 
+    import controls = colibri.ui.controls;
     import io = colibri.core.io;
 
     export class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
@@ -43,12 +44,19 @@ namespace phasereditor2d.code.ui.editors {
 
             super("phasereditor2d.core.ui.editors.JavaScriptEditor");
 
+            this.addClass("MonacoEditor");
+
             this._language = language;
         }
 
         protected createPart(): void {
 
-            this._monacoEditor = monaco.editor.create(this.getElement(), {
+            const container = document.createElement("div");
+            container.classList.add("MonacoEditorContainer");
+
+            this.getElement().appendChild(container);
+
+            this._monacoEditor = monaco.editor.create(container, {
                 language: this._language
             });
 
@@ -79,7 +87,10 @@ namespace phasereditor2d.code.ui.editors {
 
             super.layout();
 
-            this._monacoEditor.layout();
+            if (this._monacoEditor) {
+
+                this._monacoEditor.layout();
+            }
         }
 
         protected onEditorInputContentChanged() {

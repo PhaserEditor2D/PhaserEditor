@@ -11,14 +11,17 @@ namespace phasereditor2d.images.ui.editors {
         }
 
         acceptInput(input: any): boolean {
+
             if (input instanceof io.FilePath) {
 
                 const file = <io.FilePath>input;
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
+                
                 if (contentType === webContentTypes.core.CONTENT_TYPE_IMAGE) {
                     return true;
                 }
             }
+
             return false;
         }
 

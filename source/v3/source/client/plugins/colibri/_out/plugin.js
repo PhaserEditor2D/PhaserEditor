@@ -3392,6 +3392,11 @@ var colibri;
                     getSections() {
                         return this._sections;
                     }
+                    paint() {
+                        const result = super.paint();
+                        result.contentHeight += 10;
+                        return result;
+                    }
                     paintItems(objects, treeIconList, paintItems, parentPaintItem, x, y) {
                         const viewer = this.getViewer();
                         const labelProvider = viewer.getLabelProvider();

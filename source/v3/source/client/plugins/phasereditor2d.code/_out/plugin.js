@@ -58,10 +58,14 @@ var phasereditor2d;
                 class MonacoEditor extends colibri.ui.ide.FileEditor {
                     constructor(language) {
                         super("phasereditor2d.core.ui.editors.JavaScriptEditor");
+                        this.addClass("MonacoEditor");
                         this._language = language;
                     }
                     createPart() {
-                        this._monacoEditor = monaco.editor.create(this.getElement(), {
+                        const container = document.createElement("div");
+                        container.classList.add("MonacoEditorContainer");
+                        this.getElement().appendChild(container);
+                        this._monacoEditor = monaco.editor.create(container, {
                             language: this._language
                         });
                         this.updateContent();
@@ -80,7 +84,9 @@ var phasereditor2d;
                     }
                     layout() {
                         super.layout();
-                        this._monacoEditor.layout();
+                        if (this._monacoEditor) {
+                            this._monacoEditor.layout();
+                        }
                     }
                     onEditorInputContentChanged() {
                     }
