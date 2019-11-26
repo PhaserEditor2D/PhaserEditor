@@ -271,7 +271,8 @@ var phasereditor2d;
                     if (this._inEditor) {
                         const camera = this.getCamera();
                         camera.setOrigin(0, 0);
-                        camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+                        //camera.backgroundColor = Phaser.Display.Color.ValueToColor("#6e6e6e");
+                        camera.backgroundColor = Phaser.Display.Color.ValueToColor("#8e8e8e");
                         if (this._initialState) {
                             camera.zoom = (_a = this._initialState.cameraZoom, (_a !== null && _a !== void 0 ? _a : camera.zoom));
                             camera.scrollX = (_b = this._initialState.cameraScrollX, (_b !== null && _b !== void 0 ? _b : camera.scrollX));
@@ -1105,6 +1106,7 @@ var phasereditor2d;
                 class SceneEditor extends colibri.ui.ide.FileEditor {
                     constructor() {
                         super("phasereditor2d.SceneEditor");
+                        this.addClass("SceneEditor");
                         this._blocksProvider = new ui.blocks.SceneEditorBlocksProvider(this);
                         this._outlineProvider = new editor.outline.SceneEditorOutlineProvider(this);
                         this._propertyProvider = new editor.properties.SceneEditorSectionProvider();
@@ -1143,11 +1145,15 @@ var phasereditor2d;
                     }
                     createPart() {
                         this.setLayoutChildren(false);
+                        const container = document.createElement("div");
+                        container.classList.add("SceneEditorContainer");
+                        this.getElement().appendChild(container);
                         this._gameCanvas = document.createElement("canvas");
                         this._gameCanvas.style.position = "absolute";
-                        this.getElement().appendChild(this._gameCanvas);
+                        this.getElement().appendChild(container);
+                        container.appendChild(this._gameCanvas);
                         this._overlayLayer = new editor.OverlayLayer(this);
-                        this.getElement().appendChild(this._overlayLayer.getCanvas());
+                        container.appendChild(this._overlayLayer.getCanvas());
                         // create game scene
                         this._gameScene = new ui.GameScene();
                         this._game = new Phaser.Game({
@@ -1236,7 +1242,7 @@ var phasereditor2d;
                             return;
                         }
                         this._overlayLayer.resizeTo();
-                        const parent = this.getElement();
+                        const parent = this._gameCanvas.parentElement;
                         const w = parent.clientWidth;
                         const h = parent.clientHeight;
                         this._game.scale.resize(w, h);

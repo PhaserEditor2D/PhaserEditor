@@ -52,6 +52,8 @@ namespace phasereditor2d.scene.ui.editor {
         constructor() {
             super("phasereditor2d.SceneEditor");
 
+            this.addClass("SceneEditor");
+
             this._blocksProvider = new blocks.SceneEditorBlocksProvider(this);
             this._outlineProvider = new outline.SceneEditorOutlineProvider(this);
             this._propertyProvider = new properties.SceneEditorSectionProvider();
@@ -106,12 +108,20 @@ namespace phasereditor2d.scene.ui.editor {
 
             this.setLayoutChildren(false);
 
+
+            const container = document.createElement("div");
+            container.classList.add("SceneEditorContainer");
+
+            this.getElement().appendChild(container);
+
             this._gameCanvas = document.createElement("canvas");
             this._gameCanvas.style.position = "absolute";
-            this.getElement().appendChild(this._gameCanvas);
+            this.getElement().appendChild(container);
+
+            container.appendChild(this._gameCanvas);
 
             this._overlayLayer = new OverlayLayer(this);
-            this.getElement().appendChild(this._overlayLayer.getCanvas());
+            container.appendChild(this._overlayLayer.getCanvas());
 
 
             // create game scene
@@ -236,7 +246,7 @@ namespace phasereditor2d.scene.ui.editor {
 
             this._overlayLayer.resizeTo();
 
-            const parent = this.getElement();
+            const parent = this._gameCanvas.parentElement;
             const w = parent.clientWidth;
             const h = parent.clientHeight;
 
