@@ -1,6 +1,10 @@
 declare namespace phasereditor2d.scene {
     import ide = colibri.ui.ide;
     const ICON_GROUP = "group";
+    const ICON_TRANSLATE = "translate";
+    const ICON_ANGLE = "angle";
+    const ICON_SCALE = "scale";
+    const ICON_ORIGIN = "origin";
     class ScenePlugin extends ide.Plugin {
         private static _instance;
         static getInstance(): ScenePlugin;
@@ -205,6 +209,7 @@ declare namespace phasereditor2d.scene.ui.editor {
     }
 }
 declare namespace phasereditor2d.scene.ui.editor {
+    import controls = colibri.ui.controls;
     class SceneEditor extends colibri.ui.ide.FileEditor {
         private _blocksProvider;
         private _outlineProvider;
@@ -227,6 +232,7 @@ declare namespace phasereditor2d.scene.ui.editor {
         restoreState(state: any): void;
         protected onEditorInputContentChanged(): void;
         protected createPart(): void;
+        createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
         setInput(file: colibri.core.io.FilePath): Promise<void>;
         private readScene;
         getSelectedGameObjects(): Phaser.GameObjects.GameObject[];

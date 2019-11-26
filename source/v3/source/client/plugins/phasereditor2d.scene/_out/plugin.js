@@ -4,6 +4,10 @@ var phasereditor2d;
     (function (scene) {
         var ide = colibri.ui.ide;
         scene.ICON_GROUP = "group";
+        scene.ICON_TRANSLATE = "translate";
+        scene.ICON_ANGLE = "angle";
+        scene.ICON_SCALE = "scale";
+        scene.ICON_ORIGIN = "origin";
         class ScenePlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.scene");
@@ -18,7 +22,11 @@ var phasereditor2d;
                 reg.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
                 // icons loader
                 reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
-                    scene.ICON_GROUP
+                    scene.ICON_GROUP,
+                    scene.ICON_ANGLE,
+                    scene.ICON_ORIGIN,
+                    scene.ICON_SCALE,
+                    scene.ICON_TRANSLATE
                 ]));
                 // commands
                 reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", scene.ui.editor.commands.SceneEditorCommands.registerCommands));
@@ -1085,6 +1093,7 @@ var phasereditor2d;
         (function (ui) {
             var editor;
             (function (editor) {
+                var controls = colibri.ui.controls;
                 var io = colibri.core.io;
                 class SceneEditorFactory extends colibri.ui.ide.EditorFactory {
                     constructor() {
@@ -1182,6 +1191,30 @@ var phasereditor2d;
                         this._cameraManager = new editor.CameraManager(this);
                         this._selectionManager = new editor.SelectionManager(this);
                         this._actionManager = new editor.ActionManager(this);
+                    }
+                    createEditorToolbar(parent) {
+                        const manager = new controls.ToolbarManager(parent);
+                        manager.add(new controls.Action({
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_TRANSLATE),
+                            callback: () => { }
+                        }));
+                        manager.add(new controls.Action({
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_SCALE),
+                            callback: () => { }
+                        }));
+                        manager.add(new controls.Action({
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_ANGLE),
+                            callback: () => { }
+                        }));
+                        manager.add(new controls.Action({
+                            icon: scene.ScenePlugin.getInstance().getIcon(scene.ICON_ORIGIN),
+                            callback: () => { }
+                        }));
+                        manager.add(new controls.Action({
+                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
+                            callback: () => { }
+                        }));
+                        return manager;
                     }
                     async setInput(file) {
                         super.setInput(file);

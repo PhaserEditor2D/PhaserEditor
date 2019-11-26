@@ -1,6 +1,7 @@
 
 namespace phasereditor2d.scene.ui.editor {
 
+    import controls = colibri.ui.controls;
     import io = colibri.core.io;
 
     class SceneEditorFactory extends colibri.ui.ide.EditorFactory {
@@ -20,7 +21,7 @@ namespace phasereditor2d.scene.ui.editor {
         }
 
         createEditor(): colibri.ui.ide.EditorPart {
-            
+
             // TODO: remove this
             pack.core.PackFinder.reset_temporal_method_TODO();
 
@@ -78,7 +79,7 @@ namespace phasereditor2d.scene.ui.editor {
             }
 
             const win = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow() as ide.ui.DesignWindow;
-            
+
             win.saveWindowState();
         }
 
@@ -160,6 +161,39 @@ namespace phasereditor2d.scene.ui.editor {
             this._selectionManager = new SelectionManager(this);
             this._actionManager = new ActionManager(this);
 
+        }
+
+        createEditorToolbar(parent: HTMLElement) {
+
+            const manager = new controls.ToolbarManager(parent);
+
+            manager.add(new controls.Action({
+                icon: ScenePlugin.getInstance().getIcon(ICON_TRANSLATE),
+                callback: () => { }
+            }));
+
+            manager.add(new controls.Action({
+                icon: ScenePlugin.getInstance().getIcon(ICON_SCALE),
+                callback: () => { }
+            }));
+
+            manager.add(new controls.Action({
+                icon: ScenePlugin.getInstance().getIcon(ICON_ANGLE),
+                callback: () => { }
+            }));
+
+            manager.add(new controls.Action({
+                icon: ScenePlugin.getInstance().getIcon(ICON_ORIGIN),
+                callback: () => { }
+            }));
+
+            manager.add(new controls.Action({
+                icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
+                callback: () => { }
+            }));
+
+
+            return manager;
         }
 
         async setInput(file: colibri.core.io.FilePath) {
