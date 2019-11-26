@@ -32,7 +32,7 @@ namespace colibri.ui.controls.viewers {
 
             ctx.lineWidth = 1;
             ctx.globalAlpha = 0.5;
-            ctx.strokeStyle = Controls.theme.viewerForeground;
+            ctx.strokeStyle = Controls.getTheme().viewerForeground;
 
             ctx.strokeRect(args.x, args.y, args.w, args.h);
 

@@ -422,7 +422,7 @@ namespace colibri.ui.controls.viewers {
             let fillStyle = null;
 
             if (this.isSelected(obj)) {
-                fillStyle = Controls.theme.viewerSelectionBackground;
+                fillStyle = Controls.getTheme().viewerSelectionBackground;
             }
 
             if (fillStyle != null) {

@@ -1264,16 +1264,19 @@ var colibri;
                     return element;
                 }
                 static switchTheme() {
-                    const newTheme = this.theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
-                    this.useTheme(newTheme);
+                    const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
+                    this.setTheme(newTheme);
                     return newTheme;
                 }
-                static useTheme(theme) {
+                static setTheme(theme) {
                     const classList = document.getElementsByTagName("html")[0].classList;
-                    classList.remove(this.theme.name);
+                    classList.remove(this._theme.name);
                     classList.add(theme.name);
-                    this.theme = theme;
-                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this.theme }));
+                    this._theme = theme;
+                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this._theme }));
+                }
+                static getTheme() {
+                    return this._theme;
                 }
                 static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
                     ctx.save();
@@ -1296,6 +1299,7 @@ var colibri;
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
                 name: "light",
+                dark: false,
                 viewerSelectionBackground: "#4242ff",
                 //treeItemSelectionBackground: "#525252",
                 viewerSelectionForeground: "#f0f0f0",
@@ -1303,11 +1307,12 @@ var colibri;
             };
             Controls.DARK_THEME = {
                 name: "dark",
+                dark: true,
                 viewerSelectionBackground: "#f0a050",
                 viewerSelectionForeground: "#0e0e0e",
                 viewerForeground: "#f0f0f0",
             };
-            Controls.theme = Controls.DARK_THEME;
+            Controls._theme = Controls.DARK_THEME;
             controls.Controls = Controls;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -1406,7 +1411,7 @@ var colibri;
                 static paintEmpty(context, x, y, w, h) {
                     if (w > 10 && h > 10) {
                         context.save();
-                        context.strokeStyle = controls.Controls.theme.viewerForeground;
+                        context.strokeStyle = controls.Controls.getTheme().viewerForeground;
                         const cx = x + w / 2;
                         const cy = y + h / 2;
                         context.strokeRect(cx, cy - 1, 2, 2);
@@ -3340,7 +3345,7 @@ var colibri;
                         let x = args.x;
                         let y = args.y;
                         const ctx = args.canvasContext;
-                        ctx.fillStyle = controls.Controls.theme.viewerForeground;
+                        ctx.fillStyle = controls.Controls.getTheme().viewerForeground;
                         let args2;
                         if (args.h <= controls.ROW_HEIGHT) {
                             args2 = new viewers.RenderCellArgs(args.canvasContext, args.x, args.y, controls.ICON_SIZE, args.h, args.obj, args.viewer);
@@ -3354,7 +3359,7 @@ var colibri;
                         renderer.renderCell(args2);
                         ctx.save();
                         if (args.viewer.isSelected(args.obj)) {
-                            ctx.fillStyle = controls.Controls.theme.viewerSelectionForeground;
+                            ctx.fillStyle = controls.Controls.getTheme().viewerSelectionForeground;
                         }
                         ctx.fillText(label, x, y);
                         ctx.restore();
@@ -3437,7 +3442,7 @@ var colibri;
                                 ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
                                 ctx.fillStyle = "#ff000";
                                 ctx.fillRect(0, y2 - 18, b.width, 25);
-                                ctx.fillStyle = controls.Controls.theme.viewerForeground + "aa";
+                                ctx.fillStyle = controls.Controls.getTheme().viewerForeground + "aa";
                                 const m = ctx.measureText(label);
                                 ctx.fillText(label, b.width / 2 - m.width / 2, y2);
                                 ctx.restore();
@@ -3544,10 +3549,10 @@ var colibri;
                         if (visible) {
                             ctx.save();
                             if (selected) {
-                                ctx.fillStyle = controls.Controls.theme.viewerSelectionForeground;
+                                ctx.fillStyle = controls.Controls.getTheme().viewerSelectionForeground;
                             }
                             else {
-                                ctx.fillStyle = controls.Controls.theme.viewerForeground;
+                                ctx.fillStyle = controls.Controls.getTheme().viewerForeground;
                             }
                             const m = ctx.measureText(line);
                             const x2 = Math.max(x, x + args.w / 2 - m.width / 2);
@@ -3559,7 +3564,7 @@ var colibri;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.fillStyle = controls.Controls.theme.viewerSelectionBackground + "88";
+                            ctx.fillStyle = controls.Controls.getTheme().viewerSelectionBackground + "88";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }
@@ -3568,7 +3573,7 @@ var colibri;
                         if (selected) {
                             const ctx = args.canvasContext;
                             ctx.save();
-                            ctx.fillStyle = controls.Controls.theme.viewerSelectionBackground + "44";
+                            ctx.fillStyle = controls.Controls.getTheme().viewerSelectionBackground + "44";
                             ctx.fillRect(args.x, args.y, args.w, args.h);
                             ctx.restore();
                         }
@@ -3956,7 +3961,7 @@ var colibri;
                     paintItemBackground(obj, x, y, w, h, radius = 0) {
                         let fillStyle = null;
                         if (this.isSelected(obj)) {
-                            fillStyle = controls.Controls.theme.viewerSelectionBackground;
+                            fillStyle = controls.Controls.getTheme().viewerSelectionBackground;
                         }
                         if (fillStyle != null) {
                             this._context.save();
@@ -4116,7 +4121,7 @@ var colibri;
                         ctx.save();
                         ctx.lineWidth = 1;
                         ctx.globalAlpha = 0.5;
-                        ctx.strokeStyle = controls.Controls.theme.viewerForeground;
+                        ctx.strokeStyle = controls.Controls.getTheme().viewerForeground;
                         ctx.strokeRect(args.x, args.y, args.w, args.h);
                         ctx.restore();
                     }

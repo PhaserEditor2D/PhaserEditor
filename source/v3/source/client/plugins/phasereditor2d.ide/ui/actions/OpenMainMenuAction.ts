@@ -27,7 +27,7 @@ namespace phasereditor2d.ide.ui.actions {
             }));
 
             menu.add(new controls.Action({
-                text: controls.Controls.theme === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
+                text: controls.Controls.getTheme() === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
                 callback: () => IDEPlugin.getInstance().switchTheme()
             }));
 

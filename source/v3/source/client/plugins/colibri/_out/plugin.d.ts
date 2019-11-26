@@ -358,9 +358,10 @@ declare namespace colibri.ui.controls {
         static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
         static LIGHT_THEME: Theme;
         static DARK_THEME: Theme;
-        static theme: Theme;
+        static _theme: Theme;
         static switchTheme(): Theme;
-        static useTheme(theme: Theme): void;
+        static setTheme(theme: Theme): void;
+        static getTheme(): Theme;
         static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft?: number, topRight?: number, bottomRight?: number, bottomLeft?: number): void;
     }
 }
@@ -583,6 +584,7 @@ declare namespace colibri.ui.controls {
         viewerSelectionBackground: string;
         viewerSelectionForeground: string;
         viewerForeground: string;
+        dark: boolean;
     };
 }
 declare namespace colibri.ui.controls {

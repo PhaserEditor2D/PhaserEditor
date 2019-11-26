@@ -40,6 +40,18 @@ namespace phasereditor2d.code {
             monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
                 noSemanticValidation: true
             });
+
+            window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
+
+                let monacoTheme = "vs";
+
+                if (controls.Controls.getTheme().dark) {
+                    monacoTheme = "vs-dark";
+                }
+
+                monaco.editor.setTheme(monacoTheme);
+
+            });
         }
     }
 

@@ -113,7 +113,7 @@ namespace colibri.ui.controls.viewers {
             let y = args.y;
 
             const ctx = args.canvasContext;
-            ctx.fillStyle = Controls.theme.viewerForeground;
+            ctx.fillStyle = Controls.getTheme().viewerForeground;
 
             let args2: RenderCellArgs;
             if (args.h <= ROW_HEIGHT) {
@@ -129,7 +129,7 @@ namespace colibri.ui.controls.viewers {
 
             ctx.save();
             if (args.viewer.isSelected(args.obj)) {
-                ctx.fillStyle = Controls.theme.viewerSelectionForeground;
+                ctx.fillStyle = Controls.getTheme().viewerSelectionForeground;
             }
             ctx.fillText(label, x, y);
             ctx.restore();

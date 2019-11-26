@@ -189,7 +189,7 @@ namespace phasereditor2d.ide {
                 }
             }
 
-            controls.Controls.useTheme(theme);
+            controls.Controls.setTheme(theme);
         }
     }
 

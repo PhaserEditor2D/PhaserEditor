@@ -2,6 +2,7 @@ var phasereditor2d;
 (function (phasereditor2d) {
     var code;
     (function (code) {
+        var controls = colibri.ui.controls;
         class CodePlugin extends colibri.ui.ide.Plugin {
             constructor() {
                 super("phasereditor2d.core");
@@ -26,6 +27,13 @@ var phasereditor2d;
             async starting() {
                 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
                     noSemanticValidation: true
+                });
+                window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
+                    let monacoTheme = "vs";
+                    if (controls.Controls.getTheme().dark) {
+                        monacoTheme = "vs-dark";
+                    }
+                    monaco.editor.setTheme(monacoTheme);
                 });
             }
         }
@@ -71,7 +79,9 @@ var phasereditor2d;
                         container.classList.add("MonacoEditorContainer");
                         this.getElement().appendChild(container);
                         this._monacoEditor = monaco.editor.create(container, {
-                            language: this._language
+                            language: this._language,
+                            fontSize: 16,
+                            scrollBeyondLastLine: false,
                         });
                         this.updateContent();
                     }

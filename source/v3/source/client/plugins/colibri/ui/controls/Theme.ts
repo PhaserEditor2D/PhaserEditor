@@ -9,5 +9,7 @@ namespace colibri.ui.controls {
         viewerSelectionForeground: string;
 
         viewerForeground: string;
+
+        dark: boolean;
     }
 }

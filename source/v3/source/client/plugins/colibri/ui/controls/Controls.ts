@@ -159,6 +159,7 @@ namespace colibri.ui.controls {
 
         static LIGHT_THEME: Theme = {
             name: "light",
+            dark: false,
             viewerSelectionBackground: "#4242ff",
             //treeItemSelectionBackground: "#525252",
             viewerSelectionForeground: "#f0f0f0",
@@ -167,32 +168,37 @@ namespace colibri.ui.controls {
 
         static DARK_THEME: Theme = {
             name: "dark",
+            dark: true,
             viewerSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
             viewerSelectionForeground: "#0e0e0e",
             viewerForeground: "#f0f0f0",
         };
 
-        static theme: Theme = Controls.DARK_THEME;
+        static _theme: Theme = Controls.DARK_THEME;
 
         static switchTheme(): Theme {
 
-            const newTheme = this.theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
+            const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
 
-            this.useTheme(newTheme);
+            this.setTheme(newTheme);
 
             return newTheme;
         }
 
-        static useTheme(theme: Theme) {
+        static setTheme(theme: Theme) {
 
             const classList = document.getElementsByTagName("html")[0].classList;
 
-            classList.remove(this.theme.name);
+            classList.remove(this._theme.name);
             classList.add(theme.name);
 
-            this.theme = theme;
+            this._theme = theme;
 
-            window.dispatchEvent(new CustomEvent(EVENT_THEME_CHANGED, { detail: this.theme }));
+            window.dispatchEvent(new CustomEvent(EVENT_THEME_CHANGED, { detail: this._theme }));
+        }
+
+        static getTheme() {
+            return this._theme;
         }
 
         static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {

@@ -57,7 +57,9 @@ namespace phasereditor2d.code.ui.editors {
             this.getElement().appendChild(container);
 
             this._monacoEditor = monaco.editor.create(container, {
-                language: this._language
+                language: this._language,
+                fontSize: 16,
+                scrollBeyondLastLine: false,
             });
 
             this.updateContent();

@@ -95,7 +95,7 @@ namespace colibri.ui.controls.viewers {
 
                     ctx.fillRect(0, y2 - 18, b.width, 25);
 
-                    ctx.fillStyle = controls.Controls.theme.viewerForeground + "aa";
+                    ctx.fillStyle = controls.Controls.getTheme().viewerForeground + "aa";
 
                     const m = ctx.measureText(label);
 
@@ -259,9 +259,9 @@ namespace colibri.ui.controls.viewers {
                 ctx.save();
 
                 if (selected) {
-                    ctx.fillStyle = Controls.theme.viewerSelectionForeground;
+                    ctx.fillStyle = Controls.getTheme().viewerSelectionForeground;
                 } else {
-                    ctx.fillStyle = Controls.theme.viewerForeground;
+                    ctx.fillStyle = Controls.getTheme().viewerForeground;
                 }
 
 
@@ -277,7 +277,7 @@ namespace colibri.ui.controls.viewers {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();
-                ctx.fillStyle = Controls.theme.viewerSelectionBackground + "88";
+                ctx.fillStyle = Controls.getTheme().viewerSelectionBackground + "88";
                 ctx.fillRect(args.x, args.y, args.w, args.h);
                 ctx.restore();
             }
@@ -287,7 +287,7 @@ namespace colibri.ui.controls.viewers {
             if (selected) {
                 const ctx = args.canvasContext;
                 ctx.save();
-                ctx.fillStyle = Controls.theme.viewerSelectionBackground + "44";
+                ctx.fillStyle = Controls.getTheme().viewerSelectionBackground + "44";
                 ctx.fillRect(args.x, args.y, args.w, args.h);
                 ctx.restore();
             }

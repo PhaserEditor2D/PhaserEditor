@@ -106,7 +106,7 @@ var phasereditor2d;
                         theme = controls.Controls.DARK_THEME;
                     }
                 }
-                controls.Controls.useTheme(theme);
+                controls.Controls.setTheme(theme);
             }
         }
         IDEPlugin._instance = new IDEPlugin();
@@ -301,7 +301,7 @@ var phasereditor2d;
                             text: "Reload Project"
                         }));
                         menu.add(new controls.Action({
-                            text: controls.Controls.theme === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
+                            text: controls.Controls.getTheme() === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
                             callback: () => ide.IDEPlugin.getInstance().switchTheme()
                         }));
                         menu.addSeparator();
