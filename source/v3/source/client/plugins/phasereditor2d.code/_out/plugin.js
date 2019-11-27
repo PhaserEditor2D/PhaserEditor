@@ -125,14 +125,6 @@ var phasereditor2d;
                         this._monacoEditor.onDidChangeModelContent(e => {
                             this.setDirty(true);
                         });
-                        this._monacoEditor.onDidChangeCursorPosition(e => {
-                            console.log(e.position);
-                            const model = this._monacoEditor.getModel();
-                            // const word = model.getWordAtPosition(e.position);
-                            // console.log(word);
-                            const tokens = this.getTokensAtLine(e.position);
-                            console.log(tokens);
-                        });
                         editors.MonacoModelsManager.getInstance().start();
                     }
                     getTokensAtLine(position) {
@@ -217,8 +209,44 @@ var phasereditor2d;
                     constructor() {
                         super("javascript");
                     }
+                    createPart() {
+                        super.createPart();
+                        const editor = this.getMonacoEditor();
+                        editor.onDidChangeCursorPosition(e => {
+                            const model = editor.getModel();
+                            const str = getStringTokenValue(model, e.position);
+                            if (str) {
+                                this.setSelection([str]);
+                                // const obj = pack.core.PackFinder.findPackItemOrFrameWithKey(str);
+                                // console.log(obj);
+                            }
+                        });
+                    }
                 }
                 editors.JavaScriptEditor = JavaScriptEditor;
+                function getStringTokenValue(model, pos) {
+                    const input = model.getLineContent(pos.lineNumber);
+                    const cursor = pos.column - 1;
+                    let i = 0;
+                    let tokenOffset = 0;
+                    let openChar = "";
+                    while (i < input.length) {
+                        const c = input[i];
+                        if (openChar === c) {
+                            // end string token
+                            if (cursor >= tokenOffset && cursor <= i) {
+                                return input.slice(tokenOffset, i);
+                            }
+                            openChar = "";
+                        }
+                        else if (c === "'" || c === '"') {
+                            // start string token
+                            openChar = c;
+                            tokenOffset = i + 1;
+                        }
+                        i++;
+                    }
+                }
             })(editors = ui.editors || (ui.editors = {}));
         })(ui = code.ui || (code.ui = {}));
     })(code = phasereditor2d.code || (phasereditor2d.code = {}));

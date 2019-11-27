@@ -76,21 +76,6 @@ namespace phasereditor2d.code.ui.editors {
                 this.setDirty(true);
             });
 
-            this._monacoEditor.onDidChangeCursorPosition(e => {
-                console.log(e.position);
-
-                const model = this._monacoEditor.getModel();
-
-                // const word = model.getWordAtPosition(e.position);
-
-                // console.log(word);
-
-                const tokens = this.getTokensAtLine(e.position);
-
-                console.log(tokens);
-            });
-
-
             MonacoModelsManager.getInstance().start();
         }
 

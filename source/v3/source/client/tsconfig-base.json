@@ -8,8 +8,7 @@
         "composite": true,
         "declaration": true,
         "declarationMap": true,
-        "outDir": ".",
-        "outFile": "plugin.js",
-        "noEmitOnError": true
-    }
+        "disableSourceOfProjectReferenceRedirect": true
+    },
+   
 }

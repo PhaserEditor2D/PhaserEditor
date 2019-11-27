@@ -239,6 +239,7 @@ declare namespace phasereditor2d.pack.core {
         static preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
         static getPacks(): AssetPack[];
         static findAssetPackItem(key: string): AssetPackItem;
+        static findPackItemOrFrameWithKey(key: string): AssetPackItem | AssetPackImageFrame;
         static getAssetPackItemOrFrame(key: string, frame: any): AssetPackItem | AssetPackImageFrame;
         static getAssetPackItemImage(key: string, frame: any): controls.IImage;
     }
@@ -454,7 +455,7 @@ declare namespace phasereditor2d.pack.core.parsers {
 }
 declare namespace phasereditor2d.pack.ui.dialogs {
     import io = colibri.core.io;
-    class NewAssetPackFileWizardExtension extends files.ui.dialogs.NewFileContentExtension {
+    class NewAssetPackFileWizardExtension extends phasereditor2d.files.ui.dialogs.NewFileContentExtension {
         constructor();
         getInitialFileLocation(): io.FilePath;
     }

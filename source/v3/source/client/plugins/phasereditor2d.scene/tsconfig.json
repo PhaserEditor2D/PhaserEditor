@@ -8,6 +8,9 @@
             "path": "../colibri"
         },
         {
+            "path": "../phasereditor2d.phaser"
+        },
+        {
             "path": "../phasereditor2d.outline"
         },
         {

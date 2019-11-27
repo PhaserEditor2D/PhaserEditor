@@ -804,6 +804,23 @@ var phasereditor2d;
                         .flatMap(pack => pack.getItems())
                         .find(item => item.getKey() === key);
                 }
+                static findPackItemOrFrameWithKey(key) {
+                    for (const pack of this._packs) {
+                        for (const item of pack.getItems()) {
+                            if (item.getKey() === key) {
+                                return item;
+                            }
+                            if (item instanceof core_2.ImageFrameContainerAssetPackItem) {
+                                for (const frame of item.getFrames()) {
+                                    if (frame.getName() === key) {
+                                        return frame;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return null;
+                }
                 static getAssetPackItemOrFrame(key, frame) {
                     let item = this.findAssetPackItem(key);
                     if (!item) {

@@ -1,14 +1,20 @@
 {
-    "references": [
+    "references": [        
         {
             "path": "./plugins/colibri"
         },
         {
-            "path": "./plugins/phasereditor2d.blocks"
+            "path": "./plugins/phasereditor2d.pack"
         },
         {
             "path": "./plugins/phasereditor2d.files"
         },
+        {
+            "path": "./plugins/phasereditor2d.phaser"
+        },
+        {
+            "path": "./plugins/phasereditor2d.blocks"
+        },       
         {
             "path": "./plugins/phasereditor2d.ide"
         },
@@ -20,13 +26,7 @@
         },
         {
             "path": "./plugins/phasereditor2d.outline"
-        },
-        {
-            "path": "./plugins/phasereditor2d.pack"
-        },
-        {
-            "path": "./plugins/phasereditor2d.phaser"
-        },
+        },        
         {
             "path": "./plugins/phasereditor2d.scene"
         },

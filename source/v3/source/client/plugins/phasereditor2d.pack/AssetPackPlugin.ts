@@ -21,7 +21,7 @@ namespace phasereditor2d.pack {
         }
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
-
+            
             // icons loader
 
             reg.addExtension(

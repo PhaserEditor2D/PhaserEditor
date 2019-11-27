@@ -8,8 +8,32 @@
             "path": "../colibri"
         },
         {
+            "path": "../phasereditor2d.phaser"
+        },
+        {
+            "path": "../phasereditor2d.outline"
+        },
+        {
+            "path": "../phasereditor2d.pack"
+        },
+        {
+            "path": "../phasereditor2d.blocks"
+        },
+        {
+            "path": "../phasereditor2d.outline"
+        },
+        {
+            "path": "../phasereditor2d.files"
+        },
+        {
+            "path": "../phasereditor2d.inspector"
+        },
+        {
+            "path": "../phasereditor2d.ide"
+        },
+        {
             "path": "../phasereditor2d.webContentTypes"
-        }
+        }   
     ],
     "exclude": [
         "_out/plugin.d.ts"
