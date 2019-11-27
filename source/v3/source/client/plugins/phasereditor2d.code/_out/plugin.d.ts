@@ -6,6 +6,9 @@ declare namespace phasereditor2d.code {
         constructor();
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
         starting(): Promise<void>;
+        private initMonacoContentAssist;
+        private initMonacoLanguages;
+        private initMonacoThemes;
     }
 }
 declare namespace phasereditor2d.code.ui.editors {
@@ -41,7 +44,9 @@ declare namespace phasereditor2d.code.ui.editors {
         createEditor(): colibri.ui.ide.EditorPart;
     }
     class JavaScriptEditor extends MonacoEditor {
+        private static _init;
         constructor();
+        private static init;
         createPart(): void;
         private _propertyProvider;
         getPropertyProvider(): pack.ui.properties.AssetPackPreviewPropertyProvider;

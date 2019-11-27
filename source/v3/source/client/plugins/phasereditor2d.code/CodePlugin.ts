@@ -50,14 +50,33 @@ namespace phasereditor2d.code {
 
         async starting() {
 
+            this.initMonacoLanguages();
+
+            this.initMonacoContentAssist();
+
+            this.initMonacoThemes();
+        }
+
+        private initMonacoContentAssist() {
+
             monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
                 noSemanticValidation: true
             });
+        }
+
+        private initMonacoLanguages() {
+
+            monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                noSemanticValidation: true
+            });
+        }
+
+        private initMonacoThemes() {
 
             monaco.editor.defineTheme("vs", {
                 inherit: true,
                 base: "vs",
-                rules: <any> [
+                rules: <any>[
                     {
                         background: "e2e2e2"
                     }],
@@ -70,7 +89,7 @@ namespace phasereditor2d.code {
             monaco.editor.defineTheme("vs-dark", {
                 inherit: true,
                 base: "vs-dark",
-                rules: <any> [
+                rules: <any>[
                     {
                         background: "222222"
                     }],

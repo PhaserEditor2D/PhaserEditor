@@ -33,9 +33,21 @@ var phasereditor2d;
                 ]));
             }
             async starting() {
+                this.initMonacoLanguages();
+                this.initMonacoContentAssist();
+                this.initMonacoThemes();
+            }
+            initMonacoContentAssist() {
                 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
                     noSemanticValidation: true
                 });
+            }
+            initMonacoLanguages() {
+                monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                    noSemanticValidation: true
+                });
+            }
+            initMonacoThemes() {
                 monaco.editor.defineTheme("vs", {
                     inherit: true,
                     base: "vs",
@@ -205,10 +217,54 @@ var phasereditor2d;
                     }
                 }
                 editors.JavaScriptEditorFactory = JavaScriptEditorFactory;
+                function registerJavaScriptEditorCompletions() {
+                    monaco.languages.registerCompletionItemProvider("javascript", {
+                        provideCompletionItems: (model, pos) => {
+                            return {
+                                suggestions: computeCompletionItems()
+                            };
+                        }
+                    });
+                }
+                function computeCompletionItems() {
+                    const result = [];
+                    const packs = phasereditor2d.pack.core.PackFinder.getPacks();
+                    for (const pack_ of packs) {
+                        const packName = pack_.getFile().getName();
+                        for (const item of pack_.getItems()) {
+                            result.push({
+                                label: `${item.getKey()}`,
+                                filterText: `"${item.getKey()}"`,
+                                kind: monaco.languages.CompletionItemKind.Text,
+                                documentation: `Asset Pack key of type ${item.getType()} (in ${packName}).`,
+                                insertText: `${item.getKey()}`,
+                            });
+                            if (item instanceof phasereditor2d.pack.core.ImageFrameContainerAssetPackItem) {
+                                for (const frame of item.getFrames()) {
+                                    result.push({
+                                        label: `${frame.getName()}`,
+                                        filterText: `"${frame.getName()}"`,
+                                        kind: monaco.languages.CompletionItemKind.Text,
+                                        documentation: `Frame of the ${item.getType()} ${item.getKey()} (in ${packName}).`,
+                                        insertText: `${frame.getName()}`,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    return result;
+                }
                 class JavaScriptEditor extends editors.MonacoEditor {
                     constructor() {
                         super("javascript");
                         this._propertyProvider = new phasereditor2d.pack.ui.properties.AssetPackPreviewPropertyProvider();
+                        if (!JavaScriptEditor._init) {
+                            JavaScriptEditor._init = true;
+                            JavaScriptEditor.init();
+                        }
+                    }
+                    static init() {
+                        registerJavaScriptEditorCompletions();
                     }
                     createPart() {
                         super.createPart();
@@ -221,12 +277,16 @@ var phasereditor2d;
                                 const obj = phasereditor2d.pack.core.PackFinder.findPackItemOrFrameWithKey(str);
                                 this.setSelection([obj]);
                             }
+                            else if (this.getSelection().length > 0) {
+                                this.setSelection([]);
+                            }
                         });
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;
                     }
                 }
+                JavaScriptEditor._init = false;
                 editors.JavaScriptEditor = JavaScriptEditor;
                 function getStringTokenValue(model, pos) {
                     const input = model.getLineContent(pos.lineNumber);

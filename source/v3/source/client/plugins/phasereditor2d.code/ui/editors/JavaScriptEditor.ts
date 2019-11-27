@@ -13,11 +13,78 @@ namespace phasereditor2d.code.ui.editors {
         }
     }
 
+
+    function registerJavaScriptEditorCompletions() {
+
+        monaco.languages.registerCompletionItemProvider("javascript", {
+
+            provideCompletionItems: (model, pos) => {
+
+                return {
+                    suggestions: computeCompletionItems()
+                }
+            }
+        });
+    }
+
+    function computeCompletionItems(): monaco.languages.CompletionItem[] {
+
+        const result: monaco.languages.CompletionItem[] = [];
+
+        const packs = pack.core.PackFinder.getPacks();
+
+        for (const pack_ of packs) {
+
+            const packName = pack_.getFile().getName();
+
+            for (const item of pack_.getItems()) {
+
+                result.push(<any>{
+                    label: `${item.getKey()}`,
+                    filterText: `"${item.getKey()}"`,
+                    kind: monaco.languages.CompletionItemKind.Text,
+                    documentation:
+                        `Asset Pack key of type ${item.getType()} (in ${packName}).`,
+                    insertText: `${item.getKey()}`,
+                });
+
+                if (item instanceof pack.core.ImageFrameContainerAssetPackItem) {
+
+                    for(const frame of item.getFrames()) {
+                   
+                        result.push(<any>{
+                            label: `${frame.getName()}`,
+                            filterText: `"${frame.getName()}"`,
+                            kind: monaco.languages.CompletionItemKind.Text,
+                            documentation:
+                                `Frame of the ${item.getType()} ${item.getKey()} (in ${packName}).`,
+                            insertText: `${frame.getName()}`,
+                        });
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
     export class JavaScriptEditor extends MonacoEditor {
 
+        private static _init = false;
 
         constructor() {
             super("javascript");
+
+            if (!JavaScriptEditor._init) {
+                JavaScriptEditor._init = true;
+                JavaScriptEditor.init();
+            }
+        }
+
+        private static init() {
+
+            registerJavaScriptEditorCompletions();
+
         }
 
         createPart() {
@@ -40,6 +107,10 @@ namespace phasereditor2d.code.ui.editors {
                     const obj = pack.core.PackFinder.findPackItemOrFrameWithKey(str);
 
                     this.setSelection([obj]);
+
+                } else if (this.getSelection().length > 0) {
+
+                    this.setSelection([]);
                 }
             });
         }
