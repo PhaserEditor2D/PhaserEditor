@@ -43,6 +43,8 @@ declare namespace phasereditor2d.code.ui.editors {
     class JavaScriptEditor extends MonacoEditor {
         constructor();
         createPart(): void;
+        private _propertyProvider;
+        getPropertyProvider(): pack.ui.properties.AssetPackPreviewPropertyProvider;
     }
 }
 declare namespace phasereditor2d.code.ui.editors {

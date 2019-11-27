@@ -947,6 +947,12 @@ declare namespace phasereditor2d.pack.ui.properties {
 }
 declare namespace phasereditor2d.pack.ui.properties {
     import controls = colibri.ui.controls;
+    class AssetPackPreviewPropertyProvider extends controls.properties.PropertySectionProvider {
+        addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
+    }
+}
+declare namespace phasereditor2d.pack.ui.properties {
+    import controls = colibri.ui.controls;
     class ImagePreviewSection extends controls.properties.PropertySection<core.AssetPackItem> {
         constructor(page: controls.properties.PropertyPage);
         protected createForm(parent: HTMLDivElement): void;

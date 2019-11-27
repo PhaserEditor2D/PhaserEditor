@@ -208,6 +208,7 @@ var phasereditor2d;
                 class JavaScriptEditor extends editors.MonacoEditor {
                     constructor() {
                         super("javascript");
+                        this._propertyProvider = new phasereditor2d.pack.ui.properties.AssetPackPreviewPropertyProvider();
                     }
                     createPart() {
                         super.createPart();
@@ -217,10 +218,13 @@ var phasereditor2d;
                             const str = getStringTokenValue(model, e.position);
                             if (str) {
                                 this.setSelection([str]);
-                                // const obj = pack.core.PackFinder.findPackItemOrFrameWithKey(str);
-                                // console.log(obj);
+                                const obj = phasereditor2d.pack.core.PackFinder.findPackItemOrFrameWithKey(str);
+                                this.setSelection([obj]);
                             }
                         });
+                    }
+                    getPropertyProvider() {
+                        return this._propertyProvider;
                     }
                 }
                 editors.JavaScriptEditor = JavaScriptEditor;

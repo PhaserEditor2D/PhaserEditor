@@ -130,7 +130,7 @@ declare namespace phasereditor2d.scene.ui.blocks {
 }
 declare namespace phasereditor2d.scene.ui.blocks {
     import controls = colibri.ui.controls;
-    class SceneEditorBlocksPropertyProvider extends controls.properties.PropertySectionProvider {
+    class SceneEditorBlocksPropertyProvider extends pack.ui.properties.AssetPackPreviewPropertyProvider {
         addSections(page: controls.properties.PropertyPage, sections: controls.properties.PropertySection<any>[]): void;
     }
 }

@@ -593,12 +593,9 @@ var phasereditor2d;
         (function (ui) {
             var blocks;
             (function (blocks) {
-                var controls = colibri.ui.controls;
-                class SceneEditorBlocksPropertyProvider extends controls.properties.PropertySectionProvider {
+                class SceneEditorBlocksPropertyProvider extends phasereditor2d.pack.ui.properties.AssetPackPreviewPropertyProvider {
                     addSections(page, sections) {
-                        sections.push(new phasereditor2d.pack.ui.properties.AssetPackItemSection(page));
-                        sections.push(new phasereditor2d.pack.ui.properties.ImagePreviewSection(page));
-                        sections.push(new phasereditor2d.pack.ui.properties.ManyImageSection(page));
+                        super.addSections(page, sections);
                     }
                 }
                 blocks.SceneEditorBlocksPropertyProvider = SceneEditorBlocksPropertyProvider;

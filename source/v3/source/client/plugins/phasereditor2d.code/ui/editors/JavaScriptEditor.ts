@@ -15,6 +15,7 @@ namespace phasereditor2d.code.ui.editors {
 
     export class JavaScriptEditor extends MonacoEditor {
 
+
         constructor() {
             super("javascript");
         }
@@ -36,12 +37,17 @@ namespace phasereditor2d.code.ui.editors {
 
                     this.setSelection([str]);
 
-                    // const obj = pack.core.PackFinder.findPackItemOrFrameWithKey(str);
+                    const obj = pack.core.PackFinder.findPackItemOrFrameWithKey(str);
 
-                    // console.log(obj);
+                    this.setSelection([obj]);
                 }
-
             });
+        }
+
+        private _propertyProvider = new pack.ui.properties.AssetPackPreviewPropertyProvider();
+
+        getPropertyProvider() {
+            return this._propertyProvider;
         }
     }
 

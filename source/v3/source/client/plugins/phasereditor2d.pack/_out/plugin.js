@@ -4022,6 +4022,27 @@ var phasereditor2d;
             var properties;
             (function (properties) {
                 var controls = colibri.ui.controls;
+                class AssetPackPreviewPropertyProvider extends controls.properties.PropertySectionProvider {
+                    addSections(page, sections) {
+                        sections.push(new pack.ui.properties.AssetPackItemSection(page));
+                        sections.push(new pack.ui.properties.ImagePreviewSection(page));
+                        sections.push(new pack.ui.properties.ManyImageSection(page));
+                    }
+                }
+                properties.AssetPackPreviewPropertyProvider = AssetPackPreviewPropertyProvider;
+            })(properties = ui.properties || (ui.properties = {}));
+        })(ui = pack.ui || (pack.ui = {}));
+    })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var pack;
+    (function (pack) {
+        var ui;
+        (function (ui) {
+            var properties;
+            (function (properties) {
+                var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
                 class ImagePreviewSection extends controls.properties.PropertySection {
                     constructor(page) {
