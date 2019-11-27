@@ -35,8 +35,6 @@ namespace phasereditor2d.webContentTypes {
                     1000
                 ));
 
-            // content type icons
-
             // icons loader
 
             reg.addExtension(

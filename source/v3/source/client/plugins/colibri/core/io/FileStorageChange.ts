@@ -46,8 +46,12 @@ namespace colibri.core.io {
             return this._renameRecords_toPath.has(toPath);
         }
 
-        getRenameRecords() {
+        getRenameToRecords() {
             return this._renameRecords_toPath;
+        }
+
+        getRenameFromRecords() {
+            return this._renameRecords_fromPath;
         }
 
         recordDelete(path : string) {
@@ -56,6 +60,10 @@ namespace colibri.core.io {
 
         isDeleted(path : string) {
             return this._deletedRecords.has(path);
+        }
+
+        getDeleteRecords() {
+            return this._deletedRecords;
         }
 
         recordAdd(path : string) {
@@ -76,6 +84,10 @@ namespace colibri.core.io {
 
         isModified(path : string) {
             return this._modifiedRecords.has(path);
+        }
+
+        getModifiedRecords() {
+            return this._modifiedRecords;
         }
     }
 }

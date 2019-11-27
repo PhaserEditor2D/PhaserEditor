@@ -14,8 +14,16 @@ var phasereditor2d;
                 return this._instance;
             }
             registerExtensions(reg) {
+                // project preloaders
+                this._modelsManager = new code.ui.editors.MonacoModelsManager();
+                // reg.addExtension(colibri.ui.ide.PreloadProjectResourcesExtension.POINT_ID,
+                //     new colibri.ui.ide.PreloadProjectResourcesExtension("phasereditor2d.code.ui.editors.EditorModelsManager",
+                //         monitor => {
+                //             return this._modelsManager.start(monitor);
+                //         }));
+                // editors
                 reg.addExtension(colibri.ui.ide.EditorExtension.POINT_ID, new colibri.ui.ide.EditorExtension("phasereditor2d.core.ui.editors", [
-                    new code.ui.editors.MonacoEditorFactory("javascript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT),
+                    new code.ui.editors.JavaScriptEditorFactory(),
                     new code.ui.editors.MonacoEditorFactory("typescript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_SCRIPT),
                     new code.ui.editors.MonacoEditorFactory("html", phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML),
                     new code.ui.editors.MonacoEditorFactory("css", phasereditor2d.webContentTypes.core.CONTENT_TYPE_CSS),
@@ -74,18 +82,34 @@ var phasereditor2d;
                         this.addClass("MonacoEditor");
                         this._language = language;
                     }
+                    getMonacoEditor() {
+                        return this._monacoEditor;
+                    }
+                    onPartClosed() {
+                        if (this._monacoEditor) {
+                            this._monacoEditor.dispose();
+                        }
+                        return super.onPartClosed();
+                    }
                     createPart() {
                         const container = document.createElement("div");
                         container.classList.add("MonacoEditorContainer");
                         this.getElement().appendChild(container);
-                        this._monacoEditor = monaco.editor.create(container, {
-                            language: this._language,
-                            fontSize: 16,
-                            scrollBeyondLastLine: false,
-                        });
+                        this._monacoEditor = this.createMonacoEditor(container);
                         this._monacoEditor.onDidChangeModelContent(e => {
                             this.setDirty(true);
                         });
+                        editors.MonacoModelsManager.getInstance().start();
+                    }
+                    createMonacoEditor(container) {
+                        return monaco.editor.create(container, this.createMonacoEditorOptions());
+                    }
+                    createMonacoEditorOptions() {
+                        return {
+                            language: this._language,
+                            fontSize: 16,
+                            scrollBeyondLastLine: false
+                        };
                     }
                     async doSave() {
                         const content = this._monacoEditor.getValue();
@@ -120,6 +144,104 @@ var phasereditor2d;
                     }
                 }
                 editors.MonacoEditor = MonacoEditor;
+            })(editors = ui.editors || (ui.editors = {}));
+        })(ui = code.ui || (code.ui = {}));
+    })(code = phasereditor2d.code || (phasereditor2d.code = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./MonacoEditor.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var code;
+    (function (code) {
+        var ui;
+        (function (ui) {
+            var editors;
+            (function (editors) {
+                class JavaScriptEditorFactory extends editors.MonacoEditorFactory {
+                    constructor() {
+                        super("javascript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_JAVASCRIPT);
+                    }
+                    createEditor() {
+                        return new JavaScriptEditor();
+                    }
+                }
+                editors.JavaScriptEditorFactory = JavaScriptEditorFactory;
+                class JavaScriptEditor extends editors.MonacoEditor {
+                    constructor() {
+                        super("javascript");
+                    }
+                }
+                editors.JavaScriptEditor = JavaScriptEditor;
+            })(editors = ui.editors || (ui.editors = {}));
+        })(ui = code.ui || (code.ui = {}));
+    })(code = phasereditor2d.code || (phasereditor2d.code = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var code;
+    (function (code) {
+        var ui;
+        (function (ui) {
+            var editors;
+            (function (editors) {
+                class MonacoModelsManager {
+                    constructor() {
+                        this._started = false;
+                        this._extraLibs = [];
+                    }
+                    static getInstance() {
+                        if (!this._instance) {
+                            this._instance = new MonacoModelsManager();
+                        }
+                        return this._instance;
+                    }
+                    async start() {
+                        if (this._started) {
+                            return;
+                        }
+                        this._started = true;
+                        this.updateExtraLibs();
+                        colibri.ui.ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => this.onStorageChanged(change));
+                    }
+                    onStorageChanged(change) {
+                        console.info(`MonacoModelsManager: storage changed.`);
+                        const test = (paths) => {
+                            for (const r of paths) {
+                                if (r.endsWith(".d.ts")) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        };
+                        const update = test(change.getDeleteRecords())
+                            || test(change.getModifiedRecords())
+                            || test(change.getRenameToRecords())
+                            || test(change.getRenameFromRecords())
+                            || test(change.getAddRecords());
+                        if (update) {
+                            this.updateExtraLibs();
+                        }
+                    }
+                    async updateExtraLibs() {
+                        console.log("MonacoModelsManager: updating extra libs.");
+                        for (const lib of this._extraLibs) {
+                            console.log(`MonacoModelsManager: disposing ${lib.file.getFullName()}`);
+                            lib.disposable.dispose();
+                        }
+                        const files = colibri.ui.ide.FileUtils.getRoot().flatTree([], false);
+                        const tsFiles = files.filter(file => file.getName().endsWith(".d.ts"));
+                        for (const file of tsFiles) {
+                            const content = await colibri.ui.ide.FileUtils.preloadAndGetFileString(file);
+                            const d = monaco.languages.typescript.javascriptDefaults.addExtraLib(content);
+                            console.log(`MonacoModelsManager: add extra lib ${file.getFullName()}`);
+                            this._extraLibs.push({
+                                disposable: d,
+                                file: file
+                            });
+                        }
+                    }
+                }
+                editors.MonacoModelsManager = MonacoModelsManager;
             })(editors = ui.editors || (ui.editors = {}));
         })(ui = code.ui || (code.ui = {}));
     })(code = phasereditor2d.code || (phasereditor2d.code = {}));

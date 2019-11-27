@@ -21,7 +21,6 @@ var phasereditor2d;
             registerExtensions(reg) {
                 // content types
                 reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.webContentTypes.core.DefaultExtensionTypeResolver", [new webContentTypes.core.DefaultExtensionTypeResolver()], 1000));
-                // content type icons
                 // icons loader
                 reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     webContentTypes.ICON_FILE_IMAGE,

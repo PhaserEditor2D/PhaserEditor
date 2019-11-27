@@ -142,14 +142,17 @@ declare namespace colibri.core.io {
         getRenameTo(fromPath: string): any;
         isRenamed(fromPath: string): boolean;
         wasRenamed(toPath: string): boolean;
-        getRenameRecords(): Set<string>;
+        getRenameToRecords(): Set<string>;
+        getRenameFromRecords(): Set<string>;
         recordDelete(path: string): void;
         isDeleted(path: string): boolean;
+        getDeleteRecords(): Set<string>;
         recordAdd(path: string): void;
         isAdded(path: string): boolean;
         getAddRecords(): Set<string>;
         recordModify(path: string): void;
         isModified(path: string): boolean;
+        getModifiedRecords(): Set<string>;
     }
 }
 declare namespace colibri.core.io {

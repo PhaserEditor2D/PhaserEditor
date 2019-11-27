@@ -423,14 +423,20 @@ var colibri;
                 wasRenamed(toPath) {
                     return this._renameRecords_toPath.has(toPath);
                 }
-                getRenameRecords() {
+                getRenameToRecords() {
                     return this._renameRecords_toPath;
+                }
+                getRenameFromRecords() {
+                    return this._renameRecords_fromPath;
                 }
                 recordDelete(path) {
                     this._deletedRecords.add(path);
                 }
                 isDeleted(path) {
                     return this._deletedRecords.has(path);
+                }
+                getDeleteRecords() {
+                    return this._deletedRecords;
                 }
                 recordAdd(path) {
                     this._addedRecords.add(path);
@@ -446,6 +452,9 @@ var colibri;
                 }
                 isModified(path) {
                     return this._modifiedRecords.has(path);
+                }
+                getModifiedRecords() {
+                    return this._modifiedRecords;
                 }
             }
             io.FileStorageChange = FileStorageChange;
