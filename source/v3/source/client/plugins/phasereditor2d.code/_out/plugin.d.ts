@@ -25,6 +25,7 @@ declare namespace phasereditor2d.code.ui.editors {
         protected getMonacoEditor(): monaco.editor.IStandaloneCodeEditor;
         onPartClosed(): boolean;
         protected createPart(): void;
+        private getTokensAtLine;
         protected createMonacoEditor(container: HTMLElement): monaco.editor.IStandaloneCodeEditor;
         protected createMonacoEditorOptions(): monaco.editor.IEditorConstructionOptions;
         doSave(): Promise<void>;

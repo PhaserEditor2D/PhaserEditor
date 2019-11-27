@@ -56,11 +56,11 @@ namespace phasereditor2d.code.ui.editors {
         onPartClosed() {
 
             if (this._monacoEditor) {
-                
+
                 this._monacoEditor.dispose();
             }
 
-           return super.onPartClosed();
+            return super.onPartClosed();
         }
 
         protected createPart(): void {
@@ -76,7 +76,45 @@ namespace phasereditor2d.code.ui.editors {
                 this.setDirty(true);
             });
 
+            this._monacoEditor.onDidChangeCursorPosition(e => {
+                console.log(e.position);
+
+                const model = this._monacoEditor.getModel();
+
+                // const word = model.getWordAtPosition(e.position);
+
+                // console.log(word);
+
+                const tokens = this.getTokensAtLine(e.position);
+
+                console.log(tokens);
+            });
+
+
             MonacoModelsManager.getInstance().start();
+        }
+
+        private getTokensAtLine(position: monaco.IPosition) {
+
+            const model = this._monacoEditor.getModel();
+
+            const line = model.getLineContent(position.lineNumber);
+
+            const tokens = monaco.editor.tokenize(line, this._language);
+
+            let n = 0;
+
+            let type = "unknown";
+
+            for (const token of tokens[0]) {
+
+                if (position.column >= token.offset) {
+                    type = token.type;
+                }
+            }
+
+            return type;
+
         }
 
         protected createMonacoEditor(container: HTMLElement) {

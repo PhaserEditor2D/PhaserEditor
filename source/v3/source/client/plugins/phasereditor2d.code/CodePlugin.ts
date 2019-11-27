@@ -54,6 +54,33 @@ namespace phasereditor2d.code {
                 noSemanticValidation: true
             });
 
+            monaco.editor.defineTheme("vs", {
+                inherit: true,
+                base: "vs",
+                rules: <any> [
+                    {
+                        background: "e2e2e2"
+                    }],
+                colors: {
+                    "editor.background": "#eaeaea",
+                    "editor.lineHighlightBackground": "#bad4ee88"
+                }
+            });
+
+            monaco.editor.defineTheme("vs-dark", {
+                inherit: true,
+                base: "vs-dark",
+                rules: <any> [
+                    {
+                        background: "222222"
+                    }],
+                colors: {
+                    "editor.background": "#2e2e2e",
+                    "editor.lineHighlightBackground": "#3e3e3e88"
+                }
+            });
+
+
             window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
 
                 let monacoTheme = "vs";

@@ -36,6 +36,32 @@ var phasereditor2d;
                 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
                     noSemanticValidation: true
                 });
+                monaco.editor.defineTheme("vs", {
+                    inherit: true,
+                    base: "vs",
+                    rules: [
+                        {
+                            background: "e2e2e2"
+                        }
+                    ],
+                    colors: {
+                        "editor.background": "#eaeaea",
+                        "editor.lineHighlightBackground": "#bad4ee88"
+                    }
+                });
+                monaco.editor.defineTheme("vs-dark", {
+                    inherit: true,
+                    base: "vs-dark",
+                    rules: [
+                        {
+                            background: "222222"
+                        }
+                    ],
+                    colors: {
+                        "editor.background": "#2e2e2e",
+                        "editor.lineHighlightBackground": "#3e3e3e88"
+                    }
+                });
                 window.addEventListener(controls.EVENT_THEME_CHANGED, e => {
                     let monacoTheme = "vs";
                     if (controls.Controls.getTheme().dark) {
@@ -99,7 +125,28 @@ var phasereditor2d;
                         this._monacoEditor.onDidChangeModelContent(e => {
                             this.setDirty(true);
                         });
+                        this._monacoEditor.onDidChangeCursorPosition(e => {
+                            console.log(e.position);
+                            const model = this._monacoEditor.getModel();
+                            // const word = model.getWordAtPosition(e.position);
+                            // console.log(word);
+                            const tokens = this.getTokensAtLine(e.position);
+                            console.log(tokens);
+                        });
                         editors.MonacoModelsManager.getInstance().start();
+                    }
+                    getTokensAtLine(position) {
+                        const model = this._monacoEditor.getModel();
+                        const line = model.getLineContent(position.lineNumber);
+                        const tokens = monaco.editor.tokenize(line, this._language);
+                        let n = 0;
+                        let type = "unknown";
+                        for (const token of tokens[0]) {
+                            if (position.column >= token.offset) {
+                                type = token.type;
+                            }
+                        }
+                        return type;
                     }
                     createMonacoEditor(container) {
                         return monaco.editor.create(container, this.createMonacoEditorOptions());
