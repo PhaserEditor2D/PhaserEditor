@@ -679,7 +679,15 @@ public final class AssetPackModel {
 	}
 
 	public String createKey(IFile file) {
+		
 		var name = file.getFullPath().removeFileExtension().toFile().getName();
+		
+		if (AssetPackCore.pref_useContainerFolderAsKeyPrefix()) {
+			if (_file != null) {
+				name = _file.getParent().getName() + "." + name;
+			}
+		}
+		
 		return createKey(name);
 	}
 

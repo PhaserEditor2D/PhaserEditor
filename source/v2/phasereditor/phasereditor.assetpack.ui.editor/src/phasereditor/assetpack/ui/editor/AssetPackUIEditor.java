@@ -43,6 +43,7 @@ import phasereditor.ui.PhaserEditorUI;
  *
  */
 public class AssetPackUIEditor {
+	
 	public static List<AssetPackEditor> findOpenAssetPackEditors(IFile assetPackFile) {
 		List<AssetPackEditor> result = new ArrayList<>();
 		List<IEditorPart> editors = PhaserEditorUI.findOpenFileEditors(assetPackFile);

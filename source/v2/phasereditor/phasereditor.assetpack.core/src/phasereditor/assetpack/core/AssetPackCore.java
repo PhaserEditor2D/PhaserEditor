@@ -59,6 +59,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.json.JSONException;
@@ -110,6 +111,20 @@ public class AssetPackCore {
 
 		_shaderExtensions = new HashSet<>();
 		_shaderExtensions.addAll(Arrays.asList(SHADER_EXTS));
+	}
+	
+	public static final String PREF_KEY_USE_CONTAINER_FOLDER_AS_KEY_PREFIX = "phasereditor.assetpack.ui.editor.enableKeyAutoPrefix";
+
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
+	
+	public static boolean pref_useContainerFolderAsKeyPrefix() {
+		return getPreferenceStore().getBoolean(PREF_KEY_USE_CONTAINER_FOLDER_AS_KEY_PREFIX);
+	}
+	
+	public static void initPreferences() {
+		getPreferenceStore().setDefault(PREF_KEY_USE_CONTAINER_FOLDER_AS_KEY_PREFIX, false);
 	}
 
 	@SuppressWarnings("boxing")

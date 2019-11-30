@@ -154,5 +154,14 @@
             order="phasereditor.assetpack.ui.editor.participant1">
       </participant>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="phasereditor.ui.prefs.phasereditor"
+            class="phasereditor.assetpack.ui.editor.preferences.AssetPackEditorPreferencePage"
+            id="phasereditor.assetpack.ui.editor.preferencePage"
+            name="Asset Pack Editor">
+      </page>
+   </extension>
 
 </plugin>
