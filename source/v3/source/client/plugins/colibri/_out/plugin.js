@@ -1,5 +1,708 @@
 var colibri;
 (function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class Plugin {
+                constructor(id) {
+                    this._id = id;
+                }
+                getId() {
+                    return this._id;
+                }
+                starting() {
+                    return Promise.resolve();
+                }
+                started() {
+                    return Promise.resolve();
+                }
+                registerExtensions(registry) {
+                }
+                getIcon(name) {
+                    return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
+                }
+            }
+            ide.Plugin = Plugin;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            controls.EVENT_CONTROL_LAYOUT = "controlLayout";
+            class Control extends EventTarget {
+                constructor(tagName = "div", ...classList) {
+                    super();
+                    this._bounds = { x: 0, y: 0, width: 0, height: 0 };
+                    this._handlePosition = true;
+                    this._children = [];
+                    this._element = document.createElement(tagName);
+                    this._element["__control"] = this;
+                    this.addClass("Control", ...classList);
+                    this._layout = null;
+                    this._container = null;
+                    this._scrollY = 0;
+                    this._layoutChildren = true;
+                }
+                static getControlOf(element) {
+                    return element["__control"];
+                }
+                isHandlePosition() {
+                    return this._handlePosition;
+                }
+                setHandlePosition(_handlePosition) {
+                    this._handlePosition = _handlePosition;
+                }
+                get style() {
+                    return this.getElement().style;
+                }
+                isLayoutChildren() {
+                    return this._layoutChildren;
+                }
+                setLayoutChildren(layout) {
+                    this._layoutChildren = layout;
+                }
+                getScrollY() {
+                    return this._scrollY;
+                }
+                setScrollY(scrollY) {
+                    this._scrollY = scrollY;
+                }
+                getContainer() {
+                    return this._container;
+                }
+                getLayout() {
+                    return this._layout;
+                }
+                setLayout(layout) {
+                    this._layout = layout;
+                    this.layout();
+                }
+                addClass(...tokens) {
+                    this._element.classList.add(...tokens);
+                }
+                removeClass(...tokens) {
+                    this._element.classList.remove(...tokens);
+                }
+                containsClass(className) {
+                    return this._element.classList.contains(className);
+                }
+                getElement() {
+                    return this._element;
+                }
+                getControlPosition(windowX, windowY) {
+                    const b = this.getElement().getBoundingClientRect();
+                    return {
+                        x: windowX - b.left,
+                        y: windowY - b.top
+                    };
+                }
+                containsLocalPoint(x, y) {
+                    return x >= 0 && x <= this._bounds.width && y >= 0 && y <= this._bounds.height;
+                }
+                setBounds(bounds) {
+                    this._bounds.x = bounds.x === undefined ? this._bounds.x : bounds.x;
+                    this._bounds.y = bounds.y === undefined ? this._bounds.y : bounds.y;
+                    this._bounds.width = bounds.width === undefined ? this._bounds.width : bounds.width;
+                    this._bounds.height = bounds.height === undefined ? this._bounds.height : bounds.height;
+                    this.layout();
+                }
+                setBoundsValues(x, y, w, h) {
+                    this.setBounds({ x: x, y: y, width: w, height: h });
+                }
+                getBounds() {
+                    return this._bounds;
+                }
+                setLocation(x, y) {
+                    this._element.style.left = x + "px";
+                    this._element.style.top = y + "px";
+                    this._bounds.x = x;
+                    this._bounds.y = y;
+                }
+                layout() {
+                    if (this.isHandlePosition()) {
+                        controls.setElementBounds(this._element, this._bounds);
+                    }
+                    else {
+                        controls.setElementBounds(this._element, {
+                            width: this._bounds.width,
+                            height: this._bounds.height
+                        });
+                    }
+                    if (this._layout) {
+                        this._layout.layout(this);
+                    }
+                    else {
+                        if (this._layoutChildren) {
+                            for (let child of this._children) {
+                                child.layout();
+                            }
+                        }
+                    }
+                    this.dispatchLayoutEvent();
+                }
+                dispatchLayoutEvent() {
+                    this.dispatchEvent(new CustomEvent(controls.EVENT_CONTROL_LAYOUT));
+                }
+                add(control) {
+                    control._container = this;
+                    this._children.push(control);
+                    this._element.appendChild(control.getElement());
+                    control.onControlAdded();
+                }
+                onControlAdded() {
+                }
+                getChildren() {
+                    return this._children;
+                }
+            }
+            controls.Control = Control;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./Control.ts"/>
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            controls.EVENT_SELECTION_CHANGED = "selectionChanged";
+            controls.EVENT_THEME_CHANGED = "themeChanged";
+            let PreloadResult;
+            (function (PreloadResult) {
+                PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
+                PreloadResult[PreloadResult["RESOURCES_LOADED"] = 1] = "RESOURCES_LOADED";
+            })(PreloadResult = controls.PreloadResult || (controls.PreloadResult = {}));
+            controls.ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
+            controls.ICON_CONTROL_TREE_EXPAND = "tree-expand";
+            controls.ICON_CONTROL_CLOSE = "close";
+            controls.ICON_CONTROL_DIRTY = "dirty";
+            controls.ICON_SIZE = 16;
+            const ICONS = [
+                controls.ICON_CONTROL_TREE_COLLAPSE,
+                controls.ICON_CONTROL_TREE_EXPAND,
+                controls.ICON_CONTROL_CLOSE,
+                controls.ICON_CONTROL_DIRTY
+            ];
+            class Controls {
+                static setDragEventImage(e, render) {
+                    let canvas = document.getElementById("__drag__canvas");
+                    if (!canvas) {
+                        canvas = document.createElement("canvas");
+                        canvas.setAttribute("id", "__drag__canvas");
+                        canvas.style.imageRendering = "crisp-edges";
+                        canvas.width = 64;
+                        canvas.height = 64;
+                        canvas.style.width = canvas.width + "px";
+                        canvas.style.height = canvas.height + "px";
+                        canvas.style.position = "fixed";
+                        canvas.style.left = -100 + "px";
+                        document.body.appendChild(canvas);
+                    }
+                    const ctx = canvas.getContext("2d");
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    render(ctx, canvas.width, canvas.height);
+                    e.dataTransfer.setDragImage(canvas, 10, 10);
+                }
+                static getApplicationDragData() {
+                    return this._applicationDragData;
+                }
+                static getApplicationDragDataAndClean() {
+                    const data = this._applicationDragData;
+                    this._applicationDragData = null;
+                    return data;
+                }
+                static setApplicationDragData(data) {
+                    this._applicationDragData = data;
+                }
+                static async resolveAll(list) {
+                    let result = PreloadResult.NOTHING_LOADED;
+                    for (const promise of list) {
+                        const result2 = await promise;
+                        if (result2 === PreloadResult.RESOURCES_LOADED) {
+                            result = PreloadResult.RESOURCES_LOADED;
+                        }
+                    }
+                    return Promise.resolve(result);
+                }
+                static resolveResourceLoaded() {
+                    return Promise.resolve(PreloadResult.RESOURCES_LOADED);
+                }
+                static resolveNothingLoaded() {
+                    return Promise.resolve(PreloadResult.NOTHING_LOADED);
+                }
+                static async preload() {
+                    return Promise.all(ICONS.map(icon => this.getIcon(icon).preload()));
+                }
+                static getImage(url, id) {
+                    if (Controls._images.has(id)) {
+                        return Controls._images.get(id);
+                    }
+                    const img = new controls.DefaultImage(new Image(), url);
+                    Controls._images.set(id, img);
+                    return img;
+                }
+                static openUrlInNewPage(url) {
+                    const element = document.createElement("a");
+                    element.href = url;
+                    element.target = "blank";
+                    document.body.append(element);
+                    element.click();
+                    element.remove();
+                }
+                static getIcon(name, baseUrl = "plugins/colibri/ui/controls/images") {
+                    const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
+                    return Controls.getImage(url, name);
+                }
+                static createIconElement(icon, overIcon) {
+                    const element = document.createElement("canvas");
+                    element.width = element.height = controls.ICON_SIZE;
+                    element.style.width = element.style.height = controls.ICON_SIZE + "px";
+                    const context = element.getContext("2d");
+                    context.imageSmoothingEnabled = false;
+                    if (overIcon) {
+                        element.addEventListener("mouseenter", e => {
+                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
+                            overIcon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        });
+                        element.addEventListener("mouseleave", e => {
+                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
+                            icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                        });
+                    }
+                    if (icon) {
+                        icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
+                    }
+                    return element;
+                }
+                static switchTheme() {
+                    const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
+                    this.setTheme(newTheme);
+                    return newTheme;
+                }
+                static setTheme(theme) {
+                    const classList = document.getElementsByTagName("html")[0].classList;
+                    classList.remove(this._theme.cssName);
+                    classList.add(theme.cssName);
+                    this._theme = theme;
+                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this._theme }));
+                }
+                static getTheme() {
+                    return this._theme;
+                }
+                static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x + topLeft, y);
+                    ctx.lineTo(x + w - topRight, y);
+                    ctx.quadraticCurveTo(x + w, y, x + w, y + topRight);
+                    ctx.lineTo(x + w, y + h - bottomRight);
+                    ctx.quadraticCurveTo(x + w, y + h, x + w - bottomRight, y + h);
+                    ctx.lineTo(x + bottomLeft, y + h);
+                    ctx.quadraticCurveTo(x, y + h, x, y + h - bottomLeft);
+                    ctx.lineTo(x, y + topLeft);
+                    ctx.quadraticCurveTo(x, y, x + topLeft, y);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            Controls._images = new Map();
+            Controls._applicationDragData = null;
+            Controls.LIGHT_THEME = {
+                cssName: "light",
+                displayName: "Light",
+                dark: false,
+                viewerSelectionBackground: "#4242ff",
+                //treeItemSelectionBackground: "#525252",
+                viewerSelectionForeground: "#f0f0f0",
+                viewerForeground: "#000000",
+            };
+            Controls.DARK_THEME = {
+                cssName: "dark",
+                displayName: "Dark",
+                dark: true,
+                viewerSelectionBackground: "#f0a050",
+                viewerSelectionForeground: "#0e0e0e",
+                viewerForeground: "#f0f0f0",
+            };
+            Controls._theme = Controls.DARK_THEME;
+            controls.Controls = Controls;
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../controls/Controls.ts"/>
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            ide.EVENT_PART_DEACTIVATED = "partDeactivated";
+            ide.EVENT_PART_ACTIVATED = "partActivated";
+            ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+            ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
+            ide.EVENT_PROJECT_OPENED = "projectOpened";
+            ide.ICON_FILE = "file";
+            ide.ICON_FOLDER = "folder";
+            ide.ICON_PLUS = "plus";
+            class Workbench extends EventTarget {
+                constructor() {
+                    super();
+                    this._plugins = [];
+                    this._editorRegistry = new ide.EditorRegistry();
+                    this._windows = [];
+                    this._activePart = null;
+                    this._activeEditor = null;
+                    this._activeElement = null;
+                    this._fileImageCache = new ide.ImageFileCache();
+                    this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
+                    this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
+                    this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
+                    this._globalPreferences = new colibri.core.preferences.Preferences("__global__");
+                    this._projectPreferences = null;
+                }
+                static getWorkbench() {
+                    if (!Workbench._workbench) {
+                        Workbench._workbench = new Workbench();
+                    }
+                    return this._workbench;
+                }
+                getGlobalPreferences() {
+                    return this._globalPreferences;
+                }
+                getProjectPreferences() {
+                    return this._projectPreferences;
+                }
+                addPlugin(plugin) {
+                    this._plugins.push(plugin);
+                }
+                getPlugins() {
+                    return this._plugins;
+                }
+                async launch() {
+                    this.addPlugin(colibri.ColibriPlugin.getInstance());
+                    console.log("Workbench: starting.");
+                    {
+                        const plugins = this._plugins;
+                        for (const plugin of plugins) {
+                            plugin.registerExtensions(this._extensionRegistry);
+                        }
+                        for (const plugin of plugins) {
+                            console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
+                            await plugin.starting();
+                        }
+                    }
+                    await ui.controls.Controls.preload();
+                    console.log("Workbench: fetching UI icons.");
+                    await this.preloadIcons();
+                    console.log("Workbench: registering content types.");
+                    this.registerContentTypes();
+                    this.registerContentTypeIcons();
+                    console.log("Workbench: initializing UI.");
+                    this.initCommands();
+                    this.registerEditors();
+                    this.registerWindows();
+                    this.initEvents();
+                    console.log("%cWorkbench: started.", "color:green");
+                    for (const plugin of this._plugins) {
+                        await plugin.started();
+                    }
+                }
+                resetCache() {
+                    this._fileStringCache.reset();
+                    this._fileImageCache.reset();
+                    this._contentTypeRegistry.resetCache();
+                }
+                async openProject(projectName, monitor) {
+                    this._projectPreferences = new colibri.core.preferences.Preferences("__project__" + projectName);
+                    this.resetCache();
+                    console.log(`Workbench: opening project ${projectName}.`);
+                    await this._fileStorage.openProject(projectName);
+                    console.log("Workbench: fetching required project resources.");
+                    await this.preloadProjectResources(monitor);
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_PROJECT_OPENED, {
+                        detail: projectName
+                    }));
+                }
+                async preloadProjectResources(monitor) {
+                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        await extension.getPreloadPromise(monitor);
+                    }
+                }
+                registerWindows() {
+                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.POINT_ID);
+                    this._windows = extensions.map(extension => extension.createWindow());
+                    if (this._windows.length === 0) {
+                        alert("No workbench window provided.");
+                    }
+                    else {
+                        for (const win of this._windows) {
+                            win.style.display = "none";
+                            document.body.appendChild(win.getElement());
+                        }
+                    }
+                }
+                getWindows() {
+                    return this._windows;
+                }
+                activateWindow(id) {
+                    const win = this._windows.find(win => win.getId() === id);
+                    if (win) {
+                        if (this._activeWindow) {
+                            this._activeWindow.style.display = "none";
+                        }
+                        this._activeWindow = win;
+                        win.create();
+                        win.style.display = "initial";
+                        return win;
+                    }
+                    alert(`Window ${id} not found.`);
+                    return null;
+                }
+                async preloadIcons() {
+                    await this.getWorkbenchIcon(ide.ICON_FILE).preload();
+                    await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
+                    await this.getWorkbenchIcon(ide.ICON_PLUS).preload();
+                    const extensions = this._extensionRegistry
+                        .getExtensions(ide.IconLoaderExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        const icons = extension.getIcons();
+                        for (const icon of icons) {
+                            await icon.preload();
+                        }
+                    }
+                }
+                registerContentTypeIcons() {
+                    this._contentType_icon_Map = new Map();
+                    const extensions = this._extensionRegistry.getExtensions(ide.ContentTypeIconExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        for (const item of extension.getConfig()) {
+                            this._contentType_icon_Map.set(item.contentType, item.icon);
+                        }
+                    }
+                }
+                initCommands() {
+                    this._commandManager = new ide.commands.CommandManager();
+                    ide.IDECommands.init();
+                    const extensions = this._extensionRegistry.getExtensions(ide.commands.CommandExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        extension.getConfigurer()(this._commandManager);
+                    }
+                }
+                initEvents() {
+                    window.addEventListener("mousedown", e => {
+                        this._activeElement = e.target;
+                        const part = this.findPart(e.target);
+                        if (part) {
+                            this.setActivePart(part);
+                        }
+                    });
+                }
+                registerEditors() {
+                    const extensions = this._extensionRegistry.getExtensions(ide.EditorExtension.POINT_ID);
+                    for (const extension of extensions) {
+                        for (const factory of extension.getFactories()) {
+                            this._editorRegistry.registerFactory(factory);
+                        }
+                    }
+                }
+                getFileStringCache() {
+                    return this._fileStringCache;
+                }
+                getFileStorage() {
+                    return this._fileStorage;
+                }
+                getCommandManager() {
+                    return this._commandManager;
+                }
+                getActiveWindow() {
+                    return this._activeWindow;
+                }
+                getActiveElement() {
+                    return this._activeElement;
+                }
+                getActivePart() {
+                    return this._activePart;
+                }
+                getActiveEditor() {
+                    return this._activeEditor;
+                }
+                setActiveEditor(editor) {
+                    if (editor === this._activeEditor) {
+                        return;
+                    }
+                    this._activeEditor = editor;
+                    this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
+                }
+                /**
+                 * Users may not call this method. This is public only for convenience.
+                 */
+                setActivePart(part) {
+                    if (part !== this._activePart) {
+                        const old = this._activePart;
+                        this._activePart = part;
+                        if (old) {
+                            this.toggleActivePartClass(old);
+                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
+                        }
+                        if (part) {
+                            this.toggleActivePartClass(part);
+                            part.onPartActivated();
+                        }
+                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
+                    }
+                    if (part instanceof ide.EditorPart) {
+                        this.setActiveEditor(part);
+                    }
+                }
+                toggleActivePartClass(part) {
+                    const tabPane = this.findTabPane(part.getElement());
+                    if (!tabPane) {
+                        // maybe the clicked part was closed
+                        return;
+                    }
+                    if (part.containsClass("activePart")) {
+                        part.removeClass("activePart");
+                        tabPane.removeClass("activePart");
+                    }
+                    else {
+                        part.addClass("activePart");
+                        tabPane.addClass("activePart");
+                    }
+                }
+                findTabPane(element) {
+                    if (element) {
+                        const control = ui.controls.Control.getControlOf(element);
+                        if (control && control instanceof ui.controls.TabPane) {
+                            return control;
+                        }
+                        return this.findTabPane(element.parentElement);
+                    }
+                    return null;
+                }
+                registerContentTypes() {
+                    const extensions = this._extensionRegistry
+                        .getExtensions(colibri.core.ContentTypeExtension.POINT_ID);
+                    this._contentTypeRegistry = new colibri.core.ContentTypeRegistry();
+                    for (const extension of extensions) {
+                        for (const resolver of extension.getResolvers()) {
+                            this._contentTypeRegistry.registerResolver(resolver);
+                        }
+                    }
+                }
+                findPart(element) {
+                    if (ui.controls.TabPane.isTabLabel(element)) {
+                        element = ui.controls.TabPane.getContentFromLabel(element).getElement();
+                    }
+                    if (element["__part"]) {
+                        return element["__part"];
+                    }
+                    const control = ui.controls.Control.getControlOf(element);
+                    if (control && control instanceof ui.controls.TabPane) {
+                        const tabPane = control;
+                        const content = tabPane.getSelectedTabContent();
+                        if (content) {
+                            const element = content.getElement();
+                            if (element["__part"]) {
+                                return element["__part"];
+                            }
+                        }
+                    }
+                    if (element.parentElement) {
+                        return this.findPart(element.parentElement);
+                    }
+                    return null;
+                }
+                getContentTypeRegistry() {
+                    return this._contentTypeRegistry;
+                }
+                getExtensionRegistry() {
+                    return this._extensionRegistry;
+                }
+                getProjectRoot() {
+                    return this._fileStorage.getRoot();
+                }
+                getContentTypeIcon(contentType) {
+                    if (this._contentType_icon_Map.has(contentType)) {
+                        return this._contentType_icon_Map.get(contentType);
+                    }
+                    return null;
+                }
+                getFileImage(file) {
+                    if (file === null) {
+                        return null;
+                    }
+                    return this._fileImageCache.getContent(file);
+                }
+                getWorkbenchIcon(name) {
+                    return ui.controls.Controls.getIcon(name, "plugins/colibri/ui/icons");
+                }
+                getEditorRegistry() {
+                    return this._editorRegistry;
+                }
+                getEditors() {
+                    return this.getActiveWindow().getEditorArea().getEditors();
+                }
+                openEditor(input) {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    {
+                        const editors = this.getEditors();
+                        for (let editor of editors) {
+                            if (editor.getInput() === input) {
+                                editorArea.activateEditor(editor);
+                                this.setActivePart(editor);
+                                return editor;
+                            }
+                        }
+                    }
+                    const factory = this._editorRegistry.getFactoryForInput(input);
+                    if (factory) {
+                        const editor = factory.createEditor();
+                        editor.setInput(input);
+                        editorArea.addPart(editor, true);
+                        editorArea.activateEditor(editor);
+                        this.setActivePart(editor);
+                        return editor;
+                    }
+                    else {
+                        alert("No editor available for the given input.");
+                    }
+                    return null;
+                }
+            }
+            ide.Workbench = Workbench;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="./ui/ide/Plugin.ts" />
+/// <reference path="./ui/ide/Workbench.ts" />
+var colibri;
+(function (colibri) {
+    class ColibriPlugin extends colibri.ui.ide.Plugin {
+        constructor() {
+            super("colibri");
+            this._openingProject = false;
+        }
+        static getInstance() {
+            var _a;
+            return _a = this._instance, (_a !== null && _a !== void 0 ? _a : (this._instance = new ColibriPlugin()));
+        }
+        registerExtensions(reg) {
+            // themes
+            reg.addExtension(new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.LIGHT_THEME), new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.DARK_THEME));
+        }
+    }
+    colibri.ColibriPlugin = ColibriPlugin;
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var core;
     (function (core) {
         var extensions;
@@ -974,143 +1677,6 @@ var colibri;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            controls.EVENT_CONTROL_LAYOUT = "controlLayout";
-            class Control extends EventTarget {
-                constructor(tagName = "div", ...classList) {
-                    super();
-                    this._bounds = { x: 0, y: 0, width: 0, height: 0 };
-                    this._handlePosition = true;
-                    this._children = [];
-                    this._element = document.createElement(tagName);
-                    this._element["__control"] = this;
-                    this.addClass("Control", ...classList);
-                    this._layout = null;
-                    this._container = null;
-                    this._scrollY = 0;
-                    this._layoutChildren = true;
-                }
-                static getControlOf(element) {
-                    return element["__control"];
-                }
-                isHandlePosition() {
-                    return this._handlePosition;
-                }
-                setHandlePosition(_handlePosition) {
-                    this._handlePosition = _handlePosition;
-                }
-                get style() {
-                    return this.getElement().style;
-                }
-                isLayoutChildren() {
-                    return this._layoutChildren;
-                }
-                setLayoutChildren(layout) {
-                    this._layoutChildren = layout;
-                }
-                getScrollY() {
-                    return this._scrollY;
-                }
-                setScrollY(scrollY) {
-                    this._scrollY = scrollY;
-                }
-                getContainer() {
-                    return this._container;
-                }
-                getLayout() {
-                    return this._layout;
-                }
-                setLayout(layout) {
-                    this._layout = layout;
-                    this.layout();
-                }
-                addClass(...tokens) {
-                    this._element.classList.add(...tokens);
-                }
-                removeClass(...tokens) {
-                    this._element.classList.remove(...tokens);
-                }
-                containsClass(className) {
-                    return this._element.classList.contains(className);
-                }
-                getElement() {
-                    return this._element;
-                }
-                getControlPosition(windowX, windowY) {
-                    const b = this.getElement().getBoundingClientRect();
-                    return {
-                        x: windowX - b.left,
-                        y: windowY - b.top
-                    };
-                }
-                containsLocalPoint(x, y) {
-                    return x >= 0 && x <= this._bounds.width && y >= 0 && y <= this._bounds.height;
-                }
-                setBounds(bounds) {
-                    this._bounds.x = bounds.x === undefined ? this._bounds.x : bounds.x;
-                    this._bounds.y = bounds.y === undefined ? this._bounds.y : bounds.y;
-                    this._bounds.width = bounds.width === undefined ? this._bounds.width : bounds.width;
-                    this._bounds.height = bounds.height === undefined ? this._bounds.height : bounds.height;
-                    this.layout();
-                }
-                setBoundsValues(x, y, w, h) {
-                    this.setBounds({ x: x, y: y, width: w, height: h });
-                }
-                getBounds() {
-                    return this._bounds;
-                }
-                setLocation(x, y) {
-                    this._element.style.left = x + "px";
-                    this._element.style.top = y + "px";
-                    this._bounds.x = x;
-                    this._bounds.y = y;
-                }
-                layout() {
-                    if (this.isHandlePosition()) {
-                        controls.setElementBounds(this._element, this._bounds);
-                    }
-                    else {
-                        controls.setElementBounds(this._element, {
-                            width: this._bounds.width,
-                            height: this._bounds.height
-                        });
-                    }
-                    if (this._layout) {
-                        this._layout.layout(this);
-                    }
-                    else {
-                        if (this._layoutChildren) {
-                            for (let child of this._children) {
-                                child.layout();
-                            }
-                        }
-                    }
-                    this.dispatchLayoutEvent();
-                }
-                dispatchLayoutEvent() {
-                    this.dispatchEvent(new CustomEvent(controls.EVENT_CONTROL_LAYOUT));
-                }
-                add(control) {
-                    control._container = this;
-                    this._children.push(control);
-                    this._element.appendChild(control.getElement());
-                    control.onControlAdded();
-                }
-                onControlAdded() {
-                }
-                getChildren() {
-                    return this._children;
-                }
-            }
-            controls.Control = Control;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
 /// <reference path="./Control.ts" />
 var colibri;
 (function (colibri) {
@@ -1160,176 +1726,6 @@ var colibri;
                 }
             }
             controls.CanvasControl = CanvasControl;
-        })(controls = ui.controls || (ui.controls = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-/// <reference path="./Control.ts"/>
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var controls;
-        (function (controls) {
-            controls.EVENT_SELECTION_CHANGED = "selectionChanged";
-            controls.EVENT_THEME_CHANGED = "themeChanged";
-            let PreloadResult;
-            (function (PreloadResult) {
-                PreloadResult[PreloadResult["NOTHING_LOADED"] = 0] = "NOTHING_LOADED";
-                PreloadResult[PreloadResult["RESOURCES_LOADED"] = 1] = "RESOURCES_LOADED";
-            })(PreloadResult = controls.PreloadResult || (controls.PreloadResult = {}));
-            controls.ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
-            controls.ICON_CONTROL_TREE_EXPAND = "tree-expand";
-            controls.ICON_CONTROL_CLOSE = "close";
-            controls.ICON_CONTROL_DIRTY = "dirty";
-            controls.ICON_SIZE = 16;
-            const ICONS = [
-                controls.ICON_CONTROL_TREE_COLLAPSE,
-                controls.ICON_CONTROL_TREE_EXPAND,
-                controls.ICON_CONTROL_CLOSE,
-                controls.ICON_CONTROL_DIRTY
-            ];
-            class Controls {
-                static setDragEventImage(e, render) {
-                    let canvas = document.getElementById("__drag__canvas");
-                    if (!canvas) {
-                        canvas = document.createElement("canvas");
-                        canvas.setAttribute("id", "__drag__canvas");
-                        canvas.style.imageRendering = "crisp-edges";
-                        canvas.width = 64;
-                        canvas.height = 64;
-                        canvas.style.width = canvas.width + "px";
-                        canvas.style.height = canvas.height + "px";
-                        canvas.style.position = "fixed";
-                        canvas.style.left = -100 + "px";
-                        document.body.appendChild(canvas);
-                    }
-                    const ctx = canvas.getContext("2d");
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    render(ctx, canvas.width, canvas.height);
-                    e.dataTransfer.setDragImage(canvas, 10, 10);
-                }
-                static getApplicationDragData() {
-                    return this._applicationDragData;
-                }
-                static getApplicationDragDataAndClean() {
-                    const data = this._applicationDragData;
-                    this._applicationDragData = null;
-                    return data;
-                }
-                static setApplicationDragData(data) {
-                    this._applicationDragData = data;
-                }
-                static async resolveAll(list) {
-                    let result = PreloadResult.NOTHING_LOADED;
-                    for (const promise of list) {
-                        const result2 = await promise;
-                        if (result2 === PreloadResult.RESOURCES_LOADED) {
-                            result = PreloadResult.RESOURCES_LOADED;
-                        }
-                    }
-                    return Promise.resolve(result);
-                }
-                static resolveResourceLoaded() {
-                    return Promise.resolve(PreloadResult.RESOURCES_LOADED);
-                }
-                static resolveNothingLoaded() {
-                    return Promise.resolve(PreloadResult.NOTHING_LOADED);
-                }
-                static async preload() {
-                    return Promise.all(ICONS.map(icon => this.getIcon(icon).preload()));
-                }
-                static getImage(url, id) {
-                    if (Controls._images.has(id)) {
-                        return Controls._images.get(id);
-                    }
-                    const img = new controls.DefaultImage(new Image(), url);
-                    Controls._images.set(id, img);
-                    return img;
-                }
-                static openUrlInNewPage(url) {
-                    const element = document.createElement("a");
-                    element.href = url;
-                    element.target = "blank";
-                    document.body.append(element);
-                    element.click();
-                    element.remove();
-                }
-                static getIcon(name, baseUrl = "plugins/colibri/ui/controls/images") {
-                    const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
-                    return Controls.getImage(url, name);
-                }
-                static createIconElement(icon, overIcon) {
-                    const element = document.createElement("canvas");
-                    element.width = element.height = controls.ICON_SIZE;
-                    element.style.width = element.style.height = controls.ICON_SIZE + "px";
-                    const context = element.getContext("2d");
-                    context.imageSmoothingEnabled = false;
-                    if (overIcon) {
-                        element.addEventListener("mouseenter", e => {
-                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
-                            overIcon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                        });
-                        element.addEventListener("mouseleave", e => {
-                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
-                            icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                        });
-                    }
-                    if (icon) {
-                        icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                    }
-                    return element;
-                }
-                static switchTheme() {
-                    const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
-                    this.setTheme(newTheme);
-                    return newTheme;
-                }
-                static setTheme(theme) {
-                    const classList = document.getElementsByTagName("html")[0].classList;
-                    classList.remove(this._theme.name);
-                    classList.add(theme.name);
-                    this._theme = theme;
-                    window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this._theme }));
-                }
-                static getTheme() {
-                    return this._theme;
-                }
-                static drawRoundedRect(ctx, x, y, w, h, topLeft = 5, topRight = 5, bottomRight = 5, bottomLeft = 5) {
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.moveTo(x + topLeft, y);
-                    ctx.lineTo(x + w - topRight, y);
-                    ctx.quadraticCurveTo(x + w, y, x + w, y + topRight);
-                    ctx.lineTo(x + w, y + h - bottomRight);
-                    ctx.quadraticCurveTo(x + w, y + h, x + w - bottomRight, y + h);
-                    ctx.lineTo(x + bottomLeft, y + h);
-                    ctx.quadraticCurveTo(x, y + h, x, y + h - bottomLeft);
-                    ctx.lineTo(x, y + topLeft);
-                    ctx.quadraticCurveTo(x, y, x + topLeft, y);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-            Controls._images = new Map();
-            Controls._applicationDragData = null;
-            Controls.LIGHT_THEME = {
-                name: "light",
-                dark: false,
-                viewerSelectionBackground: "#4242ff",
-                //treeItemSelectionBackground: "#525252",
-                viewerSelectionForeground: "#f0f0f0",
-                viewerForeground: "#000000",
-            };
-            Controls.DARK_THEME = {
-                name: "dark",
-                dark: true,
-                viewerSelectionBackground: "#f0a050",
-                viewerSelectionForeground: "#0e0e0e",
-                viewerForeground: "#f0f0f0",
-            };
-            Controls._theme = Controls.DARK_THEME;
-            controls.Controls = Controls;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -2412,6 +2808,8 @@ var colibri;
                     constructor(...classList) {
                         super("div", "Dialog", ...classList);
                         this._closeWithEscapeKey = true;
+                        this._width = 400;
+                        this._height = 300;
                         this._parentDialog = Dialog._dialogs.length === 0 ?
                             null : Dialog._dialogs[Dialog._dialogs.length - 1];
                         if (Dialog._firstTime) {
@@ -2456,8 +2854,6 @@ var colibri;
                         this._containerElement.classList.add("DialogContainer");
                         document.body.appendChild(this._containerElement);
                         document.body.appendChild(this.getElement());
-                        this._width = 400;
-                        this._height = 300;
                         window.addEventListener("resize", () => this.resize());
                         this._titlePaneElement = document.createElement("div");
                         this._titlePaneElement.classList.add("DialogTitlePane");
@@ -2487,6 +2883,10 @@ var colibri;
                             width: this._width,
                             height: this._height
                         });
+                    }
+                    setSize(width, height) {
+                        this._width = width;
+                        this._height = height;
                     }
                     close() {
                         Dialog._dialogs = Dialog._dialogs.filter(d => d !== this);
@@ -5324,35 +5724,6 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class Plugin {
-                constructor(id) {
-                    this._id = id;
-                }
-                getId() {
-                    return this._id;
-                }
-                starting() {
-                    return Promise.resolve();
-                }
-                started() {
-                    return Promise.resolve();
-                }
-                registerExtensions(registry) {
-                }
-                getIcon(name) {
-                    return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
-                }
-            }
-            ide.Plugin = Plugin;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
             class PreloadProjectResourcesExtension extends colibri.core.extensions.Extension {
                 constructor(getPreloadPromise) {
                     super(PreloadProjectResourcesExtension.POINT_ID);
@@ -5432,350 +5803,6 @@ var colibri;
             }
             WindowExtension.POINT_ID = "colibri.ui.ide.WindowExtension";
             ide.WindowExtension = WindowExtension;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-/// <reference path="../controls/Controls.ts"/>
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            ide.EVENT_PART_DEACTIVATED = "partDeactivated";
-            ide.EVENT_PART_ACTIVATED = "partActivated";
-            ide.EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
-            ide.EVENT_EDITOR_ACTIVATED = "editorActivated";
-            ide.EVENT_PROJECT_OPENED = "projectOpened";
-            ide.ICON_FILE = "file";
-            ide.ICON_FOLDER = "folder";
-            ide.ICON_PLUS = "plus";
-            class Workbench extends EventTarget {
-                constructor() {
-                    super();
-                    this._plugins = [];
-                    this._editorRegistry = new ide.EditorRegistry();
-                    this._windows = [];
-                    this._activePart = null;
-                    this._activeEditor = null;
-                    this._activeElement = null;
-                    this._fileImageCache = new ide.ImageFileCache();
-                    this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
-                    this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
-                    this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
-                    this._globalPreferences = new colibri.core.preferences.Preferences("__global__");
-                    this._projectPreferences = null;
-                }
-                static getWorkbench() {
-                    if (!Workbench._workbench) {
-                        Workbench._workbench = new Workbench();
-                    }
-                    return this._workbench;
-                }
-                getGlobalPreferences() {
-                    return this._globalPreferences;
-                }
-                getProjectPreferences() {
-                    return this._projectPreferences;
-                }
-                addPlugin(plugin) {
-                    this._plugins.push(plugin);
-                }
-                getPlugins() {
-                    return this._plugins;
-                }
-                async launch() {
-                    console.log("Workbench: starting.");
-                    {
-                        const plugins = this._plugins;
-                        for (const plugin of plugins) {
-                            plugin.registerExtensions(this._extensionRegistry);
-                        }
-                        for (const plugin of plugins) {
-                            console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
-                            await plugin.starting();
-                        }
-                    }
-                    await ui.controls.Controls.preload();
-                    console.log("Workbench: fetching UI icons.");
-                    await this.preloadIcons();
-                    console.log("Workbench: registering content types.");
-                    this.registerContentTypes();
-                    this.registerContentTypeIcons();
-                    console.log("Workbench: initializing UI.");
-                    this.initCommands();
-                    this.registerEditors();
-                    this.registerWindows();
-                    this.initEvents();
-                    console.log("%cWorkbench: started.", "color:green");
-                    for (const plugin of this._plugins) {
-                        await plugin.started();
-                    }
-                }
-                resetCache() {
-                    this._fileStringCache.reset();
-                    this._fileImageCache.reset();
-                    this._contentTypeRegistry.resetCache();
-                }
-                async openProject(projectName, monitor) {
-                    this._projectPreferences = new colibri.core.preferences.Preferences("__project__" + projectName);
-                    this.resetCache();
-                    console.log(`Workbench: opening project ${projectName}.`);
-                    await this._fileStorage.openProject(projectName);
-                    console.log("Workbench: fetching required project resources.");
-                    await this.preloadProjectResources(monitor);
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_PROJECT_OPENED, {
-                        detail: projectName
-                    }));
-                }
-                async preloadProjectResources(monitor) {
-                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        await extension.getPreloadPromise(monitor);
-                    }
-                }
-                registerWindows() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.POINT_ID);
-                    this._windows = extensions.map(extension => extension.createWindow());
-                    if (this._windows.length === 0) {
-                        alert("No workbench window provided.");
-                    }
-                    else {
-                        for (const win of this._windows) {
-                            win.style.display = "none";
-                            document.body.appendChild(win.getElement());
-                        }
-                    }
-                }
-                getWindows() {
-                    return this._windows;
-                }
-                activateWindow(id) {
-                    const win = this._windows.find(win => win.getId() === id);
-                    if (win) {
-                        if (this._activeWindow) {
-                            this._activeWindow.style.display = "none";
-                        }
-                        this._activeWindow = win;
-                        win.create();
-                        win.style.display = "initial";
-                        return win;
-                    }
-                    alert(`Window ${id} not found.`);
-                    return null;
-                }
-                async preloadIcons() {
-                    await this.getWorkbenchIcon(ide.ICON_FILE).preload();
-                    await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
-                    await this.getWorkbenchIcon(ide.ICON_PLUS).preload();
-                    const extensions = this._extensionRegistry
-                        .getExtensions(ide.IconLoaderExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        const icons = extension.getIcons();
-                        for (const icon of icons) {
-                            await icon.preload();
-                        }
-                    }
-                }
-                registerContentTypeIcons() {
-                    this._contentType_icon_Map = new Map();
-                    const extensions = this._extensionRegistry.getExtensions(ide.ContentTypeIconExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        for (const item of extension.getConfig()) {
-                            this._contentType_icon_Map.set(item.contentType, item.icon);
-                        }
-                    }
-                }
-                initCommands() {
-                    this._commandManager = new ide.commands.CommandManager();
-                    ide.IDECommands.init();
-                    const extensions = this._extensionRegistry.getExtensions(ide.commands.CommandExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        extension.getConfigurer()(this._commandManager);
-                    }
-                }
-                initEvents() {
-                    window.addEventListener("mousedown", e => {
-                        this._activeElement = e.target;
-                        const part = this.findPart(e.target);
-                        if (part) {
-                            this.setActivePart(part);
-                        }
-                    });
-                }
-                registerEditors() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.EditorExtension.POINT_ID);
-                    for (const extension of extensions) {
-                        for (const factory of extension.getFactories()) {
-                            this._editorRegistry.registerFactory(factory);
-                        }
-                    }
-                }
-                getFileStringCache() {
-                    return this._fileStringCache;
-                }
-                getFileStorage() {
-                    return this._fileStorage;
-                }
-                getCommandManager() {
-                    return this._commandManager;
-                }
-                getActiveWindow() {
-                    return this._activeWindow;
-                }
-                getActiveElement() {
-                    return this._activeElement;
-                }
-                getActivePart() {
-                    return this._activePart;
-                }
-                getActiveEditor() {
-                    return this._activeEditor;
-                }
-                setActiveEditor(editor) {
-                    if (editor === this._activeEditor) {
-                        return;
-                    }
-                    this._activeEditor = editor;
-                    this.dispatchEvent(new CustomEvent(ide.EVENT_EDITOR_ACTIVATED, { detail: editor }));
-                }
-                /**
-                 * Users may not call this method. This is public only for convenience.
-                 */
-                setActivePart(part) {
-                    if (part !== this._activePart) {
-                        const old = this._activePart;
-                        this._activePart = part;
-                        if (old) {
-                            this.toggleActivePartClass(old);
-                            this.dispatchEvent(new CustomEvent(ide.EVENT_PART_DEACTIVATED, { detail: old }));
-                        }
-                        if (part) {
-                            this.toggleActivePartClass(part);
-                            part.onPartActivated();
-                        }
-                        this.dispatchEvent(new CustomEvent(ide.EVENT_PART_ACTIVATED, { detail: part }));
-                    }
-                    if (part instanceof ide.EditorPart) {
-                        this.setActiveEditor(part);
-                    }
-                }
-                toggleActivePartClass(part) {
-                    const tabPane = this.findTabPane(part.getElement());
-                    if (!tabPane) {
-                        // maybe the clicked part was closed
-                        return;
-                    }
-                    if (part.containsClass("activePart")) {
-                        part.removeClass("activePart");
-                        tabPane.removeClass("activePart");
-                    }
-                    else {
-                        part.addClass("activePart");
-                        tabPane.addClass("activePart");
-                    }
-                }
-                findTabPane(element) {
-                    if (element) {
-                        const control = ui.controls.Control.getControlOf(element);
-                        if (control && control instanceof ui.controls.TabPane) {
-                            return control;
-                        }
-                        return this.findTabPane(element.parentElement);
-                    }
-                    return null;
-                }
-                registerContentTypes() {
-                    const extensions = this._extensionRegistry
-                        .getExtensions(colibri.core.ContentTypeExtension.POINT_ID);
-                    this._contentTypeRegistry = new colibri.core.ContentTypeRegistry();
-                    for (const extension of extensions) {
-                        for (const resolver of extension.getResolvers()) {
-                            this._contentTypeRegistry.registerResolver(resolver);
-                        }
-                    }
-                }
-                findPart(element) {
-                    if (ui.controls.TabPane.isTabLabel(element)) {
-                        element = ui.controls.TabPane.getContentFromLabel(element).getElement();
-                    }
-                    if (element["__part"]) {
-                        return element["__part"];
-                    }
-                    const control = ui.controls.Control.getControlOf(element);
-                    if (control && control instanceof ui.controls.TabPane) {
-                        const tabPane = control;
-                        const content = tabPane.getSelectedTabContent();
-                        if (content) {
-                            const element = content.getElement();
-                            if (element["__part"]) {
-                                return element["__part"];
-                            }
-                        }
-                    }
-                    if (element.parentElement) {
-                        return this.findPart(element.parentElement);
-                    }
-                    return null;
-                }
-                getContentTypeRegistry() {
-                    return this._contentTypeRegistry;
-                }
-                getExtensionRegistry() {
-                    return this._extensionRegistry;
-                }
-                getProjectRoot() {
-                    return this._fileStorage.getRoot();
-                }
-                getContentTypeIcon(contentType) {
-                    if (this._contentType_icon_Map.has(contentType)) {
-                        return this._contentType_icon_Map.get(contentType);
-                    }
-                    return null;
-                }
-                getFileImage(file) {
-                    if (file === null) {
-                        return null;
-                    }
-                    return this._fileImageCache.getContent(file);
-                }
-                getWorkbenchIcon(name) {
-                    return ui.controls.Controls.getIcon(name, "plugins/colibri/ui/icons");
-                }
-                getEditorRegistry() {
-                    return this._editorRegistry;
-                }
-                getEditors() {
-                    return this.getActiveWindow().getEditorArea().getEditors();
-                }
-                openEditor(input) {
-                    const editorArea = this.getActiveWindow().getEditorArea();
-                    {
-                        const editors = this.getEditors();
-                        for (let editor of editors) {
-                            if (editor.getInput() === input) {
-                                editorArea.activateEditor(editor);
-                                this.setActivePart(editor);
-                                return editor;
-                            }
-                        }
-                    }
-                    const factory = this._editorRegistry.getFactoryForInput(input);
-                    if (factory) {
-                        const editor = factory.createEditor();
-                        editor.setInput(input);
-                        editorArea.addPart(editor, true);
-                        editorArea.activateEditor(editor);
-                        this.setActivePart(editor);
-                        return editor;
-                    }
-                    else {
-                        alert("No editor available for the given input.");
-                    }
-                    return null;
-                }
-            }
-            ide.Workbench = Workbench;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
@@ -6215,6 +6242,69 @@ var colibri;
                 }
                 properties.FilteredViewerInPropertySection = FilteredViewerInPropertySection;
             })(properties = ide.properties || (ide.properties = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var themes;
+            (function (themes) {
+                class ThemeExtension extends colibri.core.extensions.Extension {
+                    constructor(theme) {
+                        super(ThemeExtension.POINT_ID);
+                        this._theme = theme;
+                    }
+                    getTheme() {
+                        return this._theme;
+                    }
+                }
+                ThemeExtension.POINT_ID = "colibri.ui.ide.ThemeExtension";
+                themes.ThemeExtension = ThemeExtension;
+            })(themes = ide.themes || (ide.themes = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var themes;
+            (function (themes) {
+                class ThemesDialog extends ui.controls.dialogs.ViewerDialog {
+                    constructor() {
+                        super(new ThemeViewer());
+                        this.setSize(200, 300);
+                    }
+                    create() {
+                        super.create();
+                        this.addButton("Close", () => this.close());
+                    }
+                }
+                themes.ThemesDialog = ThemesDialog;
+                class ThemeViewer extends ui.controls.viewers.TreeViewer {
+                    constructor() {
+                        super("ThemeViewer");
+                        this.setLabelProvider(new ThemeLabelProvider());
+                        this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
+                        this.setCellRendererProvider(new ui.controls.viewers.EmptyCellRendererProvider());
+                        this.setInput(ide.Workbench.getWorkbench()
+                            .getExtensionRegistry()
+                            .getExtensions(themes.ThemeExtension.POINT_ID)
+                            .map(ext => ext.getTheme()));
+                    }
+                }
+                class ThemeLabelProvider extends ui.controls.viewers.LabelProvider {
+                    getLabel(theme) {
+                        return theme.displayName;
+                    }
+                }
+            })(themes = ide.themes || (ide.themes = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));

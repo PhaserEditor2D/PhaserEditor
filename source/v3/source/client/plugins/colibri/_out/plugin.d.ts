@@ -1,3 +1,174 @@
+declare namespace colibri.ui.ide {
+    abstract class Plugin {
+        private _id;
+        constructor(id: string);
+        getId(): string;
+        starting(): Promise<void>;
+        started(): Promise<void>;
+        registerExtensions(registry: core.extensions.ExtensionRegistry): void;
+        getIcon(name: string): controls.IImage;
+    }
+}
+declare namespace colibri.ui.controls {
+    const EVENT_CONTROL_LAYOUT = "controlLayout";
+    class Control extends EventTarget {
+        private _bounds;
+        private _element;
+        private _children;
+        private _layout;
+        private _container;
+        private _scrollY;
+        private _layoutChildren;
+        private _handlePosition;
+        constructor(tagName?: string, ...classList: string[]);
+        static getControlOf(element: HTMLElement): Control;
+        isHandlePosition(): boolean;
+        setHandlePosition(_handlePosition: boolean): void;
+        get style(): CSSStyleDeclaration;
+        isLayoutChildren(): boolean;
+        setLayoutChildren(layout: boolean): void;
+        getScrollY(): number;
+        setScrollY(scrollY: number): void;
+        getContainer(): Control;
+        getLayout(): ILayout;
+        setLayout(layout: ILayout): void;
+        addClass(...tokens: string[]): void;
+        removeClass(...tokens: string[]): void;
+        containsClass(className: string): boolean;
+        getElement(): HTMLElement;
+        getControlPosition(windowX: number, windowY: number): {
+            x: number;
+            y: number;
+        };
+        containsLocalPoint(x: number, y: number): boolean;
+        setBounds(bounds: Bounds): void;
+        setBoundsValues(x: number, y: number, w: number, h: number): void;
+        getBounds(): Bounds;
+        setLocation(x: number, y: number): void;
+        layout(): void;
+        dispatchLayoutEvent(): void;
+        add(control: Control): void;
+        protected onControlAdded(): void;
+        getChildren(): Control[];
+    }
+}
+declare namespace colibri.ui.controls {
+    const EVENT_SELECTION_CHANGED = "selectionChanged";
+    const EVENT_THEME_CHANGED = "themeChanged";
+    enum PreloadResult {
+        NOTHING_LOADED = 0,
+        RESOURCES_LOADED = 1
+    }
+    const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
+    const ICON_CONTROL_TREE_EXPAND = "tree-expand";
+    const ICON_CONTROL_CLOSE = "close";
+    const ICON_CONTROL_DIRTY = "dirty";
+    const ICON_SIZE = 16;
+    class Controls {
+        private static _images;
+        private static _applicationDragData;
+        static setDragEventImage(e: DragEvent, render: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): void;
+        static getApplicationDragData(): any[];
+        static getApplicationDragDataAndClean(): any[];
+        static setApplicationDragData(data: any[]): void;
+        static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult>;
+        static resolveResourceLoaded(): Promise<PreloadResult>;
+        static resolveNothingLoaded(): Promise<PreloadResult>;
+        static preload(): Promise<PreloadResult[]>;
+        private static getImage;
+        static openUrlInNewPage(url: string): void;
+        static getIcon(name: string, baseUrl?: string): IImage;
+        static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
+        static LIGHT_THEME: Theme;
+        static DARK_THEME: Theme;
+        static _theme: Theme;
+        static switchTheme(): Theme;
+        static setTheme(theme: Theme): void;
+        static getTheme(): Theme;
+        static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft?: number, topRight?: number, bottomRight?: number, bottomLeft?: number): void;
+    }
+}
+declare namespace colibri.ui.ide {
+    const EVENT_PART_DEACTIVATED = "partDeactivated";
+    const EVENT_PART_ACTIVATED = "partActivated";
+    const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
+    const EVENT_EDITOR_ACTIVATED = "editorActivated";
+    const EVENT_PROJECT_OPENED = "projectOpened";
+    const ICON_FILE = "file";
+    const ICON_FOLDER = "folder";
+    const ICON_PLUS = "plus";
+    class Workbench extends EventTarget {
+        private static _workbench;
+        private _plugins;
+        static getWorkbench(): Workbench;
+        private _fileStringCache;
+        private _fileImageCache;
+        private _activeWindow;
+        private _contentType_icon_Map;
+        private _fileStorage;
+        private _contentTypeRegistry;
+        private _activePart;
+        private _activeEditor;
+        private _activeElement;
+        private _editorRegistry;
+        private _extensionRegistry;
+        private _commandManager;
+        private _windows;
+        private _globalPreferences;
+        private _projectPreferences;
+        private constructor();
+        getGlobalPreferences(): core.preferences.Preferences;
+        getProjectPreferences(): core.preferences.Preferences;
+        addPlugin(plugin: ide.Plugin): void;
+        getPlugins(): Plugin[];
+        launch(): Promise<void>;
+        private resetCache;
+        openProject(projectName: string, monitor: controls.IProgressMonitor): Promise<void>;
+        private preloadProjectResources;
+        private registerWindows;
+        getWindows(): WorkbenchWindow[];
+        activateWindow(id: string): WorkbenchWindow;
+        private preloadIcons;
+        private registerContentTypeIcons;
+        private initCommands;
+        private initEvents;
+        private registerEditors;
+        getFileStringCache(): core.io.FileStringCache;
+        getFileStorage(): core.io.IFileStorage;
+        getCommandManager(): commands.CommandManager;
+        getActiveWindow(): WorkbenchWindow;
+        getActiveElement(): HTMLElement;
+        getActivePart(): Part;
+        getActiveEditor(): EditorPart;
+        setActiveEditor(editor: EditorPart): void;
+        /**
+         * Users may not call this method. This is public only for convenience.
+         */
+        setActivePart(part: Part): void;
+        private toggleActivePartClass;
+        private findTabPane;
+        private registerContentTypes;
+        findPart(element: HTMLElement): Part;
+        getContentTypeRegistry(): core.ContentTypeRegistry;
+        getExtensionRegistry(): core.extensions.ExtensionRegistry;
+        getProjectRoot(): core.io.FilePath;
+        getContentTypeIcon(contentType: string): controls.IImage;
+        getFileImage(file: core.io.FilePath): controls.IImage;
+        getWorkbenchIcon(name: string): controls.IImage;
+        getEditorRegistry(): EditorRegistry;
+        getEditors(): EditorPart[];
+        openEditor(input: any): EditorPart;
+    }
+}
+declare namespace colibri {
+    class ColibriPlugin extends ui.ide.Plugin {
+        private static _instance;
+        static getInstance(): any;
+        private _openingProject;
+        private constructor();
+        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+    }
+}
 declare namespace colibri.core.extensions {
     class Extension {
         private _extensionPoint;
@@ -274,49 +445,6 @@ declare namespace colibri.ui.controls {
     };
 }
 declare namespace colibri.ui.controls {
-    const EVENT_CONTROL_LAYOUT = "controlLayout";
-    class Control extends EventTarget {
-        private _bounds;
-        private _element;
-        private _children;
-        private _layout;
-        private _container;
-        private _scrollY;
-        private _layoutChildren;
-        private _handlePosition;
-        constructor(tagName?: string, ...classList: string[]);
-        static getControlOf(element: HTMLElement): Control;
-        isHandlePosition(): boolean;
-        setHandlePosition(_handlePosition: boolean): void;
-        get style(): CSSStyleDeclaration;
-        isLayoutChildren(): boolean;
-        setLayoutChildren(layout: boolean): void;
-        getScrollY(): number;
-        setScrollY(scrollY: number): void;
-        getContainer(): Control;
-        getLayout(): ILayout;
-        setLayout(layout: ILayout): void;
-        addClass(...tokens: string[]): void;
-        removeClass(...tokens: string[]): void;
-        containsClass(className: string): boolean;
-        getElement(): HTMLElement;
-        getControlPosition(windowX: number, windowY: number): {
-            x: number;
-            y: number;
-        };
-        containsLocalPoint(x: number, y: number): boolean;
-        setBounds(bounds: Bounds): void;
-        setBoundsValues(x: number, y: number, w: number, h: number): void;
-        getBounds(): Bounds;
-        setLocation(x: number, y: number): void;
-        layout(): void;
-        dispatchLayoutEvent(): void;
-        add(control: Control): void;
-        protected onControlAdded(): void;
-        getChildren(): Control[];
-    }
-}
-declare namespace colibri.ui.controls {
     abstract class CanvasControl extends Control {
         protected _canvas: HTMLCanvasElement;
         protected _context: CanvasRenderingContext2D;
@@ -330,42 +458,6 @@ declare namespace colibri.ui.controls {
         repaint(): void;
         private initContext;
         protected abstract paint(): void;
-    }
-}
-declare namespace colibri.ui.controls {
-    const EVENT_SELECTION_CHANGED = "selectionChanged";
-    const EVENT_THEME_CHANGED = "themeChanged";
-    enum PreloadResult {
-        NOTHING_LOADED = 0,
-        RESOURCES_LOADED = 1
-    }
-    const ICON_CONTROL_TREE_COLLAPSE = "tree-collapse";
-    const ICON_CONTROL_TREE_EXPAND = "tree-expand";
-    const ICON_CONTROL_CLOSE = "close";
-    const ICON_CONTROL_DIRTY = "dirty";
-    const ICON_SIZE = 16;
-    class Controls {
-        private static _images;
-        private static _applicationDragData;
-        static setDragEventImage(e: DragEvent, render: (ctx: CanvasRenderingContext2D, w: number, h: number) => void): void;
-        static getApplicationDragData(): any[];
-        static getApplicationDragDataAndClean(): any[];
-        static setApplicationDragData(data: any[]): void;
-        static resolveAll(list: Promise<PreloadResult>[]): Promise<PreloadResult>;
-        static resolveResourceLoaded(): Promise<PreloadResult>;
-        static resolveNothingLoaded(): Promise<PreloadResult>;
-        static preload(): Promise<PreloadResult[]>;
-        private static getImage;
-        static openUrlInNewPage(url: string): void;
-        static getIcon(name: string, baseUrl?: string): IImage;
-        static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
-        static LIGHT_THEME: Theme;
-        static DARK_THEME: Theme;
-        static _theme: Theme;
-        static switchTheme(): Theme;
-        static setTheme(theme: Theme): void;
-        static getTheme(): Theme;
-        static drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, topLeft?: number, topRight?: number, bottomRight?: number, bottomLeft?: number): void;
     }
 }
 declare namespace colibri.ui.controls {
@@ -583,7 +675,8 @@ declare namespace colibri.ui.controls {
 }
 declare namespace colibri.ui.controls {
     type Theme = {
-        name: string;
+        cssName: string;
+        displayName: string;
         viewerSelectionBackground: string;
         viewerSelectionForeground: string;
         viewerForeground: string;
@@ -634,6 +727,7 @@ declare namespace colibri.ui.controls.dialogs {
         addButton(text: string, callback: () => void): HTMLButtonElement;
         protected createDialogArea(): void;
         protected resize(): void;
+        setSize(width: number, height: number): void;
         close(): void;
         closeAll(): void;
     }
@@ -1322,17 +1416,6 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
-    abstract class Plugin {
-        private _id;
-        constructor(id: string);
-        getId(): string;
-        starting(): Promise<void>;
-        started(): Promise<void>;
-        registerExtensions(registry: core.extensions.ExtensionRegistry): void;
-        getIcon(name: string): controls.IImage;
-    }
-}
-declare namespace colibri.ui.ide {
     class PreloadProjectResourcesExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _getPreloadPromise;
@@ -1363,78 +1446,6 @@ declare namespace colibri.ui.ide {
         private _createWindowFunc;
         constructor(createWindowFunc: CreateWindowFunc);
         createWindow(): WorkbenchWindow;
-    }
-}
-declare namespace colibri.ui.ide {
-    const EVENT_PART_DEACTIVATED = "partDeactivated";
-    const EVENT_PART_ACTIVATED = "partActivated";
-    const EVENT_EDITOR_DEACTIVATED = "editorDeactivated";
-    const EVENT_EDITOR_ACTIVATED = "editorActivated";
-    const EVENT_PROJECT_OPENED = "projectOpened";
-    const ICON_FILE = "file";
-    const ICON_FOLDER = "folder";
-    const ICON_PLUS = "plus";
-    class Workbench extends EventTarget {
-        private static _workbench;
-        private _plugins;
-        static getWorkbench(): Workbench;
-        private _fileStringCache;
-        private _fileImageCache;
-        private _activeWindow;
-        private _contentType_icon_Map;
-        private _fileStorage;
-        private _contentTypeRegistry;
-        private _activePart;
-        private _activeEditor;
-        private _activeElement;
-        private _editorRegistry;
-        private _extensionRegistry;
-        private _commandManager;
-        private _windows;
-        private _globalPreferences;
-        private _projectPreferences;
-        private constructor();
-        getGlobalPreferences(): core.preferences.Preferences;
-        getProjectPreferences(): core.preferences.Preferences;
-        addPlugin(plugin: ide.Plugin): void;
-        getPlugins(): Plugin[];
-        launch(): Promise<void>;
-        private resetCache;
-        openProject(projectName: string, monitor: controls.IProgressMonitor): Promise<void>;
-        private preloadProjectResources;
-        private registerWindows;
-        getWindows(): WorkbenchWindow[];
-        activateWindow(id: string): WorkbenchWindow;
-        private preloadIcons;
-        private registerContentTypeIcons;
-        private initCommands;
-        private initEvents;
-        private registerEditors;
-        getFileStringCache(): core.io.FileStringCache;
-        getFileStorage(): core.io.IFileStorage;
-        getCommandManager(): commands.CommandManager;
-        getActiveWindow(): WorkbenchWindow;
-        getActiveElement(): HTMLElement;
-        getActivePart(): Part;
-        getActiveEditor(): EditorPart;
-        setActiveEditor(editor: EditorPart): void;
-        /**
-         * Users may not call this method. This is public only for convenience.
-         */
-        setActivePart(part: Part): void;
-        private toggleActivePartClass;
-        private findTabPane;
-        private registerContentTypes;
-        findPart(element: HTMLElement): Part;
-        getContentTypeRegistry(): core.ContentTypeRegistry;
-        getExtensionRegistry(): core.extensions.ExtensionRegistry;
-        getProjectRoot(): core.io.FilePath;
-        getContentTypeIcon(contentType: string): controls.IImage;
-        getFileImage(file: core.io.FilePath): controls.IImage;
-        getWorkbenchIcon(name: string): controls.IImage;
-        getEditorRegistry(): EditorRegistry;
-        getEditors(): EditorPart[];
-        openEditor(input: any): EditorPart;
     }
 }
 declare namespace colibri.ui.ide {
@@ -1539,6 +1550,20 @@ declare namespace colibri.ui.ide.properties {
     class FilteredViewerInPropertySection<T extends controls.viewers.Viewer> extends controls.viewers.FilteredViewer<T> {
         constructor(page: controls.properties.PropertyPage, viewer: T, ...classList: string[]);
         resizeTo(): void;
+    }
+}
+declare namespace colibri.ui.ide.themes {
+    class ThemeExtension extends core.extensions.Extension {
+        static POINT_ID: string;
+        private _theme;
+        constructor(theme: controls.Theme);
+        getTheme(): controls.Theme;
+    }
+}
+declare namespace colibri.ui.ide.themes {
+    class ThemesDialog extends ui.controls.dialogs.ViewerDialog {
+        constructor();
+        create(): void;
     }
 }
 declare namespace colibri.ui.ide.undo {

@@ -17,6 +17,9 @@ namespace colibri.ui.controls.dialogs {
 
             this._closeWithEscapeKey = true;
 
+            this._width = 400;
+            this._height = 300;
+
             this._parentDialog = Dialog._dialogs.length === 0 ?
                 null : Dialog._dialogs[Dialog._dialogs.length - 1];
 
@@ -81,9 +84,6 @@ namespace colibri.ui.controls.dialogs {
             document.body.appendChild(this._containerElement);
             document.body.appendChild(this.getElement());
 
-            this._width = 400;
-            this._height = 300;
-
             window.addEventListener("resize", () => this.resize());
 
             this._titlePaneElement = document.createElement("div");
@@ -129,6 +129,11 @@ namespace colibri.ui.controls.dialogs {
                 width: this._width,
                 height: this._height
             });
+        }
+
+        setSize(width: number, height: number) {
+            this._width = width;
+            this._height = height;
         }
 
         close() {

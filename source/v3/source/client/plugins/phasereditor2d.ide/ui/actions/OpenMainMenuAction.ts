@@ -26,10 +26,7 @@ namespace phasereditor2d.ide.ui.actions {
                 text: "Reload Project"
             }));
 
-            menu.add(new controls.Action({
-                text: controls.Controls.getTheme() === controls.Controls.LIGHT_THEME ? "Dark Theme" : "Light Theme",
-                callback: () => IDEPlugin.getInstance().switchTheme()
-            }));
+            menu.add(new actions.OpenThemeDialogAction());
 
             menu.addSeparator();
 

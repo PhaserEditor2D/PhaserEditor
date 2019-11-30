@@ -1,5 +1,6 @@
 declare namespace phasereditor2d.ide {
     import ide = colibri.ui.ide;
+    import controls = colibri.ui.controls;
     const ICON_PLAY = "play";
     const ICON_MENU = "menu";
     class IDEPlugin extends ide.Plugin {
@@ -12,7 +13,7 @@ declare namespace phasereditor2d.ide {
         ideOpenProject(projectName: string): Promise<void>;
         private validateIndexFile;
         isOpeningProject(): boolean;
-        switchTheme(): void;
+        setTheme(theme: controls.Theme): void;
         restoreTheme(): void;
     }
     const VER = "3.0.0";
@@ -65,6 +66,13 @@ declare namespace phasereditor2d.ide.ui.actions {
 declare namespace phasereditor2d.ide.ui.actions {
     import controls = colibri.ui.controls;
     class OpenProjectsDialogAction extends controls.Action {
+        constructor();
+        run(): void;
+    }
+}
+declare namespace phasereditor2d.ide.ui.actions {
+    import controls = colibri.ui.controls;
+    class OpenThemeDialogAction extends controls.Action {
         constructor();
         run(): void;
     }

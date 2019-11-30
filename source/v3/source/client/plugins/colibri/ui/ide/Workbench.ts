@@ -90,6 +90,8 @@ namespace colibri.ui.ide {
 
         async launch() {
 
+            this.addPlugin(ColibriPlugin.getInstance());
+
             console.log("Workbench: starting.");
 
             {

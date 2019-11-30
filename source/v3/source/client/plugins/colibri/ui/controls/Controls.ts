@@ -158,7 +158,8 @@ namespace colibri.ui.controls {
         }
 
         static LIGHT_THEME: Theme = {
-            name: "light",
+            cssName: "light",
+            displayName: "Light",
             dark: false,
             viewerSelectionBackground: "#4242ff",
             //treeItemSelectionBackground: "#525252",
@@ -167,7 +168,8 @@ namespace colibri.ui.controls {
         };
 
         static DARK_THEME: Theme = {
-            name: "dark",
+            cssName: "dark",
+            displayName: "Dark",
             dark: true,
             viewerSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
             viewerSelectionForeground: "#0e0e0e",
@@ -189,8 +191,8 @@ namespace colibri.ui.controls {
 
             const classList = document.getElementsByTagName("html")[0].classList;
 
-            classList.remove(this._theme.name);
-            classList.add(theme.name);
+            classList.remove(this._theme.cssName);
+            classList.add(theme.cssName);
 
             this._theme = theme;
 

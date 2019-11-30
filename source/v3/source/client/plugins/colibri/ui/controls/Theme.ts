@@ -2,8 +2,10 @@ namespace colibri.ui.controls {
 
     export declare type Theme = {
 
-        name: string;
+        cssName: string;
         
+        displayName : string;
+
         viewerSelectionBackground: string;
 
         viewerSelectionForeground: string;

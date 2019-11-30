@@ -1,5 +1,7 @@
 namespace colibri.ui.ide {
+
     export class EditorRegistry {
+
         private _map: Map<string, EditorFactory>;
 
         constructor() {
@@ -11,7 +13,9 @@ namespace colibri.ui.ide {
         }
 
         getFactoryForInput(input: any): EditorFactory {
+
             for (const factory of this._map.values()) {
+                
                 if (factory.acceptInput(input)) {
                     return factory;
                 }

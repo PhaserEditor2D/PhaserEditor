@@ -28,13 +28,13 @@ namespace phasereditor2d.ide.ui.actions {
                 filterInputElements: false
             }));
 
-            // switch theme
+            // theme dialog
 
             manager.addCommandHelper(CMD_SWITCH_THEME);
 
             manager.addHandlerHelper(CMD_SWITCH_THEME,
                 args => true,
-                args => IDEPlugin.getInstance().switchTheme()
+                args => new actions.OpenThemeDialogAction().run()
             );
 
             manager.addKeyBinding(CMD_SWITCH_THEME, new colibri.ui.ide.commands.KeyMatcher({
