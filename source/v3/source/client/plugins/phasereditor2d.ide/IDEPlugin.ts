@@ -28,14 +28,12 @@ namespace phasereditor2d.ide {
 
             reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID,
                 new colibri.ui.ide.WindowExtension(
-                    "phasereditor2d.ide.ui.DesignWindow",
                     () => new ui.DesignWindow()
                 )
             );
 
             reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID,
-                new colibri.ui.ide.WindowExtension(
-                    "phasereditor2d.ide.ui.WelcomeWindow",
+                new colibri.ui.ide.WindowExtension(                    
                     () => new ui.WelcomeWindow()
                 )
             );
@@ -43,7 +41,7 @@ namespace phasereditor2d.ide {
             // icons
 
             reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID,
-                new colibri.ui.ide.IconLoaderExtension("phasereditor2d.ide.ui.IconLoader", [
+                new colibri.ui.ide.IconLoaderExtension([
                     this.getIcon(ICON_PLAY),
                     this.getIcon(ICON_MENU)
                 ]));
@@ -52,7 +50,6 @@ namespace phasereditor2d.ide {
 
             reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID,
                 new colibri.ui.ide.commands.CommandExtension(
-                    "phasereditor2d.welcome.ui.actions.WelcomeActions",
                     ui.actions.IDEActions.registerCommands
                 )
             );

@@ -8,8 +8,8 @@ namespace colibri.core {
 
         private _resolvers: core.IContentTypeResolver[];
 
-        constructor(id: string, resolvers: core.IContentTypeResolver[], priority: number = 10) {
-            super(id, priority);
+        constructor(resolvers: core.IContentTypeResolver[], priority: number = 10) {
+            super(priority);
 
             this._resolvers = resolvers;
         }

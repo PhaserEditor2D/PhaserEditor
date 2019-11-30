@@ -12,12 +12,11 @@ namespace phasereditor2d.files.ui.dialogs {
         private _initialFileName: string;
       
         constructor(config: {
-            id: string,
             wizardName: string,
             icon: controls.IImage,
             initialFileName: string
         }) {
-            super(config.id);
+            super();
 
             this._wizardName = config.wizardName;
             this._icon = config.icon;

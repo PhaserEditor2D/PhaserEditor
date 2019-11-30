@@ -4,7 +4,6 @@ namespace phasereditor2d.files.ui.dialogs {
 
         constructor() {
             super({
-                id: "phasereditor2d.files.ui.dialogs.NewFolderExtension",
                 icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
                 initialFileName: "folder",
                 wizardName: "Folder"

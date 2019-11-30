@@ -21,7 +21,7 @@ namespace phasereditor2d.pack {
         }
 
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
-            
+
             // icons loader
 
             reg.addExtension(
@@ -36,70 +36,70 @@ namespace phasereditor2d.pack {
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AssetPackContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.AssetPackContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.AtlasContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.MultiatlasContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.MultiatlasContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AtlasXMLContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.AtlasXMLContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.UnityAtlasContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.UnityAtlasContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AnimationsContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.AnimationsContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.BitmapFontContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.BitmapFontContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapImpactContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.TilemapImpactContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.TilemapTiledJSONContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()],
                     5
                 ));
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.pack.core.contentTypes.AudioSpriteContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new pack.core.contentTypes.AudioSpriteContentTypeResolver()],
                     5
                 ));
@@ -129,7 +129,6 @@ namespace phasereditor2d.pack {
 
             reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID,
                 new ide.PreloadProjectResourcesExtension(
-                    "phasereditor2d.pack.PreloadProjectResourcesExtension",
                     (monitor) => pack.core.PackFinder.preload(monitor)
                 )
             );
@@ -142,8 +141,7 @@ namespace phasereditor2d.pack {
                 ]));
 
             reg.addExtension(ide.commands.CommandExtension.POINT_ID,
-                new ide.commands.CommandExtension("phasereditor2d.scene.commands",
-                    ui.editor.AssetPackEditor.registerCommands));
+                new ide.commands.CommandExtension(ui.editor.AssetPackEditor.registerCommands));
 
             // new file dialog
 

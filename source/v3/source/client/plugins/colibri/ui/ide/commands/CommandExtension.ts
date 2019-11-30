@@ -6,8 +6,8 @@ namespace colibri.ui.ide.commands {
 
         private _configurer: (manager: CommandManager) => void;
 
-        constructor(id: string, configurer: (manager: CommandManager) => void) {
-            super(id);
+        constructor(configurer: (manager: CommandManager) => void) {
+            super();
 
             this._configurer = configurer;
         }

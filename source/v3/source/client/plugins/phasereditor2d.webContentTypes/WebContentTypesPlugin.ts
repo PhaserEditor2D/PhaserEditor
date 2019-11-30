@@ -30,7 +30,7 @@ namespace phasereditor2d.webContentTypes {
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.webContentTypes.core.DefaultExtensionTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new core.DefaultExtensionTypeResolver()],
                     1000
                 ));

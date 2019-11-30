@@ -18,7 +18,7 @@ namespace colibri.ui.ide {
             plugin?: colibri.ui.ide.Plugin
         }[]) {
 
-            return new ContentTypeIconExtension(`${plugin.getId()}.ContentTypeIconExtension`,
+            return new ContentTypeIconExtension(
                 config.map(item => {
                     return {
                         icon: (item.plugin ?? plugin).getIcon(item.iconName),
@@ -27,8 +27,8 @@ namespace colibri.ui.ide {
                 }));
         }
 
-        constructor(id: string, config: ContentTypeIconExtensionConfig) {
-            super(id, 10);
+        constructor(config: ContentTypeIconExtensionConfig) {
+            super(10);
 
             this._config = config;
         }

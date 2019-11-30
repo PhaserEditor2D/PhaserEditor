@@ -22,7 +22,7 @@ namespace phasereditor2d.files.ui.viewers {
         private _cellRenderer: controls.viewers.ICellRenderer;
 
         constructor(contentType: string, cellRenderer: controls.viewers.ICellRenderer) {
-            super("phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension");
+            super();
 
             this._contentType = contentType;
             this._cellRenderer = cellRenderer;

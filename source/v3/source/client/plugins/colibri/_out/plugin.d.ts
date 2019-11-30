@@ -1,9 +1,8 @@
 declare namespace colibri.core.extensions {
     class Extension {
-        private _id;
+        private _extensionPoint;
         private _priority;
-        constructor(id: string, priority?: number);
-        getId(): string;
+        constructor(priority?: number);
         getPriority(): number;
     }
 }
@@ -11,7 +10,7 @@ declare namespace colibri.core {
     class ContentTypeExtension extends extensions.Extension {
         static POINT_ID: string;
         private _resolvers;
-        constructor(id: string, resolvers: core.IContentTypeResolver[], priority?: number);
+        constructor(resolvers: core.IContentTypeResolver[], priority?: number);
         getResolvers(): IContentTypeResolver[];
     }
 }
@@ -1065,7 +1064,7 @@ declare namespace colibri.ui.ide {
             contentType: string;
             plugin?: colibri.ui.ide.Plugin;
         }[]): ContentTypeIconExtension;
-        constructor(id: string, config: ContentTypeIconExtensionConfig);
+        constructor(config: ContentTypeIconExtensionConfig);
         getConfig(): ContentTypeIconExtensionConfig;
     }
 }
@@ -1289,7 +1288,7 @@ declare namespace colibri.ui.ide {
         static POINT_ID: string;
         static withPluginFiles(plugin: ide.Plugin, iconNames: string[]): IconLoaderExtension;
         private _icons;
-        constructor(id: string, icons: controls.IImage[]);
+        constructor(icons: controls.IImage[]);
         getIcons(): controls.IImage[];
     }
 }
@@ -1336,7 +1335,7 @@ declare namespace colibri.ui.ide {
     class PreloadProjectResourcesExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _getPreloadPromise;
-        constructor(id: string, getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>);
+        constructor(getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>);
         getPreloadPromise(monitor: controls.IProgressMonitor): Promise<any>;
     }
 }
@@ -1361,7 +1360,7 @@ declare namespace colibri.ui.ide {
     class WindowExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _createWindowFunc;
-        constructor(id: string, createWindowFunc: CreateWindowFunc);
+        constructor(createWindowFunc: CreateWindowFunc);
         createWindow(): WorkbenchWindow;
     }
 }
@@ -1502,7 +1501,7 @@ declare namespace colibri.ui.ide.commands {
     class CommandExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _configurer;
-        constructor(id: string, configurer: (manager: CommandManager) => void);
+        constructor(configurer: (manager: CommandManager) => void);
         getConfigurer(): (manager: CommandManager) => void;
     }
 }

@@ -6,8 +6,8 @@ namespace colibri.ui.ide {
 
         private _getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>;
 
-        constructor(id: string, getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>) {
-            super(id);
+        constructor(getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>) {
+            super();
 
             this._getPreloadPromise = getPreloadPromise;
         }

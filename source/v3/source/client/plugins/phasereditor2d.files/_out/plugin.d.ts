@@ -86,7 +86,6 @@ declare namespace phasereditor2d.files.ui.dialogs {
         private _icon;
         private _initialFileName;
         constructor(config: {
-            id: string;
             wizardName: string;
             icon: controls.IImage;
             initialFileName: string;
@@ -142,7 +141,6 @@ declare namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
     abstract class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
         static POINT: string;
-        constructor(id: string);
         abstract getRendererProvider(contentType: string): controls.viewers.ICellRendererProvider;
     }
 }

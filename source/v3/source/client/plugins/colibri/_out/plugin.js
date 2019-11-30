@@ -5,12 +5,8 @@ var colibri;
         var extensions;
         (function (extensions) {
             class Extension {
-                constructor(id, priority = 10) {
-                    this._id = id;
+                constructor(priority = 10) {
                     this._priority = priority;
-                }
-                getId() {
-                    return this._id;
                 }
                 getPriority() {
                     return this._priority;
@@ -26,8 +22,8 @@ var colibri;
     var core;
     (function (core) {
         class ContentTypeExtension extends core.extensions.Extension {
-            constructor(id, resolvers, priority = 10) {
-                super(id, priority);
+            constructor(resolvers, priority = 10) {
+                super(priority);
                 this._resolvers = resolvers;
             }
             getResolvers() {
@@ -4417,12 +4413,12 @@ var colibri;
         var ide;
         (function (ide) {
             class ContentTypeIconExtension extends colibri.core.extensions.Extension {
-                constructor(id, config) {
-                    super(id, 10);
+                constructor(config) {
+                    super(10);
                     this._config = config;
                 }
                 static withPluginIcons(plugin, config) {
-                    return new ContentTypeIconExtension(`${plugin.getId()}.ContentTypeIconExtension`, config.map(item => {
+                    return new ContentTypeIconExtension(config.map(item => {
                         var _a;
                         return {
                             icon: (_a = item.plugin, (_a !== null && _a !== void 0 ? _a : plugin)).getIcon(item.iconName),
@@ -4659,7 +4655,7 @@ var colibri;
         (function (ide) {
             class EditorExtension extends colibri.core.extensions.Extension {
                 constructor(id, factories) {
-                    super(id);
+                    super();
                     this._factories = factories;
                 }
                 getFactories() {
@@ -5215,14 +5211,13 @@ var colibri;
         var ide;
         (function (ide) {
             class IconLoaderExtension extends colibri.core.extensions.Extension {
-                constructor(id, icons) {
-                    super(id);
+                constructor(icons) {
+                    super();
                     this._icons = icons;
                 }
                 static withPluginFiles(plugin, iconNames) {
-                    const id = `${plugin.getId()}.IconLoaderExtension`;
                     const icons = iconNames.map(name => plugin.getIcon(name));
-                    return new IconLoaderExtension(id, icons);
+                    return new IconLoaderExtension(icons);
                 }
                 getIcons() {
                     return this._icons;
@@ -5348,8 +5343,8 @@ var colibri;
         var ide;
         (function (ide) {
             class PreloadProjectResourcesExtension extends colibri.core.extensions.Extension {
-                constructor(id, getPreloadPromise) {
-                    super(id);
+                constructor(getPreloadPromise) {
+                    super();
                     this._getPreloadPromise = getPreloadPromise;
                 }
                 getPreloadPromise(monitor) {
@@ -5416,8 +5411,8 @@ var colibri;
         var ide;
         (function (ide) {
             class WindowExtension extends colibri.core.extensions.Extension {
-                constructor(id, createWindowFunc) {
-                    super(id, 10);
+                constructor(createWindowFunc) {
+                    super(10);
                     this._createWindowFunc = createWindowFunc;
                 }
                 createWindow() {
@@ -6048,8 +6043,8 @@ var colibri;
             var commands;
             (function (commands) {
                 class CommandExtension extends colibri.core.extensions.Extension {
-                    constructor(id, configurer) {
-                        super(id);
+                    constructor(configurer) {
+                        super();
                         this._configurer = configurer;
                     }
                     getConfigurer() {

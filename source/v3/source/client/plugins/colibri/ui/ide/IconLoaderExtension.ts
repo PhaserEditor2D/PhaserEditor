@@ -6,17 +6,15 @@ namespace colibri.ui.ide {
 
         static withPluginFiles(plugin: ide.Plugin, iconNames: string[]) {
 
-            const id = `${plugin.getId()}.IconLoaderExtension`;
-
             const icons = iconNames.map(name => plugin.getIcon(name));
 
-            return new IconLoaderExtension(id, icons);
+            return new IconLoaderExtension(icons);
         }
 
         private _icons: controls.IImage[];
 
-        constructor(id: string, icons: controls.IImage[]) {
-            super(id);
+        constructor(icons: controls.IImage[]) {
+            super();
 
             this._icons = icons;
         }

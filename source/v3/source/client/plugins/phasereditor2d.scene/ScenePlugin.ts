@@ -27,7 +27,7 @@ namespace phasereditor2d.scene {
 
             reg.addExtension(
                 colibri.core.ContentTypeExtension.POINT_ID,
-                new colibri.core.ContentTypeExtension("phasereditor2d.scene.core.SceneContentTypeResolver",
+                new colibri.core.ContentTypeExtension(
                     [new core.SceneContentTypeResolver()],
                     5
                 ));
@@ -58,8 +58,7 @@ namespace phasereditor2d.scene {
             // commands
 
             reg.addExtension(ide.commands.CommandExtension.POINT_ID,
-                new ide.commands.CommandExtension("phasereditor2d.scene.commands",
-                    ui.editor.commands.SceneEditorCommands.registerCommands));
+                new ide.commands.CommandExtension(ui.editor.commands.SceneEditorCommands.registerCommands));
 
             // editors
 

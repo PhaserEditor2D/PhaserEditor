@@ -17,7 +17,7 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension("phasereditor2d.scene.core.SceneContentTypeResolver", [new scene.core.SceneContentTypeResolver()], 5));
+                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new scene.core.SceneContentTypeResolver()], 5));
                 // content type renderer
                 reg.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
                 // icons loader
@@ -29,7 +29,7 @@ var phasereditor2d;
                     scene.ICON_TRANSLATE
                 ]));
                 // commands
-                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.scene.commands", scene.ui.editor.commands.SceneEditorCommands.registerCommands));
+                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension(scene.ui.editor.commands.SceneEditorCommands.registerCommands));
                 // editors
                 reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
                     scene.ui.editor.SceneEditor.getFactory()

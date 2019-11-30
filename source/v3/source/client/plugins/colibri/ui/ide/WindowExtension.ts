@@ -8,8 +8,8 @@ namespace colibri.ui.ide {
 
         private _createWindowFunc : CreateWindowFunc;
 
-        constructor(id : string, createWindowFunc : CreateWindowFunc) {
-            super(id, 10);
+        constructor(createWindowFunc : CreateWindowFunc) {
+            super(10);
 
             this._createWindowFunc = createWindowFunc;
         }

@@ -19,7 +19,7 @@ var phasereditor2d;
                 // new files
                 reg.addExtension(files.ui.dialogs.NewFileExtension.POINT, new files.ui.dialogs.NewFolderExtension());
                 // commands
-                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension("phasereditor2d.files.commands", files.ui.actions.FilesViewCommands.registerCommands));
+                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension(files.ui.actions.FilesViewCommands.registerCommands));
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -479,7 +479,7 @@ var phasereditor2d;
             (function (dialogs) {
                 class NewFileExtension extends colibri.core.extensions.Extension {
                     constructor(config) {
-                        super(config.id);
+                        super();
                         this._wizardName = config.wizardName;
                         this._icon = config.icon;
                         this._initialFileName = config.initialFileName;
@@ -623,7 +623,6 @@ var phasereditor2d;
                 class NewFolderExtension extends dialogs.NewFileExtension {
                     constructor() {
                         super({
-                            id: "phasereditor2d.files.ui.dialogs.NewFolderExtension",
                             icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
                             initialFileName: "folder",
                             wizardName: "Folder"
@@ -649,9 +648,6 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
-                    constructor(id) {
-                        super(id);
-                    }
                 }
                 ContentTypeCellRendererExtension.POINT = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
                 viewers.ContentTypeCellRendererExtension = ContentTypeCellRendererExtension;
@@ -862,7 +858,7 @@ var phasereditor2d;
                 }
                 class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
                     constructor(contentType, cellRenderer) {
-                        super("phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension");
+                        super();
                         this._contentType = contentType;
                         this._cellRenderer = cellRenderer;
                     }
