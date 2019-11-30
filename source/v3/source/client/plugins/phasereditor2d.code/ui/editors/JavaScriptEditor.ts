@@ -41,24 +41,23 @@ namespace phasereditor2d.code.ui.editors {
 
                 result.push(<any>{
                     label: `${item.getKey()}`,
-                    filterText: `"${item.getKey()}"`,
                     kind: monaco.languages.CompletionItemKind.Text,
                     documentation:
                         `Asset Pack key of type ${item.getType()} (in ${packName}).`,
-                    insertText: `${item.getKey()}`,
+                    insertText: `"${item.getKey()}"`,
                 });
 
-                if (item instanceof pack.core.ImageFrameContainerAssetPackItem) {
+                if (item instanceof pack.core.ImageFrameContainerAssetPackItem 
+                    && !(item instanceof pack.core.ImageAssetPackItem)) {
 
                     for(const frame of item.getFrames()) {
                    
                         result.push(<any>{
                             label: `${frame.getName()}`,
-                            filterText: `"${frame.getName()}"`,
                             kind: monaco.languages.CompletionItemKind.Text,
                             documentation:
                                 `Frame of the ${item.getType()} ${item.getKey()} (in ${packName}).`,
-                            insertText: `${frame.getName()}`,
+                            insertText: `"${frame.getName()}"`,
                         });
                     }
                 }
@@ -93,7 +92,6 @@ namespace phasereditor2d.code.ui.editors {
 
             const editor = this.getMonacoEditor();
 
-
             editor.onDidChangeCursorPosition(e => {
 
                 const model = editor.getModel();
@@ -113,6 +111,7 @@ namespace phasereditor2d.code.ui.editors {
                     this.setSelection([]);
                 }
             });
+
         }
 
         private _propertyProvider = new pack.ui.properties.AssetPackPreviewPropertyProvider();

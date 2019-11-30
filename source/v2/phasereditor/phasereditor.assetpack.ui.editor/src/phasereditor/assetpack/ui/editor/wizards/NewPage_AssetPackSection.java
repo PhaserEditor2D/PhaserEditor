@@ -158,6 +158,22 @@ public class NewPage_AssetPackSection extends WizardPage {
 		return _selectedPack;
 	}
 
+	private static void addAssetToPack(AssetPackModel pack, Consumer<AssetSectionModel> addElementsToSection) {
+		if (pack.getSections().isEmpty()) {
+			pack.addSection(new AssetSectionModel("section", pack));
+		}
+
+		AssetSectionModel section = pack.getSections().get(0);
+
+		if (section == null) {
+			section = new AssetSectionModel("section", pack);
+			pack.addSection(section);
+		}
+
+		addElementsToSection.accept(section);
+
+	}
+
 	public void performFinish(IProgressMonitor monitor, Consumer<AssetSectionModel> addElementsToSection) {
 		if (_selectedPack != null) {
 
@@ -168,39 +184,22 @@ public class NewPage_AssetPackSection extends WizardPage {
 					List<AssetPackEditor> editors = AssetPackUIEditor.findOpenAssetPackEditors(_selectedPack.getFile());
 
 					for (AssetPackEditor editor : editors) {
+
 						AssetPackModel pack = editor.getModel();
 
-						var section = pack.getSections().get(0);
+						if (pack.getFile() == _selectedPack.getFile()) {
 
-						if (section == null) {
-							section = new AssetSectionModel("section", pack);
-							pack.addSection(section);
+							addAssetToPack(pack, addElementsToSection);
+
+							editor.build();
 						}
-
-						addElementsToSection.accept(section);
-
-						editor.build();
 					}
 				}
 			});
 
-			for (AssetPackModel pack : AssetPackCore.getAssetPackModels(_project)) {
+			addAssetToPack(_selectedPack, addElementsToSection);
 
-				if (pack.getSections().isEmpty()) {
-					pack.addSection(new AssetSectionModel("section", pack));
-				}
-				
-				AssetSectionModel section = pack.getSections().get(0);
-
-				if (section == null) {
-					section = new AssetSectionModel("section", pack);
-					pack.addSection(section);
-				}
-
-				addElementsToSection.accept(section);
-
-				pack.save(monitor);
-			}
+			_selectedPack.save(monitor);
 
 		}
 	}

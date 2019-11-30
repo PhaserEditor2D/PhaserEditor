@@ -234,19 +234,18 @@ var phasereditor2d;
                         for (const item of pack_.getItems()) {
                             result.push({
                                 label: `${item.getKey()}`,
-                                filterText: `"${item.getKey()}"`,
                                 kind: monaco.languages.CompletionItemKind.Text,
                                 documentation: `Asset Pack key of type ${item.getType()} (in ${packName}).`,
-                                insertText: `${item.getKey()}`,
+                                insertText: `"${item.getKey()}"`,
                             });
-                            if (item instanceof phasereditor2d.pack.core.ImageFrameContainerAssetPackItem) {
+                            if (item instanceof phasereditor2d.pack.core.ImageFrameContainerAssetPackItem
+                                && !(item instanceof phasereditor2d.pack.core.ImageAssetPackItem)) {
                                 for (const frame of item.getFrames()) {
                                     result.push({
                                         label: `${frame.getName()}`,
-                                        filterText: `"${frame.getName()}"`,
                                         kind: monaco.languages.CompletionItemKind.Text,
                                         documentation: `Frame of the ${item.getType()} ${item.getKey()} (in ${packName}).`,
-                                        insertText: `${frame.getName()}`,
+                                        insertText: `"${frame.getName()}"`,
                                     });
                                 }
                             }
