@@ -5,8 +5,12 @@ var colibri;
         var extensions;
         (function (extensions) {
             class Extension {
-                constructor(priority = 10) {
+                constructor(extensionPoint, priority = 10) {
+                    this._extensionPoint = extensionPoint;
                     this._priority = priority;
+                }
+                getExtensionPoint() {
+                    return this._extensionPoint;
                 }
                 getPriority() {
                     return this._priority;
@@ -23,7 +27,7 @@ var colibri;
     (function (core) {
         class ContentTypeExtension extends core.extensions.Extension {
             constructor(resolvers, priority = 10) {
-                super(priority);
+                super(ContentTypeExtension.POINT_ID, priority);
                 this._resolvers = resolvers;
             }
             getResolvers() {
@@ -195,18 +199,25 @@ var colibri;
     var core;
     (function (core) {
         var extensions;
-        (function (extensions) {
+        (function (extensions_1) {
             class ExtensionRegistry {
                 constructor() {
                     this._map = new Map();
                 }
-                addExtension(point, ...extension) {
-                    let list = this._map.get(point);
-                    if (!list) {
-                        this._map.set(point, list = []);
+                addExtension(...extensions) {
+                    const points = new Set();
+                    for (const ext of extensions) {
+                        const point = ext.getExtensionPoint();
+                        let list = this._map.get(point);
+                        if (!list) {
+                            this._map.set(point, list = []);
+                        }
+                        list.push(ext);
                     }
-                    list.push(...extension);
-                    list.sort((a, b) => a.getPriority() - b.getPriority());
+                    for (const point of points) {
+                        let list = this._map.get(point);
+                        list.sort((a, b) => a.getPriority() - b.getPriority());
+                    }
                 }
                 getExtensions(point) {
                     let list = this._map.get(point);
@@ -216,7 +227,7 @@ var colibri;
                     return list;
                 }
             }
-            extensions.ExtensionRegistry = ExtensionRegistry;
+            extensions_1.ExtensionRegistry = ExtensionRegistry;
         })(extensions = core.extensions || (core.extensions = {}));
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
@@ -4414,7 +4425,7 @@ var colibri;
         (function (ide) {
             class ContentTypeIconExtension extends colibri.core.extensions.Extension {
                 constructor(config) {
-                    super(10);
+                    super(ContentTypeIconExtension.POINT_ID, 10);
                     this._config = config;
                 }
                 static withPluginIcons(plugin, config) {
@@ -4654,8 +4665,8 @@ var colibri;
         var ide;
         (function (ide) {
             class EditorExtension extends colibri.core.extensions.Extension {
-                constructor(id, factories) {
-                    super();
+                constructor(factories) {
+                    super(EditorExtension.POINT_ID);
                     this._factories = factories;
                 }
                 getFactories() {
@@ -5212,7 +5223,7 @@ var colibri;
         (function (ide) {
             class IconLoaderExtension extends colibri.core.extensions.Extension {
                 constructor(icons) {
-                    super();
+                    super(IconLoaderExtension.POINT_ID);
                     this._icons = icons;
                 }
                 static withPluginFiles(plugin, iconNames) {
@@ -5344,7 +5355,7 @@ var colibri;
         (function (ide) {
             class PreloadProjectResourcesExtension extends colibri.core.extensions.Extension {
                 constructor(getPreloadPromise) {
-                    super();
+                    super(PreloadProjectResourcesExtension.POINT_ID);
                     this._getPreloadPromise = getPreloadPromise;
                 }
                 getPreloadPromise(monitor) {
@@ -5412,7 +5423,7 @@ var colibri;
         (function (ide) {
             class WindowExtension extends colibri.core.extensions.Extension {
                 constructor(createWindowFunc) {
-                    super(10);
+                    super(WindowExtension.POINT_ID, 10);
                     this._createWindowFunc = createWindowFunc;
                 }
                 createWindow() {
@@ -6044,7 +6055,7 @@ var colibri;
             (function (commands) {
                 class CommandExtension extends colibri.core.extensions.Extension {
                     constructor(configurer) {
-                        super();
+                        super(CommandExtension.POINT_ID);
                         this._configurer = configurer;
                     }
                     getConfigurer() {

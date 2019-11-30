@@ -14,7 +14,7 @@ namespace colibri.ui.ide {
         private _icons: controls.IImage[];
 
         constructor(icons: controls.IImage[]) {
-            super();
+            super(IconLoaderExtension.POINT_ID);
 
             this._icons = icons;
         }

@@ -7,7 +7,7 @@ namespace colibri.ui.ide {
         private _getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>;
 
         constructor(getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>) {
-            super();
+            super(PreloadProjectResourcesExtension.POINT_ID);
 
             this._getPreloadPromise = getPreloadPromise;
         }

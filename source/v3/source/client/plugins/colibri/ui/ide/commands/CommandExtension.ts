@@ -7,7 +7,7 @@ namespace colibri.ui.ide.commands {
         private _configurer: (manager: CommandManager) => void;
 
         constructor(configurer: (manager: CommandManager) => void) {
-            super();
+            super(CommandExtension.POINT_ID);
 
             this._configurer = configurer;
         }

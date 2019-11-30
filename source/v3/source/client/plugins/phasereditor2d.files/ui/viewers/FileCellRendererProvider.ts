@@ -20,7 +20,7 @@ namespace phasereditor2d.files.ui.viewers {
             const extensions = ide.Workbench
                 .getWorkbench()
                 .getExtensionRegistry()
-                .getExtensions<ContentTypeCellRendererExtension>(ContentTypeCellRendererExtension.POINT);
+                .getExtensions<ContentTypeCellRendererExtension>(ContentTypeCellRendererExtension.POINT_ID);
 
             for (const extension of extensions) {
 

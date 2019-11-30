@@ -4,8 +4,12 @@ namespace phasereditor2d.files.ui.viewers {
 
     export abstract class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
 
-        static POINT = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
+        static POINT_ID = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
 
         abstract getRendererProvider(contentType : string): controls.viewers.ICellRendererProvider;
+
+        constructor() {
+            super(ContentTypeCellRendererExtension.POINT_ID);
+        }
     } 
 }

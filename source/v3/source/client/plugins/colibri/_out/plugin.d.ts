@@ -2,7 +2,8 @@ declare namespace colibri.core.extensions {
     class Extension {
         private _extensionPoint;
         private _priority;
-        constructor(priority?: number);
+        constructor(extensionPoint: string, priority?: number);
+        getExtensionPoint(): any;
         getPriority(): number;
     }
 }
@@ -71,7 +72,7 @@ declare namespace colibri.core.extensions {
     class ExtensionRegistry {
         private _map;
         constructor();
-        addExtension(point: string, ...extension: Extension[]): void;
+        addExtension(...extensions: Extension[]): void;
         getExtensions<T extends Extension>(point: string): T[];
     }
 }
@@ -1134,7 +1135,7 @@ declare namespace colibri.ui.ide {
     class EditorExtension extends core.extensions.Extension {
         static POINT_ID: string;
         private _factories;
-        constructor(id: string, factories: EditorFactory[]);
+        constructor(factories: EditorFactory[]);
         getFactories(): EditorFactory[];
     }
 }

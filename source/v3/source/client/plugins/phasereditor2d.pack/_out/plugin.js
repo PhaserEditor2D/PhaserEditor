@@ -52,23 +52,23 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // icons loader
-                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                reg.addExtension(ide.IconLoaderExtension.withPluginFiles(this, [
                     pack.ICON_ASSET_PACK,
                     pack.ICON_ANIMATIONS
                 ]));
                 // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AssetPackContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AtlasContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.MultiatlasContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AtlasXMLContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.UnityAtlasContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AnimationsContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.BitmapFontContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.TilemapImpactContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()], 5));
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AudioSpriteContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AssetPackContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AtlasContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.MultiatlasContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AtlasXMLContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.UnityAtlasContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AnimationsContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.BitmapFontContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.TilemapImpactContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.TilemapTiledJSONContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new pack.core.contentTypes.AudioSpriteContentTypeResolver()], 5));
                 // content type icons
-                reg.addExtension(ide.ContentTypeIconExtension.POINT_ID, ide.ContentTypeIconExtension.withPluginIcons(this, [
+                reg.addExtension(ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
                         iconName: pack.ICON_ASSET_PACK,
                         contentType: pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK
@@ -84,14 +84,14 @@ var phasereditor2d;
                     }
                 ]));
                 // project resources preloader
-                reg.addExtension(ide.PreloadProjectResourcesExtension.POINT_ID, new ide.PreloadProjectResourcesExtension((monitor) => pack.core.PackFinder.preload(monitor)));
+                reg.addExtension(new ide.PreloadProjectResourcesExtension((monitor) => pack.core.PackFinder.preload(monitor)));
                 // editors
-                reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.pack.EditorExtension", [
+                reg.addExtension(new ide.EditorExtension([
                     pack.ui.editor.AssetPackEditor.getFactory()
                 ]));
-                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension(pack.ui.editor.AssetPackEditor.registerCommands));
+                reg.addExtension(new ide.commands.CommandExtension(pack.ui.editor.AssetPackEditor.registerCommands));
                 // new file dialog
-                reg.addExtension(phasereditor2d.files.ui.dialogs.NewFileExtension.POINT, new pack.ui.dialogs.NewAssetPackFileWizardExtension());
+                reg.addExtension(new pack.ui.dialogs.NewAssetPackFileWizardExtension());
             }
         }
         AssetPackPlugin._instance = new AssetPackPlugin();

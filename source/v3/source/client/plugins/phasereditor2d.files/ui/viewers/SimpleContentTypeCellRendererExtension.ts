@@ -16,7 +16,7 @@ namespace phasereditor2d.files.ui.viewers {
         }
     }
 
-    export class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+    export class SimpleContentTypeCellRendererExtension extends ContentTypeCellRendererExtension {
 
         private _contentType: string;
         private _cellRenderer: controls.viewers.ICellRenderer;

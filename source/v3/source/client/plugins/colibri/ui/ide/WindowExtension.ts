@@ -9,7 +9,7 @@ namespace colibri.ui.ide {
         private _createWindowFunc : CreateWindowFunc;
 
         constructor(createWindowFunc : CreateWindowFunc) {
-            super(10);
+            super(WindowExtension.POINT_ID, 10);
 
             this._createWindowFunc = createWindowFunc;
         }

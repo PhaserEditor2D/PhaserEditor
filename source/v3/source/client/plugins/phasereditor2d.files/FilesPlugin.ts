@@ -22,7 +22,6 @@ namespace phasereditor2d.files {
             // icons loader 
             
             reg.addExtension(
-                colibri.ui.ide.IconLoaderExtension.POINT_ID,
                 colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_NEW_FILE
                 ])
@@ -30,12 +29,12 @@ namespace phasereditor2d.files {
 
             // new files
 
-            reg.addExtension(ui.dialogs.NewFileExtension.POINT,
+            reg.addExtension(
                 new ui.dialogs.NewFolderExtension());
 
             // commands
 
-            reg.addExtension(ide.commands.CommandExtension.POINT_ID,
+            reg.addExtension(
                 new ide.commands.CommandExtension(ui.actions.FilesViewCommands.registerCommands));
         }
     }

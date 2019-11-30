@@ -6,8 +6,8 @@ namespace colibri.ui.ide {
 
         private _factories: EditorFactory[];
 
-        constructor(id: string, factories: EditorFactory[]) {
-            super();
+        constructor(factories: EditorFactory[]) {
+            super(EditorExtension.POINT_ID);
 
             this._factories = factories;
         }

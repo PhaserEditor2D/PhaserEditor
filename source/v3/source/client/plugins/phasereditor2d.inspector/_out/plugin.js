@@ -12,7 +12,7 @@ var phasereditor2d;
                 return this._instance;
             }
             registerExtensions(reg) {
-                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                reg.addExtension(ide.IconLoaderExtension.withPluginFiles(this, [
                     inspector.ICON_INSPECTOR
                 ]));
             }

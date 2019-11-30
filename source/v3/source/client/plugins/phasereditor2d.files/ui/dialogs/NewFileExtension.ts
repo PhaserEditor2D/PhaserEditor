@@ -5,7 +5,7 @@ namespace phasereditor2d.files.ui.dialogs {
 
     export abstract class NewFileExtension extends colibri.core.extensions.Extension {
 
-        static POINT = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
+        static POINT_ID = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
 
         private _wizardName: string;
         private _icon: controls.IImage;
@@ -16,7 +16,7 @@ namespace phasereditor2d.files.ui.dialogs {
             icon: controls.IImage,
             initialFileName: string
         }) {
-            super();
+            super(NewFileExtension.POINT_ID);
 
             this._wizardName = config.wizardName;
             this._icon = config.icon;

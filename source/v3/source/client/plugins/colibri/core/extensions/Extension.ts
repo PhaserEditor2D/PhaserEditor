@@ -5,8 +5,13 @@ namespace colibri.core.extensions {
         private _extensionPoint;
         private _priority: number;
 
-        constructor(priority: number = 10) {
+        constructor(extensionPoint : string, priority: number = 10) {
+            this._extensionPoint = extensionPoint;
             this._priority = priority;
+        }
+
+        getExtensionPoint() {
+            return this._extensionPoint;
         }
 
         getPriority() {

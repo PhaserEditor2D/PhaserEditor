@@ -21,7 +21,6 @@ namespace phasereditor2d.outline {
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
             reg.addExtension(
-                ide.IconLoaderExtension.POINT_ID,
                 ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_OUTLINE
                 ])

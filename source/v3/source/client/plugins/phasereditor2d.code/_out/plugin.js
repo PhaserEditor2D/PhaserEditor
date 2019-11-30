@@ -22,7 +22,7 @@ var phasereditor2d;
                 //             return this._modelsManager.start(monitor);
                 //         }));
                 // editors
-                reg.addExtension(colibri.ui.ide.EditorExtension.POINT_ID, new colibri.ui.ide.EditorExtension("phasereditor2d.core.ui.editors", [
+                reg.addExtension(new colibri.ui.ide.EditorExtension([
                     new code.ui.editors.JavaScriptEditorFactory(),
                     new code.ui.editors.MonacoEditorFactory("typescript", phasereditor2d.webContentTypes.core.CONTENT_TYPE_SCRIPT),
                     new code.ui.editors.MonacoEditorFactory("html", phasereditor2d.webContentTypes.core.CONTENT_TYPE_HTML),

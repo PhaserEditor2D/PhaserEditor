@@ -24,7 +24,7 @@ namespace phasereditor2d.files.ui.actions {
 
             const extensions = colibri.ui.ide.Workbench.getWorkbench()
                 .getExtensionRegistry()
-                .getExtensions(files.ui.dialogs.NewFileExtension.POINT);
+                .getExtensions(files.ui.dialogs.NewFileExtension.POINT_ID);
 
             viewer.setInput(extensions);
 

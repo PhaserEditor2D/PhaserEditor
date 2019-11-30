@@ -17,11 +17,11 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // content type resolvers
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new scene.core.SceneContentTypeResolver()], 5));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new scene.core.SceneContentTypeResolver()], 5));
                 // content type renderer
-                reg.addExtension(phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension.POINT, new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
+                reg.addExtension(new phasereditor2d.files.ui.viewers.SimpleContentTypeCellRendererExtension(scene.core.CONTENT_TYPE_SCENE, new scene.ui.viewers.SceneFileCellRenderer()));
                 // icons loader
-                reg.addExtension(ide.IconLoaderExtension.POINT_ID, ide.IconLoaderExtension.withPluginFiles(this, [
+                reg.addExtension(ide.IconLoaderExtension.withPluginFiles(this, [
                     scene.ICON_GROUP,
                     scene.ICON_ANGLE,
                     scene.ICON_ORIGIN,
@@ -29,13 +29,13 @@ var phasereditor2d;
                     scene.ICON_TRANSLATE
                 ]));
                 // commands
-                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension(scene.ui.editor.commands.SceneEditorCommands.registerCommands));
+                reg.addExtension(new ide.commands.CommandExtension(scene.ui.editor.commands.SceneEditorCommands.registerCommands));
                 // editors
-                reg.addExtension(ide.EditorExtension.POINT_ID, new ide.EditorExtension("phasereditor2d.scene.EditorExtension", [
+                reg.addExtension(new ide.EditorExtension([
                     scene.ui.editor.SceneEditor.getFactory()
                 ]));
                 // new file wizards
-                reg.addExtension(phasereditor2d.files.ui.dialogs.NewFileExtension.POINT, new scene.ui.dialogs.NewSceneFileDialogExtension());
+                reg.addExtension(new scene.ui.dialogs.NewSceneFileDialogExtension());
             }
         }
         ScenePlugin._instance = new ScenePlugin();

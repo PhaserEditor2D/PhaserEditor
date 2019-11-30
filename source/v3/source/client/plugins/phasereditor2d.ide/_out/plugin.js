@@ -16,15 +16,15 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // windows
-                reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension(() => new ide_1.ui.DesignWindow()));
-                reg.addExtension(colibri.ui.ide.WindowExtension.POINT_ID, new colibri.ui.ide.WindowExtension(() => new ide_1.ui.WelcomeWindow()));
+                reg.addExtension(new colibri.ui.ide.WindowExtension(() => new ide_1.ui.DesignWindow()));
+                reg.addExtension(new colibri.ui.ide.WindowExtension(() => new ide_1.ui.WelcomeWindow()));
                 // icons
-                reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, new colibri.ui.ide.IconLoaderExtension([
+                reg.addExtension(new colibri.ui.ide.IconLoaderExtension([
                     this.getIcon(ide_1.ICON_PLAY),
                     this.getIcon(ide_1.ICON_MENU)
                 ]));
                 // keys
-                reg.addExtension(colibri.ui.ide.commands.CommandExtension.POINT_ID, new colibri.ui.ide.commands.CommandExtension(ide_1.ui.actions.IDEActions.registerCommands));
+                reg.addExtension(new colibri.ui.ide.commands.CommandExtension(ide_1.ui.actions.IDEActions.registerCommands));
             }
             async openFirstWindow() {
                 this.restoreTheme();

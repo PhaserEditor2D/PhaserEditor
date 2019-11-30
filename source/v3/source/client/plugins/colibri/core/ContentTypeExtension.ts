@@ -9,7 +9,7 @@ namespace colibri.core {
         private _resolvers: core.IContentTypeResolver[];
 
         constructor(resolvers: core.IContentTypeResolver[], priority: number = 10) {
-            super(priority);
+            super(ContentTypeExtension.POINT_ID, priority);
 
             this._resolvers = resolvers;
         }
@@ -17,7 +17,5 @@ namespace colibri.core {
         getResolvers() {
             return this._resolvers;
         }
-
     }
-
 }

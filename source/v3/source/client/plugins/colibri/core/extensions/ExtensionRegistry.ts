@@ -8,17 +8,29 @@ namespace colibri.core.extensions {
             this._map = new Map();
         }
 
-        addExtension(point: string, ...extension: Extension[]) {
+        addExtension(...extensions: Extension[]) {
 
-            let list = this._map.get(point);
+            const points = new Set<string>();
 
-            if (!list) {
-                this._map.set(point, list = []);
+            for (const ext of extensions) {
+
+                const point = ext.getExtensionPoint();
+
+                let list = this._map.get(point);
+
+                if (!list) {
+                    this._map.set(point, list = []);
+                }
+
+                list.push(ext);
             }
 
-            list.push(...extension);
-            
-            list.sort((a, b) => a.getPriority() - b.getPriority());
+            for (const point of points) {
+
+                let list = this._map.get(point);
+
+                list.sort((a, b) => a.getPriority() - b.getPriority());
+            }
         }
 
         getExtensions<T extends Extension>(point: string): T[] {

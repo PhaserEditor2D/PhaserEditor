@@ -28,7 +28,7 @@ namespace colibri.ui.ide {
         }
 
         constructor(config: ContentTypeIconExtensionConfig) {
-            super(10);
+            super(ContentTypeIconExtension.POINT_ID, 10);
 
             this._config = config;
         }

@@ -13,13 +13,13 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // icons loader 
-                reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
+                reg.addExtension(colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     files.ICON_NEW_FILE
                 ]));
                 // new files
-                reg.addExtension(files.ui.dialogs.NewFileExtension.POINT, new files.ui.dialogs.NewFolderExtension());
+                reg.addExtension(new files.ui.dialogs.NewFolderExtension());
                 // commands
-                reg.addExtension(ide.commands.CommandExtension.POINT_ID, new ide.commands.CommandExtension(files.ui.actions.FilesViewCommands.registerCommands));
+                reg.addExtension(new ide.commands.CommandExtension(files.ui.actions.FilesViewCommands.registerCommands));
             }
         }
         FilesPlugin._instance = new FilesPlugin();
@@ -238,7 +238,7 @@ var phasereditor2d;
                         viewer.setCellRendererProvider(new WizardCellRendererProvider());
                         const extensions = colibri.ui.ide.Workbench.getWorkbench()
                             .getExtensionRegistry()
-                            .getExtensions(files.ui.dialogs.NewFileExtension.POINT);
+                            .getExtensions(files.ui.dialogs.NewFileExtension.POINT_ID);
                         viewer.setInput(extensions);
                         const dlg = new controls.dialogs.ViewerDialog(viewer);
                         dlg.create();
@@ -479,7 +479,7 @@ var phasereditor2d;
             (function (dialogs) {
                 class NewFileExtension extends colibri.core.extensions.Extension {
                     constructor(config) {
-                        super();
+                        super(NewFileExtension.POINT_ID);
                         this._wizardName = config.wizardName;
                         this._icon = config.icon;
                         this._initialFileName = config.initialFileName;
@@ -511,7 +511,7 @@ var phasereditor2d;
                         return root;
                     }
                 }
-                NewFileExtension.POINT = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
+                NewFileExtension.POINT_ID = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
                 dialogs.NewFileExtension = NewFileExtension;
             })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = files_2.ui || (files_2.ui = {}));
@@ -648,8 +648,11 @@ var phasereditor2d;
             var viewers;
             (function (viewers) {
                 class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+                    constructor() {
+                        super(ContentTypeCellRendererExtension.POINT_ID);
+                    }
                 }
-                ContentTypeCellRendererExtension.POINT = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
+                ContentTypeCellRendererExtension.POINT_ID = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
                 viewers.ContentTypeCellRendererExtension = ContentTypeCellRendererExtension;
             })(viewers = ui.viewers || (ui.viewers = {}));
         })(ui = files.ui || (files.ui = {}));
@@ -716,7 +719,7 @@ var phasereditor2d;
                         const extensions = ide.Workbench
                             .getWorkbench()
                             .getExtensionRegistry()
-                            .getExtensions(viewers_2.ContentTypeCellRendererExtension.POINT);
+                            .getExtensions(viewers_2.ContentTypeCellRendererExtension.POINT_ID);
                         for (const extension of extensions) {
                             const provider = extension.getRendererProvider(contentType);
                             if (provider !== null) {
@@ -856,7 +859,7 @@ var phasereditor2d;
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
-                class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+                class SimpleContentTypeCellRendererExtension extends viewers.ContentTypeCellRendererExtension {
                     constructor(contentType, cellRenderer) {
                         super();
                         this._contentType = contentType;

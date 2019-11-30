@@ -19,12 +19,10 @@ namespace phasereditor2d.blocks {
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
             reg.addExtension(
-                ide.IconLoaderExtension.POINT_ID,
                 ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_BLOCKS
                 ])
             );
-
         }
     }
 

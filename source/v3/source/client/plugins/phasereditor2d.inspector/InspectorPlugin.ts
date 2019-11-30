@@ -19,7 +19,6 @@ namespace phasereditor2d.inspector {
         registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
 
             reg.addExtension(
-                ide.IconLoaderExtension.POINT_ID,
                 ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_INSPECTOR
                 ])

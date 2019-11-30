@@ -29,7 +29,6 @@ namespace phasereditor2d.webContentTypes {
             // content types
 
             reg.addExtension(
-                colibri.core.ContentTypeExtension.POINT_ID,
                 new colibri.core.ContentTypeExtension(
                     [new core.DefaultExtensionTypeResolver()],
                     1000
@@ -38,7 +37,6 @@ namespace phasereditor2d.webContentTypes {
             // icons loader
 
             reg.addExtension(
-                colibri.ui.ide.IconLoaderExtension.POINT_ID,
                 colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     ICON_FILE_IMAGE,
                     ICON_FILE_SOUND,
@@ -56,7 +54,6 @@ namespace phasereditor2d.webContentTypes {
             // content type icons
 
             reg.addExtension(
-                colibri.ui.ide.ContentTypeIconExtension.POINT_ID,
                 colibri.ui.ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
                         iconName: ICON_FILE_IMAGE,

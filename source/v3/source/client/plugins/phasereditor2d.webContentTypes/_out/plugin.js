@@ -20,9 +20,9 @@ var phasereditor2d;
             }
             registerExtensions(reg) {
                 // content types
-                reg.addExtension(colibri.core.ContentTypeExtension.POINT_ID, new colibri.core.ContentTypeExtension([new webContentTypes.core.DefaultExtensionTypeResolver()], 1000));
+                reg.addExtension(new colibri.core.ContentTypeExtension([new webContentTypes.core.DefaultExtensionTypeResolver()], 1000));
                 // icons loader
-                reg.addExtension(colibri.ui.ide.IconLoaderExtension.POINT_ID, colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
+                reg.addExtension(colibri.ui.ide.IconLoaderExtension.withPluginFiles(this, [
                     webContentTypes.ICON_FILE_IMAGE,
                     webContentTypes.ICON_FILE_SOUND,
                     webContentTypes.ICON_FILE_VIDEO,
@@ -32,7 +32,7 @@ var phasereditor2d;
                 ]));
                 // content type resolvers
                 // content type icons
-                reg.addExtension(colibri.ui.ide.ContentTypeIconExtension.POINT_ID, colibri.ui.ide.ContentTypeIconExtension.withPluginIcons(this, [
+                reg.addExtension(colibri.ui.ide.ContentTypeIconExtension.withPluginIcons(this, [
                     {
                         iconName: webContentTypes.ICON_FILE_IMAGE,
                         contentType: webContentTypes.core.CONTENT_TYPE_IMAGE

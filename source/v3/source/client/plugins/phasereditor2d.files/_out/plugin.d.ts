@@ -81,7 +81,7 @@ declare namespace phasereditor2d.files.ui.dialogs {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
     abstract class NewFileExtension extends colibri.core.extensions.Extension {
-        static POINT: string;
+        static POINT_ID: string;
         private _wizardName;
         private _icon;
         private _initialFileName;
@@ -140,8 +140,9 @@ declare namespace phasereditor2d.files.ui.dialogs {
 declare namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
     abstract class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
-        static POINT: string;
+        static POINT_ID: string;
         abstract getRendererProvider(contentType: string): controls.viewers.ICellRendererProvider;
+        constructor();
     }
 }
 declare namespace phasereditor2d.files.ui.viewers {
@@ -195,7 +196,7 @@ declare namespace phasereditor2d.files.ui.viewers {
 }
 declare namespace phasereditor2d.files.ui.viewers {
     import controls = colibri.ui.controls;
-    class SimpleContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+    class SimpleContentTypeCellRendererExtension extends ContentTypeCellRendererExtension {
         private _contentType;
         private _cellRenderer;
         constructor(contentType: string, cellRenderer: controls.viewers.ICellRenderer);
