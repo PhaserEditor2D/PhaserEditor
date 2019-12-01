@@ -115,7 +115,6 @@ Important:
 
 /* Scroll Bar */
 
-.dark .ScrollBar,
 .dark .ScrollHandler {
     background: transparent;
 }

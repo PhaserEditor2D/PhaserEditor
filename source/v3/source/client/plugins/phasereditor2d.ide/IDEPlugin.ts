@@ -53,6 +53,17 @@ namespace phasereditor2d.ide {
                     ui.actions.IDEActions.registerCommands
                 )
             );
+
+            // themes 
+
+            reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                dark: false,
+                cssName: "lightBlue",
+                displayName: "Light Blue",
+                viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
+                viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
+                viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+            }));
         }
 
         async openFirstWindow() {
@@ -176,18 +187,21 @@ namespace phasereditor2d.ide {
 
             const themeData = prefs.getValue("phasereditor2d.ide.theme");
 
-            let theme = controls.Controls.LIGHT_THEME;
+            let theme = null;
 
             if (themeData) {
 
-                const themeName = themeData.theme;
+                const cssName = themeData.theme;
 
-                if (themeName === "dark") {
-                    theme = controls.Controls.DARK_THEME;
-                }
+                theme = colibri.ui.ide.Workbench
+                    .getWorkbench()
+                    .getExtensionRegistry()
+                    .getExtensions<colibri.ui.ide.themes.ThemeExtension>(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
+                    .map(e => e.getTheme())
+                    .find(t => t.cssName === cssName);
             }
 
-            controls.Controls.setTheme(theme);
+            controls.Controls.setTheme(theme ?? controls.Controls.LIGHT_THEME);
         }
     }
 

@@ -6283,6 +6283,7 @@ var colibri;
                     }
                     create() {
                         super.create();
+                        this.setTitle("Themes");
                         this.addButton("Close", () => this.close());
                     }
                 }

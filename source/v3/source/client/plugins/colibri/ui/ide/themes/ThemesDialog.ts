@@ -12,6 +12,8 @@ namespace colibri.ui.ide.themes {
 
             super.create();
 
+            this.setTitle("Themes");
+
             this.addButton("Close", () => this.close());
         }
     }

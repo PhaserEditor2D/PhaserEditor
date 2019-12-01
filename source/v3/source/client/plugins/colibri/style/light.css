@@ -102,7 +102,6 @@ Important:
 
 /* Scroll Bar */
 
-.light .ScrollBar,
 .light .ScrollHandler {
     background: transparent;
 }
@@ -175,14 +174,9 @@ Important:
     text-shadow: 1px 1px #f0f0f0;
 }
 
-.light .Dialog .FilteredViewer
-
-/*.light .Dialog .DialogSection*/
-    {
+.light .Dialog .FilteredViewer {
     background: #dadada;
 }
-
-
 
 /* Menu */
 

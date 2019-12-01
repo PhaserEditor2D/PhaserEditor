@@ -25,6 +25,15 @@ var phasereditor2d;
                 ]));
                 // keys
                 reg.addExtension(new colibri.ui.ide.commands.CommandExtension(ide_1.ui.actions.IDEActions.registerCommands));
+                // themes 
+                reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                    dark: false,
+                    cssName: "lightBlue",
+                    displayName: "Light Blue",
+                    viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
+                    viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
+                    viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+                }));
             }
             async openFirstWindow() {
                 this.restoreTheme();
@@ -99,14 +108,17 @@ var phasereditor2d;
             restoreTheme() {
                 const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
                 const themeData = prefs.getValue("phasereditor2d.ide.theme");
-                let theme = controls.Controls.LIGHT_THEME;
+                let theme = null;
                 if (themeData) {
-                    const themeName = themeData.theme;
-                    if (themeName === "dark") {
-                        theme = controls.Controls.DARK_THEME;
-                    }
+                    const cssName = themeData.theme;
+                    theme = colibri.ui.ide.Workbench
+                        .getWorkbench()
+                        .getExtensionRegistry()
+                        .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
+                        .map(e => e.getTheme())
+                        .find(t => t.cssName === cssName);
                 }
-                controls.Controls.setTheme(theme);
+                controls.Controls.setTheme((theme !== null && theme !== void 0 ? theme : controls.Controls.LIGHT_THEME));
             }
         }
         IDEPlugin._instance = new IDEPlugin();
