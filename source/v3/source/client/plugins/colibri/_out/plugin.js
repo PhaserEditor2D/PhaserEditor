@@ -259,26 +259,34 @@ var colibri;
                     const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);
                 }
-                static createIconElement(icon, overIcon) {
-                    const element = document.createElement("canvas");
-                    element.width = element.height = controls.ICON_SIZE;
-                    element.style.width = element.style.height = controls.ICON_SIZE + "px";
-                    const context = element.getContext("2d");
-                    context.imageSmoothingEnabled = false;
+                static createIconElement(icon, overIcon, size = controls.ICON_SIZE) {
+                    const canvasElement = document.createElement("canvas");
+                    canvasElement.width = canvasElement.height = size;
+                    canvasElement.style.width = canvasElement.style.height = size + "px";
+                    canvasElement.addEventListener("repaint", (e) => {
+                        var _a;
+                        let eventIcon = (_a = e.detail, (_a !== null && _a !== void 0 ? _a : icon));
+                        const canvas = e.target;
+                        const context = canvas.getContext("2d");
+                        context.imageSmoothingEnabled = false;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        if (eventIcon) {
+                            const w = eventIcon.getWidth();
+                            const h = eventIcon.getHeight();
+                            if (w === controls.ICON_SIZE && h === controls.ICON_SIZE) {
+                                eventIcon.paint(context, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h, false);
+                            }
+                            else {
+                                eventIcon.paint(context, 0, 0, canvas.width, canvas.height, true);
+                            }
+                        }
+                    });
                     if (overIcon) {
-                        element.addEventListener("mouseenter", e => {
-                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
-                            overIcon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                        });
-                        element.addEventListener("mouseleave", e => {
-                            context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
-                            icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                        });
+                        canvasElement.addEventListener("mouseenter", e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon })));
+                        canvasElement.addEventListener("mouseleave", e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon })));
                     }
-                    if (icon) {
-                        icon.paint(context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, false);
-                    }
-                    return element;
+                    canvasElement.dispatchEvent(new CustomEvent("repaint"));
+                    return canvasElement;
                 }
                 static switchTheme() {
                     const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
@@ -2533,6 +2541,7 @@ var colibri;
                     this._contentAreaElement = document.createElement("div");
                     this._contentAreaElement.classList.add("TabPaneContentArea");
                     this.getElement().appendChild(this._contentAreaElement);
+                    this._iconSize = controls.ICON_SIZE;
                 }
                 addTab(label, icon, content, closeable = false) {
                     const labelElement = this.makeLabel(label, icon, closeable);
@@ -2546,10 +2555,23 @@ var colibri;
                         this.selectTab(labelElement);
                     }
                 }
+                incrementTabSize(amount) {
+                    this._iconSize = Math.max(controls.ICON_SIZE, this._iconSize + amount);
+                    for (let i = 0; i < this._titleBarElement.children.length; i++) {
+                        const label = this._titleBarElement.children.item(i);
+                        const iconCanvas = label.firstChild;
+                        iconCanvas.width = this._iconSize;
+                        iconCanvas.height = this._iconSize;
+                        iconCanvas.style.width = this._iconSize + "px";
+                        iconCanvas.style.height = this._iconSize + "px";
+                        iconCanvas.dispatchEvent(new CustomEvent("repaint", {}));
+                        this.layout();
+                    }
+                }
                 makeLabel(label, icon, closeable) {
                     const labelElement = document.createElement("div");
                     labelElement.classList.add("TabPaneLabel");
-                    const tabIconElement = controls.Controls.createIconElement(icon);
+                    const tabIconElement = controls.Controls.createIconElement(icon, null, this._iconSize);
                     labelElement.appendChild(tabIconElement);
                     const textElement = document.createElement("span");
                     textElement.innerHTML = label;
@@ -3459,8 +3481,11 @@ var colibri;
             var viewers;
             (function (viewers) {
                 class EmptyCellRendererProvider {
+                    constructor(getRenderer) {
+                        this._getRenderer = (getRenderer !== null && getRenderer !== void 0 ? getRenderer : ((e) => new viewers.EmptyCellRenderer()));
+                    }
                     getCellRenderer(element) {
-                        return new viewers.EmptyCellRenderer();
+                        return this._getRenderer(element);
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();
@@ -6264,47 +6289,6 @@ var colibri;
                 }
                 ThemeExtension.POINT_ID = "colibri.ui.ide.ThemeExtension";
                 themes.ThemeExtension = ThemeExtension;
-            })(themes = ide.themes || (ide.themes = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var themes;
-            (function (themes) {
-                class ThemesDialog extends ui.controls.dialogs.ViewerDialog {
-                    constructor() {
-                        super(new ThemeViewer());
-                        this.setSize(200, 300);
-                    }
-                    create() {
-                        super.create();
-                        this.setTitle("Themes");
-                        this.addButton("Close", () => this.close());
-                    }
-                }
-                themes.ThemesDialog = ThemesDialog;
-                class ThemeViewer extends ui.controls.viewers.TreeViewer {
-                    constructor() {
-                        super("ThemeViewer");
-                        this.setLabelProvider(new ThemeLabelProvider());
-                        this.setContentProvider(new ui.controls.viewers.ArrayTreeContentProvider());
-                        this.setCellRendererProvider(new ui.controls.viewers.EmptyCellRendererProvider());
-                        this.setInput(ide.Workbench.getWorkbench()
-                            .getExtensionRegistry()
-                            .getExtensions(themes.ThemeExtension.POINT_ID)
-                            .map(ext => ext.getTheme()));
-                    }
-                }
-                class ThemeLabelProvider extends ui.controls.viewers.LabelProvider {
-                    getLabel(theme) {
-                        return theme.displayName;
-                    }
-                }
             })(themes = ide.themes || (ide.themes = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));

@@ -5,6 +5,7 @@ namespace phasereditor2d.ide {
 
     export const ICON_PLAY = "play";
     export const ICON_MENU = "menu";
+    export const ICON_THEME = "theme";
 
     export class IDEPlugin extends ide.Plugin {
 
@@ -43,7 +44,8 @@ namespace phasereditor2d.ide {
             reg.addExtension(
                 new colibri.ui.ide.IconLoaderExtension([
                     this.getIcon(ICON_PLAY),
-                    this.getIcon(ICON_MENU)
+                    this.getIcon(ICON_MENU),
+                    this.getIcon(ICON_THEME)
                 ]));
 
             // keys
@@ -63,6 +65,15 @@ namespace phasereditor2d.ide {
                 viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                 viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                 viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+            }));
+
+            reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                dark: true,
+                cssName: "darkPlus",
+                displayName: "Dark Plus",
+                viewerForeground: controls.Controls.DARK_THEME.viewerForeground,
+                viewerSelectionForeground: controls.Controls.DARK_THEME.viewerSelectionForeground,
+                viewerSelectionBackground: controls.Controls.DARK_THEME.viewerSelectionBackground,
             }));
         }
 

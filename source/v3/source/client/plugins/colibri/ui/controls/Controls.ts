@@ -128,33 +128,59 @@ namespace colibri.ui.controls {
             return Controls.getImage(url, name);
         }
 
-        static createIconElement(icon?: IImage, overIcon?: IImage) {
-            const element = document.createElement("canvas");
-            element.width = element.height = ICON_SIZE;
-            element.style.width = element.style.height = ICON_SIZE + "px";
+        static createIconElement(icon?: IImage, overIcon?: IImage, size: number = ICON_SIZE) {
 
-            const context = element.getContext("2d");
-            context.imageSmoothingEnabled = false;
+            const canvasElement = document.createElement("canvas");
+
+            canvasElement.width = canvasElement.height = size;
+            canvasElement.style.width = canvasElement.style.height = size + "px";
+
+            canvasElement.addEventListener("repaint", (e: CustomEvent) => {
+
+                let eventIcon = e.detail as IImage ?? icon;
+
+                const canvas = e.target as HTMLCanvasElement;
+
+                const context = canvas.getContext("2d");
+
+                context.imageSmoothingEnabled = false;
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (eventIcon) {
+
+                    const w = eventIcon.getWidth();
+                    const h = eventIcon.getHeight();
+
+                    if (w === ICON_SIZE && h === ICON_SIZE) {
+
+                        eventIcon.paint(context,
+                            (canvas.width - w) / 2, (canvas.height - h) / 2,
+                            w, h, false);
+
+                    } else {
+
+                        eventIcon.paint(context, 0, 0, canvas.width, canvas.height, true);
+                    }
+                }
+            });
+
 
             if (overIcon) {
 
-                element.addEventListener("mouseenter", e => {
-                    context.clearRect(0, 0, ICON_SIZE, ICON_SIZE);
-                    overIcon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
-                });
+                canvasElement.addEventListener("mouseenter",
+                    e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon }))
+                );
 
-                element.addEventListener("mouseleave", e => {
-                    context.clearRect(0, 0, ICON_SIZE, ICON_SIZE);
-                    icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
-                });
+                canvasElement.addEventListener("mouseleave",
+                    e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon }))
+                );
 
             }
 
-            if (icon) {
-                icon.paint(context, 0, 0, ICON_SIZE, ICON_SIZE, false);
-            }
+            canvasElement.dispatchEvent(new CustomEvent("repaint"));
 
-            return element;
+            return canvasElement;
         }
 
         static LIGHT_THEME: Theme = {

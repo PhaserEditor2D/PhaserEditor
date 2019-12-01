@@ -6,6 +6,7 @@ var phasereditor2d;
         var controls = colibri.ui.controls;
         ide_1.ICON_PLAY = "play";
         ide_1.ICON_MENU = "menu";
+        ide_1.ICON_THEME = "theme";
         class IDEPlugin extends ide.Plugin {
             constructor() {
                 super("phasereditor2d.ide");
@@ -21,7 +22,8 @@ var phasereditor2d;
                 // icons
                 reg.addExtension(new colibri.ui.ide.IconLoaderExtension([
                     this.getIcon(ide_1.ICON_PLAY),
-                    this.getIcon(ide_1.ICON_MENU)
+                    this.getIcon(ide_1.ICON_MENU),
+                    this.getIcon(ide_1.ICON_THEME)
                 ]));
                 // keys
                 reg.addExtension(new colibri.ui.ide.commands.CommandExtension(ide_1.ui.actions.IDEActions.registerCommands));
@@ -33,6 +35,14 @@ var phasereditor2d;
                     viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                     viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                     viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+                }));
+                reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                    dark: true,
+                    cssName: "darkPlus",
+                    displayName: "Dark Plus",
+                    viewerForeground: controls.Controls.DARK_THEME.viewerForeground,
+                    viewerSelectionForeground: controls.Controls.DARK_THEME.viewerSelectionForeground,
+                    viewerSelectionBackground: controls.Controls.DARK_THEME.viewerSelectionBackground,
                 }));
             }
             async openFirstWindow() {
@@ -258,14 +268,18 @@ var phasereditor2d;
             (function (actions) {
                 actions.CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
                 actions.CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
+                actions.CMD_EDITOR_TABS_SIZE_UP = "phasereditor2d.ide.ui.actions.EditorTabsSizeUp";
+                actions.CMD_EDITOR_TABS_SIZE_DOWN = "phasereditor2d.ide.ui.actions.EditorTabsSizeDown";
+                var commands = colibri.ui.ide.commands;
+                function isNotWelcomeWindowScope(args) {
+                    return !(args.activeWindow instanceof ui.WelcomeWindow);
+                }
                 class IDEActions {
                     static registerCommands(manager) {
                         // open project
                         manager.addCommandHelper(actions.CMD_OPEN_PROJECTS_DIALOG);
-                        manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, args => {
-                            return !(args.activeWindow instanceof ui.WelcomeWindow);
-                        }, args => new actions.OpenProjectsDialogAction().run());
-                        manager.addKeyBinding(actions.CMD_OPEN_PROJECTS_DIALOG, new colibri.ui.ide.commands.KeyMatcher({
+                        manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, isNotWelcomeWindowScope, args => new actions.OpenProjectsDialogAction().run());
+                        manager.addKeyBinding(actions.CMD_OPEN_PROJECTS_DIALOG, new commands.KeyMatcher({
                             control: true,
                             alt: true,
                             key: "P",
@@ -274,10 +288,23 @@ var phasereditor2d;
                         // theme dialog
                         manager.addCommandHelper(actions.CMD_SWITCH_THEME);
                         manager.addHandlerHelper(actions.CMD_SWITCH_THEME, args => true, args => new actions.OpenThemeDialogAction().run());
-                        manager.addKeyBinding(actions.CMD_SWITCH_THEME, new colibri.ui.ide.commands.KeyMatcher({
+                        manager.addKeyBinding(actions.CMD_SWITCH_THEME, new commands.KeyMatcher({
                             control: true,
                             key: "2",
                             filterInputElements: false
+                        }));
+                        // editor tabs size
+                        manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN);
+                        manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_UP);
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN, isNotWelcomeWindowScope, args => colibri.ui.ide.Workbench.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(-5));
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_UP, isNotWelcomeWindowScope, args => colibri.ui.ide.Workbench.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(5));
+                        manager.addKeyBinding(actions.CMD_EDITOR_TABS_SIZE_DOWN, new commands.KeyMatcher({
+                            control: true,
+                            key: "3"
+                        }));
+                        manager.addKeyBinding(actions.CMD_EDITOR_TABS_SIZE_UP, new commands.KeyMatcher({
+                            control: true,
+                            key: "4"
                         }));
                     }
                 }
@@ -374,7 +401,7 @@ var phasereditor2d;
                         });
                     }
                     run() {
-                        const dlg = new colibri.ui.ide.themes.ThemesDialog();
+                        const dlg = new ui.dialogs.ThemesDialog();
                         dlg.create();
                         dlg.getViewer().setSelection([controls.Controls.getTheme()]);
                         dlg.getViewer().addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
@@ -713,6 +740,49 @@ var phasereditor2d;
                     }
                 }
                 dialogs.ProjectsDialog = ProjectsDialog;
+            })(dialogs = ui.dialogs || (ui.dialogs = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var dialogs;
+            (function (dialogs) {
+                var controls = colibri.ui.controls;
+                class ThemesDialog extends controls.dialogs.ViewerDialog {
+                    constructor() {
+                        super(new ThemeViewer());
+                        this.setSize(200, 300);
+                    }
+                    create() {
+                        super.create();
+                        this.setTitle("Themes");
+                        this.addButton("Close", () => this.close());
+                    }
+                }
+                dialogs.ThemesDialog = ThemesDialog;
+                class ThemeViewer extends controls.viewers.TreeViewer {
+                    constructor() {
+                        super("ThemeViewer");
+                        this.setLabelProvider(new ThemeLabelProvider());
+                        this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
+                        this.setCellRendererProvider(new controls.viewers.EmptyCellRendererProvider(e => new controls.viewers.IconImageCellRenderer(ide.IDEPlugin.getInstance().getIcon(ide.ICON_THEME))));
+                        this.setInput(colibri.ui.ide.Workbench.getWorkbench()
+                            .getExtensionRegistry()
+                            .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
+                            .map(ext => ext.getTheme())
+                            .sort((a, b) => a.cssName.localeCompare(b.cssName)));
+                    }
+                }
+                class ThemeLabelProvider extends controls.viewers.LabelProvider {
+                    getLabel(theme) {
+                        return theme.displayName;
+                    }
+                }
             })(dialogs = ui.dialogs || (ui.dialogs = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));

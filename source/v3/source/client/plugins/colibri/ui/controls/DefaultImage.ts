@@ -81,6 +81,7 @@ namespace colibri.ui.controls {
         }
 
         static paintImageElement(context: CanvasRenderingContext2D, image: HTMLImageElement, x: number, y: number, w: number, h: number, center: boolean) {
+
             const naturalWidth = image.naturalWidth;
             const naturalHeight = image.naturalHeight;
 
@@ -132,9 +133,13 @@ namespace colibri.ui.controls {
         }
 
         paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, scrW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void {
+
             if (this._ready) {
+
                 DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
+
             } else {
+                
                 DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
             }
         }

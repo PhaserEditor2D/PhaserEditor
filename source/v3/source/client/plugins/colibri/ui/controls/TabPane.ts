@@ -58,9 +58,11 @@ namespace colibri.ui.controls {
     }
 
     export class TabPane extends Control {
+
         private _selectionHistoryLabelElement: HTMLElement[];
         private _titleBarElement: HTMLElement;
         private _contentAreaElement: HTMLElement;
+        private _iconSize: number;
 
         constructor(...classList: string[]) {
             super("div", "TabPane", ...classList);
@@ -74,6 +76,8 @@ namespace colibri.ui.controls {
             this._contentAreaElement = document.createElement("div");
             this._contentAreaElement.classList.add("TabPaneContentArea");
             this.getElement().appendChild(this._contentAreaElement);
+
+            this._iconSize = ICON_SIZE;
         }
 
         addTab(label: string, icon: IImage, content: Control, closeable = false): void {
@@ -93,12 +97,34 @@ namespace colibri.ui.controls {
             }
         }
 
+        incrementTabSize(amount: number) {
+
+            this._iconSize = Math.max(ICON_SIZE, this._iconSize + amount);
+
+            for (let i = 0; i < this._titleBarElement.children.length; i++) {
+
+                const label = this._titleBarElement.children.item(i);
+
+                const iconCanvas = label.firstChild as HTMLCanvasElement;
+
+                iconCanvas.width = this._iconSize;
+                iconCanvas.height = this._iconSize;
+
+                iconCanvas.style.width = this._iconSize + "px";
+                iconCanvas.style.height = this._iconSize + "px";
+
+                iconCanvas.dispatchEvent(new CustomEvent("repaint", {}));
+
+                this.layout();
+            }
+        }
+
         private makeLabel(label: string, icon: IImage, closeable: boolean): HTMLElement {
 
             const labelElement = document.createElement("div");
             labelElement.classList.add("TabPaneLabel");
 
-            const tabIconElement = Controls.createIconElement(icon);
+            const tabIconElement = Controls.createIconElement(icon, null, this._iconSize);
 
             labelElement.appendChild(tabIconElement);
 
@@ -195,7 +221,7 @@ namespace colibri.ui.controls {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
 
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                
+
                 const content2 = TabPane.getContentFromLabel(label);
 
                 if (content2 === content) {
@@ -204,7 +230,7 @@ namespace colibri.ui.controls {
                     const textElement = <HTMLElement>iconElement.nextSibling;
 
                     if (icon) {
-                    
+
                         const context = iconElement.getContext("2d");
                         context.clearRect(0, 0, iconElement.width, iconElement.height);
                         icon.paint(context, 0, 0, iconElement.width, iconElement.height, false);
@@ -224,7 +250,7 @@ namespace colibri.ui.controls {
             for (let i = 0; i < this._titleBarElement.childElementCount; i++) {
 
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                
+
                 const content2 = TabPane.getContentFromLabel(label);
 
                 if (content2 === content) {
@@ -259,7 +285,7 @@ namespace colibri.ui.controls {
             if (selectedLabel) {
 
                 if (selectedLabel === toSelectLabel) {
-                
+
                     this._selectionHistoryLabelElement.push(selectedLabel);
 
                     return;
@@ -297,13 +323,13 @@ namespace colibri.ui.controls {
         }
 
         getContentList(): controls.Control[] {
-            
+
             const list: controls.Control[] = [];
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {
 
                 const label = <HTMLElement>this._titleBarElement.children.item(i);
-                
+
                 const content = TabPane.getContentFromLabel(label);
 
                 list.push(content);

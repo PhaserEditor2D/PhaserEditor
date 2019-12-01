@@ -3,6 +3,7 @@ declare namespace phasereditor2d.ide {
     import controls = colibri.ui.controls;
     const ICON_PLAY = "play";
     const ICON_MENU = "menu";
+    const ICON_THEME = "theme";
     class IDEPlugin extends ide.Plugin {
         private static _instance;
         private _openingProject;
@@ -52,8 +53,11 @@ declare namespace phasereditor2d.ide.ui {
 declare namespace phasereditor2d.ide.ui.actions {
     const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
     const CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
+    const CMD_EDITOR_TABS_SIZE_UP = "phasereditor2d.ide.ui.actions.EditorTabsSizeUp";
+    const CMD_EDITOR_TABS_SIZE_DOWN = "phasereditor2d.ide.ui.actions.EditorTabsSizeDown";
+    import commands = colibri.ui.ide.commands;
     class IDEActions {
-        static registerCommands(manager: colibri.ui.ide.commands.CommandManager): void;
+        static registerCommands(manager: commands.CommandManager): void;
     }
 }
 declare namespace phasereditor2d.ide.ui.actions {
@@ -127,6 +131,13 @@ declare namespace phasereditor2d.ide.ui.dialogs {
         create(): Promise<void>;
         private openProject;
         private openNewProjectDialog;
+    }
+}
+declare namespace phasereditor2d.ide.ui.dialogs {
+    import controls = colibri.ui.controls;
+    class ThemesDialog extends controls.dialogs.ViewerDialog {
+        constructor();
+        create(): void;
     }
 }
 declare namespace phasereditor2d.ide.ui.viewers {

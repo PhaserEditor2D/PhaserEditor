@@ -12,7 +12,7 @@ namespace phasereditor2d.ide.ui.actions {
 
         run() {
 
-            const dlg = new colibri.ui.ide.themes.ThemesDialog();
+            const dlg = new dialogs.ThemesDialog();
 
             dlg.create();
 

@@ -78,7 +78,7 @@ declare namespace colibri.ui.controls {
         private static getImage;
         static openUrlInNewPage(url: string): void;
         static getIcon(name: string, baseUrl?: string): IImage;
-        static createIconElement(icon?: IImage, overIcon?: IImage): HTMLCanvasElement;
+        static createIconElement(icon?: IImage, overIcon?: IImage, size?: number): HTMLCanvasElement;
         static LIGHT_THEME: Theme;
         static DARK_THEME: Theme;
         static _theme: Theme;
@@ -655,8 +655,10 @@ declare namespace colibri.ui.controls {
         private _selectionHistoryLabelElement;
         private _titleBarElement;
         private _contentAreaElement;
+        private _iconSize;
         constructor(...classList: string[]);
         addTab(label: string, icon: IImage, content: Control, closeable?: boolean): void;
+        incrementTabSize(amount: number): void;
         private makeLabel;
         setTabCloseIcons(labelElement: HTMLElement, icon: IImage, overIcon: IImage): void;
         closeTab(content: controls.Control): void;
@@ -858,6 +860,8 @@ declare namespace colibri.ui.controls.viewers {
 }
 declare namespace colibri.ui.controls.viewers {
     class EmptyCellRendererProvider implements ICellRendererProvider {
+        private _getRenderer;
+        constructor(getRenderer?: (element: any) => ICellRenderer);
         getCellRenderer(element: any): ICellRenderer;
         preload(element: any): Promise<PreloadResult>;
     }
@@ -1558,12 +1562,6 @@ declare namespace colibri.ui.ide.themes {
         private _theme;
         constructor(theme: controls.Theme);
         getTheme(): controls.Theme;
-    }
-}
-declare namespace colibri.ui.ide.themes {
-    class ThemesDialog extends ui.controls.dialogs.ViewerDialog {
-        constructor();
-        create(): void;
     }
 }
 declare namespace colibri.ui.ide.undo {
