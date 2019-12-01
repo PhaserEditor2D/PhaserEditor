@@ -1127,6 +1127,7 @@ var phasereditor2d;
                         try {
                             await colibri.ui.ide.FileUtils.setFileString_async(this.getInput(), content);
                             this.setDirty(false);
+                            this.updateTitleIcon();
                         }
                         catch (e) {
                             console.error(e);
@@ -1188,6 +1189,26 @@ var phasereditor2d;
                         this._cameraManager = new editor.CameraManager(this);
                         this._selectionManager = new editor.SelectionManager(this);
                         this._actionManager = new editor.ActionManager(this);
+                        this.updateTitleIcon();
+                    }
+                    updateTitleIcon() {
+                        const img = this.getIcon();
+                        if (img) {
+                            img.preload().then(w => this.dispatchTitleUpdatedEvent());
+                        }
+                        else {
+                            this.dispatchTitleUpdatedEvent();
+                        }
+                    }
+                    getIcon() {
+                        const file = this.getInput();
+                        if (file) {
+                            const img = ui.SceneThumbnailCache.getInstance().getContent(file);
+                            if (img) {
+                                return img;
+                            }
+                        }
+                        return super.getIcon();
                     }
                     createEditorToolbar(parent) {
                         const manager = new controls.ToolbarManager(parent);
@@ -1218,6 +1239,9 @@ var phasereditor2d;
                         if (this._gameBooted) {
                             await this.readScene();
                         }
+                        this.updateTitleIcon();
+                        //TODO: a so ugly workaround!
+                        setTimeout(() => this.updateTitleIcon(), 1000);
                     }
                     async readScene() {
                         this._sceneRead = true;

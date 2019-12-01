@@ -74,6 +74,8 @@ namespace phasereditor2d.scene.ui.editor {
 
                 this.setDirty(false);
 
+                this.updateTitleIcon();
+
             } catch (e) {
                 console.error(e);
             }
@@ -161,6 +163,38 @@ namespace phasereditor2d.scene.ui.editor {
             this._selectionManager = new SelectionManager(this);
             this._actionManager = new ActionManager(this);
 
+
+            this.updateTitleIcon();
+        }
+
+        private updateTitleIcon() {
+
+            const img = this.getIcon();
+
+            if (img) {
+
+                img.preload().then(w => this.dispatchTitleUpdatedEvent())
+
+            } else {
+
+                this.dispatchTitleUpdatedEvent();
+            }
+        }
+
+        getIcon() {
+
+            const file = this.getInput();
+
+            if (file) {
+
+                const img = SceneThumbnailCache.getInstance().getContent(file);
+
+                if (img) {
+                    return img;
+                }
+            }
+
+            return super.getIcon();
         }
 
         createEditorToolbar(parent: HTMLElement) {
@@ -197,11 +231,17 @@ namespace phasereditor2d.scene.ui.editor {
         }
 
         async setInput(file: colibri.core.io.FilePath) {
+
             super.setInput(file);
 
             if (this._gameBooted) {
                 await this.readScene();
             }
+
+            this.updateTitleIcon();
+
+            //TODO: a so ugly workaround!
+            setTimeout(() => this.updateTitleIcon(), 1000);
         }
 
         private async readScene() {

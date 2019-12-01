@@ -60,11 +60,11 @@ namespace colibri.ui.ide {
             this.dispatchTitleUpdatedEvent();
         }
 
-        protected dispatchTitleUpdatedEvent() {
+        dispatchTitleUpdatedEvent() {
             this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
         }
 
-        getIcon() {
+        getIcon() : controls.IImage {
             return this._icon;
         }
 

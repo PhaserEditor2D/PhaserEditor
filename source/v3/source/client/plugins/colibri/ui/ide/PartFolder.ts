@@ -37,12 +37,22 @@ namespace colibri.ui.ide {
 
                 part.onPartShown();
             });
+
+            this.addEventListener(controls.EVENT_TAB_LABEL_RESIZED, (e: CustomEvent) => {
+
+                console.log("resized");
+
+                for (const part of this.getParts()) {
+
+                    part.dispatchTitleUpdatedEvent();
+                }
+            });
         }
 
         addPart(part: Part, closeable = false): void {
 
             part.addEventListener(EVENT_PART_TITLE_UPDATED, (e: CustomEvent) => {
-                
+
                 this.setTabTitle(part, part.getTitle(), part.getIcon());
             });
 
@@ -51,7 +61,7 @@ namespace colibri.ui.ide {
             part.setPartFolder(this);
         }
 
-        getParts() : Part[] {
+        getParts(): Part[] {
             return this.getContentList() as Part[];
         }
     }

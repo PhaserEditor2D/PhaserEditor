@@ -2496,6 +2496,7 @@ var colibri;
         (function (controls) {
             controls.EVENT_TAB_CLOSED = "tabClosed";
             controls.EVENT_TAB_SELECTED = "tabSelected";
+            controls.EVENT_TAB_LABEL_RESIZED = "tabResized";
             class CloseIconManager {
                 constructor() {
                     this._element = document.createElement("canvas");
@@ -2567,6 +2568,7 @@ var colibri;
                         iconCanvas.dispatchEvent(new CustomEvent("repaint", {}));
                         this.layout();
                     }
+                    this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_LABEL_RESIZED, {}));
                 }
                 makeLabel(label, icon, closeable) {
                     const labelElement = document.createElement("div");
@@ -5042,6 +5044,12 @@ var colibri;
                         const part = e.detail;
                         ide.Workbench.getWorkbench().setActivePart(part);
                         part.onPartShown();
+                    });
+                    this.addEventListener(ui.controls.EVENT_TAB_LABEL_RESIZED, (e) => {
+                        console.log("resized");
+                        for (const part of this.getParts()) {
+                            part.dispatchTitleUpdatedEvent();
+                        }
                     });
                 }
                 addPart(part, closeable = false) {

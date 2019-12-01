@@ -651,6 +651,7 @@ declare namespace colibri.ui.controls {
 declare namespace colibri.ui.controls {
     const EVENT_TAB_CLOSED = "tabClosed";
     const EVENT_TAB_SELECTED = "tabSelected";
+    const EVENT_TAB_LABEL_RESIZED = "tabResized";
     class TabPane extends Control {
         private _selectionHistoryLabelElement;
         private _titleBarElement;
@@ -1184,7 +1185,7 @@ declare namespace colibri.ui.ide {
         getTitle(): string;
         setTitle(title: string): void;
         setIcon(icon: controls.IImage): void;
-        protected dispatchTitleUpdatedEvent(): void;
+        dispatchTitleUpdatedEvent(): void;
         getIcon(): controls.IImage;
         getId(): string;
         setSelection(selection: any[], notify?: boolean): void;

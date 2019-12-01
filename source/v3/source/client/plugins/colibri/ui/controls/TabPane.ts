@@ -2,6 +2,7 @@ namespace colibri.ui.controls {
 
     export const EVENT_TAB_CLOSED = "tabClosed";
     export const EVENT_TAB_SELECTED = "tabSelected";
+    export const EVENT_TAB_LABEL_RESIZED = "tabResized";
 
     class CloseIconManager {
 
@@ -117,6 +118,8 @@ namespace colibri.ui.controls {
 
                 this.layout();
             }
+
+            this.dispatchEvent(new CustomEvent(EVENT_TAB_LABEL_RESIZED, {}));
         }
 
         private makeLabel(label: string, icon: IImage, closeable: boolean): HTMLElement {

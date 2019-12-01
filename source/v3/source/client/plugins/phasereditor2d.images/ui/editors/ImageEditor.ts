@@ -93,6 +93,7 @@ namespace phasereditor2d.images.ui.editors {
             }
 
             const img = ide.Workbench.getWorkbench().getFileImage(file);
+            
             return img;
         }
 
