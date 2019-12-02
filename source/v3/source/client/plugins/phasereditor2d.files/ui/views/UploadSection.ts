@@ -16,24 +16,21 @@ namespace phasereditor2d.files.ui.views {
             comp.classList.add("UploadSection");
             comp.style.display = "grid";
             comp.style.gridTemplateColumns = "1fr";
-            comp.style.gridTemplateRows = "auto 1fr auto";
+            comp.style.gridTemplateRows = "auto auto 1fr";
             comp.style.gridGap = "5px";
 
             const filesInput = document.createElement("input");
-
+            const browseBtn = document.createElement("button");
             const uploadBtn = document.createElement("button");
-
             const filesViewer = new controls.viewers.TreeViewer();
             const filesFilteredViewer = new ide.properties.FilteredViewerInPropertySection(this.getPage(), filesViewer);
 
             {
                 // browse button
 
-                const browseBtn = document.createElement("button");
                 browseBtn.innerText = "Browse";
                 browseBtn.style.alignItems = "start";
                 browseBtn.addEventListener("click", e => filesInput.click());
-                comp.appendChild(browseBtn);
             }
 
             {
@@ -43,8 +40,6 @@ namespace phasereditor2d.files.ui.views {
                 filesViewer.setCellRendererProvider(new viewers.InputFileCellRendererProvider());
                 filesViewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                 filesViewer.setInput([]);
-
-                comp.appendChild(filesFilteredViewer.getElement());
 
                 this.addUpdater(() => {
 
@@ -74,8 +69,6 @@ namespace phasereditor2d.files.ui.views {
 
                     uploadBtn.disabled = input.length === 0;
                 });
-
-                comp.appendChild(filesInput);
 
                 this.addUpdater(() => {
                     filesInput.value = "";
@@ -161,10 +154,13 @@ namespace phasereditor2d.files.ui.views {
                             view.getViewer().repaint();
                         }
                     });
-
-                    comp.appendChild(uploadBtn);
                 }
             }
+
+            comp.appendChild(browseBtn);
+            comp.appendChild(uploadBtn);
+            comp.appendChild(filesFilteredViewer.getElement());
+            comp.appendChild(filesInput);
         }
 
         canEdit(obj: any, n: number): boolean {
