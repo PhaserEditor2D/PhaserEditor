@@ -21,7 +21,7 @@ namespace phasereditor2d.ide.ui.dialogs {
 
             viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
 
-            const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+            const activeWindow = colibri.Platform.getWorkbench().getActiveWindow();
 
             this.setTitle("Projects");
 

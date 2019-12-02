@@ -6,7 +6,7 @@ namespace phasereditor2d.files.ui.dialogs {
 
             const folder = await colibri.ui.ide.FileUtils.createFolder_async(container, name);
 
-            const window = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+            const window = colibri.Platform.getWorkbench().getActiveWindow();
 
             const view = window.getView(views.FilesView.ID) as views.FilesView;
 

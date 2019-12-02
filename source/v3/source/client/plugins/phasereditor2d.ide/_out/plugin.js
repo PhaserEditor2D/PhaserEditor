@@ -31,7 +31,7 @@ var phasereditor2d;
                     dark: false,
                     id: "lightBlue",
                     classList: ["lightBlue"],
-                    displayName: "Light Sky",
+                    displayName: "Light Blue",
                     viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                     viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                     viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
@@ -57,7 +57,7 @@ var phasereditor2d;
             }
             async openFirstWindow() {
                 this.restoreTheme();
-                const wb = colibri.ui.ide.Workbench.getWorkbench();
+                const wb = colibri.Platform.getWorkbench();
                 wb.addEventListener(colibri.ui.ide.EVENT_PROJECT_OPENED, e => {
                     wb.getGlobalPreferences().setValue("defaultProjectData", {
                         "projectName": wb.getFileStorage().getRoot().getName()
@@ -87,7 +87,7 @@ var phasereditor2d;
                 dlg.setProgress(0);
                 const monitor = new controls.dialogs.ProgressDialogMonitor(dlg);
                 try {
-                    const wb = colibri.ui.ide.Workbench.getWorkbench();
+                    const wb = colibri.Platform.getWorkbench();
                     {
                         const win = wb.getActiveWindow();
                         if (win instanceof ide_1.ui.DesignWindow) {
@@ -109,7 +109,7 @@ var phasereditor2d;
                 }
             }
             validateIndexFile() {
-                const root = colibri.ui.ide.Workbench.getWorkbench().getFileStorage().getRoot();
+                const root = colibri.Platform.getWorkbench().getFileStorage().getRoot();
                 const indexFile = root.getFile("index.html");
                 if (!indexFile || indexFile.isFolder()) {
                     alert("Missing 'index.html' file at the root folder.");
@@ -120,13 +120,13 @@ var phasereditor2d;
             }
             setTheme(theme) {
                 controls.Controls.setTheme(theme);
-                const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+                const prefs = colibri.Platform.getWorkbench().getGlobalPreferences();
                 prefs.setValue("phasereditor2d.ide.theme", {
                     theme: theme.id
                 });
             }
             restoreTheme() {
-                const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+                const prefs = colibri.Platform.getWorkbench().getGlobalPreferences();
                 const themeData = prefs.getValue("phasereditor2d.ide.theme");
                 let theme = null;
                 if (themeData) {
@@ -313,8 +313,8 @@ var phasereditor2d;
                         // editor tabs size
                         manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN);
                         manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_UP);
-                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN, isNotWelcomeWindowScope, args => colibri.ui.ide.Workbench.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(-5));
-                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_UP, isNotWelcomeWindowScope, args => colibri.ui.ide.Workbench.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(5));
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(-5));
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_UP, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(5));
                         manager.addKeyBinding(actions.CMD_EDITOR_TABS_SIZE_DOWN, new commands.KeyMatcher({
                             control: true,
                             key: "3"
@@ -386,7 +386,7 @@ var phasereditor2d;
                     constructor() {
                         super({
                             // text: "Open Project",
-                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
+                            icon: colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER)
                         });
                     }
                     run() {
@@ -477,7 +477,7 @@ var phasereditor2d;
                         });
                     }
                     run() {
-                        ide.IDEPlugin.getInstance().ideOpenProject(colibri.ui.ide.Workbench.getWorkbench().getProjectRoot().getName());
+                        ide.IDEPlugin.getInstance().ideOpenProject(colibri.Platform.getWorkbench().getProjectRoot().getName());
                     }
                 }
                 actions.ReloadProjectAction = ReloadProjectAction;
@@ -702,7 +702,7 @@ var phasereditor2d;
                 }
                 class TemplatesCellRendererProvider {
                     getCellRenderer(element) {
-                        return new controls.viewers.IconImageCellRenderer(colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER));
+                        return new controls.viewers.IconImageCellRenderer(colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER));
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();
@@ -753,7 +753,7 @@ var phasereditor2d;
                         viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         viewer.setInput([]);
                         viewer.addEventListener(controls.viewers.EVENT_OPEN_ITEM, e => this.openProject());
-                        const activeWindow = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        const activeWindow = colibri.Platform.getWorkbench().getActiveWindow();
                         this.setTitle("Projects");
                         this.addButton("New Project", () => this.openNewProjectDialog());
                         {
@@ -839,7 +839,7 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 class ProjectCellRendererProvider {
                     getCellRenderer(element) {
-                        return new controls.viewers.IconImageCellRenderer(colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER));
+                        return new controls.viewers.IconImageCellRenderer(colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER));
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();

@@ -32,7 +32,7 @@ namespace phasereditor2d.files.ui.dialogs {
             dlg.setFileContent(this._fileContent);
             dlg.setFileCreatedCallback(async (file) => {
 
-                const wb = colibri.ui.ide.Workbench.getWorkbench();
+                const wb = colibri.Platform.getWorkbench();
 
                 const reg = wb.getContentTypeRegistry();
 

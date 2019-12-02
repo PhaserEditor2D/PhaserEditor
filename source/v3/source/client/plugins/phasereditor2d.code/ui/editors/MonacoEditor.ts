@@ -19,7 +19,7 @@ namespace phasereditor2d.code.ui.editors {
 
             if (input instanceof io.FilePath) {
 
-                const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                const contentType = colibri.Platform.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
 
                 return this._contentType === contentType;
             }

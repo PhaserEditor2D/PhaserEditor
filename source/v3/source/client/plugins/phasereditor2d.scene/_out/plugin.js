@@ -1098,7 +1098,7 @@ var phasereditor2d;
                     }
                     acceptInput(input) {
                         if (input instanceof io.FilePath) {
-                            const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                            const contentType = colibri.Platform.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                             return contentType === scene.core.CONTENT_TYPE_SCENE;
                         }
                         return false;
@@ -1132,7 +1132,7 @@ var phasereditor2d;
                         catch (e) {
                             console.error(e);
                         }
-                        const win = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        const win = colibri.Platform.getWorkbench().getActiveWindow();
                         win.saveWindowState();
                     }
                     saveState(state) {
@@ -1229,7 +1229,7 @@ var phasereditor2d;
                             callback: () => { }
                         }));
                         manager.add(new controls.Action({
-                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
+                            icon: colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
                             callback: () => { }
                         }));
                         return manager;

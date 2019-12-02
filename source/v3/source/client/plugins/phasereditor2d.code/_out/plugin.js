@@ -104,7 +104,7 @@ var phasereditor2d;
                     }
                     acceptInput(input) {
                         if (input instanceof io.FilePath) {
-                            const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                            const contentType = colibri.Platform.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                             return this._contentType === contentType;
                         }
                         return false;
@@ -339,7 +339,7 @@ var phasereditor2d;
                         }
                         this._started = true;
                         this.updateExtraLibs();
-                        colibri.ui.ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => this.onStorageChanged(change));
+                        colibri.Platform.getWorkbench().getFileStorage().addChangeListener(change => this.onStorageChanged(change));
                     }
                     onStorageChanged(change) {
                         console.info(`MonacoModelsManager: storage changed.`);

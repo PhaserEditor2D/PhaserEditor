@@ -103,7 +103,7 @@ namespace colibri.ui.ide {
 
                 let activeEditor: EditorPart = null;
 
-                const wb = colibri.ui.ide.Workbench.getWorkbench();
+                const wb = colibri.Platform.getWorkbench();
 
                 for (const fileData of restoreEditorData.fileDataList) {
 

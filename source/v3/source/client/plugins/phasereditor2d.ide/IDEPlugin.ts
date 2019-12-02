@@ -62,7 +62,7 @@ namespace phasereditor2d.ide {
                 dark: false,
                 id: "lightBlue",
                 classList: ["lightBlue"],
-                displayName: "Light Sky",
+                displayName: "Light Blue",
                 viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                 viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                 viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
@@ -93,7 +93,7 @@ namespace phasereditor2d.ide {
 
             this.restoreTheme();
 
-            const wb = colibri.ui.ide.Workbench.getWorkbench();
+            const wb = colibri.Platform.getWorkbench();
 
             wb.addEventListener(colibri.ui.ide.EVENT_PROJECT_OPENED, e => {
 
@@ -143,7 +143,7 @@ namespace phasereditor2d.ide {
 
             try {
 
-                const wb = colibri.ui.ide.Workbench.getWorkbench();
+                const wb = colibri.Platform.getWorkbench();
 
                 {
                     const win = wb.getActiveWindow();
@@ -178,7 +178,7 @@ namespace phasereditor2d.ide {
 
         private validateIndexFile() {
 
-            const root = colibri.ui.ide.Workbench.getWorkbench().getFileStorage().getRoot();
+            const root = colibri.Platform.getWorkbench().getFileStorage().getRoot();
 
             const indexFile = root.getFile("index.html");
 
@@ -196,7 +196,7 @@ namespace phasereditor2d.ide {
 
             controls.Controls.setTheme(theme);
 
-            const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+            const prefs = colibri.Platform.getWorkbench().getGlobalPreferences();
 
             prefs.setValue("phasereditor2d.ide.theme", {
                 theme: theme.id
@@ -206,7 +206,7 @@ namespace phasereditor2d.ide {
 
         restoreTheme() {
 
-            const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
+            const prefs = colibri.Platform.getWorkbench().getGlobalPreferences();
 
             const themeData = prefs.getValue("phasereditor2d.ide.theme");
 

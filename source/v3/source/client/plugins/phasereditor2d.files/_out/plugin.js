@@ -452,7 +452,7 @@ var phasereditor2d;
                         viewer.setLabelProvider(new files.ui.viewers.FileLabelProvider());
                         viewer.setContentProvider(new files.ui.viewers.FileTreeContentProvider(true));
                         viewer.setCellRendererProvider(new files.ui.viewers.FileCellRendererProvider());
-                        viewer.setInput(colibri.ui.ide.Workbench.getWorkbench().getProjectRoot());
+                        viewer.setInput(colibri.Platform.getWorkbench().getProjectRoot());
                         viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                             this.validate();
                         });
@@ -493,13 +493,13 @@ var phasereditor2d;
                         return this._icon;
                     }
                     getInitialFileLocation() {
-                        return colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                        return colibri.Platform.getWorkbench().getProjectRoot();
                     }
                     findInitialFileLocationBasedOnContentType(contentType) {
-                        const root = colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+                        const root = colibri.Platform.getWorkbench().getProjectRoot();
                         const files = [];
                         root.flatTree(files, false);
-                        const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry();
+                        const reg = colibri.Platform.getWorkbench().getContentTypeRegistry();
                         const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
                         if (targetFiles.length > 0) {
                             targetFiles.sort((a, b) => {
@@ -537,7 +537,7 @@ var phasereditor2d;
                         dlg.setFileExtension(this._fileExtension);
                         dlg.setFileContent(this._fileContent);
                         dlg.setFileCreatedCallback(async (file) => {
-                            const wb = colibri.ui.ide.Workbench.getWorkbench();
+                            const wb = colibri.Platform.getWorkbench();
                             const reg = wb.getContentTypeRegistry();
                             await reg.preload(file);
                             wb.openEditor(file);
@@ -598,7 +598,7 @@ var phasereditor2d;
                 class NewFolderDialog extends dialogs.BaseNewFileDialog {
                     async createFile(container, name) {
                         const folder = await colibri.ui.ide.FileUtils.createFolder_async(container, name);
-                        const window = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow();
+                        const window = colibri.Platform.getWorkbench().getActiveWindow();
                         const view = window.getView(ui.views.FilesView.ID);
                         view.getViewer().reveal(folder);
                         view.getViewer().setSelection([folder]);
@@ -622,7 +622,7 @@ var phasereditor2d;
                 class NewFolderExtension extends dialogs.NewFileExtension {
                     constructor() {
                         super({
-                            icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
+                            icon: colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
                             initialFileName: "folder",
                             wizardName: "Folder"
                         });
@@ -806,7 +806,7 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 class InputFileCellRendererProvider {
                     getCellRenderer(element) {
-                        return new controls.viewers.IconImageCellRenderer(colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FILE));
+                        return new controls.viewers.IconImageCellRenderer(colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FILE));
                     }
                     preload(element) {
                         return controls.Controls.resolveNothingLoaded();

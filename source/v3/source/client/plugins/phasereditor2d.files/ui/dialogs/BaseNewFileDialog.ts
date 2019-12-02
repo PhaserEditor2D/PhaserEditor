@@ -169,7 +169,7 @@ namespace phasereditor2d.files.ui.dialogs {
             viewer.setLabelProvider(new files.ui.viewers.FileLabelProvider());
             viewer.setContentProvider(new files.ui.viewers.FileTreeContentProvider(true));
             viewer.setCellRendererProvider(new files.ui.viewers.FileCellRendererProvider());
-            viewer.setInput(colibri.ui.ide.Workbench.getWorkbench().getProjectRoot());
+            viewer.setInput(colibri.Platform.getWorkbench().getProjectRoot());
 
             viewer.addEventListener(controls.EVENT_SELECTION_CHANGED, e => {
                 this.validate();

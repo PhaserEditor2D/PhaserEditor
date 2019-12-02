@@ -13,7 +13,7 @@ namespace phasereditor2d.ide.ui.actions {
         run() {
             
             IDEPlugin.getInstance().ideOpenProject(
-                colibri.ui.ide.Workbench.getWorkbench().getProjectRoot().getName()
+                colibri.Platform.getWorkbench().getProjectRoot().getName()
             );
         }
     }

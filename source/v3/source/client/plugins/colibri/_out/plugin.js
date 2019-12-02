@@ -5910,7 +5910,7 @@ var colibri;
                     }
                     if (restoreEditorData) {
                         let activeEditor = null;
-                        const wb = colibri.ui.ide.Workbench.getWorkbench();
+                        const wb = colibri.Platform.getWorkbench();
                         for (const fileData of restoreEditorData.fileDataList) {
                             const fileName = fileData.fileName;
                             const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);

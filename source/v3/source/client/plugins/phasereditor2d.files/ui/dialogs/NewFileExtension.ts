@@ -38,18 +38,18 @@ namespace phasereditor2d.files.ui.dialogs {
         }
 
         getInitialFileLocation(): io.FilePath {
-            return colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+            return colibri.Platform.getWorkbench().getProjectRoot();
         }
 
         findInitialFileLocationBasedOnContentType(contentType: string) {
 
-            const root = colibri.ui.ide.Workbench.getWorkbench().getProjectRoot();
+            const root = colibri.Platform.getWorkbench().getProjectRoot();
 
             const files: io.FilePath[] = [];
 
             root.flatTree(files, false);
 
-            const reg = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry()
+            const reg = colibri.Platform.getWorkbench().getContentTypeRegistry()
 
             const targetFiles = files.filter(file => contentType === reg.getCachedContentType(file));
 

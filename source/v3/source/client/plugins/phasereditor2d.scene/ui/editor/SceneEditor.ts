@@ -13,7 +13,7 @@ namespace phasereditor2d.scene.ui.editor {
         acceptInput(input: any): boolean {
 
             if (input instanceof io.FilePath) {
-                const contentType = colibri.ui.ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
+                const contentType = colibri.Platform.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
                 return contentType === core.CONTENT_TYPE_SCENE;
             }
 
@@ -80,7 +80,7 @@ namespace phasereditor2d.scene.ui.editor {
                 console.error(e);
             }
 
-            const win = colibri.ui.ide.Workbench.getWorkbench().getActiveWindow() as ide.ui.DesignWindow;
+            const win = colibri.Platform.getWorkbench().getActiveWindow() as ide.ui.DesignWindow;
 
             win.saveWindowState();
         }
@@ -222,7 +222,7 @@ namespace phasereditor2d.scene.ui.editor {
             }));
 
             manager.add(new controls.Action({
-                icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
+                icon: colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_PLUS),
                 callback: () => { }
             }));
 

@@ -40,7 +40,7 @@ namespace phasereditor2d.code.ui.editors {
 
             this.updateExtraLibs();
 
-            colibri.ui.ide.Workbench.getWorkbench().getFileStorage().addChangeListener(change => this.onStorageChanged(change));
+            colibri.Platform.getWorkbench().getFileStorage().addChangeListener(change => this.onStorageChanged(change));
 
         }
 

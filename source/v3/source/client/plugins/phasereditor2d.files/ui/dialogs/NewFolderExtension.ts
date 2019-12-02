@@ -4,7 +4,7 @@ namespace phasereditor2d.files.ui.dialogs {
 
         constructor() {
             super({
-                icon: colibri.ui.ide.Workbench.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
+                icon: colibri.Platform.getWorkbench().getWorkbenchIcon(colibri.ui.ide.ICON_FOLDER),
                 initialFileName: "folder",
                 wizardName: "Folder"
             });
