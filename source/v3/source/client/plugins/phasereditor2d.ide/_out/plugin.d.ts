@@ -79,6 +79,7 @@ declare namespace phasereditor2d.ide.ui.actions {
     class OpenThemeDialogAction extends controls.Action {
         constructor();
         run(): void;
+        static commandTest(args: colibri.ui.ide.commands.CommandArgs): boolean;
     }
 }
 declare namespace phasereditor2d.ide.ui.actions {

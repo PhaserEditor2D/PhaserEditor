@@ -304,6 +304,10 @@ namespace colibri.ui.ide {
             return this._commandManager;
         }
 
+        getActiveDialog() {
+            return controls.dialogs.Dialog.getActiveDialog();
+        }
+
         getActiveWindow() {
             return this._activeWindow;
         }

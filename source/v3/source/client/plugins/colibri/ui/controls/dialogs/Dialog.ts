@@ -60,6 +60,10 @@ namespace colibri.ui.controls.dialogs {
             Dialog._dialogs.push(this);
         }
 
+        static getActiveDialog() {
+            return Dialog._dialogs[Dialog._dialogs.length - 1];
+        }
+
         getDialogBackgroundElement() {
             return this._containerElement;
         }

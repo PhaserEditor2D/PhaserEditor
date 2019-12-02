@@ -278,7 +278,7 @@ var phasereditor2d;
                     static registerCommands(manager) {
                         // open project
                         manager.addCommandHelper(actions.CMD_OPEN_PROJECTS_DIALOG);
-                        manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, isNotWelcomeWindowScope, args => new actions.OpenProjectsDialogAction().run());
+                        manager.addHandlerHelper(actions.CMD_OPEN_PROJECTS_DIALOG, args => isNotWelcomeWindowScope(args) && !args.activeDialog, args => new actions.OpenProjectsDialogAction().run());
                         manager.addKeyBinding(actions.CMD_OPEN_PROJECTS_DIALOG, new commands.KeyMatcher({
                             control: true,
                             alt: true,
@@ -287,7 +287,7 @@ var phasereditor2d;
                         }));
                         // theme dialog
                         manager.addCommandHelper(actions.CMD_SWITCH_THEME);
-                        manager.addHandlerHelper(actions.CMD_SWITCH_THEME, args => true, args => new actions.OpenThemeDialogAction().run());
+                        manager.addHandlerHelper(actions.CMD_SWITCH_THEME, actions.OpenThemeDialogAction.commandTest, args => new actions.OpenThemeDialogAction().run());
                         manager.addKeyBinding(actions.CMD_SWITCH_THEME, new commands.KeyMatcher({
                             control: true,
                             key: "2",
@@ -410,6 +410,9 @@ var phasereditor2d;
                                 ide.IDEPlugin.getInstance().setTheme(theme);
                             }
                         });
+                    }
+                    static commandTest(args) {
+                        return !(args.activeDialog instanceof ui.dialogs.ThemesDialog);
                     }
                 }
                 actions.OpenThemeDialogAction = OpenThemeDialogAction;

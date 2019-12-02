@@ -27,5 +27,9 @@ namespace phasereditor2d.ide.ui.actions {
                 }
             });
         }
+
+        static commandTest(args : colibri.ui.ide.commands.CommandArgs) {
+            return !(args.activeDialog instanceof dialogs.ThemesDialog);
+        }
     }
 }

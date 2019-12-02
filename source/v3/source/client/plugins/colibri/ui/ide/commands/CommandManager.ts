@@ -79,7 +79,8 @@ namespace colibri.ui.ide.commands {
                 wb.getActivePart(),
                 wb.getActiveEditor(),
                 wb.getActiveElement(),
-                wb.getActiveWindow()
+                wb.getActiveWindow(),
+                wb.getActiveDialog()
             );
         }
 

@@ -8,13 +8,6 @@ namespace phasereditor2d.files.ui.actions {
         return args.activePart instanceof views.FilesView;
     }
 
-    function isOpenProjectScope(args: colibri.ui.ide.commands.CommandArgs) {
-
-        const root = colibri.ui.ide.FileUtils.getRoot();
-
-        return root !== null;
-    }
-
     export class FilesViewCommands {
 
         static registerCommands(manager: colibri.ui.ide.commands.CommandManager) {
@@ -24,7 +17,7 @@ namespace phasereditor2d.files.ui.actions {
             manager.addCommandHelper(CMD_NEW_FILE);
 
             manager.addHandlerHelper(CMD_NEW_FILE,
-                args => isOpenProjectScope(args),
+                OpenNewFileDialogAction.commandTest,
                 args => {
                     new OpenNewFileDialogAction().run()
                 });

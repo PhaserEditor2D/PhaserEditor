@@ -530,6 +530,9 @@ var colibri;
                 getCommandManager() {
                     return this._commandManager;
                 }
+                getActiveDialog() {
+                    return ui.controls.dialogs.Dialog.getActiveDialog();
+                }
                 getActiveWindow() {
                     return this._activeWindow;
                 }
@@ -2861,6 +2864,9 @@ var colibri;
                             });
                         }
                         Dialog._dialogs.push(this);
+                    }
+                    static getActiveDialog() {
+                        return Dialog._dialogs[Dialog._dialogs.length - 1];
                     }
                     getDialogBackgroundElement() {
                         return this._containerElement;
@@ -6097,11 +6103,12 @@ var colibri;
             var commands;
             (function (commands) {
                 class CommandArgs {
-                    constructor(activePart, activeEditor, activeElement, activeWindow) {
+                    constructor(activePart, activeEditor, activeElement, activeWindow, activeDialog) {
                         this.activePart = activePart;
                         this.activeEditor = activeEditor;
                         this.activeElement = activeElement;
                         this.activeWindow = activeWindow;
+                        this.activeDialog = activeDialog;
                     }
                 }
                 commands.CommandArgs = CommandArgs;
@@ -6212,7 +6219,7 @@ var colibri;
                     }
                     makeArgs() {
                         const wb = ide.Workbench.getWorkbench();
-                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement(), wb.getActiveWindow());
+                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement(), wb.getActiveWindow(), wb.getActiveDialog());
                     }
                     getCommand(id) {
                         const command = this._commandIdMap.get(id);

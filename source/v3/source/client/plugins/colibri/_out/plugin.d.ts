@@ -136,6 +136,7 @@ declare namespace colibri.ui.ide {
         getFileStringCache(): core.io.FileStringCache;
         getFileStorage(): core.io.IFileStorage;
         getCommandManager(): commands.CommandManager;
+        getActiveDialog(): controls.dialogs.Dialog;
         getActiveWindow(): WorkbenchWindow;
         getActiveElement(): HTMLElement;
         getActivePart(): Part;
@@ -721,6 +722,7 @@ declare namespace colibri.ui.controls.dialogs {
         private _parentDialog;
         private _closeWithEscapeKey;
         constructor(...classList: string[]);
+        static getActiveDialog(): Dialog;
         getDialogBackgroundElement(): HTMLElement;
         setCloseWithEscapeKey(closeWithEscapeKey: boolean): void;
         isCloseWithEscapeKey(): boolean;
@@ -1511,7 +1513,8 @@ declare namespace colibri.ui.ide.commands {
         readonly activeEditor: EditorPart;
         readonly activeElement: HTMLElement;
         readonly activeWindow: ide.WorkbenchWindow;
-        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement, activeWindow: ide.WorkbenchWindow);
+        readonly activeDialog: controls.dialogs.Dialog;
+        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement, activeWindow: ide.WorkbenchWindow, activeDialog: controls.dialogs.Dialog);
     }
 }
 declare namespace colibri.ui.ide.commands {

@@ -22,7 +22,7 @@ namespace phasereditor2d.ide.ui.actions {
             manager.addCommandHelper(CMD_OPEN_PROJECTS_DIALOG);
 
             manager.addHandlerHelper(CMD_OPEN_PROJECTS_DIALOG,
-                isNotWelcomeWindowScope,
+                args => isNotWelcomeWindowScope(args) && !args.activeDialog,
                 args => new OpenProjectsDialogAction().run());
 
             manager.addKeyBinding(CMD_OPEN_PROJECTS_DIALOG, new commands.KeyMatcher({
@@ -37,7 +37,7 @@ namespace phasereditor2d.ide.ui.actions {
             manager.addCommandHelper(CMD_SWITCH_THEME);
 
             manager.addHandlerHelper(CMD_SWITCH_THEME,
-                args => true,
+                actions.OpenThemeDialogAction.commandTest,
                 args => new actions.OpenThemeDialogAction().run()
             );
 

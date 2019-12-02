@@ -4,7 +4,7 @@ namespace phasereditor2d.files.ui.actions {
     import io = colibri.core.io;
 
     export class OpenNewFileDialogAction extends controls.Action {
-
+        
         private _initialLocation: io.FilePath;
 
         constructor() {
@@ -12,6 +12,13 @@ namespace phasereditor2d.files.ui.actions {
                 //text: "New File",
                 icon: FilesPlugin.getInstance().getIcon(ICON_NEW_FILE)
             });
+        }
+
+        static commandTest(args: colibri.ui.ide.commands.CommandArgs): boolean {
+            
+            const root = colibri.ui.ide.FileUtils.getRoot();
+
+            return root !== null && !args.activeDialog;
         }
 
         run() {
