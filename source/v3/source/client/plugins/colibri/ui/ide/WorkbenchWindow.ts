@@ -115,6 +115,10 @@ namespace colibri.ui.ide {
 
                         const editor = wb.openEditor(file);
 
+                        if (!editor) {
+                            continue;
+                        }
+
                         const state = fileData.state;
 
                         try {

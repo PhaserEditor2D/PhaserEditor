@@ -3096,6 +3096,7 @@ var colibri;
                     }
                     step() {
                         this._step += 1;
+                        console.log("step " + this._step);
                         this.updateDialog();
                     }
                 }
@@ -5905,6 +5906,9 @@ var colibri;
                             const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);
                             if (file) {
                                 const editor = wb.openEditor(file);
+                                if (!editor) {
+                                    continue;
+                                }
                                 const state = fileData.state;
                                 try {
                                     editor.restoreState(state);
