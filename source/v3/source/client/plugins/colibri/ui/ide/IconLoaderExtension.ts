@@ -1,10 +1,10 @@
 namespace colibri.ui.ide {
 
-    export class IconLoaderExtension extends core.extensions.Extension {
+    export class IconLoaderExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.IconLoaderExtension";
 
-        static withPluginFiles(plugin: ide.Plugin, iconNames: string[]) {
+        static withPluginFiles(plugin: colibri.Plugin, iconNames: string[]) {
 
             const icons = iconNames.map(name => plugin.getIcon(name));
 

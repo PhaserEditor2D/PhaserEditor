@@ -2,7 +2,7 @@ namespace phasereditor2d.files.ui.viewers {
 
     import controls = colibri.ui.controls;
 
-    export abstract class ContentTypeCellRendererExtension extends colibri.core.extensions.Extension {
+    export abstract class ContentTypeCellRendererExtension extends colibri.Extension {
 
         static POINT_ID = "phasereditor2d.files.ui.viewers.ContentTypeCellRendererExtension";
 

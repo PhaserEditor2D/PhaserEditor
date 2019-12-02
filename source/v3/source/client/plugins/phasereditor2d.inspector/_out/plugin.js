@@ -4,7 +4,7 @@ var phasereditor2d;
     (function (inspector) {
         var ide = colibri.ui.ide;
         inspector.ICON_INSPECTOR = "inspector";
-        class InspectorPlugin extends ide.Plugin {
+        class InspectorPlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.inspector");
             }
@@ -19,7 +19,7 @@ var phasereditor2d;
         }
         InspectorPlugin._instance = new InspectorPlugin();
         inspector.InspectorPlugin = InspectorPlugin;
-        ide.Workbench.getWorkbench().addPlugin(InspectorPlugin.getInstance());
+        colibri.Platform.addPlugin(InspectorPlugin.getInstance());
     })(inspector = phasereditor2d.inspector || (phasereditor2d.inspector = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

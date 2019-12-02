@@ -6,16 +6,16 @@ namespace colibri.ui.ide {
         contentType: string
     }[];
 
-    export class ContentTypeIconExtension extends core.extensions.Extension {
+    export class ContentTypeIconExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.ContentTypeIconExtension";
 
         private _config: ContentTypeIconExtensionConfig;
 
-        static withPluginIcons(plugin: ide.Plugin, config: {
+        static withPluginIcons(plugin: colibri.Plugin, config: {
             iconName: string,
             contentType: string,
-            plugin?: colibri.ui.ide.Plugin
+            plugin?: colibri.Plugin
         }[]) {
 
             return new ContentTypeIconExtension(

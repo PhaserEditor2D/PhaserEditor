@@ -4,7 +4,7 @@ namespace phasereditor2d.inspector {
 
     export const ICON_INSPECTOR = "inspector";
 
-    export class InspectorPlugin extends ide.Plugin {
+    export class InspectorPlugin extends colibri.Plugin {
 
         private static _instance = new InspectorPlugin();
 
@@ -16,7 +16,7 @@ namespace phasereditor2d.inspector {
             super("phasereditor2d.inspector");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             reg.addExtension(
                 ide.IconLoaderExtension.withPluginFiles(this, [
@@ -27,5 +27,5 @@ namespace phasereditor2d.inspector {
         }
     }
 
-    ide.Workbench.getWorkbench().addPlugin(InspectorPlugin.getInstance());
+    colibri.Platform.addPlugin(InspectorPlugin.getInstance());
 }

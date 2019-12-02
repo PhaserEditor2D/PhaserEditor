@@ -5,11 +5,11 @@ declare namespace phasereditor2d.webContentTypes {
     const ICON_FILE_SCRIPT = "file-script";
     const ICON_FILE_SOUND = "file-sound";
     const ICON_FILE_TEXT = "file-text";
-    class WebContentTypesPlugin extends colibri.ui.ide.Plugin {
+    class WebContentTypesPlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): WebContentTypesPlugin;
         constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.webContentTypes.core {

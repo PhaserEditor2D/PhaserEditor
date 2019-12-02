@@ -1,15 +1,14 @@
 declare namespace phasereditor2d.scene {
-    import ide = colibri.ui.ide;
     const ICON_GROUP = "group";
     const ICON_TRANSLATE = "translate";
     const ICON_ANGLE = "angle";
     const ICON_SCALE = "scale";
     const ICON_ORIGIN = "origin";
-    class ScenePlugin extends ide.Plugin {
+    class ScenePlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): ScenePlugin;
         private constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.scene.core {

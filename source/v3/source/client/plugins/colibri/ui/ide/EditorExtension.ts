@@ -1,6 +1,6 @@
 namespace colibri.ui.ide {
 
-    export class EditorExtension extends core.extensions.Extension {
+    export class EditorExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.EditorExtension";
 

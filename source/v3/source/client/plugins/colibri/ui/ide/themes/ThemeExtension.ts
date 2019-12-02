@@ -1,7 +1,7 @@
 namespace colibri.ui.ide.themes {
 
 
-    export class ThemeExtension extends core.extensions.Extension {
+    export class ThemeExtension extends Extension {
 
         static POINT_ID =  "colibri.ui.ide.ThemeExtension";
 

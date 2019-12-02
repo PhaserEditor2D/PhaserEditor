@@ -1,11 +1,10 @@
 declare namespace phasereditor2d.outline {
-    import ide = colibri.ui.ide;
     const ICON_OUTLINE = "outline";
-    class OutlinePlugin extends ide.Plugin {
+    class OutlinePlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): OutlinePlugin;
         constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.outline.ui.views {

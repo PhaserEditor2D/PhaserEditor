@@ -3,7 +3,7 @@ namespace phasereditor2d.files.ui.dialogs {
     import controls = colibri.ui.controls;
     import io = colibri.core.io;
 
-    export abstract class NewFileExtension extends colibri.core.extensions.Extension {
+    export abstract class NewFileExtension extends colibri.Extension {
 
         static POINT_ID = "phasereditor2d.files.ui.dialogs.NewFileDialogExtension";
 

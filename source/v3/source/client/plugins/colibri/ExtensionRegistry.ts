@@ -1,4 +1,4 @@
-namespace colibri.core.extensions {
+namespace colibri {
 
     export class ExtensionRegistry {
 

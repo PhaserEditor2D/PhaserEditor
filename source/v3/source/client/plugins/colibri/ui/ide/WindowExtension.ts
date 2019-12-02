@@ -2,7 +2,7 @@ namespace colibri.ui.ide {
 
     export declare type CreateWindowFunc = ()=> WorkbenchWindow; 
 
-    export class WindowExtension extends core.extensions.Extension {
+    export class WindowExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.WindowExtension";
 

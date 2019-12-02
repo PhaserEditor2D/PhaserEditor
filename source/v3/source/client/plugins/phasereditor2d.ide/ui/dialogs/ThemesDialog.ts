@@ -28,7 +28,7 @@ namespace phasereditor2d.ide.ui.dialogs {
 
             this.setLabelProvider(new ThemeLabelProvider());
             this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
-            
+
             this.setCellRendererProvider(
                 new controls.viewers.EmptyCellRendererProvider(
                     e => new controls.viewers.IconImageCellRenderer(
@@ -38,8 +38,7 @@ namespace phasereditor2d.ide.ui.dialogs {
             );
 
             this.setInput(
-                colibri.ui.ide.Workbench.getWorkbench()
-                    .getExtensionRegistry()
+                colibri.Platform
                     .getExtensions<colibri.ui.ide.themes.ThemeExtension>(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                     .map(ext => ext.getTheme())
                     .sort((a, b) => a.displayName.localeCompare(b.displayName))

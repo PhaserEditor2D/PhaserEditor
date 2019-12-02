@@ -4,7 +4,7 @@ namespace phasereditor2d.images {
     import ide = colibri.ui.ide;
     import controls = colibri.ui.controls;
 
-    export class ImagesPlugin extends ide.Plugin {
+    export class ImagesPlugin extends colibri.Plugin {
 
         private static _instance = new ImagesPlugin();
 
@@ -16,7 +16,7 @@ namespace phasereditor2d.images {
             super("phasereditor2d.images");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // file cell renderers
 
@@ -39,8 +39,7 @@ namespace phasereditor2d.images {
             reg.addExtension(
                 new ide.EditorExtension([ui.editors.ImageEditor.getFactory()]));
         }
-
     }
 
-    ide.Workbench.getWorkbench().addPlugin(ImagesPlugin.getInstance());
+    colibri.Platform.addPlugin(ImagesPlugin.getInstance());
 }

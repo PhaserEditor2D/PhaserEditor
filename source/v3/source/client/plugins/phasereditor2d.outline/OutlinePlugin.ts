@@ -5,7 +5,7 @@ namespace phasereditor2d.outline {
 
     export const ICON_OUTLINE = "outline";
 
-    export class OutlinePlugin extends ide.Plugin {
+    export class OutlinePlugin extends colibri.Plugin {
 
         private static _instance = new OutlinePlugin();
 
@@ -18,7 +18,7 @@ namespace phasereditor2d.outline {
         }
 
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             reg.addExtension(
                 ide.IconLoaderExtension.withPluginFiles(this, [
@@ -30,5 +30,5 @@ namespace phasereditor2d.outline {
 
     }
 
-    ide.Workbench.getWorkbench().addPlugin(OutlinePlugin.getInstance());
+    colibri.Platform.addPlugin(OutlinePlugin.getInstance());
 }

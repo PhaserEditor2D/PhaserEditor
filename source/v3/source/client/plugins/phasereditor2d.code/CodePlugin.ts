@@ -2,7 +2,7 @@ namespace phasereditor2d.code {
 
     import controls = colibri.ui.controls;
 
-    export class CodePlugin extends colibri.ui.ide.Plugin {
+    export class CodePlugin extends colibri.Plugin {
 
         private static _instance: CodePlugin;
         private _modelsManager: ui.editors.MonacoModelsManager;
@@ -20,7 +20,7 @@ namespace phasereditor2d.code {
             super("phasereditor2d.core")
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // project preloaders
 
@@ -114,5 +114,5 @@ namespace phasereditor2d.code {
         }
     }
 
-    colibri.ui.ide.Workbench.getWorkbench().addPlugin(CodePlugin.getInstance());
+    colibri.Platform.addPlugin(CodePlugin.getInstance());
 }

@@ -8,7 +8,7 @@ var phasereditor2d;
         webContentTypes.ICON_FILE_SCRIPT = "file-script";
         webContentTypes.ICON_FILE_SOUND = "file-sound";
         webContentTypes.ICON_FILE_TEXT = "file-text";
-        class WebContentTypesPlugin extends colibri.ui.ide.Plugin {
+        class WebContentTypesPlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.webContentTypes");
             }
@@ -81,7 +81,7 @@ var phasereditor2d;
             }
         }
         webContentTypes.WebContentTypesPlugin = WebContentTypesPlugin;
-        colibri.ui.ide.Workbench.getWorkbench().addPlugin(WebContentTypesPlugin.getInstance());
+        colibri.Platform.addPlugin(WebContentTypesPlugin.getInstance());
     })(webContentTypes = phasereditor2d.webContentTypes || (phasereditor2d.webContentTypes = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

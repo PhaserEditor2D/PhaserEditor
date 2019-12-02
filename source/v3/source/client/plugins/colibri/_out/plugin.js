@@ -1,31 +1,25 @@
 var colibri;
 (function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            class Plugin {
-                constructor(id) {
-                    this._id = id;
-                }
-                getId() {
-                    return this._id;
-                }
-                starting() {
-                    return Promise.resolve();
-                }
-                started() {
-                    return Promise.resolve();
-                }
-                registerExtensions(registry) {
-                }
-                getIcon(name) {
-                    return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
-                }
-            }
-            ide.Plugin = Plugin;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
+    class Plugin {
+        constructor(id) {
+            this._id = id;
+        }
+        getId() {
+            return this._id;
+        }
+        starting() {
+            return Promise.resolve();
+        }
+        started() {
+            return Promise.resolve();
+        }
+        registerExtensions(registry) {
+        }
+        getIcon(name) {
+            return colibri.ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
+        }
+    }
+    colibri.Plugin = Plugin;
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
@@ -364,14 +358,12 @@ var colibri;
             class Workbench extends EventTarget {
                 constructor() {
                     super();
-                    this._plugins = [];
                     this._editorRegistry = new ide.EditorRegistry();
                     this._windows = [];
                     this._activePart = null;
                     this._activeEditor = null;
                     this._activeElement = null;
                     this._fileImageCache = new ide.ImageFileCache();
-                    this._extensionRegistry = new colibri.core.extensions.ExtensionRegistry();
                     this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
                     this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
                     this._globalPreferences = new colibri.core.preferences.Preferences("__global__");
@@ -389,19 +381,13 @@ var colibri;
                 getProjectPreferences() {
                     return this._projectPreferences;
                 }
-                addPlugin(plugin) {
-                    this._plugins.push(plugin);
-                }
-                getPlugins() {
-                    return this._plugins;
-                }
                 async launch() {
-                    this.addPlugin(colibri.ColibriPlugin.getInstance());
+                    colibri.Platform.addPlugin(colibri.ColibriPlugin.getInstance());
                     console.log("Workbench: starting.");
                     {
-                        const plugins = this._plugins;
+                        const plugins = colibri.Platform.getPlugins();
                         for (const plugin of plugins) {
-                            plugin.registerExtensions(this._extensionRegistry);
+                            plugin.registerExtensions(colibri.Platform.getExtensionRegistry());
                         }
                         for (const plugin of plugins) {
                             console.log(`\tPlugin: starting %c${plugin.getId()}`, "color:blue");
@@ -420,7 +406,7 @@ var colibri;
                     this.registerWindows();
                     this.initEvents();
                     console.log("%cWorkbench: started.", "color:green");
-                    for (const plugin of this._plugins) {
+                    for (const plugin of colibri.Platform.getPlugins()) {
                         await plugin.started();
                     }
                 }
@@ -441,13 +427,13 @@ var colibri;
                     }));
                 }
                 async preloadProjectResources(monitor) {
-                    const extensions = this._extensionRegistry.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(ide.PreloadProjectResourcesExtension.POINT_ID);
                     for (const extension of extensions) {
                         await extension.getPreloadPromise(monitor);
                     }
                 }
                 registerWindows() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.WindowExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(ide.WindowExtension.POINT_ID);
                     this._windows = extensions.map(extension => extension.createWindow());
                     if (this._windows.length === 0) {
                         alert("No workbench window provided.");
@@ -480,7 +466,7 @@ var colibri;
                     await this.getWorkbenchIcon(ide.ICON_FILE).preload();
                     await this.getWorkbenchIcon(ide.ICON_FOLDER).preload();
                     await this.getWorkbenchIcon(ide.ICON_PLUS).preload();
-                    const extensions = this._extensionRegistry
+                    const extensions = colibri.Platform
                         .getExtensions(ide.IconLoaderExtension.POINT_ID);
                     for (const extension of extensions) {
                         const icons = extension.getIcons();
@@ -491,7 +477,7 @@ var colibri;
                 }
                 registerContentTypeIcons() {
                     this._contentType_icon_Map = new Map();
-                    const extensions = this._extensionRegistry.getExtensions(ide.ContentTypeIconExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(ide.ContentTypeIconExtension.POINT_ID);
                     for (const extension of extensions) {
                         for (const item of extension.getConfig()) {
                             this._contentType_icon_Map.set(item.contentType, item.icon);
@@ -501,7 +487,7 @@ var colibri;
                 initCommands() {
                     this._commandManager = new ide.commands.CommandManager();
                     ide.IDECommands.init();
-                    const extensions = this._extensionRegistry.getExtensions(ide.commands.CommandExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(ide.commands.CommandExtension.POINT_ID);
                     for (const extension of extensions) {
                         extension.getConfigurer()(this._commandManager);
                     }
@@ -516,7 +502,7 @@ var colibri;
                     });
                 }
                 registerEditors() {
-                    const extensions = this._extensionRegistry.getExtensions(ide.EditorExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(ide.EditorExtension.POINT_ID);
                     for (const extension of extensions) {
                         for (const factory of extension.getFactories()) {
                             this._editorRegistry.registerFactory(factory);
@@ -601,8 +587,7 @@ var colibri;
                     return null;
                 }
                 registerContentTypes() {
-                    const extensions = this._extensionRegistry
-                        .getExtensions(colibri.core.ContentTypeExtension.POINT_ID);
+                    const extensions = colibri.Platform.getExtensions(colibri.core.ContentTypeExtension.POINT_ID);
                     this._contentTypeRegistry = new colibri.core.ContentTypeRegistry();
                     for (const extension of extensions) {
                         for (const resolver of extension.getResolvers()) {
@@ -635,9 +620,6 @@ var colibri;
                 }
                 getContentTypeRegistry() {
                     return this._contentTypeRegistry;
-                }
-                getExtensionRegistry() {
-                    return this._extensionRegistry;
                 }
                 getProjectRoot() {
                     return this._fileStorage.getRoot();
@@ -695,11 +677,11 @@ var colibri;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
-/// <reference path="./ui/ide/Plugin.ts" />
+/// <reference path="./Plugin.ts" />
 /// <reference path="./ui/ide/Workbench.ts" />
 var colibri;
 (function (colibri) {
-    class ColibriPlugin extends colibri.ui.ide.Plugin {
+    class ColibriPlugin extends colibri.Plugin {
         constructor() {
             super("colibri");
             this._openingProject = false;
@@ -717,32 +699,82 @@ var colibri;
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
-    var core;
-    (function (core) {
-        var extensions;
-        (function (extensions) {
-            class Extension {
-                constructor(extensionPoint, priority = 10) {
-                    this._extensionPoint = extensionPoint;
-                    this._priority = priority;
-                }
-                getExtensionPoint() {
-                    return this._extensionPoint;
-                }
-                getPriority() {
-                    return this._priority;
-                }
-            }
-            extensions.Extension = Extension;
-        })(extensions = core.extensions || (core.extensions = {}));
-    })(core = colibri.core || (colibri.core = {}));
+    class Extension {
+        constructor(extensionPoint, priority = 10) {
+            this._extensionPoint = extensionPoint;
+            this._priority = priority;
+        }
+        getExtensionPoint() {
+            return this._extensionPoint;
+        }
+        getPriority() {
+            return this._priority;
+        }
+    }
+    colibri.Extension = Extension;
 })(colibri || (colibri = {}));
-/// <reference path="./extensions/Extension.ts" />
+var colibri;
+(function (colibri) {
+    class ExtensionRegistry {
+        constructor() {
+            this._map = new Map();
+        }
+        addExtension(...extensions) {
+            const points = new Set();
+            for (const ext of extensions) {
+                const point = ext.getExtensionPoint();
+                let list = this._map.get(point);
+                if (!list) {
+                    this._map.set(point, list = []);
+                }
+                list.push(ext);
+            }
+            for (const point of points) {
+                let list = this._map.get(point);
+                list.sort((a, b) => a.getPriority() - b.getPriority());
+            }
+        }
+        getExtensions(point) {
+            let list = this._map.get(point);
+            if (!list) {
+                return [];
+            }
+            return list;
+        }
+    }
+    colibri.ExtensionRegistry = ExtensionRegistry;
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    class Platform {
+        static addPlugin(plugin) {
+            this._plugins.push(plugin);
+        }
+        static getPlugins() {
+            return this._plugins;
+        }
+        static getExtensionRegistry() {
+            if (!this._extensionRegistry) {
+                this._extensionRegistry = new colibri.ExtensionRegistry();
+            }
+            return this._extensionRegistry;
+        }
+        static getExtensions(point) {
+            return this._extensionRegistry.getExtensions(point);
+        }
+        static addExtension(...extensions) {
+            this._extensionRegistry.addExtension(...extensions);
+        }
+    }
+    Platform._plugins = [];
+    colibri.Platform = Platform;
+})(colibri || (colibri = {}));
+/// <reference path="../Extension.ts" />
 var colibri;
 (function (colibri) {
     var core;
     (function (core) {
-        class ContentTypeExtension extends core.extensions.Extension {
+        class ContentTypeExtension extends colibri.Extension {
             constructor(resolvers, priority = 10) {
                 super(ContentTypeExtension.POINT_ID, priority);
                 this._resolvers = resolvers;
@@ -909,43 +941,6 @@ var colibri;
     var core;
     (function (core) {
         core.CONTENT_TYPE_ANY = "any";
-    })(core = colibri.core || (colibri.core = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var core;
-    (function (core) {
-        var extensions;
-        (function (extensions_1) {
-            class ExtensionRegistry {
-                constructor() {
-                    this._map = new Map();
-                }
-                addExtension(...extensions) {
-                    const points = new Set();
-                    for (const ext of extensions) {
-                        const point = ext.getExtensionPoint();
-                        let list = this._map.get(point);
-                        if (!list) {
-                            this._map.set(point, list = []);
-                        }
-                        list.push(ext);
-                    }
-                    for (const point of points) {
-                        let list = this._map.get(point);
-                        list.sort((a, b) => a.getPriority() - b.getPriority());
-                    }
-                }
-                getExtensions(point) {
-                    let list = this._map.get(point);
-                    if (!list) {
-                        return [];
-                    }
-                    return list;
-                }
-            }
-            extensions_1.ExtensionRegistry = ExtensionRegistry;
-        })(extensions = core.extensions || (core.extensions = {}));
     })(core = colibri.core || (colibri.core = {}));
 })(colibri || (colibri = {}));
 var colibri;
@@ -4859,7 +4854,7 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class ContentTypeIconExtension extends colibri.core.extensions.Extension {
+            class ContentTypeIconExtension extends colibri.Extension {
                 constructor(config) {
                     super(ContentTypeIconExtension.POINT_ID, 10);
                     this._config = config;
@@ -5106,7 +5101,7 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class EditorExtension extends colibri.core.extensions.Extension {
+            class EditorExtension extends colibri.Extension {
                 constructor(factories) {
                     super(EditorExtension.POINT_ID);
                     this._factories = factories;
@@ -5663,7 +5658,7 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class IconLoaderExtension extends colibri.core.extensions.Extension {
+            class IconLoaderExtension extends colibri.Extension {
                 constructor(icons) {
                     super(IconLoaderExtension.POINT_ID);
                     this._icons = icons;
@@ -5766,7 +5761,7 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class PreloadProjectResourcesExtension extends colibri.core.extensions.Extension {
+            class PreloadProjectResourcesExtension extends colibri.Extension {
                 constructor(getPreloadPromise) {
                     super(PreloadProjectResourcesExtension.POINT_ID);
                     this._getPreloadPromise = getPreloadPromise;
@@ -5834,7 +5829,7 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            class WindowExtension extends colibri.core.extensions.Extension {
+            class WindowExtension extends colibri.Extension {
                 constructor(createWindowFunc) {
                     super(WindowExtension.POINT_ID, 10);
                     this._createWindowFunc = createWindowFunc;
@@ -6126,7 +6121,7 @@ var colibri;
         (function (ide) {
             var commands;
             (function (commands) {
-                class CommandExtension extends colibri.core.extensions.Extension {
+                class CommandExtension extends colibri.Extension {
                     constructor(configurer) {
                         super(CommandExtension.POINT_ID);
                         this._configurer = configurer;
@@ -6299,7 +6294,7 @@ var colibri;
         (function (ide) {
             var themes;
             (function (themes) {
-                class ThemeExtension extends colibri.core.extensions.Extension {
+                class ThemeExtension extends colibri.Extension {
                     constructor(theme) {
                         super(ThemeExtension.POINT_ID);
                         this._theme = theme;

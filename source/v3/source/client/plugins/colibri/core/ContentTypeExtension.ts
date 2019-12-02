@@ -1,8 +1,8 @@
-/// <reference path="./extensions/Extension.ts" />
+/// <reference path="../Extension.ts" />
 
 namespace colibri.core {
 
-    export class ContentTypeExtension extends extensions.Extension {
+    export class ContentTypeExtension extends Extension {
 
         static POINT_ID = "colibri.ContentTypeExtension";
 

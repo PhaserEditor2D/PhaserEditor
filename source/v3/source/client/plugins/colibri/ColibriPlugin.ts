@@ -1,9 +1,9 @@
-/// <reference path="./ui/ide/Plugin.ts" />
+/// <reference path="./Plugin.ts" />
 /// <reference path="./ui/ide/Workbench.ts" />
 
 namespace colibri {
 
-    export class ColibriPlugin extends ui.ide.Plugin {
+    export class ColibriPlugin extends colibri.Plugin {
 
         private static _instance;
 
@@ -19,7 +19,7 @@ namespace colibri {
             this._openingProject = false;
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg : colibri.ExtensionRegistry) {
 
             // themes
 

@@ -8,7 +8,7 @@ var phasereditor2d;
         scene.ICON_ANGLE = "angle";
         scene.ICON_SCALE = "scale";
         scene.ICON_ORIGIN = "origin";
-        class ScenePlugin extends ide.Plugin {
+        class ScenePlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.scene");
             }
@@ -40,7 +40,7 @@ var phasereditor2d;
         }
         ScenePlugin._instance = new ScenePlugin();
         scene.ScenePlugin = ScenePlugin;
-        ide.Workbench.getWorkbench().addPlugin(ScenePlugin.getInstance());
+        colibri.Platform.addPlugin(ScenePlugin.getInstance());
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

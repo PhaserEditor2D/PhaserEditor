@@ -1,4 +1,4 @@
-namespace colibri.ui.ide {
+namespace colibri {
 
     export abstract class Plugin {
         
@@ -21,14 +21,12 @@ namespace colibri.ui.ide {
             return Promise.resolve();
         }
 
-        registerExtensions(registry : core.extensions.ExtensionRegistry) : void {
+        registerExtensions(registry : ExtensionRegistry) : void {
 
         }
 
-        getIcon(name : string) : controls.IImage {
-            return controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
+        getIcon(name : string) : ui.controls.IImage {
+            return ui.controls.Controls.getIcon(name, `plugins/${this.getId()}/ui/icons`);
         }
-
     }
-
 }

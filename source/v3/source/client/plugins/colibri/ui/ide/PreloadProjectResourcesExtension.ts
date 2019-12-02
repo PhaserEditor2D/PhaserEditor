@@ -1,6 +1,6 @@
 namespace colibri.ui.ide {
 
-    export class PreloadProjectResourcesExtension extends core.extensions.Extension {
+    export class PreloadProjectResourcesExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.PreloadProjectResourcesExtension";
 

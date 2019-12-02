@@ -8,7 +8,7 @@ namespace phasereditor2d.files.ui.viewers {
     export class FileCellRendererProvider implements viewers.ICellRendererProvider {
 
         private _layout: "tree" | "grid"
-        
+
         constructor(layout: "tree" | "grid" = "tree") {
             this._layout = layout;
         }
@@ -17,10 +17,7 @@ namespace phasereditor2d.files.ui.viewers {
 
             const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(file);
 
-            const extensions = ide.Workbench
-                .getWorkbench()
-                .getExtensionRegistry()
-                .getExtensions<ContentTypeCellRendererExtension>(ContentTypeCellRendererExtension.POINT_ID);
+            const extensions = colibri.Platform.getExtensions<ContentTypeCellRendererExtension>(ContentTypeCellRendererExtension.POINT_ID);
 
             for (const extension of extensions) {
 

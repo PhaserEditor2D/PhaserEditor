@@ -43,7 +43,7 @@ var phasereditor2d;
         var ide = colibri.ui.ide;
         pack.ICON_ASSET_PACK = "asset-pack";
         pack.ICON_ANIMATIONS = "animations";
-        class AssetPackPlugin extends ide.Plugin {
+        class AssetPackPlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.pack");
             }
@@ -99,7 +99,7 @@ var phasereditor2d;
         }
         AssetPackPlugin._instance = new AssetPackPlugin();
         pack.AssetPackPlugin = AssetPackPlugin;
-        ide.Workbench.getWorkbench().addPlugin(AssetPackPlugin.getInstance());
+        colibri.Platform.addPlugin(AssetPackPlugin.getInstance());
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

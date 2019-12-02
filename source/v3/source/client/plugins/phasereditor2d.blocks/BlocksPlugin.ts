@@ -4,7 +4,7 @@ namespace phasereditor2d.blocks {
 
     export const ICON_BLOCKS = "blocks";
 
-    export class BlocksPlugin extends ide.Plugin {
+    export class BlocksPlugin extends colibri.Plugin {
 
         private static _instance = new BlocksPlugin();
 
@@ -16,7 +16,7 @@ namespace phasereditor2d.blocks {
             super("phasereditor2d.blocks");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             reg.addExtension(
                 ide.IconLoaderExtension.withPluginFiles(this, [
@@ -26,5 +26,5 @@ namespace phasereditor2d.blocks {
         }
     }
 
-    ide.Workbench.getWorkbench().addPlugin(BlocksPlugin.getInstance());
+    colibri.Platform.addPlugin(BlocksPlugin.getInstance());
 }

@@ -4,7 +4,7 @@ namespace phasereditor2d.files.ui.actions {
     import io = colibri.core.io;
 
     export class OpenNewFileDialogAction extends controls.Action {
-        
+
         private _initialLocation: io.FilePath;
 
         constructor() {
@@ -15,7 +15,7 @@ namespace phasereditor2d.files.ui.actions {
         }
 
         static commandTest(args: colibri.ui.ide.commands.CommandArgs): boolean {
-            
+
             const root = colibri.ui.ide.FileUtils.getRoot();
 
             return root !== null && !args.activeDialog;
@@ -29,8 +29,7 @@ namespace phasereditor2d.files.ui.actions {
             viewer.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
             viewer.setCellRendererProvider(new WizardCellRendererProvider());
 
-            const extensions = colibri.ui.ide.Workbench.getWorkbench()
-                .getExtensionRegistry()
+            const extensions = colibri.Platform.getExtensionRegistry()
                 .getExtensions(files.ui.dialogs.NewFileExtension.POINT_ID);
 
             viewer.setInput(extensions);

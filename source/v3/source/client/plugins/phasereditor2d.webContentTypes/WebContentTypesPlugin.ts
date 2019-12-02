@@ -7,7 +7,7 @@ namespace phasereditor2d.webContentTypes {
     export const ICON_FILE_SOUND = "file-sound";
     export const ICON_FILE_TEXT = "file-text";
 
-    export class WebContentTypesPlugin extends colibri.ui.ide.Plugin {
+    export class WebContentTypesPlugin extends colibri.Plugin {
 
         private static _instance: WebContentTypesPlugin;
 
@@ -24,7 +24,7 @@ namespace phasereditor2d.webContentTypes {
             super("phasereditor2d.webContentTypes");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // content types
 
@@ -103,5 +103,5 @@ namespace phasereditor2d.webContentTypes {
         }
     }
 
-    colibri.ui.ide.Workbench.getWorkbench().addPlugin(WebContentTypesPlugin.getInstance());
+    colibri.Platform.addPlugin(WebContentTypesPlugin.getInstance());
 }

@@ -7,7 +7,7 @@ namespace phasereditor2d.ide {
     export const ICON_MENU = "menu";
     export const ICON_THEME = "theme";
 
-    export class IDEPlugin extends ide.Plugin {
+    export class IDEPlugin extends colibri.Plugin {
 
         private static _instance = new IDEPlugin();
 
@@ -23,7 +23,7 @@ namespace phasereditor2d.ide {
             this._openingProject = false;
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // windows
 
@@ -216,9 +216,7 @@ namespace phasereditor2d.ide {
 
                 const id = themeData.theme;
 
-                theme = colibri.ui.ide.Workbench
-                    .getWorkbench()
-                    .getExtensionRegistry()
+                theme = colibri.Platform
                     .getExtensions<colibri.ui.ide.themes.ThemeExtension>(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                     .map(e => e.getTheme())
                     .find(t => t.id === id);
@@ -228,7 +226,7 @@ namespace phasereditor2d.ide {
         }
     }
 
-    ide.Workbench.getWorkbench().addPlugin(IDEPlugin.getInstance());
+    colibri.Platform.addPlugin(IDEPlugin.getInstance());
 
     export const VER = "3.0.0";
 

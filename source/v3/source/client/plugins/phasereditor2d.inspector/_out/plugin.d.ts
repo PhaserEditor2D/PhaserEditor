@@ -1,11 +1,10 @@
 declare namespace phasereditor2d.inspector {
-    import ide = colibri.ui.ide;
     const ICON_INSPECTOR = "inspector";
-    class InspectorPlugin extends ide.Plugin {
+    class InspectorPlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): InspectorPlugin;
         private constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.inspector.ui.views {

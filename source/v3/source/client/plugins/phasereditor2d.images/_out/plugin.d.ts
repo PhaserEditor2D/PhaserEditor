@@ -1,10 +1,9 @@
 declare namespace phasereditor2d.images {
-    import ide = colibri.ui.ide;
-    class ImagesPlugin extends ide.Plugin {
+    class ImagesPlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): ImagesPlugin;
         private constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.images.ui.editors {

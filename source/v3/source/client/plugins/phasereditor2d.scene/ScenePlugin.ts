@@ -9,7 +9,7 @@ namespace phasereditor2d.scene {
     export const ICON_ORIGIN = "origin";
 
 
-    export class ScenePlugin extends ide.Plugin {
+    export class ScenePlugin extends colibri.Plugin {
 
         private static _instance = new ScenePlugin();
 
@@ -21,7 +21,7 @@ namespace phasereditor2d.scene {
             super("phasereditor2d.scene");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // content type resolvers
 
@@ -72,5 +72,5 @@ namespace phasereditor2d.scene {
 
     }
 
-    ide.Workbench.getWorkbench().addPlugin(ScenePlugin.getInstance());
+    colibri.Platform.addPlugin(ScenePlugin.getInstance());
 }

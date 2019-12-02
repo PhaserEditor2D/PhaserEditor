@@ -4,7 +4,7 @@ var phasereditor2d;
     (function (blocks) {
         var ide = colibri.ui.ide;
         blocks.ICON_BLOCKS = "blocks";
-        class BlocksPlugin extends ide.Plugin {
+        class BlocksPlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.blocks");
             }
@@ -19,7 +19,7 @@ var phasereditor2d;
         }
         BlocksPlugin._instance = new BlocksPlugin();
         blocks.BlocksPlugin = BlocksPlugin;
-        ide.Workbench.getWorkbench().addPlugin(BlocksPlugin.getInstance());
+        colibri.Platform.addPlugin(BlocksPlugin.getInstance());
     })(blocks = phasereditor2d.blocks || (phasereditor2d.blocks = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

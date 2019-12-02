@@ -7,14 +7,13 @@ declare namespace phasereditor2d.pack.core.contentTypes {
     }
 }
 declare namespace phasereditor2d.pack {
-    import ide = colibri.ui.ide;
     const ICON_ASSET_PACK = "asset-pack";
     const ICON_ANIMATIONS = "animations";
-    class AssetPackPlugin extends ide.Plugin {
+    class AssetPackPlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): AssetPackPlugin;
         private constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
 declare namespace phasereditor2d.pack.core {

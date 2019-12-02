@@ -3,7 +3,7 @@ var phasereditor2d;
     var code;
     (function (code) {
         var controls = colibri.ui.controls;
-        class CodePlugin extends colibri.ui.ide.Plugin {
+        class CodePlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.core");
             }
@@ -84,7 +84,7 @@ var phasereditor2d;
             }
         }
         code.CodePlugin = CodePlugin;
-        colibri.ui.ide.Workbench.getWorkbench().addPlugin(CodePlugin.getInstance());
+        colibri.Platform.addPlugin(CodePlugin.getInstance());
     })(code = phasereditor2d.code || (phasereditor2d.code = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;

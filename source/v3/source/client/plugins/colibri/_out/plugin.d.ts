@@ -1,12 +1,12 @@
-declare namespace colibri.ui.ide {
+declare namespace colibri {
     abstract class Plugin {
         private _id;
         constructor(id: string);
         getId(): string;
         starting(): Promise<void>;
         started(): Promise<void>;
-        registerExtensions(registry: core.extensions.ExtensionRegistry): void;
-        getIcon(name: string): controls.IImage;
+        registerExtensions(registry: ExtensionRegistry): void;
+        getIcon(name: string): ui.controls.IImage;
     }
 }
 declare namespace colibri.ui.controls {
@@ -99,7 +99,6 @@ declare namespace colibri.ui.ide {
     const ICON_PLUS = "plus";
     class Workbench extends EventTarget {
         private static _workbench;
-        private _plugins;
         static getWorkbench(): Workbench;
         private _fileStringCache;
         private _fileImageCache;
@@ -111,7 +110,6 @@ declare namespace colibri.ui.ide {
         private _activeEditor;
         private _activeElement;
         private _editorRegistry;
-        private _extensionRegistry;
         private _commandManager;
         private _windows;
         private _globalPreferences;
@@ -119,8 +117,6 @@ declare namespace colibri.ui.ide {
         private constructor();
         getGlobalPreferences(): core.preferences.Preferences;
         getProjectPreferences(): core.preferences.Preferences;
-        addPlugin(plugin: ide.Plugin): void;
-        getPlugins(): Plugin[];
         launch(): Promise<void>;
         private resetCache;
         openProject(projectName: string, monitor: controls.IProgressMonitor): Promise<void>;
@@ -151,7 +147,6 @@ declare namespace colibri.ui.ide {
         private registerContentTypes;
         findPart(element: HTMLElement): Part;
         getContentTypeRegistry(): core.ContentTypeRegistry;
-        getExtensionRegistry(): core.extensions.ExtensionRegistry;
         getProjectRoot(): core.io.FilePath;
         getContentTypeIcon(contentType: string): controls.IImage;
         getFileImage(file: core.io.FilePath): controls.IImage;
@@ -162,15 +157,15 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri {
-    class ColibriPlugin extends ui.ide.Plugin {
+    class ColibriPlugin extends colibri.Plugin {
         private static _instance;
         static getInstance(): any;
         private _openingProject;
         private constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
     }
 }
-declare namespace colibri.core.extensions {
+declare namespace colibri {
     class Extension {
         private _extensionPoint;
         private _priority;
@@ -179,8 +174,27 @@ declare namespace colibri.core.extensions {
         getPriority(): number;
     }
 }
+declare namespace colibri {
+    class ExtensionRegistry {
+        private _map;
+        constructor();
+        addExtension(...extensions: Extension[]): void;
+        getExtensions<T extends Extension>(point: string): T[];
+    }
+}
+declare namespace colibri {
+    class Platform {
+        private static _plugins;
+        private static _extensionRegistry;
+        static addPlugin(plugin: colibri.Plugin): void;
+        static getPlugins(): Plugin[];
+        static getExtensionRegistry(): ExtensionRegistry;
+        static getExtensions<T extends Extension>(point: string): T[];
+        static addExtension(...extensions: Extension[]): void;
+    }
+}
 declare namespace colibri.core {
-    class ContentTypeExtension extends extensions.Extension {
+    class ContentTypeExtension extends Extension {
         static POINT_ID: string;
         private _resolvers;
         constructor(resolvers: core.IContentTypeResolver[], priority?: number);
@@ -238,14 +252,6 @@ declare namespace colibri.core {
     interface IContentTypeResolver {
         getId(): string;
         computeContentType(file: io.FilePath): Promise<string>;
-    }
-}
-declare namespace colibri.core.extensions {
-    class ExtensionRegistry {
-        private _map;
-        constructor();
-        addExtension(...extensions: Extension[]): void;
-        getExtensions<T extends Extension>(point: string): T[];
     }
 }
 declare namespace colibri.core.io {
@@ -1159,13 +1165,13 @@ declare namespace colibri.ui.ide {
         icon: controls.IImage;
         contentType: string;
     }[];
-    class ContentTypeIconExtension extends core.extensions.Extension {
+    class ContentTypeIconExtension extends Extension {
         static POINT_ID: string;
         private _config;
-        static withPluginIcons(plugin: ide.Plugin, config: {
+        static withPluginIcons(plugin: colibri.Plugin, config: {
             iconName: string;
             contentType: string;
-            plugin?: colibri.ui.ide.Plugin;
+            plugin?: colibri.Plugin;
         }[]): ContentTypeIconExtension;
         constructor(config: ContentTypeIconExtensionConfig);
         getConfig(): ContentTypeIconExtensionConfig;
@@ -1234,7 +1240,7 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
-    class EditorExtension extends core.extensions.Extension {
+    class EditorExtension extends Extension {
         static POINT_ID: string;
         private _factories;
         constructor(factories: EditorFactory[]);
@@ -1387,9 +1393,9 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
-    class IconLoaderExtension extends core.extensions.Extension {
+    class IconLoaderExtension extends Extension {
         static POINT_ID: string;
-        static withPluginFiles(plugin: ide.Plugin, iconNames: string[]): IconLoaderExtension;
+        static withPluginFiles(plugin: colibri.Plugin, iconNames: string[]): IconLoaderExtension;
         private _icons;
         constructor(icons: controls.IImage[]);
         getIcons(): controls.IImage[];
@@ -1424,7 +1430,7 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
-    class PreloadProjectResourcesExtension extends core.extensions.Extension {
+    class PreloadProjectResourcesExtension extends Extension {
         static POINT_ID: string;
         private _getPreloadPromise;
         constructor(getPreloadPromise: (monitor: controls.IProgressMonitor) => Promise<any>);
@@ -1449,7 +1455,7 @@ declare namespace colibri.ui.ide {
 }
 declare namespace colibri.ui.ide {
     type CreateWindowFunc = () => WorkbenchWindow;
-    class WindowExtension extends core.extensions.Extension {
+    class WindowExtension extends Extension {
         static POINT_ID: string;
         private _createWindowFunc;
         constructor(createWindowFunc: CreateWindowFunc);
@@ -1519,7 +1525,7 @@ declare namespace colibri.ui.ide.commands {
     }
 }
 declare namespace colibri.ui.ide.commands {
-    class CommandExtension extends core.extensions.Extension {
+    class CommandExtension extends Extension {
         static POINT_ID: string;
         private _configurer;
         constructor(configurer: (manager: CommandManager) => void);
@@ -1562,7 +1568,7 @@ declare namespace colibri.ui.ide.properties {
     }
 }
 declare namespace colibri.ui.ide.themes {
-    class ThemeExtension extends core.extensions.Extension {
+    class ThemeExtension extends Extension {
         static POINT_ID: string;
         private _theme;
         constructor(theme: controls.Theme);

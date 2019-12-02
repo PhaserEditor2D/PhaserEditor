@@ -7,7 +7,7 @@ var phasereditor2d;
         ide_1.ICON_PLAY = "play";
         ide_1.ICON_MENU = "menu";
         ide_1.ICON_THEME = "theme";
-        class IDEPlugin extends ide.Plugin {
+        class IDEPlugin extends colibri.Plugin {
             constructor() {
                 super("phasereditor2d.ide");
                 this._openingProject = false;
@@ -132,9 +132,7 @@ var phasereditor2d;
                 let theme = null;
                 if (themeData) {
                     const id = themeData.theme;
-                    theme = colibri.ui.ide.Workbench
-                        .getWorkbench()
-                        .getExtensionRegistry()
+                    theme = colibri.Platform
                         .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                         .map(e => e.getTheme())
                         .find(t => t.id === id);
@@ -144,7 +142,7 @@ var phasereditor2d;
         }
         IDEPlugin._instance = new IDEPlugin();
         ide_1.IDEPlugin = IDEPlugin;
-        ide.Workbench.getWorkbench().addPlugin(IDEPlugin.getInstance());
+        colibri.Platform.addPlugin(IDEPlugin.getInstance());
         ide_1.VER = "3.0.0";
         async function main() {
             console.log(`%c %c Phaser Editor 2D %c v${ide_1.VER} %c %c https://phasereditor2d.com `, "background-color:red", "background-color:#3f3f3f;color:whitesmoke", "background-color:orange;color:black", "background-color:red", "background-color:silver");
@@ -816,8 +814,7 @@ var phasereditor2d;
                         this.setLabelProvider(new ThemeLabelProvider());
                         this.setContentProvider(new controls.viewers.ArrayTreeContentProvider());
                         this.setCellRendererProvider(new controls.viewers.EmptyCellRendererProvider(e => new controls.viewers.IconImageCellRenderer(ide.IDEPlugin.getInstance().getIcon(ide.ICON_THEME))));
-                        this.setInput(colibri.ui.ide.Workbench.getWorkbench()
-                            .getExtensionRegistry()
+                        this.setInput(colibri.Platform
                             .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                             .map(ext => ext.getTheme())
                             .sort((a, b) => a.displayName.localeCompare(b.displayName)));

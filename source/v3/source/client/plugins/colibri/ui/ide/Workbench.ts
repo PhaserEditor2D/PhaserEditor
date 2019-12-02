@@ -16,14 +16,12 @@ namespace colibri.ui.ide {
     export class Workbench extends EventTarget {
 
         private static _workbench: Workbench;
-        private _plugins: ide.Plugin[];
 
         static getWorkbench() {
 
             if (!Workbench._workbench) {
 
                 Workbench._workbench = new Workbench();
-
             }
 
             return this._workbench;
@@ -39,7 +37,6 @@ namespace colibri.ui.ide {
         private _activeEditor: EditorPart;
         private _activeElement: HTMLElement;
         private _editorRegistry: EditorRegistry;
-        private _extensionRegistry: core.extensions.ExtensionRegistry;
         private _commandManager: commands.CommandManager;
         private _windows: WorkbenchWindow[];
         private _globalPreferences: core.preferences.Preferences;
@@ -48,8 +45,6 @@ namespace colibri.ui.ide {
         private constructor() {
 
             super();
-
-            this._plugins = [];
 
             this._editorRegistry = new EditorRegistry();
 
@@ -60,8 +55,6 @@ namespace colibri.ui.ide {
             this._activeElement = null;
 
             this._fileImageCache = new ImageFileCache();
-
-            this._extensionRegistry = new core.extensions.ExtensionRegistry();
 
             this._fileStorage = new core.io.FileStorage_HTTPServer();
 
@@ -80,25 +73,18 @@ namespace colibri.ui.ide {
             return this._projectPreferences;
         }
 
-        addPlugin(plugin: ide.Plugin) {
-            this._plugins.push(plugin);
-        }
-
-        getPlugins() {
-            return this._plugins;
-        }
 
         async launch() {
 
-            this.addPlugin(ColibriPlugin.getInstance());
+            Platform.addPlugin(ColibriPlugin.getInstance());
 
             console.log("Workbench: starting.");
 
             {
-                const plugins = this._plugins;
+                const plugins = Platform.getPlugins();
 
                 for (const plugin of plugins) {
-                    plugin.registerExtensions(this._extensionRegistry);
+                    plugin.registerExtensions(Platform.getExtensionRegistry());
                 }
 
                 for (const plugin of plugins) {
@@ -131,7 +117,7 @@ namespace colibri.ui.ide {
 
             console.log("%cWorkbench: started.", "color:green");
 
-            for(const plugin of this._plugins) {
+            for (const plugin of Platform.getPlugins()) {
 
                 await plugin.started();
             }
@@ -144,7 +130,7 @@ namespace colibri.ui.ide {
             this._contentTypeRegistry.resetCache();
         }
 
-        async openProject(projectName: string, monitor : controls.IProgressMonitor) {
+        async openProject(projectName: string, monitor: controls.IProgressMonitor) {
 
             this._projectPreferences = new core.preferences.Preferences("__project__" + projectName);
 
@@ -165,7 +151,7 @@ namespace colibri.ui.ide {
 
         private async preloadProjectResources(monitor: controls.IProgressMonitor) {
 
-            const extensions = this._extensionRegistry.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
+            const extensions = Platform.getExtensions<PreloadProjectResourcesExtension>(PreloadProjectResourcesExtension.POINT_ID);
 
             for (const extension of extensions) {
                 await extension.getPreloadPromise(monitor);
@@ -174,7 +160,7 @@ namespace colibri.ui.ide {
 
         private registerWindows() {
 
-            const extensions = this._extensionRegistry.getExtensions<WindowExtension>(WindowExtension.POINT_ID);
+            const extensions = Platform.getExtensions<WindowExtension>(WindowExtension.POINT_ID);
 
             this._windows = extensions.map(extension => extension.createWindow());
 
@@ -227,7 +213,7 @@ namespace colibri.ui.ide {
             await this.getWorkbenchIcon(ICON_FOLDER).preload();
             await this.getWorkbenchIcon(ICON_PLUS).preload();
 
-            const extensions = this._extensionRegistry
+            const extensions = Platform
                 .getExtensions<IconLoaderExtension>(IconLoaderExtension.POINT_ID);
 
             for (const extension of extensions) {
@@ -245,7 +231,7 @@ namespace colibri.ui.ide {
 
             this._contentType_icon_Map = new Map();
 
-            const extensions = this._extensionRegistry.getExtensions<ContentTypeIconExtension>(ContentTypeIconExtension.POINT_ID);
+            const extensions = Platform.getExtensions<ContentTypeIconExtension>(ContentTypeIconExtension.POINT_ID);
 
             for (const extension of extensions) {
 
@@ -260,7 +246,7 @@ namespace colibri.ui.ide {
 
             IDECommands.init();
 
-            const extensions = this._extensionRegistry.getExtensions<commands.CommandExtension>(commands.CommandExtension.POINT_ID);
+            const extensions = Platform.getExtensions<commands.CommandExtension>(commands.CommandExtension.POINT_ID);
 
             for (const extension of extensions) {
                 extension.getConfigurer()(this._commandManager);
@@ -282,7 +268,8 @@ namespace colibri.ui.ide {
         }
 
         private registerEditors(): void {
-            const extensions = this._extensionRegistry.getExtensions<EditorExtension>(EditorExtension.POINT_ID);
+
+            const extensions = Platform.getExtensions<EditorExtension>(EditorExtension.POINT_ID);
 
             for (const extension of extensions) {
 
@@ -403,8 +390,8 @@ namespace colibri.ui.ide {
         }
 
         private registerContentTypes() {
-            const extensions = this._extensionRegistry
-                .getExtensions<core.ContentTypeExtension>(core.ContentTypeExtension.POINT_ID);
+
+            const extensions = Platform.getExtensions<core.ContentTypeExtension>(core.ContentTypeExtension.POINT_ID);
 
             this._contentTypeRegistry = new core.ContentTypeRegistry();
 
@@ -447,10 +434,6 @@ namespace colibri.ui.ide {
 
         getContentTypeRegistry() {
             return this._contentTypeRegistry;
-        }
-
-        getExtensionRegistry() {
-            return this._extensionRegistry;
         }
 
         getProjectRoot(): core.io.FilePath {

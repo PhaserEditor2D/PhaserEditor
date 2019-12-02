@@ -8,7 +8,7 @@ namespace phasereditor2d.pack {
     export const ICON_ASSET_PACK = "asset-pack";
     export const ICON_ANIMATIONS = "animations";
 
-    export class AssetPackPlugin extends ide.Plugin {
+    export class AssetPackPlugin extends colibri.Plugin {
 
         private static _instance = new AssetPackPlugin();
 
@@ -20,7 +20,7 @@ namespace phasereditor2d.pack {
             super("phasereditor2d.pack");
         }
 
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // icons loader
 
@@ -143,5 +143,5 @@ namespace phasereditor2d.pack {
         }
     }
 
-    ide.Workbench.getWorkbench().addPlugin(AssetPackPlugin.getInstance());
+    colibri.Platform.addPlugin(AssetPackPlugin.getInstance());
 }

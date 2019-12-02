@@ -1,10 +1,10 @@
 declare namespace phasereditor2d.code {
-    class CodePlugin extends colibri.ui.ide.Plugin {
+    class CodePlugin extends colibri.Plugin {
         private static _instance;
         private _modelsManager;
         static getInstance(): CodePlugin;
         constructor();
-        registerExtensions(reg: colibri.core.extensions.ExtensionRegistry): void;
+        registerExtensions(reg: colibri.ExtensionRegistry): void;
         starting(): Promise<void>;
         private initMonacoContentAssist;
         private initMonacoLanguages;

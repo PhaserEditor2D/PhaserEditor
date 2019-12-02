@@ -1,6 +1,6 @@
 namespace colibri.ui.ide.commands {
 
-    export class CommandExtension extends core.extensions.Extension {
+    export class CommandExtension extends Extension {
 
         static POINT_ID = "colibri.ui.ide.commands";
 
