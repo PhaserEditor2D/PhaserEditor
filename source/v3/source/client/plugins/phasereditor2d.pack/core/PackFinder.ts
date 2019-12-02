@@ -13,6 +13,12 @@ namespace phasereditor2d.pack.core {
 
         }
 
+        static clean() {
+
+            this._packs = [];
+            this._loaded = false;
+        }
+
         static reset_temporal_method_TODO() {
             this._loaded = false;
         }

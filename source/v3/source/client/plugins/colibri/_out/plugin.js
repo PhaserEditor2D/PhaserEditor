@@ -680,6 +680,7 @@ var colibri;
                         return editor;
                     }
                     else {
+                        console.error("No editor available for :" + input);
                         alert("No editor available for the given input.");
                     }
                     return null;
@@ -3096,7 +3097,6 @@ var colibri;
                     }
                     step() {
                         this._step += 1;
-                        console.log("step " + this._step);
                         this.updateDialog();
                     }
                 }

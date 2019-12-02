@@ -84,7 +84,10 @@ var phasereditor2d;
                     }
                 ]));
                 // project resources preloader
-                reg.addExtension(new ide.PreloadProjectResourcesExtension((monitor) => pack.core.PackFinder.preload(monitor)));
+                reg.addExtension(new ide.PreloadProjectResourcesExtension((monitor) => {
+                    pack.core.PackFinder.clean();
+                    return pack.core.PackFinder.preload(monitor);
+                }));
                 // editors
                 reg.addExtension(new ide.EditorExtension([
                     pack.ui.editor.AssetPackEditor.getFactory()
@@ -776,6 +779,10 @@ var phasereditor2d;
             var controls = colibri.ui.controls;
             class PackFinder {
                 constructor() {
+                }
+                static clean() {
+                    this._packs = [];
+                    this._loaded = false;
                 }
                 static reset_temporal_method_TODO() {
                     this._loaded = false;

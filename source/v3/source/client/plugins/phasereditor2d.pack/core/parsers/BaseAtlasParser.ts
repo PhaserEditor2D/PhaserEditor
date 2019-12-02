@@ -12,6 +12,7 @@ namespace phasereditor2d.pack.core.parsers {
         }
 
         addToPhaserCache(game: Phaser.Game) {
+
             const item = this.getPackItem();
 
             if (!game.textures.exists(item.getKey())) {
@@ -29,6 +30,7 @@ namespace phasereditor2d.pack.core.parsers {
         }
 
         async preloadFrames(): Promise<controls.PreloadResult> {
+
             const data = this.getPackItem().getData();
 
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.atlasURL);

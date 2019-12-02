@@ -235,6 +235,7 @@ declare namespace phasereditor2d.pack.core {
         private static _packs;
         private static _loaded;
         private constructor();
+        static clean(): void;
         static reset_temporal_method_TODO(): void;
         static preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
         static getPacks(): AssetPack[];

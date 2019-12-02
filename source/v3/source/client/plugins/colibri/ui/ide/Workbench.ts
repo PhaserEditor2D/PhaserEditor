@@ -522,6 +522,9 @@ namespace colibri.ui.ide {
                 return editor;
 
             } else {
+
+                console.error("No editor available for :" + input);
+
                 alert("No editor available for the given input.");
             }
 
