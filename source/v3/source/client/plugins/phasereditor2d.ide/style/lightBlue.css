@@ -62,13 +62,14 @@
 }
 
 .lightBlue .TabPaneLabel.selected {
-    text-shadow: 1px 1px #f0f0f0;
+    text-shadow: 1px 1px #ffffff6f;
 }
 
 /* Part */
 
 .lightBlue .TabPane.activePart .TabPaneLabel.selected {
     box-shadow: inset 0px 2px 0px #4242ff;
+    text-shadow: 1px 1px #ffffff;
 }
 
 .lightBlue .TabPane.activePart .TabPaneContentArea,
@@ -123,7 +124,7 @@
 .lightBlue .ToolbarItem {
     background: #bbc9dd;
     border-color: #4f555e;
-    text-shadow: 1px 1px #f0f0f0;
+    text-shadow: 1px 1px #ffffff6f;
 }
 
 .lightBlue .ToolbarItem:hover {
@@ -151,7 +152,7 @@
 }
 
 .lightBlue .Dialog .DialogTitlePane {
-    text-shadow: 1px 1px #f0f0f0;
+    text-shadow: 1px 1px #ffffffff;
 }
 
 /* Menu */

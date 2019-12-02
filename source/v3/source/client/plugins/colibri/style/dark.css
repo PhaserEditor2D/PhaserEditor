@@ -43,7 +43,7 @@ Important:
 
 .dark button,
 .dark input[type="submit"] {
-    background: #525252;
+    background: #323232;
     border-color: #646464;
     color: #f0f0f0;
     text-shadow: 1px 1px #0e0e0e;    
@@ -53,10 +53,6 @@ Important:
     padding: 5px;
 }
 
-.dark .DialogButtonPane button {
-    background: #6e6e6e;
-    border-color: #444444;
-}
 
 .dark button[disabled] {
     color: rgba(0, 0, 0, 0.4);
@@ -64,23 +60,15 @@ Important:
 }
 
 .dark button:hover {
-    background: #656565;
-}
-
-.dark .DialogButtonPane button:hover {
-    background: #7e7e7e;
+    background: #3b3b3b;
 }
 
 .dark button[disabled]:hover {
-    background: #525252;
-}
-
-.dark .DialogButtonPane button[disabled]:hover {
-    background: #6e6e6e;
+    background: #353535;
 }
 
 .dark button:active {
-    background: rgba(255, 255, 255, 0.3);
+    background: #343434;
 }
 
 /* TabPane */

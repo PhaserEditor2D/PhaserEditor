@@ -101,6 +101,14 @@ Important:
     background: transparent;
 }
 
+/* ViewerPart */
+
+.darkPlus .ViewerPart {
+    display: grid;
+    grid-template-columns: 2px 1fr 2px;
+    grid-template-rows: 0px 1fr 0px;
+}
+
 /* Scroll Bar */
 
 .darkPlus .ScrollHandler {
