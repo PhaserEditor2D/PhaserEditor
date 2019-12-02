@@ -679,7 +679,8 @@ declare namespace colibri.ui.controls {
 }
 declare namespace colibri.ui.controls {
     type Theme = {
-        cssName: string;
+        id: string;
+        classList: string[];
         displayName: string;
         viewerSelectionBackground: string;
         viewerSelectionForeground: string;

@@ -295,8 +295,8 @@ var colibri;
                 }
                 static setTheme(theme) {
                     const classList = document.getElementsByTagName("html")[0].classList;
-                    classList.remove(this._theme.cssName);
-                    classList.add(theme.cssName);
+                    classList.remove(...this._theme.classList);
+                    classList.add(...theme.classList);
                     this._theme = theme;
                     window.dispatchEvent(new CustomEvent(controls.EVENT_THEME_CHANGED, { detail: this._theme }));
                 }
@@ -323,8 +323,9 @@ var colibri;
             Controls._images = new Map();
             Controls._applicationDragData = null;
             Controls.LIGHT_THEME = {
-                cssName: "light",
+                id: "light",
                 displayName: "Light",
+                classList: ["light"],
                 dark: false,
                 viewerSelectionBackground: "#4242ff",
                 //treeItemSelectionBackground: "#525252",
@@ -332,8 +333,9 @@ var colibri;
                 viewerForeground: "#000000",
             };
             Controls.DARK_THEME = {
-                cssName: "dark",
+                id: "dark",
                 displayName: "Dark",
+                classList: ["dark"],
                 dark: true,
                 viewerSelectionBackground: "#f0a050",
                 viewerSelectionForeground: "#0e0e0e",

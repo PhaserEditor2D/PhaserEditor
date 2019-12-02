@@ -30,15 +30,26 @@ var phasereditor2d;
                 // themes 
                 reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
                     dark: false,
-                    cssName: "lightBlue",
-                    displayName: "Light Blue",
+                    id: "lightBlue",
+                    classList: ["lightBlue"],
+                    displayName: "Light Sky",
+                    viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
+                    viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
+                    viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+                }));
+                reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                    dark: false,
+                    id: "lightGray",
+                    classList: ["light", "lightGray"],
+                    displayName: "Light Gray",
                     viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                     viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                     viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
                 }));
                 reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
                     dark: true,
-                    cssName: "darkPlus",
+                    id: "darkPlus",
+                    classList: ["darkPlus"],
                     displayName: "Dark Plus",
                     viewerForeground: controls.Controls.DARK_THEME.viewerForeground,
                     viewerSelectionForeground: controls.Controls.DARK_THEME.viewerSelectionForeground,
@@ -112,7 +123,7 @@ var phasereditor2d;
                 controls.Controls.setTheme(theme);
                 const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
                 prefs.setValue("phasereditor2d.ide.theme", {
-                    theme: theme.cssName
+                    theme: theme.id
                 });
             }
             restoreTheme() {
@@ -120,13 +131,13 @@ var phasereditor2d;
                 const themeData = prefs.getValue("phasereditor2d.ide.theme");
                 let theme = null;
                 if (themeData) {
-                    const cssName = themeData.theme;
+                    const id = themeData.theme;
                     theme = colibri.ui.ide.Workbench
                         .getWorkbench()
                         .getExtensionRegistry()
                         .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                         .map(e => e.getTheme())
-                        .find(t => t.cssName === cssName);
+                        .find(t => t.id === id);
                 }
                 controls.Controls.setTheme((theme !== null && theme !== void 0 ? theme : controls.Controls.LIGHT_THEME));
             }
@@ -809,7 +820,7 @@ var phasereditor2d;
                             .getExtensionRegistry()
                             .getExtensions(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                             .map(ext => ext.getTheme())
-                            .sort((a, b) => a.cssName.localeCompare(b.cssName)));
+                            .sort((a, b) => a.displayName.localeCompare(b.displayName)));
                     }
                 }
                 class ThemeLabelProvider extends controls.viewers.LabelProvider {

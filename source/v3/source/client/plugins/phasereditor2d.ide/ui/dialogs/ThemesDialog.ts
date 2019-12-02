@@ -42,7 +42,7 @@ namespace phasereditor2d.ide.ui.dialogs {
                     .getExtensionRegistry()
                     .getExtensions<colibri.ui.ide.themes.ThemeExtension>(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                     .map(ext => ext.getTheme())
-                    .sort((a, b) => a.cssName.localeCompare(b.cssName))
+                    .sort((a, b) => a.displayName.localeCompare(b.displayName))
             );
         }
     }

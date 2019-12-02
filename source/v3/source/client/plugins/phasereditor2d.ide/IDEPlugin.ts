@@ -60,8 +60,19 @@ namespace phasereditor2d.ide {
 
             reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
                 dark: false,
-                cssName: "lightBlue",
-                displayName: "Light Blue",
+                id: "lightBlue",
+                classList: ["lightBlue"],
+                displayName: "Light Sky",
+                viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
+                viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
+                viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
+            }));
+
+            reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
+                dark: false,
+                id: "lightGray",
+                classList: ["light", "lightGray"],
+                displayName: "Light Gray",
                 viewerForeground: controls.Controls.LIGHT_THEME.viewerForeground,
                 viewerSelectionForeground: controls.Controls.LIGHT_THEME.viewerSelectionForeground,
                 viewerSelectionBackground: controls.Controls.LIGHT_THEME.viewerSelectionBackground,
@@ -69,7 +80,8 @@ namespace phasereditor2d.ide {
 
             reg.addExtension(new colibri.ui.ide.themes.ThemeExtension({
                 dark: true,
-                cssName: "darkPlus",
+                id: "darkPlus",
+                classList: ["darkPlus"],
                 displayName: "Dark Plus",
                 viewerForeground: controls.Controls.DARK_THEME.viewerForeground,
                 viewerSelectionForeground: controls.Controls.DARK_THEME.viewerSelectionForeground,
@@ -187,7 +199,7 @@ namespace phasereditor2d.ide {
             const prefs = colibri.ui.ide.Workbench.getWorkbench().getGlobalPreferences();
 
             prefs.setValue("phasereditor2d.ide.theme", {
-                theme: theme.cssName
+                theme: theme.id
             });
         }
 
@@ -202,14 +214,14 @@ namespace phasereditor2d.ide {
 
             if (themeData) {
 
-                const cssName = themeData.theme;
+                const id = themeData.theme;
 
                 theme = colibri.ui.ide.Workbench
                     .getWorkbench()
                     .getExtensionRegistry()
                     .getExtensions<colibri.ui.ide.themes.ThemeExtension>(colibri.ui.ide.themes.ThemeExtension.POINT_ID)
                     .map(e => e.getTheme())
-                    .find(t => t.cssName === cssName);
+                    .find(t => t.id === id);
             }
 
             controls.Controls.setTheme(theme ?? controls.Controls.LIGHT_THEME);

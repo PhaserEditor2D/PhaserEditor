@@ -102,10 +102,6 @@ Important:
 
 /* Scroll Bar */
 
-.light .ScrollHandler {
-    background: transparent;
-}
-
 .light .ScrollBar {
     background: #e5e5e5;
 }
