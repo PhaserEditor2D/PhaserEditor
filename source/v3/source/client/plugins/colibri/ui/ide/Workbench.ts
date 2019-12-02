@@ -76,8 +76,6 @@ namespace colibri.ui.ide {
 
         async launch() {
 
-            Platform.addPlugin(ColibriPlugin.getInstance());
-
             console.log("Workbench: starting.");
 
             {

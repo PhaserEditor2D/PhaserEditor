@@ -228,6 +228,9 @@ namespace phasereditor2d.ide {
 
     colibri.Platform.addPlugin(IDEPlugin.getInstance());
 
+
+    /* program entry point */
+
     export const VER = "3.0.0";
 
     async function main() {
@@ -242,9 +245,7 @@ namespace phasereditor2d.ide {
 
         colibri.ui.controls.dialogs.AlertDialog.replaceConsoleAlert();
 
-        const wb = ide.Workbench.getWorkbench();
-
-        await wb.launch();
+        await colibri.Platform.start();
 
         await IDEPlugin.getInstance().openFirstWindow();
     }

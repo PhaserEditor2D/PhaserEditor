@@ -29,5 +29,13 @@ namespace colibri {
         static addExtension(...extensions: Extension[]) {
             this._extensionRegistry.addExtension(...extensions);
         }
+
+        static getWorkbench() {
+            return ui.ide.Workbench.getWorkbench();
+        }
+
+        static start() {
+            return this.getWorkbench().launch();
+        }
     }
 }

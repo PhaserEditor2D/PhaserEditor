@@ -9,6 +9,19 @@ declare namespace colibri {
         getIcon(name: string): ui.controls.IImage;
     }
 }
+declare namespace colibri {
+    class Platform {
+        private static _plugins;
+        private static _extensionRegistry;
+        static addPlugin(plugin: colibri.Plugin): void;
+        static getPlugins(): Plugin[];
+        static getExtensionRegistry(): ExtensionRegistry;
+        static getExtensions<T extends Extension>(point: string): T[];
+        static addExtension(...extensions: Extension[]): void;
+        static getWorkbench(): ui.ide.Workbench;
+        static start(): Promise<void>;
+    }
+}
 declare namespace colibri.ui.controls {
     const EVENT_CONTROL_LAYOUT = "controlLayout";
     class Control extends EventTarget {
@@ -180,17 +193,6 @@ declare namespace colibri {
         constructor();
         addExtension(...extensions: Extension[]): void;
         getExtensions<T extends Extension>(point: string): T[];
-    }
-}
-declare namespace colibri {
-    class Platform {
-        private static _plugins;
-        private static _extensionRegistry;
-        static addPlugin(plugin: colibri.Plugin): void;
-        static getPlugins(): Plugin[];
-        static getExtensionRegistry(): ExtensionRegistry;
-        static getExtensions<T extends Extension>(point: string): T[];
-        static addExtension(...extensions: Extension[]): void;
     }
 }
 declare namespace colibri.core {

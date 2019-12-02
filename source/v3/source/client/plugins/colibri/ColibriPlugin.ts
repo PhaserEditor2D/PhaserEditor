@@ -1,4 +1,5 @@
 /// <reference path="./Plugin.ts" />
+/// <reference path="./Platform.ts" />
 /// <reference path="./ui/ide/Workbench.ts" />
 
 namespace colibri {
@@ -28,6 +29,7 @@ namespace colibri {
                 new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.DARK_THEME)
             );
         }
-
     }
+
+    Platform.addPlugin(ColibriPlugin.getInstance());
 }

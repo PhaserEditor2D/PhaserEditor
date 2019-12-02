@@ -23,6 +23,37 @@ var colibri;
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
+    class Platform {
+        static addPlugin(plugin) {
+            this._plugins.push(plugin);
+        }
+        static getPlugins() {
+            return this._plugins;
+        }
+        static getExtensionRegistry() {
+            if (!this._extensionRegistry) {
+                this._extensionRegistry = new colibri.ExtensionRegistry();
+            }
+            return this._extensionRegistry;
+        }
+        static getExtensions(point) {
+            return this._extensionRegistry.getExtensions(point);
+        }
+        static addExtension(...extensions) {
+            this._extensionRegistry.addExtension(...extensions);
+        }
+        static getWorkbench() {
+            return colibri.ui.ide.Workbench.getWorkbench();
+        }
+        static start() {
+            return this.getWorkbench().launch();
+        }
+    }
+    Platform._plugins = [];
+    colibri.Platform = Platform;
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;
@@ -382,7 +413,6 @@ var colibri;
                     return this._projectPreferences;
                 }
                 async launch() {
-                    colibri.Platform.addPlugin(colibri.ColibriPlugin.getInstance());
                     console.log("Workbench: starting.");
                     {
                         const plugins = colibri.Platform.getPlugins();
@@ -678,6 +708,7 @@ var colibri;
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));
 /// <reference path="./Plugin.ts" />
+/// <reference path="./Platform.ts" />
 /// <reference path="./ui/ide/Workbench.ts" />
 var colibri;
 (function (colibri) {
@@ -696,6 +727,7 @@ var colibri;
         }
     }
     colibri.ColibriPlugin = ColibriPlugin;
+    colibri.Platform.addPlugin(ColibriPlugin.getInstance());
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
@@ -743,31 +775,6 @@ var colibri;
         }
     }
     colibri.ExtensionRegistry = ExtensionRegistry;
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    class Platform {
-        static addPlugin(plugin) {
-            this._plugins.push(plugin);
-        }
-        static getPlugins() {
-            return this._plugins;
-        }
-        static getExtensionRegistry() {
-            if (!this._extensionRegistry) {
-                this._extensionRegistry = new colibri.ExtensionRegistry();
-            }
-            return this._extensionRegistry;
-        }
-        static getExtensions(point) {
-            return this._extensionRegistry.getExtensions(point);
-        }
-        static addExtension(...extensions) {
-            this._extensionRegistry.addExtension(...extensions);
-        }
-    }
-    Platform._plugins = [];
-    colibri.Platform = Platform;
 })(colibri || (colibri = {}));
 /// <reference path="../Extension.ts" />
 var colibri;
