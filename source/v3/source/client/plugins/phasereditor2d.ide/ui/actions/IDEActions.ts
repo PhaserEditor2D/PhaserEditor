@@ -1,6 +1,7 @@
 namespace phasereditor2d.ide.ui.actions {
 
     export const CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
+    export const CMD_RELOAD_PROJECT = "phasereditor2d.ide.ui.actions.ReloadProjectAction";
     export const CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
     export const CMD_EDITOR_TABS_SIZE_UP = "phasereditor2d.ide.ui.actions.EditorTabsSizeUp";
     export const CMD_EDITOR_TABS_SIZE_DOWN = "phasereditor2d.ide.ui.actions.EditorTabsSizeDown";
@@ -30,6 +31,21 @@ namespace phasereditor2d.ide.ui.actions {
                 alt: true,
                 key: "P",
                 filterInputElements: false
+            }));
+
+            // reload project
+
+            manager.addCommandHelper(CMD_RELOAD_PROJECT);
+
+            manager.addHandlerHelper(CMD_RELOAD_PROJECT,
+                isNotWelcomeWindowScope,
+                args => new ReloadProjectAction().run()
+            );
+
+            manager.addKeyBinding(CMD_RELOAD_PROJECT, new commands.KeyMatcher({
+                control: true,
+                alt: true,
+                key: "R"
             }));
 
             // theme dialog

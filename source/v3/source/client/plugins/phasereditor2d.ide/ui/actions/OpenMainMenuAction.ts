@@ -22,9 +22,7 @@ namespace phasereditor2d.ide.ui.actions {
 
             menu.addSeparator();
 
-            menu.add(new controls.Action({
-                text: "Reload Project"
-            }));
+            menu.add(new actions.ReloadProjectAction());
 
             menu.add(new actions.OpenThemeDialogAction());
 

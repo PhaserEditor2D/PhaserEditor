@@ -267,6 +267,7 @@ var phasereditor2d;
             var actions;
             (function (actions) {
                 actions.CMD_OPEN_PROJECTS_DIALOG = "phasereditor2d.ide.ui.actions.OpenProjectsDialog";
+                actions.CMD_RELOAD_PROJECT = "phasereditor2d.ide.ui.actions.ReloadProjectAction";
                 actions.CMD_SWITCH_THEME = "phasereditor2d.ide.ui.actions.SwitchTheme";
                 actions.CMD_EDITOR_TABS_SIZE_UP = "phasereditor2d.ide.ui.actions.EditorTabsSizeUp";
                 actions.CMD_EDITOR_TABS_SIZE_DOWN = "phasereditor2d.ide.ui.actions.EditorTabsSizeDown";
@@ -284,6 +285,14 @@ var phasereditor2d;
                             alt: true,
                             key: "P",
                             filterInputElements: false
+                        }));
+                        // reload project
+                        manager.addCommandHelper(actions.CMD_RELOAD_PROJECT);
+                        manager.addHandlerHelper(actions.CMD_RELOAD_PROJECT, isNotWelcomeWindowScope, args => new actions.ReloadProjectAction().run());
+                        manager.addKeyBinding(actions.CMD_RELOAD_PROJECT, new commands.KeyMatcher({
+                            control: true,
+                            alt: true,
+                            key: "R"
                         }));
                         // theme dialog
                         manager.addCommandHelper(actions.CMD_SWITCH_THEME);
@@ -336,9 +345,7 @@ var phasereditor2d;
                             callback: () => controls.Controls.openUrlInNewPage("https://phasereditor2d.com/docs/v3")
                         }));
                         menu.addSeparator();
-                        menu.add(new controls.Action({
-                            text: "Reload Project"
-                        }));
+                        menu.add(new actions.ReloadProjectAction());
                         menu.add(new actions.OpenThemeDialogAction());
                         menu.addSeparator();
                         menu.add(new controls.Action({
@@ -442,6 +449,30 @@ var phasereditor2d;
                     }
                 }
                 actions.PlayProjectAction = PlayProjectAction;
+            })(actions = ui.actions || (ui.actions = {}));
+        })(ui = ide.ui || (ide.ui = {}));
+    })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+var phasereditor2d;
+(function (phasereditor2d) {
+    var ide;
+    (function (ide) {
+        var ui;
+        (function (ui) {
+            var actions;
+            (function (actions) {
+                var controls = colibri.ui.controls;
+                class ReloadProjectAction extends controls.Action {
+                    constructor() {
+                        super({
+                            text: "Reload Project"
+                        });
+                    }
+                    run() {
+                        ide.IDEPlugin.getInstance().ideOpenProject(colibri.ui.ide.Workbench.getWorkbench().getProjectRoot().getName());
+                    }
+                }
+                actions.ReloadProjectAction = ReloadProjectAction;
             })(actions = ui.actions || (ui.actions = {}));
         })(ui = ide.ui || (ide.ui = {}));
     })(ide = phasereditor2d.ide || (phasereditor2d.ide = {}));
