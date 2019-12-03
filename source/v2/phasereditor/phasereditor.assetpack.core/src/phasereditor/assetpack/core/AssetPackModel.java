@@ -679,15 +679,20 @@ public final class AssetPackModel {
 	}
 
 	public String createKey(IFile file) {
-		
+		return this.createKey(file, null);
+	}
+
+	public String createKey(IFile file, AssetType type) {
+
 		var name = file.getFullPath().removeFileExtension().toFile().getName();
-		
-		if (AssetPackCore.pref_useContainerFolderAsKeyPrefix()) {
+
+		if (type != AssetType.sceneFile && AssetPackCore.pref_useContainerFolderAsKeyPrefix()) {
+
 			if (_file != null) {
 				name = _file.getParent().getName() + "." + name;
 			}
 		}
-		
+
 		return createKey(name);
 	}
 
@@ -840,7 +845,7 @@ public final class AssetPackModel {
 		}
 
 		IContainer webContentFolder = getWebContentFolder();
-		
+
 		IFile file = webContentFolder.getFile(new Path(url));
 
 		if (!file.exists()) {

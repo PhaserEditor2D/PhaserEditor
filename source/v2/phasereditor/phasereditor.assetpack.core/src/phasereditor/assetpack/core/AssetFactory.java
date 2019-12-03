@@ -609,7 +609,7 @@ public abstract class AssetFactory {
 
 			AbstractFileAssetModel asset = makeAsset(pack.createKey(file), section);
 
-			asset.setKey(pack.createKey(file));
+			asset.setKey(pack.createKey(file, getType()));
 			asset.setUrl(ProjectCore.getAssetUrl(file));
 
 			return asset;
