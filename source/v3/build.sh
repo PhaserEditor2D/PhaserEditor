@@ -13,12 +13,12 @@ pushd .
 
 echo Building server
 
-cd source/server/src
+cd source/server/src/github.com/PhaserEditor/PhaserEditor2D-Server
 
 echo +Building Linux
 
-export GOOS=linux;export GOARCH=amd64; go build PhaserEditor2D.go
-mv PhaserEditor2D ../../../dist/$VER/linux/PhaserEditor2D/PhaserEditor2D-Server
+export GOOS=linux;export GOARCH=amd64; go build launcher/main.go
+mv main ~/Documents/PhaserEditor/Public/source/v3/dist/$VER/linux/PhaserEditor2D/PhaserEditor2D
 
 popd 
 
