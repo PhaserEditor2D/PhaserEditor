@@ -91,7 +91,7 @@ declare namespace colibri.ui.controls {
         private static getImage;
         static openUrlInNewPage(url: string): void;
         static getIcon(name: string, baseUrl?: string): IImage;
-        static createIconElement(icon?: IImage, overIcon?: IImage, size?: number): HTMLCanvasElement;
+        static createIconElement(icon?: IImage, size?: number): HTMLCanvasElement;
         static LIGHT_THEME: Theme;
         static DARK_THEME: Theme;
         static _theme: Theme;

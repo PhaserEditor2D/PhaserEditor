@@ -128,59 +128,24 @@ namespace colibri.ui.controls {
             return Controls.getImage(url, name);
         }
 
-        static createIconElement(icon?: IImage, overIcon?: IImage, size: number = ICON_SIZE) {
+        static createIconElement(icon?: IImage, size: number = ICON_SIZE) {
 
-            const canvasElement = document.createElement("canvas");
+            const canvas = document.createElement("canvas");
 
-            canvasElement.width = canvasElement.height = size;
-            canvasElement.style.width = canvasElement.style.height = size + "px";
+            canvas.width = canvas.height = size;
+            canvas.style.width = canvas.style.height = size + "px";
 
-            canvasElement.addEventListener("repaint", (e: CustomEvent) => {
+            const context = canvas.getContext("2d");
 
-                let eventIcon = e.detail as IImage ?? icon;
+            context.imageSmoothingEnabled = false;
 
-                const canvas = e.target as HTMLCanvasElement;
+            context.clearRect(0, 0, canvas.width, canvas.height);
 
-                const context = canvas.getContext("2d");
-
-                context.imageSmoothingEnabled = false;
-
-                context.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (eventIcon) {
-
-                    const w = eventIcon.getWidth();
-                    const h = eventIcon.getHeight();
-
-                    if (w === ICON_SIZE && h === ICON_SIZE) {
-
-                        eventIcon.paint(context,
-                            (canvas.width - w) / 2, (canvas.height - h) / 2,
-                            w, h, false);
-
-                    } else {
-
-                        eventIcon.paint(context, 0, 0, canvas.width, canvas.height, true);
-                    }
-                }
-            });
-
-
-            if (overIcon) {
-
-                canvasElement.addEventListener("mouseenter",
-                    e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon }))
-                );
-
-                canvasElement.addEventListener("mouseleave",
-                    e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon }))
-                );
-
+            if (icon) {
+                icon.paint(context, 0, 0, canvas.width, canvas.height, true);
             }
 
-            canvasElement.dispatchEvent(new CustomEvent("repaint"));
-
-            return canvasElement;
+            return canvas;
         }
 
         static LIGHT_THEME: Theme = {
@@ -197,7 +162,7 @@ namespace colibri.ui.controls {
         static DARK_THEME: Theme = {
             id: "dark",
             displayName: "Dark",
-            classList : ["dark"],
+            classList: ["dark"],
             dark: true,
             viewerSelectionBackground: "#f0a050", //"#101ea2",//"#8f8f8f",
             viewerSelectionForeground: "#0e0e0e",

@@ -73,9 +73,13 @@ namespace colibri.ui.controls {
         }
 
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
+
             if (this._ready) {
+                
                 DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
+
             } else {
+
                 DefaultImage.paintEmpty(context, x, y, w, h)
             }
         }

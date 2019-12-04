@@ -284,34 +284,17 @@ var colibri;
                     const url = `static/${baseUrl}/${controls.ICON_SIZE}/${name}.png`;
                     return Controls.getImage(url, name);
                 }
-                static createIconElement(icon, overIcon, size = controls.ICON_SIZE) {
-                    const canvasElement = document.createElement("canvas");
-                    canvasElement.width = canvasElement.height = size;
-                    canvasElement.style.width = canvasElement.style.height = size + "px";
-                    canvasElement.addEventListener("repaint", (e) => {
-                        var _a;
-                        let eventIcon = (_a = e.detail, (_a !== null && _a !== void 0 ? _a : icon));
-                        const canvas = e.target;
-                        const context = canvas.getContext("2d");
-                        context.imageSmoothingEnabled = false;
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                        if (eventIcon) {
-                            const w = eventIcon.getWidth();
-                            const h = eventIcon.getHeight();
-                            if (w === controls.ICON_SIZE && h === controls.ICON_SIZE) {
-                                eventIcon.paint(context, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h, false);
-                            }
-                            else {
-                                eventIcon.paint(context, 0, 0, canvas.width, canvas.height, true);
-                            }
-                        }
-                    });
-                    if (overIcon) {
-                        canvasElement.addEventListener("mouseenter", e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon })));
-                        canvasElement.addEventListener("mouseleave", e => e.target.dispatchEvent(new CustomEvent("repaint", { detail: overIcon })));
+                static createIconElement(icon, size = controls.ICON_SIZE) {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = canvas.height = size;
+                    canvas.style.width = canvas.style.height = size + "px";
+                    const context = canvas.getContext("2d");
+                    context.imageSmoothingEnabled = false;
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    if (icon) {
+                        icon.paint(context, 0, 0, canvas.width, canvas.height, true);
                     }
-                    canvasElement.dispatchEvent(new CustomEvent("repaint"));
-                    return canvasElement;
+                    return canvas;
                 }
                 static switchTheme() {
                     const newTheme = this._theme === this.LIGHT_THEME ? this.DARK_THEME : this.LIGHT_THEME;
@@ -2521,6 +2504,12 @@ var colibri;
                         this.paint(this._icon);
                     });
                 }
+                static setManager(element, manager) {
+                    element["__CloseIconManager"] = manager;
+                }
+                static getManager(element) {
+                    return element["__CloseIconManager"];
+                }
                 setIcon(icon) {
                     this._icon = icon;
                 }
@@ -2537,6 +2526,51 @@ var colibri;
                     if (icon) {
                         this._context.clearRect(0, 0, controls.ICON_SIZE, controls.ICON_SIZE);
                         icon.paint(this._context, 0, 0, controls.ICON_SIZE, controls.ICON_SIZE, true);
+                    }
+                }
+            }
+            class TabIconManager {
+                constructor(canvas, icon) {
+                    this._canvas = canvas;
+                    this._icon = icon;
+                }
+                static createElement(icon, size) {
+                    const canvas = document.createElement("canvas");
+                    const manager = new TabIconManager(canvas, icon);
+                    canvas["__TabIconManager"] = manager;
+                    manager.resize(size);
+                    return canvas;
+                }
+                resize(size) {
+                    size = Math.max(size, controls.ICON_SIZE);
+                    if (this._icon && this._icon.getWidth() === controls.ICON_SIZE && this._icon.getHeight() === controls.ICON_SIZE) {
+                        size = controls.ICON_SIZE;
+                    }
+                    this._canvas.width = this._canvas.height = size;
+                    this._canvas.style.width = this._canvas.style.height = size + "px";
+                    this.repaint();
+                }
+                static getManager(canvas) {
+                    return canvas["__TabIconManager"];
+                }
+                setIcon(icon) {
+                    this._icon = icon;
+                    this.repaint();
+                }
+                repaint() {
+                    const ctx = this._canvas.getContext("2d");
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                    if (!this._icon) {
+                        return;
+                    }
+                    const w = this._icon.getWidth();
+                    const h = this._icon.getHeight();
+                    if (w === controls.ICON_SIZE && h === controls.ICON_SIZE) {
+                        this._icon.paint(ctx, (this._canvas.width - w) / 2, (this._canvas.height - h) / 2, w, h, false);
+                    }
+                    else {
+                        this._icon.paint(ctx, 0, 0, this._canvas.width, this._canvas.height, true);
                     }
                 }
             }
@@ -2572,11 +2606,7 @@ var colibri;
                     for (let i = 0; i < this._titleBarElement.children.length; i++) {
                         const label = this._titleBarElement.children.item(i);
                         const iconCanvas = label.firstChild;
-                        iconCanvas.width = this._iconSize;
-                        iconCanvas.height = this._iconSize;
-                        iconCanvas.style.width = this._iconSize + "px";
-                        iconCanvas.style.height = this._iconSize + "px";
-                        iconCanvas.dispatchEvent(new CustomEvent("repaint", {}));
+                        TabIconManager.getManager(iconCanvas).resize(this._iconSize);
                         this.layout();
                     }
                     this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_LABEL_RESIZED, {}));
@@ -2587,7 +2617,7 @@ var colibri;
                 makeLabel(label, icon, closeable) {
                     const labelElement = document.createElement("div");
                     labelElement.classList.add("TabPaneLabel");
-                    const tabIconElement = controls.Controls.createIconElement(icon, null, this._iconSize);
+                    const tabIconElement = TabIconManager.createElement(icon, this._iconSize);
                     labelElement.appendChild(tabIconElement);
                     const textElement = document.createElement("span");
                     textElement.innerHTML = label;
@@ -2596,18 +2626,18 @@ var colibri;
                         const manager = new CloseIconManager();
                         manager.setIcon(controls.Controls.getIcon(controls.ICON_CONTROL_CLOSE));
                         manager.repaint();
-                        labelElement.appendChild(manager.getElement());
-                        labelElement.classList.add("closeable");
-                        labelElement["__CloseIconManager"] = manager;
                         manager.getElement().addEventListener("click", e => {
                             e.stopImmediatePropagation();
                             this.closeTabLabel(labelElement);
                         });
+                        labelElement.appendChild(manager.getElement());
+                        labelElement.classList.add("closeable");
+                        CloseIconManager.setManager(labelElement, manager);
                     }
                     return labelElement;
                 }
                 setTabCloseIcons(labelElement, icon, overIcon) {
-                    const manager = labelElement["__CloseIconManager"];
+                    const manager = CloseIconManager.getManager(labelElement);
                     if (manager) {
                         manager.setIcon(icon);
                         manager.setOverIcon(overIcon);
@@ -2659,11 +2689,9 @@ var colibri;
                         if (content2 === content) {
                             const iconElement = label.firstChild;
                             const textElement = iconElement.nextSibling;
-                            if (icon) {
-                                const context = iconElement.getContext("2d");
-                                context.clearRect(0, 0, iconElement.width, iconElement.height);
-                                icon.paint(context, 0, 0, iconElement.width, iconElement.height, false);
-                            }
+                            const manager = TabIconManager.getManager(iconElement);
+                            manager.setIcon(icon);
+                            manager.repaint();
                             textElement.innerHTML = title;
                         }
                     }
