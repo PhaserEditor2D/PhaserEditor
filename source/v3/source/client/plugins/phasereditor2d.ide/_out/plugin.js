@@ -313,8 +313,8 @@ var phasereditor2d;
                         // editor tabs size
                         manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN);
                         manager.addCommandHelper(actions.CMD_EDITOR_TABS_SIZE_UP);
-                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(-5));
-                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_UP, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(5));
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_DOWN, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabIconSize(-5));
+                        manager.addHandlerHelper(actions.CMD_EDITOR_TABS_SIZE_UP, isNotWelcomeWindowScope, args => colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabIconSize(5));
                         manager.addKeyBinding(actions.CMD_EDITOR_TABS_SIZE_DOWN, new commands.KeyMatcher({
                             control: true,
                             key: "3"

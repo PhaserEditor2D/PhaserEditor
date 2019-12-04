@@ -40,8 +40,6 @@ namespace colibri.ui.ide {
 
             this.addEventListener(controls.EVENT_TAB_LABEL_RESIZED, (e: CustomEvent) => {
 
-                console.log("resized");
-
                 for (const part of this.getParts()) {
 
                     part.dispatchTitleUpdatedEvent();

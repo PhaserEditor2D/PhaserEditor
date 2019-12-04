@@ -668,7 +668,9 @@ declare namespace colibri.ui.controls {
         private _iconSize;
         constructor(...classList: string[]);
         addTab(label: string, icon: IImage, content: Control, closeable?: boolean): void;
-        incrementTabSize(amount: number): void;
+        getTabIconSize(): number;
+        setTabIconSize(size: number): void;
+        incrementTabIconSize(amount: number): void;
         private makeLabel;
         setTabCloseIcons(labelElement: HTMLElement, icon: IImage, overIcon: IImage): void;
         closeTab(content: controls.Control): void;

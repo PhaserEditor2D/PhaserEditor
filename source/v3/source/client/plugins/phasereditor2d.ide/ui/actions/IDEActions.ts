@@ -71,13 +71,13 @@ namespace phasereditor2d.ide.ui.actions {
             manager.addHandlerHelper(CMD_EDITOR_TABS_SIZE_DOWN,
                 isNotWelcomeWindowScope,
                 args =>
-                    colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(-5)
+                    colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabIconSize(-5)
             );
 
             manager.addHandlerHelper(CMD_EDITOR_TABS_SIZE_UP,
                 isNotWelcomeWindowScope,
                 args =>
-                    colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabSize(5)
+                    colibri.Platform.getWorkbench().getActiveWindow().getEditorArea().incrementTabIconSize(5)
             );
 
             manager.addKeyBinding(CMD_EDITOR_TABS_SIZE_DOWN, new commands.KeyMatcher({

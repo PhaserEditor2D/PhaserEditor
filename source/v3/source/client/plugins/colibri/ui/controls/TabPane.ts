@@ -98,9 +98,13 @@ namespace colibri.ui.controls {
             }
         }
 
-        incrementTabSize(amount: number) {
+        getTabIconSize() {
+            return this._iconSize;
+        }
 
-            this._iconSize = Math.max(ICON_SIZE, this._iconSize + amount);
+        setTabIconSize(size : number) {
+
+            this._iconSize = Math.max(ICON_SIZE, size);
 
             for (let i = 0; i < this._titleBarElement.children.length; i++) {
 
@@ -120,6 +124,10 @@ namespace colibri.ui.controls {
             }
 
             this.dispatchEvent(new CustomEvent(EVENT_TAB_LABEL_RESIZED, {}));
+        }
+
+        incrementTabIconSize(amount: number) {
+            this.setTabIconSize(this._iconSize + amount);
         }
 
         private makeLabel(label: string, icon: IImage, closeable: boolean): HTMLElement {

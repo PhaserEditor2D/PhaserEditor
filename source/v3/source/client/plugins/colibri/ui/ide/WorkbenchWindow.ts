@@ -9,7 +9,8 @@ namespace colibri.ui.ide {
             fileName: string,
             state: any
         }[],
-        activeEditorFile: string
+        activeEditorFile: string,
+        tabIconSize: number
     }
 
 
@@ -63,7 +64,8 @@ namespace colibri.ui.ide {
 
             const restoreEditorData: RestoreEditorData = {
                 fileDataList: [],
-                activeEditorFile: activeEditorFile
+                activeEditorFile: activeEditorFile,
+                tabIconSize: editorArea.getTabIconSize()
             };
 
             for (const editor of editors) {
@@ -93,6 +95,10 @@ namespace colibri.ui.ide {
             const editors = editorArea.getEditors();
 
             const restoreEditorData = prefs.getValue("restoreEditorData") as RestoreEditorData;
+
+            if (restoreEditorData.tabIconSize) {
+                editorArea.incrementTabIconSize(restoreEditorData.tabIconSize);
+            }
 
             for (const editor of editors) {
 

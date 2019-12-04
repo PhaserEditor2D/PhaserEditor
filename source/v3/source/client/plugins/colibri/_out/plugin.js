@@ -2564,8 +2564,11 @@ var colibri;
                         this.selectTab(labelElement);
                     }
                 }
-                incrementTabSize(amount) {
-                    this._iconSize = Math.max(controls.ICON_SIZE, this._iconSize + amount);
+                getTabIconSize() {
+                    return this._iconSize;
+                }
+                setTabIconSize(size) {
+                    this._iconSize = Math.max(controls.ICON_SIZE, size);
                     for (let i = 0; i < this._titleBarElement.children.length; i++) {
                         const label = this._titleBarElement.children.item(i);
                         const iconCanvas = label.firstChild;
@@ -2577,6 +2580,9 @@ var colibri;
                         this.layout();
                     }
                     this.dispatchEvent(new CustomEvent(controls.EVENT_TAB_LABEL_RESIZED, {}));
+                }
+                incrementTabIconSize(amount) {
+                    this.setTabIconSize(this._iconSize + amount);
                 }
                 makeLabel(label, icon, closeable) {
                     const labelElement = document.createElement("div");
@@ -5057,7 +5063,6 @@ var colibri;
                         part.onPartShown();
                     });
                     this.addEventListener(ui.controls.EVENT_TAB_LABEL_RESIZED, (e) => {
-                        console.log("resized");
                         for (const part of this.getParts()) {
                             part.dispatchTitleUpdatedEvent();
                         }
@@ -5886,7 +5891,8 @@ var colibri;
                     }
                     const restoreEditorData = {
                         fileDataList: [],
-                        activeEditorFile: activeEditorFile
+                        activeEditorFile: activeEditorFile,
+                        tabIconSize: editorArea.getTabIconSize()
                     };
                     for (const editor of editors) {
                         const input = editor.getInput();
@@ -5905,6 +5911,9 @@ var colibri;
                     const editorArea = this.getEditorArea();
                     const editors = editorArea.getEditors();
                     const restoreEditorData = prefs.getValue("restoreEditorData");
+                    if (restoreEditorData.tabIconSize) {
+                        editorArea.incrementTabIconSize(restoreEditorData.tabIconSize);
+                    }
                     for (const editor of editors) {
                         editorArea.closeTab(editor);
                     }
