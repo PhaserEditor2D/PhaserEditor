@@ -45,7 +45,16 @@ namespace phasereditor2d.pack.core.parsers {
             
             const image = ide.FileUtils.getImage(imageFile);
 
+            const imageData = await colibri.core.io.apiRequest("GetImageSize", {
+                path: imageFile.getFullName()
+            });
+
+            console.log("Image data of " + imageFile.getFullName());
+            console.log(imageData);
+
+
             if (image) {
+
                 let result2 = await image.preload();
 
                 return Math.max(result1, result2);
