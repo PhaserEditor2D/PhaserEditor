@@ -688,6 +688,7 @@ declare namespace colibri.ui.controls {
         closeTab(content: controls.Control): void;
         private closeTabLabel;
         setTabTitle(content: Control, title: string, icon?: IImage): void;
+        static isTabCloseIcon(element: HTMLElement): boolean;
         static isTabLabel(element: HTMLElement): boolean;
         getLabelFromContent(content: Control): HTMLElement;
         private static getContentAreaFromLabel;

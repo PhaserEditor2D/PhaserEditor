@@ -257,6 +257,7 @@ namespace colibri.ui.ide {
 
 
         private initEvents() {
+
             window.addEventListener("mousedown", e => {
 
                 this._activeElement = <HTMLElement>e.target;
@@ -406,6 +407,11 @@ namespace colibri.ui.ide {
         }
 
         findPart(element: HTMLElement): Part {
+
+            if (controls.TabPane.isTabCloseIcon(element)) {
+                return null;
+            }
+
             if (controls.TabPane.isTabLabel(element)) {
                 element = controls.TabPane.getContentFromLabel(element).getElement();
             }

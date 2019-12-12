@@ -611,6 +611,9 @@ var colibri;
                     }
                 }
                 findPart(element) {
+                    if (ui.controls.TabPane.isTabCloseIcon(element)) {
+                        return null;
+                    }
                     if (ui.controls.TabPane.isTabLabel(element)) {
                         element = ui.controls.TabPane.getContentFromLabel(element).getElement();
                     }
@@ -2517,7 +2520,7 @@ var colibri;
             class CloseIconManager {
                 constructor() {
                     this._element = document.createElement("canvas");
-                    this._element.classList.add("closeIcon");
+                    this._element.classList.add("TabPaneLabelCloseIcon");
                     this._element.width = controls.ICON_SIZE;
                     this._element.height = controls.ICON_SIZE;
                     this._element.style.width = controls.ICON_SIZE + "px";
@@ -2562,6 +2565,7 @@ var colibri;
                 }
                 static createElement(icon, size) {
                     const canvas = document.createElement("canvas");
+                    canvas.classList.add("TabCloseIcon");
                     const manager = new TabIconManager(canvas, icon);
                     canvas["__TabIconManager"] = manager;
                     manager.resize(size);
@@ -2615,7 +2619,12 @@ var colibri;
                 addTab(label, icon, content, closeable = false) {
                     const labelElement = this.makeLabel(label, icon, closeable);
                     this._titleBarElement.appendChild(labelElement);
-                    labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
+                    labelElement.addEventListener("mousedown", e => {
+                        if (TabPane.isTabCloseIcon(e.target)) {
+                            return;
+                        }
+                        this.selectTab(labelElement);
+                    });
                     const contentArea = new controls.Control("div", "ContentArea");
                     contentArea.add(content);
                     this._contentAreaElement.appendChild(contentArea.getElement());
@@ -2721,6 +2730,9 @@ var colibri;
                             textElement.innerHTML = title;
                         }
                     }
+                }
+                static isTabCloseIcon(element) {
+                    return element.classList.contains("TabPaneLabelCloseIcon");
                 }
                 static isTabLabel(element) {
                     return element.classList.contains("TabPaneLabel");

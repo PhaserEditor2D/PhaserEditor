@@ -14,7 +14,7 @@ namespace colibri.ui.controls {
         constructor() {
 
             this._element = document.createElement("canvas");
-            this._element.classList.add("closeIcon");
+            this._element.classList.add("TabPaneLabelCloseIcon");
             this._element.width = ICON_SIZE;
             this._element.height = ICON_SIZE;
             this._element.style.width = ICON_SIZE + "px";
@@ -82,6 +82,7 @@ namespace colibri.ui.controls {
         static createElement(icon: IImage, size: number) {
 
             const canvas = document.createElement("canvas");
+            canvas.classList.add("TabCloseIcon");
 
             const manager = new TabIconManager(canvas, icon);
 
@@ -172,7 +173,14 @@ namespace colibri.ui.controls {
 
             const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
-            labelElement.addEventListener("mousedown", e => this.selectTab(labelElement));
+            labelElement.addEventListener("mousedown", e => {
+                
+                if (TabPane.isTabCloseIcon(e.target as HTMLElement)) {
+                    return;
+                }
+
+                this.selectTab(labelElement)
+            });
 
             const contentArea = new Control("div", "ContentArea");
             contentArea.add(content);
@@ -329,6 +337,10 @@ namespace colibri.ui.controls {
                     textElement.innerHTML = title;
                 }
             }
+        }
+
+        static isTabCloseIcon(element : HTMLElement) {
+            return element.classList.contains("TabPaneLabelCloseIcon");
         }
 
         static isTabLabel(element: HTMLElement) {
