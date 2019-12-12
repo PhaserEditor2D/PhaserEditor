@@ -43,7 +43,7 @@ namespace colibri.ui.controls.viewers {
             return args.viewer.getCellSize();
         }
 
-        preload(obj: any): Promise<any> {
+        preload(args: PreloadCellArgs): Promise<any> {
             return this._icon.preload();
         }
 

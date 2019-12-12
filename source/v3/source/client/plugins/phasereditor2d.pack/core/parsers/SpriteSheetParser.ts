@@ -43,7 +43,7 @@ namespace phasereditor2d.pack.core.parsers {
                 return controls.Controls.resolveNothingLoaded();
             }
 
-            return await image.preload();
+            return await image.preloadSize();
         }
 
         parseFrames(): AssetPackImageFrame[] {

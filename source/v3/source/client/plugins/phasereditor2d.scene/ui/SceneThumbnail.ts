@@ -65,6 +65,10 @@ namespace phasereditor2d.scene.ui {
             return this._image ? this._image.getHeight() : 16;
         }
 
+        preloadSize() : Promise<controls.PreloadResult> {
+            return this.preload();
+        }
+
         async preload(): Promise<controls.PreloadResult> {
 
             if (this._image == null) {

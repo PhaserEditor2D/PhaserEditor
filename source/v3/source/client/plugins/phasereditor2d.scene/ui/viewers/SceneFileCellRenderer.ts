@@ -21,9 +21,9 @@ namespace phasereditor2d.scene.ui.viewers {
         }
 
 
-        async preload(obj: any): Promise<controls.PreloadResult> {
+        async preload(args : controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult> {
 
-            const file = <core.io.FilePath>obj;
+            const file = <core.io.FilePath>args.obj;
 
             return SceneThumbnailCache.getInstance().preload(file);
         }

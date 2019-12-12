@@ -115,6 +115,7 @@ declare namespace colibri.ui.ide {
         static getWorkbench(): Workbench;
         private _fileStringCache;
         private _fileImageCache;
+        private _fileImageSizeCache;
         private _activeWindow;
         private _contentType_icon_Map;
         private _fileStorage;
@@ -162,7 +163,8 @@ declare namespace colibri.ui.ide {
         getContentTypeRegistry(): core.ContentTypeRegistry;
         getProjectRoot(): core.io.FilePath;
         getContentTypeIcon(contentType: string): controls.IImage;
-        getFileImage(file: core.io.FilePath): controls.IImage;
+        getFileImage(file: core.io.FilePath): FileImage;
+        getFileImageSizeCache(): ImageSizeFileCache;
         getWorkbenchIcon(name: string): controls.IImage;
         getEditorRegistry(): EditorRegistry;
         getEditors(): EditorPart[];
@@ -366,6 +368,7 @@ declare namespace colibri.core.io {
         renameFile(file: FilePath, newName: string): Promise<void>;
         moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void>;
         uploadFile(uploadFolder: FilePath, htmlFile: File): Promise<FilePath>;
+        getImageSize(file: FilePath): Promise<ImageSize>;
     }
 }
 declare namespace colibri.core.io {
@@ -378,6 +381,10 @@ declare namespace colibri.core.io {
                 path: string;
             };
         }[];
+    };
+    type ImageSize = {
+        width: number;
+        height: number;
     };
     interface IFileStorage {
         reload(): Promise<void>;
@@ -394,6 +401,7 @@ declare namespace colibri.core.io {
         renameFile(file: FilePath, newName: string): Promise<void>;
         moveFiles(movingFiles: FilePath[], moveTo: FilePath): Promise<void>;
         uploadFile(uploadFolder: FilePath, file: File): Promise<FilePath>;
+        getImageSize(file: FilePath): Promise<ImageSize>;
         addChangeListener(listener: ChangeListenerFunc): void;
         removeChangeListener(listener: ChangeListenerFunc): void;
     }
@@ -477,6 +485,7 @@ declare namespace colibri.ui.controls {
         private _imageElement;
         private _requestPromise;
         constructor(img: HTMLImageElement, url: string);
+        preloadSize(): Promise<PreloadResult>;
         getImageElement(): HTMLImageElement;
         getURL(): string;
         preload(): Promise<PreloadResult>;
@@ -518,6 +527,7 @@ declare namespace colibri.ui.controls {
         preload(): Promise<PreloadResult>;
         getWidth(): number;
         getHeight(): number;
+        preloadSize(): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls {
@@ -547,6 +557,7 @@ declare namespace colibri.ui.controls {
         private _image;
         private _frameData;
         constructor(name: string, image: controls.IImage, frameData: FrameData);
+        preloadSize(): Promise<PreloadResult>;
         getName(): string;
         getImage(): IImage;
         getFrameData(): FrameData;
@@ -564,6 +575,7 @@ declare namespace colibri.ui.controls {
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void;
         paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, srcW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
         preload(): Promise<PreloadResult>;
+        preloadSize(): Promise<PreloadResult>;
         getWidth(): number;
         getHeight(): number;
     }
@@ -869,7 +881,7 @@ declare namespace colibri.ui.controls.viewers {
         constructor(variableSize?: boolean);
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<PreloadResult>;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -877,7 +889,7 @@ declare namespace colibri.ui.controls.viewers {
         private _getRenderer;
         constructor(getRenderer?: (element: any) => ICellRenderer);
         getCellRenderer(element: any): ICellRenderer;
-        preload(element: any): Promise<PreloadResult>;
+        preload(obj: any): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -923,9 +935,9 @@ declare namespace colibri.ui.controls.viewers {
         constructor(maxCount?: number);
         renderCell(args: RenderCellArgs): void;
         private renderFolder;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
         protected renderGrid(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -974,7 +986,7 @@ declare namespace colibri.ui.controls.viewers {
     interface ICellRenderer {
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<PreloadResult>;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -997,7 +1009,7 @@ declare namespace colibri.ui.controls.viewers {
         renderCell(args: RenderCellArgs): void;
         abstract getImage(obj: any): controls.IImage;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<any>;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1005,7 +1017,7 @@ declare namespace colibri.ui.controls.viewers {
         getImage(obj: any): IImage;
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<PreloadResult>;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1093,7 +1105,7 @@ declare namespace colibri.ui.controls.viewers {
         getIcon(obj: any): IImage;
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<PreloadResult>;
+        preload(args: PreloadCellArgs): Promise<PreloadResult>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1102,7 +1114,7 @@ declare namespace colibri.ui.controls.viewers {
         constructor(icon: IImage);
         renderCell(args: RenderCellArgs): void;
         cellHeight(args: RenderCellArgs): number;
-        preload(obj: any): Promise<any>;
+        preload(args: PreloadCellArgs): Promise<any>;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1116,6 +1128,14 @@ declare namespace colibri.ui.controls.viewers {
         data: any;
         parent: PaintItem;
         constructor(index: number, data: any, parent?: PaintItem);
+    }
+}
+declare namespace colibri.ui.controls.viewers {
+    class PreloadCellArgs {
+        obj: any;
+        viewer: Viewer;
+        constructor(obj: any, viewer: Viewer);
+        clone(): PreloadCellArgs;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1339,9 +1359,22 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
+    class FileImage extends controls.DefaultImage {
+        private _file;
+        constructor(file: core.io.FilePath);
+        getFile(): core.io.FilePath;
+        preload(): Promise<controls.PreloadResult>;
+        getWidth(): number;
+        getHeight(): number;
+        preloadSize(): Promise<controls.PreloadResult>;
+    }
+}
+declare namespace colibri.ui.ide {
     import io = core.io;
     class FileUtils {
-        static getImage(file: io.FilePath): controls.IImage;
+        static preloadImageSize(file: io.FilePath): Promise<controls.PreloadResult>;
+        static getImageSize(file: io.FilePath): core.io.ImageSize;
+        static getImage(file: io.FilePath): FileImage;
         static preloadAndGetFileString(file: io.FilePath): Promise<string>;
         static getFileString(file: io.FilePath): string;
         static setFileString_async(file: io.FilePath, content: string): Promise<void>;
@@ -1406,7 +1439,12 @@ declare namespace colibri.ui.ide {
     }
 }
 declare namespace colibri.ui.ide {
-    class ImageFileCache extends core.io.SyncFileContentCache<controls.IImage> {
+    class ImageFileCache extends core.io.SyncFileContentCache<FileImage> {
+        constructor();
+    }
+}
+declare namespace colibri.ui.ide {
+    class ImageSizeFileCache extends core.io.FileContentCache<core.io.ImageSize> {
         constructor();
     }
 }

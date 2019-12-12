@@ -4,6 +4,14 @@ namespace colibri.ui.ide {
 
     export class FileUtils {
 
+        static preloadImageSize(file: io.FilePath) : Promise<controls.PreloadResult> {
+            return Workbench.getWorkbench().getFileImageSizeCache().preload(file);
+        }
+
+        static getImageSize(file : io.FilePath) : core.io.ImageSize {
+            return Workbench.getWorkbench().getFileImageSizeCache().getContent(file);
+        }
+
         static getImage(file: io.FilePath) {
             return Workbench.getWorkbench().getFileImage(file);
         }

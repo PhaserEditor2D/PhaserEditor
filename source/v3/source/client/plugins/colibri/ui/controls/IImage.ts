@@ -11,6 +11,8 @@ namespace colibri.ui.controls {
         getWidth() : number;
 
         getHeight() : number;
+
+        preloadSize() : Promise<PreloadResult>;
     }
 
 }

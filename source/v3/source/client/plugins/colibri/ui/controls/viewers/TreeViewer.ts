@@ -181,6 +181,8 @@ namespace colibri.ui.controls.viewers {
         async preload(): Promise<PreloadResult> {
 
             const list: Promise<PreloadResult>[] = [];
+            
+            const viewer = this;
 
             this.visitObjects(obj => {
 
@@ -190,7 +192,7 @@ namespace colibri.ui.controls.viewers {
 
                     const renderer = provider.getCellRenderer(obj);
 
-                    return renderer.preload(obj).then(r2 => {
+                    return renderer.preload(new PreloadCellArgs(obj, viewer)).then(r2 => {
                         return Math.max(r1, r2);
                     });
                 }));

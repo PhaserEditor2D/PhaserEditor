@@ -95,7 +95,7 @@ namespace phasereditor2d.files.ui.actions {
             return new controls.viewers.IconImageCellRenderer(ext.getIcon());
         }
 
-        preload(element: any): Promise<controls.PreloadResult> {
+        preload(args: controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult> {
             return controls.Controls.resolveNothingLoaded();
         }
 

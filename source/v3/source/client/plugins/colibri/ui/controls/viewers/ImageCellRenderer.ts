@@ -26,9 +26,9 @@ namespace colibri.ui.controls.viewers {
             return args.viewer.getCellSize();
         }
 
-        preload(obj: any): Promise<PreloadResult> {
+        preload(args: PreloadCellArgs): Promise<PreloadResult> {
 
-            const img = this.getImage(obj);
+            const img = this.getImage(args.obj);
 
             if (img) {
                 return img.preload();

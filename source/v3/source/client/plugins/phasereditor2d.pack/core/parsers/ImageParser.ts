@@ -31,13 +31,14 @@ namespace phasereditor2d.pack.core.parsers {
             const img = AssetPackUtils.getImageFromPackUrl(url);
 
             if (img) {
-                return img.preload();
+                return img.preloadSize();
             }
 
             return controls.Controls.resolveNothingLoaded();
         }
 
         parseFrames(): AssetPackImageFrame[] {
+            
             const url = this.getPackItem().getData().url;
             const img = AssetPackUtils.getImageFromPackUrl(url);
 

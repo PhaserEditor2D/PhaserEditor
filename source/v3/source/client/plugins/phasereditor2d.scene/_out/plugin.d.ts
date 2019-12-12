@@ -95,6 +95,7 @@ declare namespace phasereditor2d.scene.ui {
         paintFrame(context: CanvasRenderingContext2D, srcX: number, srcY: number, srcW: number, srcH: number, dstX: number, dstY: number, dstW: number, dstH: number): void;
         getWidth(): number;
         getHeight(): number;
+        preloadSize(): Promise<controls.PreloadResult>;
         preload(): Promise<controls.PreloadResult>;
         private createImageElement;
     }
@@ -274,7 +275,7 @@ declare namespace phasereditor2d.scene.ui.editor.outline {
     class GameObjectCellRenderer implements controls.viewers.ICellRenderer {
         renderCell(args: controls.viewers.RenderCellArgs): void;
         cellHeight(args: colibri.ui.controls.viewers.RenderCellArgs): number;
-        preload(obj: any): Promise<colibri.ui.controls.PreloadResult>;
+        preload(args: controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.scene.ui.editor.outline {
@@ -314,7 +315,7 @@ declare namespace phasereditor2d.scene.ui.editor.outline {
         private _assetRendererProvider;
         constructor(editor: SceneEditor);
         getCellRenderer(element: any): controls.viewers.ICellRenderer;
-        preload(element: any): Promise<controls.PreloadResult>;
+        preload(args: controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.scene.ui.editor.properties {
@@ -482,7 +483,7 @@ declare namespace phasereditor2d.scene.ui.viewers {
     class SceneFileCellRenderer implements controls.viewers.ICellRenderer {
         renderCell(args: controls.viewers.RenderCellArgs): void;
         cellHeight(args: controls.viewers.RenderCellArgs): number;
-        preload(obj: any): Promise<controls.PreloadResult>;
+        preload(args: controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult>;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

@@ -34,7 +34,7 @@ namespace colibri.ui.controls.viewers {
             return ROW_HEIGHT;
         }
 
-        preload(obj: any): Promise<PreloadResult> {
+        preload(args: PreloadCellArgs): Promise<PreloadResult> {
             return controls.Controls.resolveNothingLoaded();
         }
     }

@@ -12,6 +12,10 @@ namespace colibri.ui.controls {
             this._frameData = frameData;
         }
 
+        preloadSize() : Promise<PreloadResult> {
+            return this.preload();
+        }
+
         getName() {
             return this._name;
         }

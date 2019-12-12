@@ -97,7 +97,6 @@ declare namespace phasereditor2d.pack.core {
     }
 }
 declare namespace phasereditor2d.pack.core {
-    import controls = colibri.ui.controls;
     import io = colibri.core.io;
     class AssetPackUtils {
         static isAtlasType(type: string): boolean;
@@ -108,7 +107,7 @@ declare namespace phasereditor2d.pack.core {
         static getFileStringFromPackUrl(url: string): string;
         static getFileJSONFromPackUrl(url: string): any;
         static getFileXMLFromPackUrl(url: string): Document;
-        static getImageFromPackUrl(url: string): controls.IImage;
+        static getImageFromPackUrl(url: string): colibri.ui.ide.FileImage;
     }
 }
 declare namespace phasereditor2d.pack.core {
@@ -996,8 +995,9 @@ declare namespace phasereditor2d.pack.ui.viewers {
     import controls = colibri.ui.controls;
     class ImageFrameContainerIconCellRenderer implements controls.viewers.ICellRenderer {
         renderCell(args: controls.viewers.RenderCellArgs): void;
+        private getFrameImage;
         cellHeight(args: controls.viewers.RenderCellArgs): number;
-        preload(obj: any): Promise<controls.PreloadResult>;
+        preload(args: controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult>;
     }
 }
 //# sourceMappingURL=plugin.d.ts.map

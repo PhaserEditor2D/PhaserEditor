@@ -9,10 +9,15 @@ namespace colibri.ui.controls {
         private _requestPromise: Promise<PreloadResult>;
 
         constructor(img: HTMLImageElement, url: string) {
+
             this._imageElement = img;
             this._url = url;
             this._ready = false;
             this._error = false;
+        }
+
+        preloadSize() : Promise<PreloadResult> {
+            return this.preload();
         }
 
         getImageElement() {
@@ -24,6 +29,7 @@ namespace colibri.ui.controls {
         }
 
         preload(): Promise<PreloadResult> {
+
             if (this._ready || this._error) {
                 return Controls.resolveNothingLoaded();
             }
@@ -33,18 +39,24 @@ namespace colibri.ui.controls {
             }
 
             this._requestPromise = new Promise((resolve, reject) => {
+                
                 this._imageElement.src = this._url;
 
                 this._imageElement.addEventListener("load", e => {
+
                     this._requestPromise = null;
                     this._ready = true;
+
                     resolve(PreloadResult.RESOURCES_LOADED);
                 });
 
                 this._imageElement.addEventListener("error", e => {
+
                     console.error("ERROR: Loading image " + this._url);
+
                     this._requestPromise = null;
                     this._error = true;
+
                     resolve(PreloadResult.NOTHING_LOADED);
                 });
             });
@@ -75,7 +87,7 @@ namespace colibri.ui.controls {
         paint(context: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, center: boolean): void {
 
             if (this._ready) {
-                
+
                 DefaultImage.paintImageElement(context, this._imageElement, x, y, w, h, center);
 
             } else {
@@ -143,7 +155,7 @@ namespace colibri.ui.controls {
                 DefaultImage.paintImageElementFrame(context, this._imageElement, srcX, srcY, scrW, srcH, dstX, dstY, dstW, dstH);
 
             } else {
-                
+
                 DefaultImage.paintEmpty(context, dstX, dstY, dstW, dstH);
             }
         }

@@ -29,6 +29,7 @@ namespace colibri.ui.ide {
 
         private _fileStringCache: core.io.FileStringCache;
         private _fileImageCache: ImageFileCache;
+        private _fileImageSizeCache: ImageSizeFileCache;
         private _activeWindow: ide.WorkbenchWindow;
         private _contentType_icon_Map: Map<string, controls.IImage>;
         private _fileStorage: core.io.IFileStorage;
@@ -55,6 +56,8 @@ namespace colibri.ui.ide {
             this._activeElement = null;
 
             this._fileImageCache = new ImageFileCache();
+
+            this._fileImageSizeCache = new ImageSizeFileCache();
 
             this._fileStorage = new core.io.FileStorage_HTTPServer();
 
@@ -125,6 +128,7 @@ namespace colibri.ui.ide {
 
             this._fileStringCache.reset();
             this._fileImageCache.reset();
+            this._fileImageSizeCache.reset();
             this._contentTypeRegistry.resetCache();
         }
 
@@ -456,6 +460,10 @@ namespace colibri.ui.ide {
             }
 
             return this._fileImageCache.getContent(file);
+        }
+
+        getFileImageSizeCache() {
+            return this._fileImageSizeCache;
         }
 
         getWorkbenchIcon(name: string) {

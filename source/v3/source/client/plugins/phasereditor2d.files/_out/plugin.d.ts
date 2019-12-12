@@ -151,7 +151,7 @@ declare namespace phasereditor2d.files.ui.viewers {
     class FileCellRenderer extends viewers.IconImageCellRenderer {
         constructor();
         getIcon(obj: any): controls.IImage;
-        preload(obj: any): Promise<controls.PreloadResult>;
+        preload(args: controls.viewers.PreloadCellArgs): Promise<controls.PreloadResult>;
     }
 }
 declare namespace phasereditor2d.files.ui.viewers {

@@ -15,7 +15,7 @@ namespace colibri.ui.controls.viewers {
             return this._variableSize ? args.viewer.getCellSize() : ROW_HEIGHT;
         }
 
-        preload(obj: any): Promise<PreloadResult> {
+        preload(args : PreloadCellArgs): Promise<PreloadResult> {
             return Controls.resolveNothingLoaded();
         }
     }

@@ -1,4 +1,5 @@
 namespace colibri.ui.controls.viewers {
+
     export class FolderCellRenderer implements ICellRenderer {
 
         private _maxCount: number;
@@ -8,9 +9,13 @@ namespace colibri.ui.controls.viewers {
         }
 
         renderCell(args: RenderCellArgs): void {
+
             if (this.cellHeight(args) === ROW_HEIGHT) {
+
                 this.renderFolder(args);
+
             } else {
+
                 this.renderGrid(args);
             }
         }
@@ -20,8 +25,31 @@ namespace colibri.ui.controls.viewers {
             // icon.paint(args.canvasContext, args.x, args.y, args.w, args.h, true);
         }
 
+        async preload(args : PreloadCellArgs): Promise<PreloadResult> {
+
+            const viewer = args.viewer;
+            const obj = args.obj;
+
+            let result = controls.PreloadResult.NOTHING_LOADED;
+
+            const contentProvider = args.viewer.getContentProvider() as ITreeContentProvider;
+            const children = contentProvider.getChildren(obj);
+
+            for (const child of children) {
+
+                const renderer = viewer.getCellRendererProvider().getCellRenderer(child);
+                const args2 = args.clone();
+                args2.obj = child;
+                const result2 = await renderer.preload(args2);
+                result = Math.max(result, result2);
+            }
+
+            return Promise.resolve(result);
+        }
+
         protected renderGrid(args: RenderCellArgs) {
-            const contentProvider = <ITreeContentProvider>args.viewer.getContentProvider();
+
+            const contentProvider = args.viewer.getContentProvider() as ITreeContentProvider;
             const children = contentProvider.getChildren(args.obj);
 
             const width = args.w;
@@ -71,12 +99,15 @@ namespace colibri.ui.controls.viewers {
 
 
                 for (var i = 0; i < frameCount; i++) {
+
                     if (itemY + size > height) {
                         break;
                     }
 
                     const index = Math.min(realCount - 1, Math.round(i * step));
+
                     const obj = children[index];
+
                     const renderer = args.viewer.getCellRendererProvider().getCellRenderer(obj);
 
                     const args2 = new RenderCellArgs(args.canvasContext,
@@ -101,10 +132,5 @@ namespace colibri.ui.controls.viewers {
         cellHeight(args: RenderCellArgs): number {
             return args.viewer.getCellSize() < 50 ? ROW_HEIGHT : args.viewer.getCellSize();
         }
-
-        preload(obj: any): Promise<PreloadResult> {
-            return Controls.resolveNothingLoaded();
-        }
-
     }
 }

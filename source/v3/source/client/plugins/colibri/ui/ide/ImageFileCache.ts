@@ -2,12 +2,10 @@
 
 namespace colibri.ui.ide {
 
-    export class ImageFileCache extends core.io.SyncFileContentCache<controls.IImage> {
+    export class ImageFileCache extends core.io.SyncFileContentCache<FileImage> {
 
         constructor() {
-            super(file => new controls.DefaultImage(new Image(), file.getUrl()));
+            super(file => new FileImage(file));
         }
-
     }
-
 }

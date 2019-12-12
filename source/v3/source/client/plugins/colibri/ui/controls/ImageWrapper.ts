@@ -34,6 +34,10 @@ namespace colibri.ui.controls {
             return Controls.resolveNothingLoaded();
         }
 
+        preloadSize() : Promise<PreloadResult> {
+            return this.preload();
+        }
+
         getWidth(): number {
 
             if (this._imageElement) {

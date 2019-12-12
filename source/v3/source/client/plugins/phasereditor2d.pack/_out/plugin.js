@@ -1440,17 +1440,8 @@ var phasereditor2d;
                         }
                         let result1 = await ide.FileUtils.preloadFileString(dataFile);
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
-                        const image = ide.FileUtils.getImage(imageFile);
-                        const imageData = await colibri.core.io.apiRequest("GetImageSize", {
-                            path: imageFile.getFullName()
-                        });
-                        console.log("Image data of " + imageFile.getFullName());
-                        console.log(imageData);
-                        if (image) {
-                            let result2 = await image.preload();
-                            return Math.max(result1, result2);
-                        }
-                        return result1;
+                        let result2 = await ide.FileUtils.preloadImageSize(imageFile);
+                        return Math.max(result1, result2);
                     }
                     parseFrames() {
                         const list = [];
@@ -1615,7 +1606,7 @@ var phasereditor2d;
                         const url = this.getPackItem().getData().url;
                         const img = core.AssetPackUtils.getImageFromPackUrl(url);
                         if (img) {
-                            return img.preload();
+                            return img.preloadSize();
                         }
                         return controls.Controls.resolveNothingLoaded();
                     }
@@ -1670,23 +1661,22 @@ var phasereditor2d;
                         const dataFile = core_5.AssetPackUtils.getFileFromPackUrl(data.url);
                         if (dataFile) {
                             let result = await ide.FileUtils.preloadFileString(dataFile);
-                            const str = ide.FileUtils.getFileString(dataFile);
-                            try {
-                                const data = JSON.parse(str);
-                                if (data.textures) {
-                                    for (const texture of data.textures) {
-                                        const imageName = texture.image;
-                                        const imageFile = dataFile.getSibling(imageName);
-                                        if (imageFile) {
-                                            const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
-                                            const result2 = await image.preload();
-                                            result = Math.max(result, result2);
-                                        }
-                                    }
-                                }
-                            }
-                            catch (e) {
-                            }
+                            // const str = ide.FileUtils.getFileString(dataFile);
+                            // try {
+                            //     const data = JSON.parse(str);
+                            //     if (data.textures) {
+                            //         for (const texture of data.textures) {
+                            //             const imageName: string = texture.image;
+                            //             const imageFile = dataFile.getSibling(imageName);
+                            //             if (imageFile) {
+                            //                 const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
+                            //                 const result2 = await image.preloadSize();
+                            //                 result = Math.max(result, result2);
+                            //             }
+                            //         }
+                            //     }
+                            // } catch (e) {
+                            // }
                             return result;
                         }
                         return controls.Controls.resolveNothingLoaded();
@@ -1758,7 +1748,7 @@ var phasereditor2d;
                         if (!image) {
                             return controls.Controls.resolveNothingLoaded();
                         }
-                        return await image.preload();
+                        return await image.preloadSize();
                     }
                     parseFrames() {
                         const frames = [];
@@ -4323,21 +4313,30 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 class ImageFrameContainerIconCellRenderer {
                     renderCell(args) {
-                        const packItem = args.obj;
+                        const img = this.getFrameImage(args.obj);
+                        if (img) {
+                            img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
+                        }
+                    }
+                    getFrameImage(obj) {
+                        const packItem = obj;
                         if (packItem instanceof pack.core.ImageFrameContainerAssetPackItem) {
                             const frames = packItem.getFrames();
                             if (frames.length > 0) {
                                 const img = frames[0].getImage();
-                                if (img) {
-                                    img.paint(args.canvasContext, args.x, args.y, args.w, args.h, args.center);
-                                }
+                                return img;
                             }
                         }
+                        return null;
                     }
                     cellHeight(args) {
                         return args.viewer.getCellSize();
                     }
-                    preload(obj) {
+                    async preload(args) {
+                        const img = this.getFrameImage(args.obj);
+                        if (img) {
+                            return img.preload();
+                        }
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }

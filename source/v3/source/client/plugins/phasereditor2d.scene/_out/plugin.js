@@ -406,6 +406,9 @@ var phasereditor2d;
                 getHeight() {
                     return this._image ? this._image.getHeight() : 16;
                 }
+                preloadSize() {
+                    return this.preload();
+                }
                 async preload() {
                     if (this._image == null) {
                         if (this._promise) {
@@ -1488,7 +1491,7 @@ var phasereditor2d;
                             }
                             return colibri.ui.controls.ROW_HEIGHT;
                         }
-                        preload(obj) {
+                        preload(args) {
                             return controls.Controls.resolveNothingLoaded();
                         }
                     }
@@ -1641,7 +1644,7 @@ var phasereditor2d;
                             }
                             return new controls.viewers.EmptyCellRenderer(false);
                         }
-                        async preload(element) {
+                        async preload(args) {
                             return controls.Controls.resolveNothingLoaded();
                         }
                     }
@@ -2411,8 +2414,8 @@ var phasereditor2d;
                     cellHeight(args) {
                         return args.viewer.getCellSize();
                     }
-                    async preload(obj) {
-                        const file = obj;
+                    async preload(args) {
+                        const file = args.obj;
                         return ui.SceneThumbnailCache.getInstance().preload(file);
                     }
                 }

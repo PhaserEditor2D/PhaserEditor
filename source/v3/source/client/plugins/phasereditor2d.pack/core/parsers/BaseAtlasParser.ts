@@ -20,7 +20,7 @@ namespace phasereditor2d.pack.core.parsers {
                 const atlasURL = item.getData().atlasURL;
                 const atlasData = AssetPackUtils.getFileJSONFromPackUrl(atlasURL);
                 const textureURL = item.getData().textureURL;
-                
+
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
 
                 if (image) {
@@ -42,30 +42,16 @@ namespace phasereditor2d.pack.core.parsers {
             let result1 = await ide.FileUtils.preloadFileString(dataFile);
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
-            
-            const image = ide.FileUtils.getImage(imageFile);
 
-            const imageData = await colibri.core.io.apiRequest("GetImageSize", {
-                path: imageFile.getFullName()
-            });
+            let result2 = await ide.FileUtils.preloadImageSize(imageFile);
 
-            console.log("Image data of " + imageFile.getFullName());
-            console.log(imageData);
-
-
-            if (image) {
-
-                let result2 = await image.preload();
-
-                return Math.max(result1, result2);
-            }
-
-            return result1;
+            return Math.max(result1, result2);
         }
 
         protected abstract parseFrames2(frames: AssetPackImageFrame[], image: controls.IImage, atlas: string);
 
         parseFrames(): AssetPackImageFrame[] {
+
             const list: AssetPackImageFrame[] = [];
 
             const data = this.getPackItem().getData();
@@ -74,7 +60,9 @@ namespace phasereditor2d.pack.core.parsers {
             const image = ide.FileUtils.getImage(imageFile);
 
             if (dataFile) {
+
                 const str = ide.FileUtils.getFileString(dataFile);
+
                 try {
                     this.parseFrames2(list, image, str);
                 } catch (e) {

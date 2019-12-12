@@ -30,7 +30,7 @@ namespace phasereditor2d.scene.ui.editor.outline {
             return colibri.ui.controls.ROW_HEIGHT;
         }
 
-        preload(obj: any): Promise<colibri.ui.controls.PreloadResult> {
+        preload(args : controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult> {
             return controls.Controls.resolveNothingLoaded();
         }
 

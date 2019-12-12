@@ -32,7 +32,9 @@ namespace phasereditor2d.files.ui.viewers {
             return controls.Controls.getIcon(ide.ICON_FILE);
         }
 
-        preload(obj: any) {
+        preload(args : controls.viewers.PreloadCellArgs) {
+
+            const obj = args.obj;
 
             const file = <io.FilePath>obj;
 
@@ -41,7 +43,7 @@ namespace phasereditor2d.files.ui.viewers {
                 return result
             }
 
-            return super.preload(obj);
+            return super.preload(args);
         }
     }
 }

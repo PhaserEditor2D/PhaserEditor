@@ -378,6 +378,7 @@ var colibri;
                     this._activeEditor = null;
                     this._activeElement = null;
                     this._fileImageCache = new ide.ImageFileCache();
+                    this._fileImageSizeCache = new ide.ImageSizeFileCache();
                     this._fileStorage = new colibri.core.io.FileStorage_HTTPServer();
                     this._fileStringCache = new colibri.core.io.FileStringCache(this._fileStorage);
                     this._globalPreferences = new colibri.core.preferences.Preferences("__global__");
@@ -426,6 +427,7 @@ var colibri;
                 resetCache() {
                     this._fileStringCache.reset();
                     this._fileImageCache.reset();
+                    this._fileImageSizeCache.reset();
                     this._contentTypeRegistry.resetCache();
                 }
                 async openProject(projectName, monitor) {
@@ -648,6 +650,9 @@ var colibri;
                         return null;
                     }
                     return this._fileImageCache.getContent(file);
+                }
+                getFileImageSizeCache() {
+                    return this._fileImageSizeCache;
                 }
                 getWorkbenchIcon(name) {
                     return ui.controls.Controls.getIcon(name, "plugins/colibri/ui/icons");
@@ -1505,6 +1510,18 @@ var colibri;
                     this.fireChange(change);
                     return file;
                 }
+                async getImageSize(file) {
+                    const data = await colibri.core.io.apiRequest("GetImageSize", {
+                        path: file.getFullName()
+                    });
+                    if (data.error) {
+                        return null;
+                    }
+                    return {
+                        width: data.width,
+                        height: data.height
+                    };
+                }
             }
             io.FileStorage_HTTPServer = FileStorage_HTTPServer;
         })(io = core.io || (core.io = {}));
@@ -1741,6 +1758,9 @@ var colibri;
                     this._ready = false;
                     this._error = false;
                 }
+                preloadSize() {
+                    return this.preload();
+                }
                 getImageElement() {
                     return this._imageElement;
                 }
@@ -1966,6 +1986,9 @@ var colibri;
                     this._image = image;
                     this._frameData = frameData;
                 }
+                preloadSize() {
+                    return this.preload();
+                }
                 getName() {
                     return this._name;
                 }
@@ -2051,6 +2074,9 @@ var colibri;
                 }
                 preload() {
                     return controls.Controls.resolveNothingLoaded();
+                }
+                preloadSize() {
+                    return this.preload();
                 }
                 getWidth() {
                     if (this._imageElement) {
@@ -3510,7 +3536,7 @@ var colibri;
                     cellHeight(args) {
                         return this._variableSize ? args.viewer.getCellSize() : controls.ROW_HEIGHT;
                     }
-                    preload(obj) {
+                    preload(args) {
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
@@ -3534,7 +3560,7 @@ var colibri;
                     getCellRenderer(element) {
                         return this._getRenderer(element);
                     }
-                    preload(element) {
+                    preload(obj) {
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
@@ -3689,6 +3715,21 @@ var colibri;
                         // const icon = ide.Workbench.getWorkbench().getWorkbenchIcon(ide.ICON_FOLDER);
                         // icon.paint(args.canvasContext, args.x, args.y, args.w, args.h, true);
                     }
+                    async preload(args) {
+                        const viewer = args.viewer;
+                        const obj = args.obj;
+                        let result = controls.PreloadResult.NOTHING_LOADED;
+                        const contentProvider = args.viewer.getContentProvider();
+                        const children = contentProvider.getChildren(obj);
+                        for (const child of children) {
+                            const renderer = viewer.getCellRendererProvider().getCellRenderer(child);
+                            const args2 = args.clone();
+                            args2.obj = child;
+                            const result2 = await renderer.preload(args2);
+                            result = Math.max(result, result2);
+                        }
+                        return Promise.resolve(result);
+                    }
                     renderGrid(args) {
                         const contentProvider = args.viewer.getContentProvider();
                         const children = contentProvider.getChildren(args.obj);
@@ -3742,9 +3783,6 @@ var colibri;
                     }
                     cellHeight(args) {
                         return args.viewer.getCellSize() < 50 ? controls.ROW_HEIGHT : args.viewer.getCellSize();
-                    }
-                    preload(obj) {
-                        return controls.Controls.resolveNothingLoaded();
                     }
                 }
                 viewers.FolderCellRenderer = FolderCellRenderer;
@@ -4093,8 +4131,8 @@ var colibri;
                     cellHeight(args) {
                         return controls.ROW_HEIGHT;
                     }
-                    preload(obj) {
-                        return Promise.resolve();
+                    preload(args) {
+                        return controls.Controls.resolveNothingLoaded();
                     }
                 }
                 viewers.LabelCellRenderer = LabelCellRenderer;
@@ -4126,8 +4164,8 @@ var colibri;
                     cellHeight(args) {
                         return args.viewer.getCellSize();
                     }
-                    preload(obj) {
-                        const img = this.getImage(obj);
+                    preload(args) {
+                        const img = this.getImage(args.obj);
                         if (img) {
                             return img.preload();
                         }
@@ -4574,7 +4612,7 @@ var colibri;
                     cellHeight(args) {
                         return controls.ROW_HEIGHT;
                     }
-                    preload(obj) {
+                    preload(args) {
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
@@ -4616,7 +4654,7 @@ var colibri;
                     cellHeight(args) {
                         return args.viewer.getCellSize();
                     }
-                    preload(obj) {
+                    preload(args) {
                         return this._icon.preload();
                     }
                 }
@@ -4663,6 +4701,29 @@ var colibri;
                     }
                 }
                 viewers.PaintItem = PaintItem;
+            })(viewers = controls.viewers || (controls.viewers = {}));
+        })(controls = ui.controls || (ui.controls = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var controls;
+        (function (controls) {
+            var viewers;
+            (function (viewers) {
+                class PreloadCellArgs {
+                    constructor(obj, viewer) {
+                        this.obj = obj;
+                        this.viewer = viewer;
+                    }
+                    clone() {
+                        return new PreloadCellArgs(this.obj, this.viewer);
+                    }
+                }
+                viewers.PreloadCellArgs = PreloadCellArgs;
+                ;
             })(viewers = controls.viewers || (controls.viewers = {}));
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -4818,11 +4879,12 @@ var colibri;
                     }
                     async preload() {
                         const list = [];
+                        const viewer = this;
                         this.visitObjects(obj => {
                             const provider = this.getCellRendererProvider();
                             list.push(provider.preload(obj).then(r1 => {
                                 const renderer = provider.getCellRenderer(obj);
-                                return renderer.preload(obj).then(r2 => {
+                                return renderer.preload(new viewers.PreloadCellArgs(obj, viewer)).then(r2 => {
                                     return Math.max(r1, r2);
                                 });
                             }));
@@ -5457,7 +5519,47 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
+            class FileImage extends ui.controls.DefaultImage {
+                constructor(file) {
+                    super(new Image(), file.getUrl());
+                    this._file = file;
+                }
+                getFile() {
+                    return this._file;
+                }
+                preload() {
+                    return super.preload();
+                }
+                getWidth() {
+                    const size = ide.FileUtils.getImageSize(this._file);
+                    return size ? size.width : super.getWidth();
+                }
+                getHeight() {
+                    const size = ide.FileUtils.getImageSize(this._file);
+                    return size ? size.height : super.getHeight();
+                }
+                preloadSize() {
+                    const result = ide.FileUtils.preloadImageSize(this._file);
+                    return result;
+                }
+            }
+            ide.FileImage = FileImage;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
             class FileUtils {
+                static preloadImageSize(file) {
+                    return ide.Workbench.getWorkbench().getFileImageSizeCache().preload(file);
+                }
+                static getImageSize(file) {
+                    return ide.Workbench.getWorkbench().getFileImageSizeCache().getContent(file);
+                }
                 static getImage(file) {
                     return ide.Workbench.getWorkbench().getFileImage(file);
                 }
@@ -5725,10 +5827,26 @@ var colibri;
         (function (ide) {
             class ImageFileCache extends colibri.core.io.SyncFileContentCache {
                 constructor() {
-                    super(file => new ui.controls.DefaultImage(new Image(), file.getUrl()));
+                    super(file => new ide.FileImage(file));
                 }
             }
             ide.ImageFileCache = ImageFileCache;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../../core/io/SyncFileContentCache.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            class ImageSizeFileCache extends colibri.core.io.FileContentCache {
+                constructor() {
+                    super(file => ui.ide.Workbench.getWorkbench().getFileStorage().getImageSize(file));
+                }
+            }
+            ide.ImageSizeFileCache = ImageSizeFileCache;
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));

@@ -84,7 +84,7 @@ namespace phasereditor2d.pack.core {
             return parser.parseFromString(str, "text/xml");
         }
 
-        static getImageFromPackUrl(url: string): controls.IImage {
+        static getImageFromPackUrl(url: string): colibri.ui.ide.FileImage {
 
             const file = this.getFileFromPackUrl(url);
 

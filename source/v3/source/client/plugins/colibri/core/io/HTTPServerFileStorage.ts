@@ -21,7 +21,7 @@ namespace colibri.core.io {
         } catch (e) {
 
             console.error(e);
-            
+
             return new Promise((resolve, reject) => {
                 resolve({
                     error: e.message
@@ -68,7 +68,7 @@ namespace colibri.core.io {
             return this.getRoot();
         }
 
-        async getProjectTemplates() : Promise<ProjectTemplatesData> {
+        async getProjectTemplates(): Promise<ProjectTemplatesData> {
 
             const data = await apiRequest("GetProjectTemplates", {});
 
@@ -84,7 +84,7 @@ namespace colibri.core.io {
             return data["templatesData"];
         }
 
-        async createProject(templatePath : string, projectName : string): Promise<boolean> {
+        async createProject(templatePath: string, projectName: string): Promise<boolean> {
 
             const data = await apiRequest("CreateProject", {
                 templatePath: templatePath,
@@ -455,7 +455,7 @@ namespace colibri.core.io {
             } else {
 
                 file = new FilePath(null, fileData);
-                
+
                 uploadFolder._add(file);
 
                 change.recordAdd(file.getFullName());
@@ -464,6 +464,22 @@ namespace colibri.core.io {
             this.fireChange(change);
 
             return file;
+        }
+
+        async getImageSize(file: FilePath): Promise<ImageSize> {
+
+            const data = await colibri.core.io.apiRequest("GetImageSize", {
+                path: file.getFullName()
+            });
+
+            if (data.error) {
+                return null;
+            }
+
+            return {
+                width: data.width,
+                height: data.height
+            };
         }
     }
 }

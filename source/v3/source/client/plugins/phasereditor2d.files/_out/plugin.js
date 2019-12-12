@@ -279,7 +279,7 @@ var phasereditor2d;
                         const ext = element;
                         return new controls.viewers.IconImageCellRenderer(ext.getIcon());
                     }
-                    preload(element) {
+                    preload(args) {
                         return controls.Controls.resolveNothingLoaded();
                     }
                 }
@@ -686,13 +686,14 @@ var phasereditor2d;
                         }
                         return controls.Controls.getIcon(ide.ICON_FILE);
                     }
-                    preload(obj) {
+                    preload(args) {
+                        const obj = args.obj;
                         const file = obj;
                         if (file.isFile()) {
                             const result = ide.Workbench.getWorkbench().getContentTypeRegistry().preload(file);
                             return result;
                         }
-                        return super.preload(obj);
+                        return super.preload(args);
                     }
                 }
                 viewers_1.FileCellRenderer = FileCellRenderer;
