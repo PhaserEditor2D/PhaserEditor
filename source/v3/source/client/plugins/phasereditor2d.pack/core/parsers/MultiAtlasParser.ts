@@ -46,37 +46,7 @@ namespace phasereditor2d.pack.core.parsers {
             const dataFile = AssetPackUtils.getFileFromPackUrl(data.url);
 
             if (dataFile) {
-
-                let result = await ide.FileUtils.preloadFileString(dataFile);
-
-                // const str = ide.FileUtils.getFileString(dataFile);
-
-                // try {
-
-                //     const data = JSON.parse(str);
-
-                //     if (data.textures) {
-
-                //         for (const texture of data.textures) {
-
-                //             const imageName: string = texture.image;
-                //             const imageFile = dataFile.getSibling(imageName);
-
-                //             if (imageFile) {
-
-                //                 const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
-                                
-                //                 const result2 = await image.preloadSize();
-
-                //                 result = Math.max(result, result2);
-                //             }
-                //         }
-                //     }
-                // } catch (e) {
-
-                // }
-
-                return result;
+                return await ide.FileUtils.preloadFileString(dataFile);
             }
 
             return controls.Controls.resolveNothingLoaded();

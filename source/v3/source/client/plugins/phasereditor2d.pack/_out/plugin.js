@@ -484,6 +484,15 @@ var phasereditor2d;
                     const parser = this.createParser();
                     return parser.preloadFrames();
                 }
+                async preloadImages() {
+                    const frames = this.getFrames();
+                    for (const frame of frames) {
+                        const img = frame.getImage();
+                        if (img) {
+                            await img.preload();
+                        }
+                    }
+                }
                 resetCache() {
                     this._frames = null;
                 }
@@ -1417,8 +1426,9 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 var ide = colibri.ui.ide;
                 class BaseAtlasParser extends parsers.ImageFrameParser {
-                    constructor(packItem) {
+                    constructor(packItem, preloadImageSize) {
                         super(packItem);
+                        this._preloadImageSize = preloadImageSize;
                     }
                     addToPhaserCache(game) {
                         const item = this.getPackItem();
@@ -1440,8 +1450,11 @@ var phasereditor2d;
                         }
                         let result1 = await ide.FileUtils.preloadFileString(dataFile);
                         const imageFile = core.AssetPackUtils.getFileFromPackUrl(data.textureURL);
-                        let result2 = await ide.FileUtils.preloadImageSize(imageFile);
-                        return Math.max(result1, result2);
+                        if (this._preloadImageSize) {
+                            let result2 = await ide.FileUtils.preloadImageSize(imageFile);
+                            result1 = Math.max(result1, result2);
+                        }
+                        return result1;
                     }
                     parseFrames() {
                         const list = [];
@@ -1478,7 +1491,7 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 class AtlasParser extends parsers.BaseAtlasParser {
                     constructor(packItem) {
-                        super(packItem);
+                        super(packItem, false);
                     }
                     parseFrames2(imageFrames, image, atlas) {
                         try {
@@ -1529,7 +1542,7 @@ var phasereditor2d;
                 var controls = colibri.ui.controls;
                 class AtlasXMLParser extends parsers.BaseAtlasParser {
                     constructor(packItem) {
-                        super(packItem);
+                        super(packItem, false);
                     }
                     addToPhaserCache(game) {
                         const item = this.getPackItem();
@@ -1660,24 +1673,7 @@ var phasereditor2d;
                         const data = this.getPackItem().getData();
                         const dataFile = core_5.AssetPackUtils.getFileFromPackUrl(data.url);
                         if (dataFile) {
-                            let result = await ide.FileUtils.preloadFileString(dataFile);
-                            // const str = ide.FileUtils.getFileString(dataFile);
-                            // try {
-                            //     const data = JSON.parse(str);
-                            //     if (data.textures) {
-                            //         for (const texture of data.textures) {
-                            //             const imageName: string = texture.image;
-                            //             const imageFile = dataFile.getSibling(imageName);
-                            //             if (imageFile) {
-                            //                 const image = ide.Workbench.getWorkbench().getFileImage(imageFile);
-                            //                 const result2 = await image.preloadSize();
-                            //                 result = Math.max(result, result2);
-                            //             }
-                            //         }
-                            //     }
-                            // } catch (e) {
-                            // }
-                            return result;
+                            return await ide.FileUtils.preloadFileString(dataFile);
                         }
                         return controls.Controls.resolveNothingLoaded();
                     }
@@ -1813,6 +1809,9 @@ var phasereditor2d;
             (function (parsers) {
                 var controls = colibri.ui.controls;
                 class UnityAtlasParser extends parsers.BaseAtlasParser {
+                    constructor(packItem) {
+                        super(packItem, true);
+                    }
                     addToPhaserCache(game) {
                         const item = this.getPackItem();
                         if (!game.textures.exists(item.getKey())) {

@@ -116,6 +116,7 @@ declare namespace phasereditor2d.pack.core {
         private _frames;
         constructor(pack: AssetPack, data: any);
         preload(): Promise<controls.PreloadResult>;
+        preloadImages(): Promise<void>;
         resetCache(): void;
         protected abstract createParser(): parsers.ImageFrameParser;
         findFrame(frameName: any): AssetPackImageFrame;
@@ -394,7 +395,8 @@ declare namespace phasereditor2d.pack.core.parsers {
 declare namespace phasereditor2d.pack.core.parsers {
     import controls = colibri.ui.controls;
     abstract class BaseAtlasParser extends ImageFrameParser {
-        constructor(packItem: AssetPackItem);
+        private _preloadImageSize;
+        constructor(packItem: AssetPackItem, preloadImageSize: boolean);
         addToPhaserCache(game: Phaser.Game): void;
         preloadFrames(): Promise<controls.PreloadResult>;
         protected abstract parseFrames2(frames: AssetPackImageFrame[], image: controls.IImage, atlas: string): any;
@@ -447,6 +449,7 @@ declare namespace phasereditor2d.pack.core.parsers {
 declare namespace phasereditor2d.pack.core.parsers {
     import controls = colibri.ui.controls;
     class UnityAtlasParser extends BaseAtlasParser {
+        constructor(packItem: AssetPackItem);
         addToPhaserCache(game: Phaser.Game): void;
         protected parseFrames2(imageFrames: AssetPackImageFrame[], image: controls.IImage, atlas: string): void;
         private addFrame;

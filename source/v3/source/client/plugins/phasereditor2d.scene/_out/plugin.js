@@ -2236,6 +2236,7 @@ var phasereditor2d;
                         }
                         if (imageFrameContainerPackItem !== null) {
                             await imageFrameContainerPackItem.preload();
+                            await imageFrameContainerPackItem.preloadImages();
                             imageFrameContainerPackItem.addToPhaserCache(this._scene.game);
                         }
                     }

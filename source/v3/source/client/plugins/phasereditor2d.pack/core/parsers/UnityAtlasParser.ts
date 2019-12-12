@@ -4,6 +4,10 @@ namespace phasereditor2d.pack.core.parsers {
 
     export class UnityAtlasParser extends BaseAtlasParser {
 
+        constructor(packItem : AssetPackItem) {
+            super(packItem, true);
+        }
+
         addToPhaserCache(game: Phaser.Game) {
 
             const item = this.getPackItem();

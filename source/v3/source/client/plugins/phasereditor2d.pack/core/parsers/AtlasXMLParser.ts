@@ -9,7 +9,7 @@ namespace phasereditor2d.pack.core.parsers {
     export class AtlasXMLParser extends BaseAtlasParser {
 
         constructor(packItem: AssetPackItem) {
-            super(packItem);
+            super(packItem, false);
         }
 
         addToPhaserCache(game: Phaser.Game) {

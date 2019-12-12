@@ -72,8 +72,9 @@ namespace phasereditor2d.scene.ui.json {
 
                 await imageFrameContainerPackItem.preload();
 
-                imageFrameContainerPackItem.addToPhaserCache(this._scene.game);
+                await imageFrameContainerPackItem.preloadImages();
 
+                imageFrameContainerPackItem.addToPhaserCache(this._scene.game);
             }
         }
 

@@ -7,7 +7,7 @@ namespace phasereditor2d.pack.core.parsers {
     export class AtlasParser extends BaseAtlasParser {
 
         constructor(packItem: AssetPackItem) {
-            super(packItem);
+            super(packItem, false);
         }
 
         protected parseFrames2(imageFrames: AssetPackImageFrame[], image: controls.IImage, atlas: string) {

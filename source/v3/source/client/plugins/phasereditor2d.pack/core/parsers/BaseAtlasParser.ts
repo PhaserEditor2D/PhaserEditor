@@ -7,8 +7,12 @@ namespace phasereditor2d.pack.core.parsers {
 
     export abstract class BaseAtlasParser extends ImageFrameParser {
 
-        constructor(packItem: AssetPackItem) {
+        private _preloadImageSize: boolean;
+
+        constructor(packItem: AssetPackItem, preloadImageSize: boolean) {
             super(packItem);
+
+            this._preloadImageSize = preloadImageSize;
         }
 
         addToPhaserCache(game: Phaser.Game) {
@@ -43,9 +47,13 @@ namespace phasereditor2d.pack.core.parsers {
 
             const imageFile = AssetPackUtils.getFileFromPackUrl(data.textureURL);
 
-            let result2 = await ide.FileUtils.preloadImageSize(imageFile);
+            if (this._preloadImageSize) {
 
-            return Math.max(result1, result2);
+                let result2 = await ide.FileUtils.preloadImageSize(imageFile);
+                result1 = Math.max(result1, result2);
+            }
+
+            return result1;
         }
 
         protected abstract parseFrames2(frames: AssetPackImageFrame[], image: controls.IImage, atlas: string);

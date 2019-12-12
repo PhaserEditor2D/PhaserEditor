@@ -6057,13 +6057,13 @@ var colibri;
                     const editorArea = this.getEditorArea();
                     const editors = editorArea.getEditors();
                     const restoreEditorData = prefs.getValue("restoreEditorData");
-                    if (restoreEditorData.tabIconSize) {
-                        editorArea.incrementTabIconSize(restoreEditorData.tabIconSize);
-                    }
                     for (const editor of editors) {
                         editorArea.closeTab(editor);
                     }
                     if (restoreEditorData) {
+                        if (restoreEditorData.tabIconSize) {
+                            editorArea.setTabIconSize(restoreEditorData.tabIconSize);
+                        }
                         let activeEditor = null;
                         const wb = colibri.Platform.getWorkbench();
                         for (const fileData of restoreEditorData.fileDataList) {

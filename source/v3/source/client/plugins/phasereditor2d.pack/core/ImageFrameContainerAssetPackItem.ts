@@ -23,6 +23,20 @@ namespace phasereditor2d.pack.core {
             return parser.preloadFrames();
         }
 
+        async preloadImages() {
+
+            const frames = this.getFrames();
+
+            for(const frame of frames) {
+
+                const img = frame.getImage();
+
+                if (img) {
+                    await img.preload();
+                }
+            }
+        }
+
         resetCache() {
             this._frames = null;
         }
