@@ -105,6 +105,7 @@ namespace colibri.ui.ide {
                 }
 
                 let activeEditor: EditorPart = null;
+                let lastEditor : EditorPart = null;
 
                 const wb = colibri.Platform.getWorkbench();
 
@@ -116,17 +117,19 @@ namespace colibri.ui.ide {
 
                     if (file) {
 
-                        const editor = wb.openEditor(file);
+                        const editor = wb.createEditor(file);
 
                         if (!editor) {
                             continue;
                         }
 
+                        lastEditor = editor;
+
                         const state = fileData.state;
 
                         try {
 
-                            editor.restoreState(state)
+                            editor.setRestoreState(state);
 
                         } catch (e) {
                             console.error(e);
@@ -138,8 +141,14 @@ namespace colibri.ui.ide {
                     }
                 }
 
+                if (!activeEditor) {
+                    activeEditor = lastEditor;
+                }
+
                 if (activeEditor) {
+                    
                     editorArea.activateEditor(activeEditor);
+                    wb.setActivePart(activeEditor);
                 }
             }
         }

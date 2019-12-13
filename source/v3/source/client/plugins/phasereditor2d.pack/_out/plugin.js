@@ -2080,10 +2080,6 @@ var phasereditor2d;
                     getPack() {
                         return this._pack;
                     }
-                    setInput(file) {
-                        super.setInput(file);
-                        this.updateContent();
-                    }
                     getEditorViewerProvider(key) {
                         switch (key) {
                             case phasereditor2d.outline.ui.views.OutlineView.EDITOR_VIEWER_PROVIDER_KEY:

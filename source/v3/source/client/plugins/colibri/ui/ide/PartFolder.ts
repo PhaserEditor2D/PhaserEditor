@@ -47,14 +47,14 @@ namespace colibri.ui.ide {
             });
         }
 
-        addPart(part: Part, closeable = false): void {
+        addPart(part: Part, closeable = false, selectIt = true): void {
 
             part.addEventListener(EVENT_PART_TITLE_UPDATED, (e: CustomEvent) => {
 
                 this.setTabTitle(part, part.getTitle(), part.getIcon());
             });
 
-            this.addTab(part.getTitle(), part.getIcon(), part, closeable);
+            this.addTab(part.getTitle(), part.getIcon(), part, closeable, selectIt);
 
             part.setPartFolder(this);
         }

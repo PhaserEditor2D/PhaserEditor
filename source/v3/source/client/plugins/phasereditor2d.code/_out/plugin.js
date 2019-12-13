@@ -138,6 +138,7 @@ var phasereditor2d;
                             this.setDirty(true);
                         });
                         editors.MonacoModelsManager.getInstance().start();
+                        this.updateContent();
                     }
                     getTokensAtLine(position) {
                         const model = this._monacoEditor.getModel();
@@ -171,10 +172,6 @@ var phasereditor2d;
                         catch (e) {
                             console.error(e);
                         }
-                    }
-                    setInput(file) {
-                        super.setInput(file);
-                        this.updateContent();
                     }
                     async updateContent() {
                         const file = this.getInput();

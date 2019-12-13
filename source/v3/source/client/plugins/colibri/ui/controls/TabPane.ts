@@ -169,12 +169,12 @@ namespace colibri.ui.controls {
             this._iconSize = ICON_SIZE;
         }
 
-        addTab(label: string, icon: IImage, content: Control, closeable = false): void {
+        addTab(label: string, icon: IImage, content: Control, closeable = false, selectIt = true): void {
 
             const labelElement = this.makeLabel(label, icon, closeable);
             this._titleBarElement.appendChild(labelElement);
             labelElement.addEventListener("mousedown", e => {
-                
+
                 if (TabPane.isTabCloseIcon(e.target as HTMLElement)) {
                     return;
                 }
@@ -188,8 +188,11 @@ namespace colibri.ui.controls {
 
             labelElement["__contentArea"] = contentArea.getElement();
 
-            if (this._titleBarElement.childElementCount === 1) {
-                this.selectTab(labelElement);
+            if (selectIt) {
+
+                if (this._titleBarElement.childElementCount === 1) {
+                    this.selectTab(labelElement);
+                }
             }
         }
 
@@ -346,7 +349,7 @@ namespace colibri.ui.controls {
             }
         }
 
-        static isTabCloseIcon(element : HTMLElement) {
+        static isTabCloseIcon(element: HTMLElement) {
             return element.classList.contains("TabPaneLabelCloseIcon");
         }
 

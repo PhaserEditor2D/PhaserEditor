@@ -12,7 +12,6 @@ declare namespace phasereditor2d.code {
     }
 }
 declare namespace phasereditor2d.code.ui.editors {
-    import io = colibri.core.io;
     class MonacoEditorFactory extends colibri.ui.ide.EditorFactory {
         private _language;
         private _contentType;
@@ -32,7 +31,6 @@ declare namespace phasereditor2d.code.ui.editors {
         protected createMonacoEditor(container: HTMLElement): monaco.editor.IStandaloneCodeEditor;
         protected createMonacoEditorOptions(): monaco.editor.IEditorConstructionOptions;
         doSave(): Promise<void>;
-        setInput(file: io.FilePath): void;
         private updateContent;
         layout(): void;
         protected onEditorInputContentChanged(): void;

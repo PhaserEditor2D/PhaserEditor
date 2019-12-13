@@ -168,6 +168,7 @@ declare namespace colibri.ui.ide {
         getWorkbenchIcon(name: string): controls.IImage;
         getEditorRegistry(): EditorRegistry;
         getEditors(): EditorPart[];
+        createEditor(input: any): EditorPart;
         openEditor(input: any): EditorPart;
     }
 }
@@ -679,7 +680,7 @@ declare namespace colibri.ui.controls {
         private _contentAreaElement;
         private _iconSize;
         constructor(...classList: string[]);
-        addTab(label: string, icon: IImage, content: Control, closeable?: boolean): void;
+        addTab(label: string, icon: IImage, content: Control, closeable?: boolean, selectIt?: boolean): void;
         getTabIconSize(): number;
         setTabIconSize(size: number): void;
         incrementTabIconSize(amount: number): void;
@@ -1213,7 +1214,9 @@ declare namespace colibri.ui.ide {
         private _icon;
         private _folder;
         private _undoManager;
+        private _restoreState;
         constructor(id: string);
+        setRestoreState(state: any): void;
         getUndoManager(): undo.UndoManager;
         getPartFolder(): PartFolder;
         setPartFolder(folder: PartFolder): void;
@@ -1229,9 +1232,10 @@ declare namespace colibri.ui.ide {
         layout(): void;
         onPartClosed(): boolean;
         onPartShown(): void;
+        protected doCreatePart(): void;
         onPartActivated(): void;
         saveState(state: any): void;
-        restoreState(state: any): void;
+        protected restoreState(state: any): void;
         protected abstract createPart(): void;
     }
 }
@@ -1254,7 +1258,7 @@ declare namespace colibri.ui.ide {
 declare namespace colibri.ui.ide {
     class PartFolder extends controls.TabPane {
         constructor(...classList: string[]);
-        addPart(part: Part, closeable?: boolean): void;
+        addPart(part: Part, closeable?: boolean, selectIt?: boolean): void;
         getParts(): Part[];
     }
 }

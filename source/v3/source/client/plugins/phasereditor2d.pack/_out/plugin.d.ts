@@ -489,7 +489,6 @@ declare namespace phasereditor2d.pack.ui.editor {
         protected onEditorInputContentChanged(): void;
         onPartActivated(): Promise<void>;
         getPack(): core.AssetPack;
-        setInput(file: io.FilePath): void;
         getEditorViewerProvider(key: string): ide.EditorViewerProvider;
         getPropertyProvider(): properties.AssetPackEditorPropertyProvider;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;

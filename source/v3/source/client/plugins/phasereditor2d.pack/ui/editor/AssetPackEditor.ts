@@ -108,6 +108,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         protected createViewer(): controls.viewers.TreeViewer {
+
             const viewer = new controls.viewers.TreeViewer();
 
             viewer.setContentProvider(new AssetPackEditorContentProvider(this, true));
@@ -178,13 +179,6 @@ namespace phasereditor2d.pack.ui.editor {
 
         getPack() {
             return this._pack;
-        }
-
-        setInput(file: io.FilePath): void {
-
-            super.setInput(file);
-            
-            this.updateContent();
         }
 
         getEditorViewerProvider(key: string): ide.EditorViewerProvider {

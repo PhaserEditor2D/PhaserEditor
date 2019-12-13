@@ -77,6 +77,8 @@ namespace phasereditor2d.code.ui.editors {
             });
 
             MonacoModelsManager.getInstance().start();
+
+            this.updateContent();
         }
 
         private getTokensAtLine(position: monaco.IPosition) {
@@ -130,13 +132,6 @@ namespace phasereditor2d.code.ui.editors {
 
                 console.error(e);
             }
-        }
-
-        setInput(file: io.FilePath) {
-
-            super.setInput(file);
-
-            this.updateContent();
         }
 
         private async updateContent() {

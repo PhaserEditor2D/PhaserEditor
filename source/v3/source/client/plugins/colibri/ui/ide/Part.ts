@@ -5,7 +5,7 @@ namespace colibri.ui.ide {
     export const EVENT_PART_TITLE_UPDATED = "partTitledUpdated";
 
     export abstract class Part extends controls.Control {
-        
+
         private _id: string;
         private _title: string;
         private _selection: any[];
@@ -13,6 +13,7 @@ namespace colibri.ui.ide {
         private _icon: controls.IImage;
         private _folder: PartFolder;
         private _undoManager: undo.UndoManager;
+        private _restoreState: any;
 
         constructor(id: string) {
             super();
@@ -25,6 +26,8 @@ namespace colibri.ui.ide {
 
             this._partCreated = false;
 
+            this._restoreState = null;
+
             this._undoManager = new undo.UndoManager();
 
             this.getElement().setAttribute("id", id);
@@ -32,6 +35,10 @@ namespace colibri.ui.ide {
             this.getElement().classList.add("Part");
 
             this.getElement()["__part"] = this;
+        }
+
+        setRestoreState(state: any) {
+            this._restoreState = state;
         }
 
         getUndoManager() {
@@ -64,7 +71,7 @@ namespace colibri.ui.ide {
             this.dispatchEvent(new CustomEvent(EVENT_PART_TITLE_UPDATED, { detail: this }));
         }
 
-        getIcon() : controls.IImage {
+        getIcon(): controls.IImage {
             return this._icon;
         }
 
@@ -104,20 +111,36 @@ namespace colibri.ui.ide {
             if (!this._partCreated) {
 
                 this._partCreated = true;
-                
-                this.createPart();
+
+                this.doCreatePart();
+
+                if (this._restoreState) {
+
+                    try {
+
+                        this.restoreState(this._restoreState);
+                        this._restoreState = null;
+
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
             }
         }
 
+        protected doCreatePart() {
+            this.createPart();
+        }
+
         onPartActivated() {
-            
-        }
-
-        saveState(state : any) {
 
         }
 
-        restoreState(state : any) {
+        saveState(state: any) {
+
+        }
+
+        protected restoreState(state: any) {
 
         }
 

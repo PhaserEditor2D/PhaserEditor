@@ -666,6 +666,21 @@ var colibri;
                 getEditors() {
                     return this.getActiveWindow().getEditorArea().getEditors();
                 }
+                createEditor(input) {
+                    const editorArea = this.getActiveWindow().getEditorArea();
+                    const factory = this._editorRegistry.getFactoryForInput(input);
+                    if (factory) {
+                        const editor = factory.createEditor();
+                        editor.setInput(input);
+                        editorArea.addPart(editor, true, false);
+                        return editor;
+                    }
+                    else {
+                        console.error("No editor available for :" + input);
+                        alert("No editor available for the given input.");
+                    }
+                    return null;
+                }
                 openEditor(input) {
                     const editorArea = this.getActiveWindow().getEditorArea();
                     {
@@ -678,20 +693,12 @@ var colibri;
                             }
                         }
                     }
-                    const factory = this._editorRegistry.getFactoryForInput(input);
-                    if (factory) {
-                        const editor = factory.createEditor();
-                        editor.setInput(input);
-                        editorArea.addPart(editor, true);
+                    const editor = this.createEditor(input);
+                    if (editor) {
                         editorArea.activateEditor(editor);
                         this.setActivePart(editor);
-                        return editor;
                     }
-                    else {
-                        console.error("No editor available for :" + input);
-                        alert("No editor available for the given input.");
-                    }
-                    return null;
+                    return editor;
                 }
             }
             ide.Workbench = Workbench;
@@ -2616,7 +2623,7 @@ var colibri;
                     this.getElement().appendChild(this._contentAreaElement);
                     this._iconSize = controls.ICON_SIZE;
                 }
-                addTab(label, icon, content, closeable = false) {
+                addTab(label, icon, content, closeable = false, selectIt = true) {
                     const labelElement = this.makeLabel(label, icon, closeable);
                     this._titleBarElement.appendChild(labelElement);
                     labelElement.addEventListener("mousedown", e => {
@@ -2629,8 +2636,10 @@ var colibri;
                     contentArea.add(content);
                     this._contentAreaElement.appendChild(contentArea.getElement());
                     labelElement["__contentArea"] = contentArea.getElement();
-                    if (this._titleBarElement.childElementCount === 1) {
-                        this.selectTab(labelElement);
+                    if (selectIt) {
+                        if (this._titleBarElement.childElementCount === 1) {
+                            this.selectTab(labelElement);
+                        }
                     }
                 }
                 getTabIconSize() {
@@ -5012,10 +5021,14 @@ var colibri;
                     this._title = "";
                     this._selection = [];
                     this._partCreated = false;
+                    this._restoreState = null;
                     this._undoManager = new ide.undo.UndoManager();
                     this.getElement().setAttribute("id", id);
                     this.getElement().classList.add("Part");
                     this.getElement()["__part"] = this;
+                }
+                setRestoreState(state) {
+                    this._restoreState = state;
                 }
                 getUndoManager() {
                     return this._undoManager;
@@ -5069,8 +5082,20 @@ var colibri;
                 onPartShown() {
                     if (!this._partCreated) {
                         this._partCreated = true;
-                        this.createPart();
+                        this.doCreatePart();
+                        if (this._restoreState) {
+                            try {
+                                this.restoreState(this._restoreState);
+                                this._restoreState = null;
+                            }
+                            catch (e) {
+                                console.error(e);
+                            }
+                        }
                     }
+                }
+                doCreatePart() {
+                    this.createPart();
                 }
                 onPartActivated() {
                 }
@@ -5175,11 +5200,11 @@ var colibri;
                         }
                     });
                 }
-                addPart(part, closeable = false) {
+                addPart(part, closeable = false, selectIt = true) {
                     part.addEventListener(ide.EVENT_PART_TITLE_UPDATED, (e) => {
                         this.setTabTitle(part, part.getTitle(), part.getIcon());
                     });
-                    this.addTab(part.getTitle(), part.getIcon(), part, closeable);
+                    this.addTab(part.getTitle(), part.getIcon(), part, closeable, selectIt);
                     part.setPartFolder(this);
                 }
                 getParts() {
@@ -6080,18 +6105,20 @@ var colibri;
                             editorArea.setTabIconSize(restoreEditorData.tabIconSize);
                         }
                         let activeEditor = null;
+                        let lastEditor = null;
                         const wb = colibri.Platform.getWorkbench();
                         for (const fileData of restoreEditorData.fileDataList) {
                             const fileName = fileData.fileName;
                             const file = colibri.ui.ide.FileUtils.getFileFromPath(fileName);
                             if (file) {
-                                const editor = wb.openEditor(file);
+                                const editor = wb.createEditor(file);
                                 if (!editor) {
                                     continue;
                                 }
+                                lastEditor = editor;
                                 const state = fileData.state;
                                 try {
-                                    editor.restoreState(state);
+                                    editor.setRestoreState(state);
                                 }
                                 catch (e) {
                                     console.error(e);
@@ -6101,8 +6128,12 @@ var colibri;
                                 }
                             }
                         }
+                        if (!activeEditor) {
+                            activeEditor = lastEditor;
+                        }
                         if (activeEditor) {
                             editorArea.activateEditor(activeEditor);
+                            wb.setActivePart(activeEditor);
                         }
                     }
                 }

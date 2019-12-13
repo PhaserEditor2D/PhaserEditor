@@ -484,6 +484,32 @@ namespace colibri.ui.ide {
             return this.getActiveWindow().getEditorArea().getEditors();
         }
 
+        createEditor(input : any) : EditorPart {
+
+            const editorArea = this.getActiveWindow().getEditorArea();
+
+            const factory = this._editorRegistry.getFactoryForInput(input);
+
+            if (factory) {
+
+                const editor = factory.createEditor();
+
+                editor.setInput(input);
+
+                editorArea.addPart(editor, true, false);
+
+                return editor;
+
+            } else {
+
+                console.error("No editor available for :" + input);
+
+                alert("No editor available for the given input.");
+            }
+
+            return null;
+        }
+
         openEditor(input: any): EditorPart {
 
             const editorArea = this.getActiveWindow().getEditorArea();
@@ -504,30 +530,16 @@ namespace colibri.ui.ide {
                 }
             }
 
-            const factory = this._editorRegistry.getFactoryForInput(input);
+            const editor = this.createEditor(input);
 
-            if (factory) {
-
-                const editor = factory.createEditor();
-
-                editor.setInput(input);
-
-                editorArea.addPart(editor, true);
-
+            if (editor) {
+                
                 editorArea.activateEditor(editor);
 
                 this.setActivePart(editor);
-
-                return editor;
-
-            } else {
-
-                console.error("No editor available for :" + input);
-
-                alert("No editor available for the given input.");
             }
 
-            return null;
+            return editor;
         }
 
     }
