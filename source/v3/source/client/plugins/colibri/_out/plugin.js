@@ -5463,13 +5463,13 @@ var colibri;
                         }
                     }
                     if (provider) {
-                        provider.setViewer(this._viewer);
                         await provider.preload();
                         this._viewer.setTreeRenderer(provider.getTreeViewerRenderer(this._viewer));
                         this._viewer.setLabelProvider(provider.getLabelProvider());
                         this._viewer.setCellRendererProvider(provider.getCellRendererProvider());
                         this._viewer.setContentProvider(provider.getContentProvider());
                         this._viewer.setInput(provider.getInput());
+                        provider.setViewer(this._viewer);
                         const state = this._viewerMap.get(editor);
                         if (state) {
                             this._viewer.setState(state);

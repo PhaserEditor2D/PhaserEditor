@@ -2073,8 +2073,11 @@ var phasereditor2d;
                     async onPartActivated() {
                         super.onPartActivated();
                         if (this._blocksProvider) {
-                            await this._blocksProvider.preload();
-                            this._blocksProvider.repaint();
+                            // gives a time to the blocks view to get the right values
+                            setTimeout(async () => {
+                                await this._blocksProvider.preload();
+                                this._blocksProvider.repaint();
+                            }, 10);
                         }
                     }
                     getPack() {

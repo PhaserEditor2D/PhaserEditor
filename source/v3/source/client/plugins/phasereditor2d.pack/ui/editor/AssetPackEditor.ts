@@ -172,9 +172,15 @@ namespace phasereditor2d.pack.ui.editor {
 
             if (this._blocksProvider) {
 
-                await this._blocksProvider.preload()
+                // gives a time to the blocks view to get the right values
 
-                this._blocksProvider.repaint();
+                setTimeout(async () => {
+
+                    await this._blocksProvider.preload();
+
+                    this._blocksProvider.repaint();
+
+                }, 10);
             }
         }
 
