@@ -96,10 +96,7 @@ namespace colibri.ui.ide {
 
             const restoreEditorData = prefs.getValue("restoreEditorData") as RestoreEditorData;
 
-            for (const editor of editors) {
-
-                editorArea.closeTab(editor);
-            }
+            editorArea.closeAll();
 
             if (restoreEditorData) {
 

@@ -272,6 +272,13 @@ namespace colibri.ui.controls {
             }
         }
 
+        closeAll() {
+
+            this._titleBarElement.innerHTML = "";
+            this._contentAreaElement.innerHTML = "";
+            this._selectionHistoryLabelElement = [];
+        }
+
         private closeTabLabel(labelElement: HTMLElement): void {
             {
                 const content = TabPane.getContentFromLabel(labelElement);

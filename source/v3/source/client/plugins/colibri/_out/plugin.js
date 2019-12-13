@@ -2685,6 +2685,11 @@ var colibri;
                         this.closeTabLabel(label);
                     }
                 }
+                closeAll() {
+                    this._titleBarElement.innerHTML = "";
+                    this._contentAreaElement.innerHTML = "";
+                    this._selectionHistoryLabelElement = [];
+                }
                 closeTabLabel(labelElement) {
                     {
                         const content = TabPane.getContentFromLabel(labelElement);
@@ -6069,9 +6074,7 @@ var colibri;
                     const editorArea = this.getEditorArea();
                     const editors = editorArea.getEditors();
                     const restoreEditorData = prefs.getValue("restoreEditorData");
-                    for (const editor of editors) {
-                        editorArea.closeTab(editor);
-                    }
+                    editorArea.closeAll();
                     if (restoreEditorData) {
                         if (restoreEditorData.tabIconSize) {
                             editorArea.setTabIconSize(restoreEditorData.tabIconSize);

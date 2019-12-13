@@ -686,6 +686,7 @@ declare namespace colibri.ui.controls {
         private makeLabel;
         setTabCloseIcons(labelElement: HTMLElement, icon: IImage, overIcon: IImage): void;
         closeTab(content: controls.Control): void;
+        closeAll(): void;
         private closeTabLabel;
         setTabTitle(content: Control, title: string, icon?: IImage): void;
         static isTabCloseIcon(element: HTMLElement): boolean;
