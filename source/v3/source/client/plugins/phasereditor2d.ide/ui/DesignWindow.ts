@@ -26,6 +26,11 @@ namespace phasereditor2d.ide.ui {
 
                 this.saveWindowState();
             });
+
+            window.addEventListener("beforeunload", e => {
+
+                this.saveWindowState();
+            });
         }
 
         saveWindowState() {

@@ -14,9 +14,9 @@ namespace phasereditor2d.pack.ui.editor {
         acceptInput(input: any): boolean {
 
             if (input instanceof io.FilePath) {
-                
+
                 const contentType = ide.Workbench.getWorkbench().getContentTypeRegistry().getCachedContentType(input);
-                
+
                 return contentType === pack.core.contentTypes.CONTENT_TYPE_ASSET_PACK;
             }
 
@@ -47,9 +47,10 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         static registerCommands(manager: ide.commands.CommandManager) {
+
             // delete 
 
-            manager.addHandlerHelper(ide.CMD_DELETE,
+            manager.addHandlerHelper(ide.actions.CMD_DELETE,
 
                 args => AssetPackEditor.isEditorScope(args),
 
@@ -131,7 +132,7 @@ namespace phasereditor2d.pack.ui.editor {
         }
 
         private async updateContent() {
-            
+
             const file = this.getInput();
 
             if (!file) {
@@ -170,7 +171,7 @@ namespace phasereditor2d.pack.ui.editor {
             super.onPartActivated();
 
             if (this._blocksProvider) {
-                
+
                 await this._blocksProvider.preload()
 
                 this._blocksProvider.repaint();

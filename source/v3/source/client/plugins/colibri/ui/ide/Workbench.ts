@@ -246,8 +246,6 @@ namespace colibri.ui.ide {
         private initCommands() {
             this._commandManager = new commands.CommandManager();
 
-            IDECommands.init();
-
             const extensions = Platform.getExtensions<commands.CommandExtension>(commands.CommandExtension.POINT_ID);
 
             for (const extension of extensions) {
@@ -267,6 +265,11 @@ namespace colibri.ui.ide {
                 if (part) {
                     this.setActivePart(part);
                 }
+            });
+
+            window.addEventListener("beforeunload", e => {
+                e.preventDefault();
+                e.returnValue = "";
             });
         }
 
@@ -484,7 +487,7 @@ namespace colibri.ui.ide {
             return this.getActiveWindow().getEditorArea().getEditors();
         }
 
-        createEditor(input : any) : EditorPart {
+        createEditor(input: any): EditorPart {
 
             const editorArea = this.getActiveWindow().getEditorArea();
 
@@ -533,7 +536,7 @@ namespace colibri.ui.ide {
             const editor = this.createEditor(input);
 
             if (editor) {
-                
+
                 editorArea.activateEditor(editor);
 
                 this.setActivePart(editor);

@@ -1999,7 +1999,7 @@ var phasereditor2d;
                     }
                     static registerCommands(manager) {
                         // delete 
-                        manager.addHandlerHelper(ide.CMD_DELETE, args => AssetPackEditor.isEditorScope(args), args => {
+                        manager.addHandlerHelper(ide.actions.CMD_DELETE, args => AssetPackEditor.isEditorScope(args), args => {
                             const editor = args.activeEditor;
                             editor.deleteSelection();
                         });

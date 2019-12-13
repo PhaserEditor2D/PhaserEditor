@@ -167,6 +167,9 @@ var phasereditor2d;
                     ide.Workbench.getWorkbench().addEventListener(ide.EVENT_PART_ACTIVATED, e => {
                         this.saveWindowState();
                     });
+                    window.addEventListener("beforeunload", e => {
+                        this.saveWindowState();
+                    });
                 }
                 saveWindowState() {
                     if (ide_2.IDEPlugin.getInstance().isOpeningProject()) {

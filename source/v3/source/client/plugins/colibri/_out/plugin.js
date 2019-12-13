@@ -501,7 +501,6 @@ var colibri;
                 }
                 initCommands() {
                     this._commandManager = new ide.commands.CommandManager();
-                    ide.IDECommands.init();
                     const extensions = colibri.Platform.getExtensions(ide.commands.CommandExtension.POINT_ID);
                     for (const extension of extensions) {
                         extension.getConfigurer()(this._commandManager);
@@ -514,6 +513,10 @@ var colibri;
                         if (part) {
                             this.setActivePart(part);
                         }
+                    });
+                    window.addEventListener("beforeunload", e => {
+                        e.preventDefault();
+                        e.returnValue = "";
                     });
                 }
                 registerEditors() {
@@ -722,6 +725,8 @@ var colibri;
         registerExtensions(reg) {
             // themes
             reg.addExtension(new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.LIGHT_THEME), new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.DARK_THEME));
+            // keys
+            reg.addExtension(new colibri.ui.ide.commands.CommandExtension(colibri.ui.ide.actions.IDECommands.registerCommands));
         }
     }
     colibri.ColibriPlugin = ColibriPlugin;
@@ -4610,6 +4615,9 @@ var colibri;
                         this.setFilterText(state.filterText);
                         this.setCellSize(state.cellSize);
                     }
+                    selectAll() {
+                        this.setSelection(this._paintItems.map(item => item.data));
+                    }
                 }
                 viewers.Viewer = Viewer;
             })(viewers = controls.viewers || (controls.viewers = {}));
@@ -5711,145 +5719,6 @@ var colibri;
     (function (ui) {
         var ide;
         (function (ide) {
-            var commands;
-            (function (commands) {
-                class KeyMatcher {
-                    constructor(config) {
-                        this._control = config.control === undefined ? false : config.control;
-                        this._shift = config.shift === undefined ? false : config.shift;
-                        this._alt = config.alt === undefined ? false : config.alt;
-                        this._meta = config.meta === undefined ? false : config.meta;
-                        this._key = config.key === undefined ? "" : config.key;
-                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
-                    }
-                    matchesKeys(event) {
-                        return event.ctrlKey === this._control
-                            && event.shiftKey === this._shift
-                            && event.altKey === this._alt
-                            && event.metaKey === this._meta
-                            && event.key.toLowerCase() === this._key.toLowerCase();
-                    }
-                    matchesTarget(element) {
-                        if (this._filterInputElements) {
-                            return !(element instanceof HTMLInputElement);
-                        }
-                        return true;
-                    }
-                }
-                commands.KeyMatcher = KeyMatcher;
-            })(commands = ide.commands || (ide.commands = {}));
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-/// <reference path="./commands/KeyMatcher.ts" />
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
-            var KeyMatcher = ide.commands.KeyMatcher;
-            ide.CMD_SAVE = "save";
-            ide.CMD_DELETE = "delete";
-            ide.CMD_RENAME = "rename";
-            ide.CMD_UNDO = "undo";
-            ide.CMD_REDO = "redo";
-            ide.CMD_COLLAPSE_ALL = "collapseAll";
-            ide.CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
-            function isViewerScope(args) {
-                if (args.activeElement) {
-                    const control = ui.controls.Control.getControlOf(args.activeElement);
-                    if (control && control instanceof ui.controls.viewers.Viewer) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            class IDECommands {
-                static init() {
-                    const manager = ide.Workbench.getWorkbench().getCommandManager();
-                    this.initEdit(manager);
-                    this.initUndo(manager);
-                    this.initViewer(manager);
-                }
-                static initViewer(manager) {
-                    // collapse all
-                    manager.addCommandHelper(ide.CMD_COLLAPSE_ALL);
-                    manager.addHandlerHelper(ide.CMD_COLLAPSE_ALL, isViewerScope, args => {
-                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
-                        viewer.collapseAll();
-                        viewer.repaint();
-                    });
-                    manager.addKeyBinding(ide.CMD_COLLAPSE_ALL, new KeyMatcher({
-                        key: "c"
-                    }));
-                    // collapse expand branch
-                    manager.addCommandHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH);
-                    manager.addHandlerHelper(ide.CMD_EXPAND_COLLAPSE_BRANCH, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
-                        const viewer = ui.controls.Control.getControlOf(args.activeElement);
-                        const parents = [];
-                        for (const obj of viewer.getSelection()) {
-                            const objParents = viewer.expandCollapseBranch(obj);
-                            parents.push(...objParents);
-                        }
-                        viewer.setSelection(parents);
-                    });
-                    manager.addKeyBinding(ide.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
-                        key: " "
-                    }));
-                }
-                static initUndo(manager) {
-                    // undo
-                    manager.addCommandHelper(ide.CMD_UNDO);
-                    manager.addHandlerHelper(ide.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
-                    manager.addKeyBinding(ide.CMD_UNDO, new KeyMatcher({
-                        control: true,
-                        key: "z"
-                    }));
-                    // redo
-                    manager.addCommandHelper(ide.CMD_REDO);
-                    manager.addHandlerHelper(ide.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
-                    manager.addKeyBinding(ide.CMD_REDO, new KeyMatcher({
-                        control: true,
-                        shift: true,
-                        key: "z"
-                    }));
-                }
-                static initEdit(manager) {
-                    // save
-                    manager.addCommandHelper(ide.CMD_SAVE);
-                    manager.addHandlerHelper(ide.CMD_SAVE, args => args.activeEditor ? true : false, args => {
-                        if (args.activeEditor.isDirty()) {
-                            args.activeEditor.save();
-                        }
-                    });
-                    manager.addKeyBinding(ide.CMD_SAVE, new KeyMatcher({
-                        control: true,
-                        key: "s",
-                        filterInputElements: false
-                    }));
-                    // delete
-                    manager.addCommandHelper(ide.CMD_DELETE);
-                    manager.addKeyBinding(ide.CMD_DELETE, new KeyMatcher({
-                        key: "delete"
-                    }));
-                    // rename
-                    manager.addCommandHelper(ide.CMD_RENAME);
-                    manager.addKeyBinding(ide.CMD_RENAME, new KeyMatcher({
-                        key: "f2"
-                    }));
-                }
-            }
-            ide.IDECommands = IDECommands;
-        })(ide = ui.ide || (ui.ide = {}));
-    })(ui = colibri.ui || (colibri.ui = {}));
-})(colibri || (colibri = {}));
-var colibri;
-(function (colibri) {
-    var ui;
-    (function (ui) {
-        var ide;
-        (function (ide) {
             class IconLoaderExtension extends colibri.Extension {
                 constructor(icons) {
                     super(IconLoaderExtension.POINT_ID);
@@ -6237,6 +6106,159 @@ var colibri;
         var ide;
         (function (ide) {
             ide.IMG_SECTION_PADDING = 10;
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var commands;
+            (function (commands) {
+                class KeyMatcher {
+                    constructor(config) {
+                        this._control = config.control === undefined ? false : config.control;
+                        this._shift = config.shift === undefined ? false : config.shift;
+                        this._alt = config.alt === undefined ? false : config.alt;
+                        this._meta = config.meta === undefined ? false : config.meta;
+                        this._key = config.key === undefined ? "" : config.key;
+                        this._filterInputElements = config.filterInputElements === undefined ? true : config.filterInputElements;
+                    }
+                    matchesKeys(event) {
+                        return event.ctrlKey === this._control
+                            && event.shiftKey === this._shift
+                            && event.altKey === this._alt
+                            && event.metaKey === this._meta
+                            && event.key.toLowerCase() === this._key.toLowerCase();
+                    }
+                    matchesTarget(element) {
+                        if (this._filterInputElements) {
+                            return !(element instanceof HTMLInputElement);
+                        }
+                        return true;
+                    }
+                }
+                commands.KeyMatcher = KeyMatcher;
+            })(commands = ide.commands || (ide.commands = {}));
+        })(ide = ui.ide || (ui.ide = {}));
+    })(ui = colibri.ui || (colibri.ui = {}));
+})(colibri || (colibri = {}));
+/// <reference path="../commands/KeyMatcher.ts" />
+var colibri;
+(function (colibri) {
+    var ui;
+    (function (ui) {
+        var ide;
+        (function (ide) {
+            var actions;
+            (function (actions) {
+                var KeyMatcher = ide.commands.KeyMatcher;
+                actions.CMD_SAVE = "colibri.ui.ide.actions.Save";
+                actions.CMD_DELETE = "colibri.ui.ide.actions.Delete";
+                actions.CMD_RENAME = "colibri.ui.ide.actions.Rename";
+                actions.CMD_UNDO = "colibri.ui.ide.actions.Undo";
+                actions.CMD_REDO = "colibri.ui.ide.actions.Redo";
+                actions.CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
+                actions.CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
+                actions.CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
+                function isViewerScope(args) {
+                    if (args.activeElement) {
+                        const control = ui.controls.Control.getControlOf(args.activeElement);
+                        if (control && control instanceof ui.controls.viewers.Viewer) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                class IDECommands {
+                    static registerCommands(manager) {
+                        IDECommands.initEdit(manager);
+                        IDECommands.initUndo(manager);
+                        IDECommands.initViewer(manager);
+                    }
+                    static initViewer(manager) {
+                        // collapse all
+                        manager.addCommandHelper(actions.CMD_COLLAPSE_ALL);
+                        manager.addHandlerHelper(actions.CMD_COLLAPSE_ALL, isViewerScope, args => {
+                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                            viewer.collapseAll();
+                            viewer.repaint();
+                        });
+                        manager.addKeyBinding(actions.CMD_COLLAPSE_ALL, new KeyMatcher({
+                            key: "c"
+                        }));
+                        // select all
+                        manager.addCommandHelper(actions.CMD_SELECT_ALL);
+                        manager.addHandlerHelper(actions.CMD_SELECT_ALL, isViewerScope, args => {
+                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                            viewer.selectAll();
+                            viewer.repaint();
+                        });
+                        manager.addKeyBinding(actions.CMD_SELECT_ALL, new KeyMatcher({
+                            control: true,
+                            key: "a"
+                        }));
+                        // collapse expand branch
+                        manager.addCommandHelper(actions.CMD_EXPAND_COLLAPSE_BRANCH);
+                        manager.addHandlerHelper(actions.CMD_EXPAND_COLLAPSE_BRANCH, args => args.activeElement !== null && ui.controls.Control.getControlOf(args.activeElement) instanceof ui.controls.viewers.Viewer, args => {
+                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                            const parents = [];
+                            for (const obj of viewer.getSelection()) {
+                                const objParents = viewer.expandCollapseBranch(obj);
+                                parents.push(...objParents);
+                            }
+                            viewer.setSelection(parents);
+                        });
+                        manager.addKeyBinding(actions.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
+                            key: " "
+                        }));
+                    }
+                    static initUndo(manager) {
+                        // undo
+                        manager.addCommandHelper(actions.CMD_UNDO);
+                        manager.addHandlerHelper(actions.CMD_UNDO, args => args.activePart !== null, args => args.activePart.getUndoManager().undo());
+                        manager.addKeyBinding(actions.CMD_UNDO, new KeyMatcher({
+                            control: true,
+                            key: "z"
+                        }));
+                        // redo
+                        manager.addCommandHelper(actions.CMD_REDO);
+                        manager.addHandlerHelper(actions.CMD_REDO, args => args.activePart !== null, args => args.activePart.getUndoManager().redo());
+                        manager.addKeyBinding(actions.CMD_REDO, new KeyMatcher({
+                            control: true,
+                            shift: true,
+                            key: "z"
+                        }));
+                    }
+                    static initEdit(manager) {
+                        // save
+                        manager.addCommandHelper(actions.CMD_SAVE);
+                        manager.addHandlerHelper(actions.CMD_SAVE, args => args.activeEditor ? true : false, args => {
+                            if (args.activeEditor.isDirty()) {
+                                args.activeEditor.save();
+                            }
+                        });
+                        manager.addKeyBinding(actions.CMD_SAVE, new KeyMatcher({
+                            control: true,
+                            key: "s",
+                            filterInputElements: false
+                        }));
+                        // delete
+                        manager.addCommandHelper(actions.CMD_DELETE);
+                        manager.addKeyBinding(actions.CMD_DELETE, new KeyMatcher({
+                            key: "delete"
+                        }));
+                        // rename
+                        manager.addCommandHelper(actions.CMD_RENAME);
+                        manager.addKeyBinding(actions.CMD_RENAME, new KeyMatcher({
+                            key: "f2"
+                        }));
+                    }
+                }
+                actions.IDECommands = IDECommands;
+            })(actions = ide.actions || (ide.actions = {}));
         })(ide = ui.ide || (ui.ide = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
 })(colibri || (colibri = {}));

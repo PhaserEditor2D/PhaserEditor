@@ -1,16 +1,17 @@
-/// <reference path="./commands/KeyMatcher.ts" />
+/// <reference path="../commands/KeyMatcher.ts" />
 
-namespace colibri.ui.ide {
+namespace colibri.ui.ide.actions {
 
     import KeyMatcher = commands.KeyMatcher;
 
-    export const CMD_SAVE = "save";
-    export const CMD_DELETE = "delete";
-    export const CMD_RENAME = "rename";
-    export const CMD_UNDO = "undo";
-    export const CMD_REDO = "redo";
-    export const CMD_COLLAPSE_ALL = "collapseAll";
-    export const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
+    export const CMD_SAVE = "colibri.ui.ide.actions.Save";
+    export const CMD_DELETE = "colibri.ui.ide.actions.Delete";
+    export const CMD_RENAME = "colibri.ui.ide.actions.Rename";
+    export const CMD_UNDO = "colibri.ui.ide.actions.Undo";
+    export const CMD_REDO = "colibri.ui.ide.actions.Redo";
+    export const CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
+    export const CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
+    export const CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
 
 
     function isViewerScope(args: colibri.ui.ide.commands.CommandArgs) {
@@ -30,14 +31,13 @@ namespace colibri.ui.ide {
 
     export class IDECommands {
 
-        static init() {
-            const manager = Workbench.getWorkbench().getCommandManager();
+        static registerCommands(manager: commands.CommandManager) {
 
-            this.initEdit(manager);
+            IDECommands.initEdit(manager);
 
-            this.initUndo(manager);
+            IDECommands.initUndo(manager);
 
-            this.initViewer(manager);
+            IDECommands.initViewer(manager);
         }
 
         private static initViewer(manager: commands.CommandManager) {
@@ -57,7 +57,25 @@ namespace colibri.ui.ide {
 
             manager.addKeyBinding(CMD_COLLAPSE_ALL, new KeyMatcher({
                 key: "c"
-            }))
+            }));
+
+            // select all
+
+            manager.addCommandHelper(CMD_SELECT_ALL);
+
+            manager.addHandlerHelper(CMD_SELECT_ALL,
+                isViewerScope,
+                args => {
+                    const viewer = <controls.viewers.Viewer>controls.Control.getControlOf(args.activeElement);
+                    viewer.selectAll();
+                    viewer.repaint();
+                }
+            );
+
+            manager.addKeyBinding(CMD_SELECT_ALL, new KeyMatcher({
+                control: true,
+                key: "a"
+            }));
 
             // collapse expand branch
 

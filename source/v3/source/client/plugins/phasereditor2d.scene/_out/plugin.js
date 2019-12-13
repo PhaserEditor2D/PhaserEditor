@@ -1442,7 +1442,7 @@ var phasereditor2d;
                     class SceneEditorCommands {
                         static registerCommands(manager) {
                             // delete 
-                            manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE, args => isSceneScope(args), args => {
+                            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE, args => isSceneScope(args), args => {
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
                             });

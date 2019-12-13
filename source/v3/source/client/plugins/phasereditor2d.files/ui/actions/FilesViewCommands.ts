@@ -31,7 +31,7 @@ namespace phasereditor2d.files.ui.actions {
 
             // delete file
 
-            manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE,
+            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE,
 
                 args => isFilesViewScope(args) && DeleteFilesAction.isEnabled(args.activePart as views.FilesView),
 
@@ -41,7 +41,7 @@ namespace phasereditor2d.files.ui.actions {
 
             // rename file
 
-            manager.addHandlerHelper(colibri.ui.ide.CMD_RENAME,
+            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_RENAME,
 
                 args => isFilesViewScope(args) && RenameFileAction.isEnabled(args.activePart as views.FilesView),
 

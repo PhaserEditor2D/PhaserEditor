@@ -13,7 +13,7 @@ namespace phasereditor2d.scene.ui.editor.commands {
 
             // delete 
 
-            manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE,
+            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE,
 
                 args => isSceneScope(args),
 

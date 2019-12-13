@@ -95,11 +95,11 @@ var phasereditor2d;
                             filterInputElements: false
                         }));
                         // delete file
-                        manager.addHandlerHelper(colibri.ui.ide.CMD_DELETE, args => isFilesViewScope(args) && actions.DeleteFilesAction.isEnabled(args.activePart), args => {
+                        manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE, args => isFilesViewScope(args) && actions.DeleteFilesAction.isEnabled(args.activePart), args => {
                             new actions.DeleteFilesAction(args.activePart).run();
                         });
                         // rename file
-                        manager.addHandlerHelper(colibri.ui.ide.CMD_RENAME, args => isFilesViewScope(args) && actions.RenameFileAction.isEnabled(args.activePart), args => {
+                        manager.addHandlerHelper(colibri.ui.ide.actions.CMD_RENAME, args => isFilesViewScope(args) && actions.RenameFileAction.isEnabled(args.activePart), args => {
                             new actions.RenameFileAction(args.activePart).run();
                         });
                     }

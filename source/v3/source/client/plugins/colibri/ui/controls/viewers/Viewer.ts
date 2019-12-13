@@ -328,7 +328,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         setExpanded(obj: any, expanded: boolean): void {
-            
+
             if (expanded) {
                 this._expandedObjects.add(obj);
             } else {
@@ -536,6 +536,11 @@ namespace colibri.ui.controls.viewers {
             this._expandedObjects = state.expandedObjects;
             this.setFilterText(state.filterText);
             this.setCellSize(state.cellSize);
+        }
+
+        selectAll() {
+
+            this.setSelection(this._paintItems.map(item => item.data));
         }
     }
 }

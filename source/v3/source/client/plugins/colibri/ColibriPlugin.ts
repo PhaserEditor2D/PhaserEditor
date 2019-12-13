@@ -20,13 +20,21 @@ namespace colibri {
             this._openingProject = false;
         }
 
-        registerExtensions(reg : colibri.ExtensionRegistry) {
+        registerExtensions(reg: colibri.ExtensionRegistry) {
 
             // themes
 
             reg.addExtension(
                 new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.LIGHT_THEME),
                 new colibri.ui.ide.themes.ThemeExtension(colibri.ui.controls.Controls.DARK_THEME)
+            );
+
+            // keys
+
+            reg.addExtension(
+                new colibri.ui.ide.commands.CommandExtension(
+                    ui.ide.actions.IDECommands.registerCommands
+                )
             );
         }
     }

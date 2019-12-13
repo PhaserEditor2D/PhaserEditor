@@ -1093,6 +1093,7 @@ declare namespace colibri.ui.controls.viewers {
         setInput(input: any): void;
         getState(): any;
         setState(state: any): void;
+        selectAll(): void;
     }
 }
 declare namespace colibri.ui.controls.viewers {
@@ -1400,41 +1401,6 @@ declare namespace colibri.ui.ide {
         static getRoot(): io.FilePath;
     }
 }
-declare namespace colibri.ui.ide.commands {
-    class KeyMatcher {
-        private _control;
-        private _shift;
-        private _alt;
-        private _meta;
-        private _key;
-        private _filterInputElements;
-        constructor(config: {
-            control?: boolean;
-            shift?: boolean;
-            alt?: boolean;
-            meta?: boolean;
-            key?: string;
-            filterInputElements?: boolean;
-        });
-        matchesKeys(event: KeyboardEvent): boolean;
-        matchesTarget(element: EventTarget): boolean;
-    }
-}
-declare namespace colibri.ui.ide {
-    const CMD_SAVE = "save";
-    const CMD_DELETE = "delete";
-    const CMD_RENAME = "rename";
-    const CMD_UNDO = "undo";
-    const CMD_REDO = "redo";
-    const CMD_COLLAPSE_ALL = "collapseAll";
-    const CMD_EXPAND_COLLAPSE_BRANCH = "expandCollapseBranch";
-    class IDECommands {
-        static init(): void;
-        private static initViewer;
-        private static initUndo;
-        private static initEdit;
-    }
-}
 declare namespace colibri.ui.ide {
     class IconLoaderExtension extends Extension {
         static POINT_ID: string;
@@ -1540,6 +1506,42 @@ declare namespace colibri.ui.ide {
 }
 declare namespace colibri.ui.ide {
     const IMG_SECTION_PADDING = 10;
+}
+declare namespace colibri.ui.ide.commands {
+    class KeyMatcher {
+        private _control;
+        private _shift;
+        private _alt;
+        private _meta;
+        private _key;
+        private _filterInputElements;
+        constructor(config: {
+            control?: boolean;
+            shift?: boolean;
+            alt?: boolean;
+            meta?: boolean;
+            key?: string;
+            filterInputElements?: boolean;
+        });
+        matchesKeys(event: KeyboardEvent): boolean;
+        matchesTarget(element: EventTarget): boolean;
+    }
+}
+declare namespace colibri.ui.ide.actions {
+    const CMD_SAVE = "colibri.ui.ide.actions.Save";
+    const CMD_DELETE = "colibri.ui.ide.actions.Delete";
+    const CMD_RENAME = "colibri.ui.ide.actions.Rename";
+    const CMD_UNDO = "colibri.ui.ide.actions.Undo";
+    const CMD_REDO = "colibri.ui.ide.actions.Redo";
+    const CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
+    const CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
+    const CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
+    class IDECommands {
+        static registerCommands(manager: commands.CommandManager): void;
+        private static initViewer;
+        private static initUndo;
+        private static initEdit;
+    }
 }
 declare namespace colibri.ui.ide.actions {
     abstract class PartAction<T extends ide.Part> extends controls.Action {
