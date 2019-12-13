@@ -102,6 +102,11 @@ namespace colibri.ui.controls.dialogs {
             this.getElement().appendChild(this._buttonPaneElement);
 
             this.resize();
+
+            if (this._parentDialog) {
+                this._parentDialog._containerElement.style.display = "none";
+                this._parentDialog.style.display = "none";
+            }
         }
 
         setTitle(title: string) {
@@ -146,6 +151,11 @@ namespace colibri.ui.controls.dialogs {
 
             this._containerElement.remove();
             this.getElement().remove();
+
+            if (this._parentDialog) {
+                this._parentDialog._containerElement.style.display = "block";
+                this._parentDialog.style.display = "grid";
+            }
         }
 
         closeAll() {

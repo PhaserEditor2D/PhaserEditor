@@ -2984,6 +2984,10 @@ var colibri;
                         this._buttonPaneElement.classList.add("DialogButtonPane");
                         this.getElement().appendChild(this._buttonPaneElement);
                         this.resize();
+                        if (this._parentDialog) {
+                            this._parentDialog._containerElement.style.display = "none";
+                            this._parentDialog.style.display = "none";
+                        }
                     }
                     setTitle(title) {
                         this._titlePaneElement.innerText = title;
@@ -3013,6 +3017,10 @@ var colibri;
                         Dialog._dialogs = Dialog._dialogs.filter(d => d !== this);
                         this._containerElement.remove();
                         this.getElement().remove();
+                        if (this._parentDialog) {
+                            this._parentDialog._containerElement.style.display = "block";
+                            this._parentDialog.style.display = "grid";
+                        }
                     }
                     closeAll() {
                         this.close();
