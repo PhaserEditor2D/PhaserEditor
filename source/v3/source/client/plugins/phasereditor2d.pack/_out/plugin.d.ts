@@ -232,10 +232,8 @@ declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     class PackFinder {
         private static _packs;
-        private static _loaded;
         private constructor();
         static clean(): void;
-        static reset_temporal_method_TODO(): void;
         static preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
         static getPacks(): AssetPack[];
         static findAssetPackItem(key: string): AssetPackItem;

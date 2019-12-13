@@ -7,32 +7,16 @@ namespace phasereditor2d.pack.core {
     export class PackFinder {
 
         private static _packs: AssetPack[] = [];
-        private static _loaded: boolean = false;
 
         private constructor() {
 
         }
 
         static clean() {
-
             this._packs = [];
-            this._loaded = false;
-        }
-
-        static reset_temporal_method_TODO() {
-            this._loaded = false;
         }
 
         static async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
-
-            if (this._loaded) {
-
-                monitor.addTotal(1);
-                monitor.step();
-
-                return controls.Controls.resolveNothingLoaded();
-
-            }
 
             this._packs = await AssetPackUtils.getAllPacks();
 
@@ -46,8 +30,6 @@ namespace phasereditor2d.pack.core {
 
                 monitor.step();
             }
-
-            this._loaded = true;
 
             return controls.Controls.resolveResourceLoaded();
         }

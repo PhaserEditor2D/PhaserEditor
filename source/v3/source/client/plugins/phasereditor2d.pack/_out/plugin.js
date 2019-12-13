@@ -791,17 +791,8 @@ var phasereditor2d;
                 }
                 static clean() {
                     this._packs = [];
-                    this._loaded = false;
-                }
-                static reset_temporal_method_TODO() {
-                    this._loaded = false;
                 }
                 static async preload(monitor = controls.EmptyProgressMonitor) {
-                    if (this._loaded) {
-                        monitor.addTotal(1);
-                        monitor.step();
-                        return controls.Controls.resolveNothingLoaded();
-                    }
                     this._packs = await core_2.AssetPackUtils.getAllPacks();
                     const items = this._packs.flatMap(pack => pack.getItems());
                     monitor.addTotal(items.length);
@@ -809,7 +800,6 @@ var phasereditor2d;
                         await item.preload();
                         monitor.step();
                     }
-                    this._loaded = true;
                     return controls.Controls.resolveResourceLoaded();
                 }
                 static getPacks() {
@@ -866,7 +856,6 @@ var phasereditor2d;
                 }
             }
             PackFinder._packs = [];
-            PackFinder._loaded = false;
             core_2.PackFinder = PackFinder;
         })(core = pack_18.core || (pack_18.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

@@ -1107,8 +1107,6 @@ var phasereditor2d;
                         return false;
                     }
                     createEditor() {
-                        // TODO: remove this
-                        phasereditor2d.pack.core.PackFinder.reset_temporal_method_TODO();
                         return new SceneEditor();
                     }
                 }
