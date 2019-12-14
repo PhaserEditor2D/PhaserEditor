@@ -156,6 +156,18 @@ var phasereditor2d;
                     getScreenBounds(camera) {
                         return gameobjects.getScreenBounds(this, camera);
                     }
+                    setEditorTexture(key, frame) {
+                        this.setData("textureKey", key);
+                        this.setData("textureFrameKey", frame);
+                    }
+                    ;
+                    getEditorTexture() {
+                        return {
+                            key: this.getData("textureKey"),
+                            frame: this.getData("textureFrameKey")
+                        };
+                    }
+                    ;
                 }
                 gameobjects.EditorImage = EditorImage;
                 colibri.lang.applyMixins(EditorImage, [gameobjects.EditorObjectMixin]);
@@ -205,26 +217,6 @@ var phasereditor2d;
 })(phasereditor2d || (phasereditor2d = {}));
 /// <reference path="./gameobjects/EditorImage.ts" />
 /// <reference path="./gameobjects/EditorContainer.ts" />
-var phasereditor2d;
-(function (phasereditor2d) {
-    var scene;
-    (function (scene) {
-        var ui;
-        (function (ui) {
-            // Image
-            Phaser.GameObjects.Image.prototype.setEditorTexture = function (key, frame) {
-                this.setData("textureKey", key);
-                this.setData("textureFrameKey", frame);
-            };
-            Phaser.GameObjects.Image.prototype.getEditorTexture = function () {
-                return {
-                    key: this.getData("textureKey"),
-                    frame: this.getData("textureFrameKey")
-                };
-            };
-        })(ui = scene.ui || (scene.ui = {}));
-    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
-})(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;

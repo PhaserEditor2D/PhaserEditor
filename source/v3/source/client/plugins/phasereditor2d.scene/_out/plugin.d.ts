@@ -42,6 +42,11 @@ declare namespace phasereditor2d.scene.ui.gameobjects {
         writeJSON(data: any): void;
         readJSON(data: any): void;
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
+        setEditorTexture(key: string, frame: any): void;
+        getEditorTexture(): {
+            key: any;
+            frame: any;
+        };
     }
     interface EditorImage extends EditorObjectMixin {
     }
@@ -59,18 +64,6 @@ declare namespace phasereditor2d.scene.ui.gameobjects {
     }
 }
 declare namespace Phaser.GameObjects {
-    interface EditorTexture {
-        setEditorTexture(key: string, frame: string): void;
-        getEditorTexture(): {
-            key: string;
-            frame: any;
-        };
-    }
-    export interface Image extends EditorTexture {
-    }
-    export {};
-}
-declare namespace phasereditor2d.scene.ui {
 }
 declare namespace phasereditor2d.scene.ui {
     class GameScene extends Phaser.Scene {
