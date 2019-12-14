@@ -115,7 +115,6 @@ namespace colibri.ui.controls.viewers {
 
         setFilterText(filterText: string) {
             this._filterText = filterText.toLowerCase();
-            this.repaint();
         }
 
         getFilterText() {
@@ -134,6 +133,7 @@ namespace colibri.ui.controls.viewers {
         protected abstract buildFilterIncludeMap();
 
         protected matches(obj: any): boolean {
+
             const labelProvider = this.getLabelProvider();
             const filter = this.getFilterText();
 
@@ -146,6 +146,7 @@ namespace colibri.ui.controls.viewers {
             }
 
             const label = labelProvider.getLabel(obj);
+            
             if (label.toLocaleLowerCase().indexOf(filter) !== -1) {
                 return true;
             }
@@ -154,19 +155,26 @@ namespace colibri.ui.controls.viewers {
         }
 
         protected getPaintItemAt(e: MouseEvent): PaintItem {
+
             for (let item of this._paintItems) {
+
                 if (item.contains(e.offsetX, e.offsetY)) {
                     return item;
                 }
             }
+
             return null;
         }
 
         getSelection() {
+            
             const sel = [];
+
             for (const obj of this._selectedObjects) {
+
                 sel.push(obj);
             }
+
             return sel;
         }
 
@@ -524,16 +532,20 @@ namespace colibri.ui.controls.viewers {
             this._input = input;
         }
 
-        getState(): any {
+        getState(): ViewerState {
             return {
                 filterText: this._filterText,
                 expandedObjects: this._expandedObjects,
+                selectedObjects: this._selectedObjects,
                 cellSize: this._cellSize
             };
         }
 
-        setState(state: any): void {
+        setState(state: ViewerState): void {
+            
             this._expandedObjects = state.expandedObjects;
+            this._selectedObjects = state.selectedObjects;
+
             this.setFilterText(state.filterText);
             this.setCellSize(state.cellSize);
         }
@@ -542,5 +554,13 @@ namespace colibri.ui.controls.viewers {
 
             this.setSelection(this._paintItems.map(item => item.data));
         }
+    }
+
+
+    export declare type ViewerState = {
+        expandedObjects : Set<any>,
+        selectedObjects : Set<any>,
+        filterText : string,
+        cellSize: number
     }
 }

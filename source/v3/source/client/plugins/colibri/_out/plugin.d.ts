@@ -1091,10 +1091,16 @@ declare namespace colibri.ui.controls.viewers {
         setCellRendererProvider(cellRendererProvider: ICellRendererProvider): void;
         getInput(): any;
         setInput(input: any): void;
-        getState(): any;
-        setState(state: any): void;
+        getState(): ViewerState;
+        setState(state: ViewerState): void;
         selectAll(): void;
     }
+    type ViewerState = {
+        expandedObjects: Set<any>;
+        selectedObjects: Set<any>;
+        filterText: string;
+        cellSize: number;
+    };
 }
 declare namespace colibri.ui.controls.viewers {
     interface ITreeContentProvider {
@@ -1306,6 +1312,7 @@ declare namespace colibri.ui.ide {
         getSelection(): any[];
         onViewerSelectionChanged(selection: any[]): void;
         repaint(): void;
+        prepareViewerState(state: viewers.ViewerState): void;
         abstract getContentProvider(): viewers.ITreeContentProvider;
         abstract getLabelProvider(): viewers.ILabelProvider;
         abstract getCellRendererProvider(): viewers.ICellRendererProvider;
@@ -1339,7 +1346,7 @@ declare namespace colibri.ui.ide {
     abstract class EditorViewerView extends ide.ViewerView {
         private _currentEditor;
         private _currentViewerProvider;
-        private _viewerMap;
+        private _viewerStateMap;
         constructor(id: string);
         protected createViewer(): viewers.TreeViewer;
         protected createPart(): void;

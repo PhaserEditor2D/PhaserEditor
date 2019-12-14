@@ -8,12 +8,12 @@ namespace colibri.ui.ide {
 
         private _currentEditor: EditorPart;
         private _currentViewerProvider: EditorViewerProvider;
-        private _viewerMap: Map<EditorPart, any>;
+        private _viewerStateMap: Map<EditorPart, viewers.ViewerState>;
 
         constructor(id: string) {
             super(id);
 
-            this._viewerMap = new Map();
+            this._viewerStateMap = new Map();
         }
 
         protected createViewer(): viewers.TreeViewer {
@@ -43,7 +43,7 @@ namespace colibri.ui.ide {
             if (this._currentEditor !== null) {
 
                 const state = this._viewer.getState();
-                this._viewerMap.set(this._currentEditor, state);
+                this._viewerStateMap.set(this._currentEditor, state);
             }
 
             const editor = Workbench.getWorkbench().getActiveEditor();
@@ -71,9 +71,12 @@ namespace colibri.ui.ide {
 
                 provider.setViewer(this._viewer);
 
-                const state = this._viewerMap.get(editor);
+                const state = this._viewerStateMap.get(editor);
 
                 if (state) {
+
+                    provider.prepareViewerState(state);
+                    
                     this._viewer.setState(state);
                 }
 
@@ -99,6 +102,7 @@ namespace colibri.ui.ide {
         }
 
         getUndoManager() {
+
             if (this._currentViewerProvider) {
                 return this._currentViewerProvider.getUndoManager();
             }

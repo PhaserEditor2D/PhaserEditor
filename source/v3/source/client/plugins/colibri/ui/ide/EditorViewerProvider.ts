@@ -47,8 +47,19 @@ namespace colibri.ui.ide {
         repaint() {
             
             if (this._viewer) {
+
+                const state = this._viewer.getState();
+
+                this.prepareViewerState(state);
+
+                this._viewer.setState(state);
+
                 this._viewer.repaint();
             }
+        }
+
+        prepareViewerState(state: viewers.ViewerState) {
+            
         }
 
         abstract getContentProvider(): viewers.ITreeContentProvider;

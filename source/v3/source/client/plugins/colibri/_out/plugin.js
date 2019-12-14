@@ -3679,6 +3679,7 @@ var colibri;
                     onFilterInput(e) {
                         const value = this._filterControl.getFilterElement().value;
                         this._viewer.setFilterText(value);
+                        this._viewer.repaint();
                     }
                     getViewer() {
                         return this._viewer;
@@ -4300,7 +4301,6 @@ var colibri;
                     }
                     setFilterText(filterText) {
                         this._filterText = filterText.toLowerCase();
-                        this.repaint();
                     }
                     getFilterText() {
                         return this._filterText;
@@ -4607,11 +4607,13 @@ var colibri;
                         return {
                             filterText: this._filterText,
                             expandedObjects: this._expandedObjects,
+                            selectedObjects: this._selectedObjects,
                             cellSize: this._cellSize
                         };
                     }
                     setState(state) {
                         this._expandedObjects = state.expandedObjects;
+                        this._selectedObjects = state.selectedObjects;
                         this.setFilterText(state.filterText);
                         this.setCellSize(state.cellSize);
                     }
@@ -5353,8 +5355,13 @@ var colibri;
                 }
                 repaint() {
                     if (this._viewer) {
+                        const state = this._viewer.getState();
+                        this.prepareViewerState(state);
+                        this._viewer.setState(state);
                         this._viewer.repaint();
                     }
+                }
+                prepareViewerState(state) {
                 }
             }
             ide.EditorViewerProvider = EditorViewerProvider;
@@ -5432,7 +5439,7 @@ var colibri;
             class EditorViewerView extends ide.ViewerView {
                 constructor(id) {
                     super(id);
-                    this._viewerMap = new Map();
+                    this._viewerStateMap = new Map();
                 }
                 createViewer() {
                     const viewer = new viewers.TreeViewer();
@@ -5450,7 +5457,7 @@ var colibri;
                 async onWorkbenchEditorActivated() {
                     if (this._currentEditor !== null) {
                         const state = this._viewer.getState();
-                        this._viewerMap.set(this._currentEditor, state);
+                        this._viewerStateMap.set(this._currentEditor, state);
                     }
                     const editor = ide.Workbench.getWorkbench().getActiveEditor();
                     let provider = null;
@@ -5470,8 +5477,9 @@ var colibri;
                         this._viewer.setContentProvider(provider.getContentProvider());
                         this._viewer.setInput(provider.getInput());
                         provider.setViewer(this._viewer);
-                        const state = this._viewerMap.get(editor);
+                        const state = this._viewerStateMap.get(editor);
                         if (state) {
+                            provider.prepareViewerState(state);
                             this._viewer.setState(state);
                         }
                     }

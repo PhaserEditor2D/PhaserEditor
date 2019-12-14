@@ -787,8 +787,8 @@ var phasereditor2d;
         (function (core_2) {
             var controls = colibri.ui.controls;
             class PackFinder {
-                constructor() {
-                    this._packs = [];
+                constructor(...packs) {
+                    this._packs = packs;
                 }
                 async preload(monitor = controls.EmptyProgressMonitor) {
                     let result = controls.PreloadResult.NOTHING_LOADED;

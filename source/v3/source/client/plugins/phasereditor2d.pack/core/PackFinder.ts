@@ -8,8 +8,8 @@ namespace phasereditor2d.pack.core {
 
         private _packs: AssetPack[];
 
-        constructor() {
-            this._packs = [];
+        constructor(...packs: AssetPack[]) {
+            this._packs = packs;
         }
 
         async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
@@ -24,7 +24,7 @@ namespace phasereditor2d.pack.core {
 
             for (const item of items) {
 
-                const result2  = await item.preload();
+                const result2 = await item.preload();
                 result = Math.max(result, result2);
 
                 monitor.step();

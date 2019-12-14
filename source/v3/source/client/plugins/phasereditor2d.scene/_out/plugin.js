@@ -629,6 +629,43 @@ var phasereditor2d;
                         await finder.preload();
                         this._packs = finder.getPacks();
                     }
+                    prepareViewerState(state) {
+                        if (state.expandedObjects) {
+                            state.expandedObjects = this.getFreshItems(state.expandedObjects);
+                        }
+                        if (state.selectedObjects) {
+                            state.selectedObjects = this.getFreshItems(state.selectedObjects);
+                        }
+                    }
+                    getFreshItems(items) {
+                        const set = new Set();
+                        for (const obj of items) {
+                            if (obj instanceof phasereditor2d.pack.core.AssetPackItem) {
+                                const item = this.getFreshItem(obj);
+                                if (item) {
+                                    set.add(item);
+                                }
+                            }
+                            else if (obj instanceof phasereditor2d.pack.core.AssetPackImageFrame) {
+                                const item = this.getFreshItem(obj.getPackItem());
+                                if (item instanceof phasereditor2d.pack.core.ImageFrameContainerAssetPackItem) {
+                                    const frame = item.findFrame(obj.getName());
+                                    if (frame) {
+                                        set.add(frame);
+                                    }
+                                }
+                            }
+                            else {
+                                set.add(obj);
+                            }
+                        }
+                        return set;
+                    }
+                    getFreshItem(item) {
+                        const freshPack = this._packs.find(pack => pack.getFile() === item.getPack().getFile());
+                        const finder = new phasereditor2d.pack.core.PackFinder(freshPack);
+                        return finder.findAssetPackItem(item.getKey());
+                    }
                     getContentProvider() {
                         return new blocks.SceneEditorBlocksContentProvider(() => this._packs);
                     }
@@ -1317,7 +1354,6 @@ var phasereditor2d;
                     async onPartActivated() {
                         super.onPartActivated();
                         if (this._blocksProvider) {
-                            console.log();
                             await this._blocksProvider.preload();
                             this._blocksProvider.repaint();
                         }

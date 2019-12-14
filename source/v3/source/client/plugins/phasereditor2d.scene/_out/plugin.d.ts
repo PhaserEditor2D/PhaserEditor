@@ -144,6 +144,9 @@ declare namespace phasereditor2d.scene.ui.blocks {
         private _packs;
         constructor(editor: editor.SceneEditor);
         preload(): Promise<void>;
+        prepareViewerState(state: controls.viewers.ViewerState): void;
+        private getFreshItems;
+        private getFreshItem;
         getContentProvider(): controls.viewers.ITreeContentProvider;
         getLabelProvider(): controls.viewers.ILabelProvider;
         getCellRendererProvider(): controls.viewers.ICellRendererProvider;
