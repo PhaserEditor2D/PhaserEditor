@@ -5,7 +5,7 @@ namespace phasereditor2d.scene.ui.editor.undo {
         private _containerId: string;
         private _objectsIdList: string[];
 
-        constructor(editor: SceneEditor, container: Phaser.GameObjects.Container) {
+        constructor(editor: SceneEditor, container: gameobjects.EditorContainer) {
             super(editor);
 
             this._containerId = container.getEditorId();

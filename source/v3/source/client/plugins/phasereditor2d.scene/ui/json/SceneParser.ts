@@ -114,13 +114,13 @@ namespace phasereditor2d.scene.ui.json {
 
             sprite.setDataEnabled();
 
-            if (sprite instanceof Phaser.GameObjects.Image) {
+            if (sprite instanceof gameobjects.EditorImage) {
                 sprite.setInteractive();
             }
 
         }
 
-        static setNewId(sprite: Phaser.GameObjects.GameObject) {
+        static setNewId(sprite: gameobjects.EditorObject) {
             sprite.setEditorId(Phaser.Utils.String.UUID());
         }
 

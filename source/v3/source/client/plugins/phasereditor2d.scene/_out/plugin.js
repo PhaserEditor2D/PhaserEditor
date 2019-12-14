@@ -126,25 +126,121 @@ var phasereditor2d;
     (function (scene_1) {
         var ui;
         (function (ui) {
-            // GameObject
-            Phaser.GameObjects.GameObject.prototype.getEditorId = function () {
-                return this.name;
-            };
-            Phaser.GameObjects.GameObject.prototype.setEditorId = function (id) {
-                this.name = id;
-            };
-            Phaser.GameObjects.GameObject.prototype.getEditorLabel = function () {
-                return this.getData("label") || "";
-            };
-            Phaser.GameObjects.GameObject.prototype.setEditorLabel = function (label) {
-                this.setData("label", label);
-            };
-            Phaser.GameObjects.GameObject.prototype.getEditorScene = function () {
-                return this.getData("editorScene");
-            };
-            Phaser.GameObjects.GameObject.prototype.setEditorScene = function (scene) {
-                this.setData("editorScene", scene);
-            };
+            var gameobjects;
+            (function (gameobjects) {
+                class EditorObjectMixin extends Phaser.GameObjects.GameObject {
+                    getEditorId() {
+                        return this.name;
+                    }
+                    ;
+                    setEditorId(id) {
+                        this.name = id;
+                    }
+                    ;
+                    getEditorLabel() {
+                        return this.getData("label") || "";
+                    }
+                    ;
+                    setEditorLabel(label) {
+                        this.setData("label", label);
+                    }
+                    ;
+                    getEditorScene() {
+                        return this.getData("editorScene");
+                    }
+                    ;
+                    setEditorScene(scene) {
+                        this.setData("editorScene", scene);
+                    }
+                    ;
+                }
+                gameobjects.EditorObjectMixin = EditorObjectMixin;
+            })(gameobjects = ui.gameobjects || (ui.gameobjects = {}));
+        })(ui = scene_1.ui || (scene_1.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./EditorObjectMixin.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene_2) {
+        var ui;
+        (function (ui) {
+            var gameobjects;
+            (function (gameobjects) {
+                class EditorImage extends Phaser.GameObjects.Image {
+                    static add(scene, x, y, texture, frame) {
+                        const sprite = new EditorImage(scene, x, y, texture, frame);
+                        scene.sys.displayList.add(sprite);
+                        return sprite;
+                    }
+                    writeJSON(data) {
+                        data.type = "Image";
+                        ui.json.ImageComponent.write(this, data);
+                    }
+                    ;
+                    readJSON(data) {
+                        ui.json.ImageComponent.read(this, data);
+                    }
+                    ;
+                    getScreenBounds(camera) {
+                        return gameobjects.getScreenBounds(this, camera);
+                    }
+                }
+                gameobjects.EditorImage = EditorImage;
+                colibri.lang.applyMixins(EditorImage, [gameobjects.EditorObjectMixin]);
+            })(gameobjects = ui.gameobjects || (ui.gameobjects = {}));
+        })(ui = scene_2.ui || (scene_2.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./EditorObjectMixin.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene_3) {
+        var ui;
+        (function (ui) {
+            var gameobjects;
+            (function (gameobjects) {
+                class EditorContainer extends Phaser.GameObjects.Container {
+                    static add(scene, x, y, list) {
+                        const container = new EditorContainer(scene, x, y, list);
+                        scene.sys.displayList.add(container);
+                        return container;
+                    }
+                    get list() {
+                        return super.list;
+                    }
+                    set list(list) {
+                        super.list = list;
+                    }
+                    writeJSON(data) {
+                        data.type = "Container";
+                        ui.json.ContainerComponent.write(this, data);
+                    }
+                    ;
+                    readJSON(data) {
+                        ui.json.ContainerComponent.read(this, data);
+                    }
+                    ;
+                    getScreenBounds(camera) {
+                        return gameobjects.getContainerScreenBounds(this, camera);
+                    }
+                }
+                gameobjects.EditorContainer = EditorContainer;
+                colibri.lang.applyMixins(EditorContainer, [gameobjects.EditorObjectMixin]);
+            })(gameobjects = ui.gameobjects || (ui.gameobjects = {}));
+        })(ui = scene_3.ui || (scene_3.ui = {}));
+    })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
+})(phasereditor2d || (phasereditor2d = {}));
+/// <reference path="./gameobjects/EditorImage.ts" />
+/// <reference path="./gameobjects/EditorContainer.ts" />
+var phasereditor2d;
+(function (phasereditor2d) {
+    var scene;
+    (function (scene) {
+        var ui;
+        (function (ui) {
             // Image
             Phaser.GameObjects.Image.prototype.setEditorTexture = function (key, frame) {
                 this.setData("textureKey", key);
@@ -156,75 +252,7 @@ var phasereditor2d;
                     frame: this.getData("textureFrameKey")
                 };
             };
-            // All
-            for (const proto of [
-                Phaser.GameObjects.Image.prototype,
-                Phaser.GameObjects.TileSprite.prototype,
-                Phaser.GameObjects.BitmapText.prototype,
-                Phaser.GameObjects.Text.prototype
-            ]) {
-                proto.getScreenBounds = function (camera) {
-                    return getScreenBounds(this, camera);
-                };
-            }
-            Phaser.GameObjects.Container.prototype.getScreenBounds = function (camera) {
-                return getContainerScreenBounds(this, camera);
-            };
-            function getContainerScreenBounds(container, camera) {
-                if (container.list.length === 0) {
-                    return [];
-                }
-                const minPoint = new Phaser.Math.Vector2(Number.MAX_VALUE, Number.MAX_VALUE);
-                const maxPoint = new Phaser.Math.Vector2(Number.MIN_VALUE, Number.MIN_VALUE);
-                for (const obj of container.list) {
-                    const bounds = obj.getScreenBounds(camera);
-                    for (const point of bounds) {
-                        minPoint.x = Math.min(minPoint.x, point.x);
-                        minPoint.y = Math.min(minPoint.y, point.y);
-                        maxPoint.x = Math.max(maxPoint.x, point.x);
-                        maxPoint.y = Math.max(maxPoint.y, point.y);
-                    }
-                }
-                return [
-                    new Phaser.Math.Vector2(minPoint.x, minPoint.y),
-                    new Phaser.Math.Vector2(maxPoint.x, minPoint.y),
-                    new Phaser.Math.Vector2(maxPoint.x, maxPoint.y),
-                    new Phaser.Math.Vector2(minPoint.x, maxPoint.y)
-                ];
-            }
-            function getScreenBounds(sprite, camera) {
-                const points = [
-                    new Phaser.Math.Vector2(0, 0),
-                    new Phaser.Math.Vector2(0, 0),
-                    new Phaser.Math.Vector2(0, 0),
-                    new Phaser.Math.Vector2(0, 0)
-                ];
-                let w = sprite.width;
-                let h = sprite.height;
-                if (sprite instanceof Phaser.GameObjects.BitmapText) {
-                    // the BitmapText.width is considered a displayWidth, it is already multiplied by the scale
-                    w = w / sprite.scaleX;
-                    h = h / sprite.scaleY;
-                }
-                let flipX = sprite.flipX ? -1 : 1;
-                let flipY = sprite.flipY ? -1 : 1;
-                if (sprite instanceof Phaser.GameObjects.TileSprite) {
-                    flipX = 1;
-                    flipY = 1;
-                }
-                const ox = sprite.originX;
-                const oy = sprite.originY;
-                const x = -w * ox * flipX;
-                const y = -h * oy * flipY;
-                const tx = sprite.getWorldTransformMatrix();
-                tx.transformPoint(x, y, points[0]);
-                tx.transformPoint(x + w * flipX, y, points[1]);
-                tx.transformPoint(x + w * flipX, y + h * flipY, points[2]);
-                tx.transformPoint(x, y + h * flipY, points[3]);
-                return points.map(p => camera.getScreenPoint(p.x, p.y));
-            }
-            ui.getScreenBounds = getScreenBounds;
-        })(ui = scene_1.ui || (scene_1.ui = {}));
+        })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -298,7 +326,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_2) {
+    (function (scene_4) {
         var ui;
         (function (ui) {
             var ide = colibri.ui.ide;
@@ -358,13 +386,13 @@ var phasereditor2d;
                 }
             }
             ui.SceneMaker = SceneMaker;
-        })(ui = scene_2.ui || (scene_2.ui = {}));
+        })(ui = scene_4.ui || (scene_4.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_3) {
+    (function (scene_5) {
         var ui;
         (function (ui) {
             var controls = colibri.ui.controls;
@@ -466,7 +494,7 @@ var phasereditor2d;
                 }
             }
             ui.SceneThumbnail = SceneThumbnail;
-        })(ui = scene_3.ui || (scene_3.ui = {}));
+        })(ui = scene_5.ui || (scene_5.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -814,7 +842,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_4) {
+    (function (scene_6) {
         var ui;
         (function (ui) {
             var editor;
@@ -876,7 +904,7 @@ var phasereditor2d;
                 }
                 editor_2.CameraManager = CameraManager;
             })(editor = ui.editor || (ui.editor = {}));
-        })(ui = scene_4.ui || (scene_4.ui = {}));
+        })(ui = scene_6.ui || (scene_6.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -985,7 +1013,8 @@ var phasereditor2d;
                         const camera = this._editor.getGameScene().getCamera();
                         for (const obj of this._editor.getSelection()) {
                             if (obj instanceof Phaser.GameObjects.GameObject) {
-                                const points = obj.getScreenBounds(camera);
+                                const sprite = obj;
+                                const points = sprite.getScreenBounds(camera);
                                 if (points.length === 4) {
                                     ctx.strokeStyle = "black";
                                     ctx.lineWidth = 4;
@@ -1402,7 +1431,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_5) {
+    (function (scene_7) {
         var ui;
         (function (ui) {
             var editor;
@@ -1463,7 +1492,7 @@ var phasereditor2d;
                 }
                 editor_5.SelectionManager = SelectionManager;
             })(editor = ui.editor || (ui.editor = {}));
-        })(ui = scene_5.ui || (scene_5.ui = {}));
+        })(ui = scene_7.ui || (scene_7.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -1518,7 +1547,7 @@ var phasereditor2d;
                     class GameObjectCellRenderer {
                         renderCell(args) {
                             const sprite = args.obj;
-                            if (sprite instanceof Phaser.GameObjects.Image) {
+                            if (sprite instanceof ui.gameobjects.EditorImage) {
                                 const { key, frame } = sprite.getEditorTexture();
                                 // TODO: we should paint the object using the Phaser rendering system, 
                                 // maybe using a an offline texture that is updated each time the object is updated.
@@ -1532,7 +1561,7 @@ var phasereditor2d;
                             }
                         }
                         cellHeight(args) {
-                            if (args.obj instanceof Phaser.GameObjects.Image) {
+                            if (args.obj instanceof ui.gameobjects.EditorImage) {
                                 return args.viewer.getCellSize();
                             }
                             return colibri.ui.controls.ROW_HEIGHT;
@@ -1680,10 +1709,10 @@ var phasereditor2d;
                             this._assetRendererProvider = new phasereditor2d.pack.ui.viewers.AssetPackCellRendererProvider("tree");
                         }
                         getCellRenderer(element) {
-                            if (element instanceof Phaser.GameObjects.Image) {
+                            if (element instanceof ui.gameobjects.EditorImage) {
                                 return new outline.GameObjectCellRenderer();
                             }
-                            else if (element instanceof Phaser.GameObjects.Container) {
+                            else if (element instanceof ui.gameobjects.EditorContainer) {
                                 return new controls.viewers.IconImageCellRenderer(scene.ScenePlugin.getInstance().getIcon(scene.ICON_GROUP));
                             }
                             else if (element instanceof Phaser.GameObjects.DisplayList) {
@@ -1758,7 +1787,7 @@ var phasereditor2d;
                             }
                         }
                         canEdit(obj, n) {
-                            return obj instanceof Phaser.GameObjects.Image;
+                            return obj instanceof ui.gameobjects.EditorImage;
                         }
                         canEditNumber(n) {
                             return n > 0;
@@ -1831,7 +1860,7 @@ var phasereditor2d;
                             });
                         }
                         canEdit(obj) {
-                            return obj instanceof Phaser.GameObjects.Image;
+                            return obj instanceof ui.gameobjects.EditorImage;
                         }
                         canEditNumber(n) {
                             return n === 1;
@@ -1910,7 +1939,7 @@ var phasereditor2d;
                             }
                         }
                         canEdit(obj, n) {
-                            return obj instanceof Phaser.GameObjects.Image;
+                            return obj instanceof ui.gameobjects.EditorImage;
                         }
                         canEditNumber(n) {
                             return n > 0;
@@ -2037,7 +2066,7 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_6) {
+    (function (scene_8) {
         var ui;
         (function (ui) {
             var editor;
@@ -2083,7 +2112,7 @@ var phasereditor2d;
                     undo.JoinObjectsInContainerOperation = JoinObjectsInContainerOperation;
                 })(undo = editor_12.undo || (editor_12.undo = {}));
             })(editor = ui.editor || (ui.editor = {}));
-        })(ui = scene_6.ui || (scene_6.ui = {}));
+        })(ui = scene_8.ui || (scene_8.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -2116,65 +2145,80 @@ var phasereditor2d;
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_7) {
+    (function (scene) {
         var ui;
         (function (ui) {
             var gameobjects;
             (function (gameobjects) {
-                class EditorContainer extends Phaser.GameObjects.Container {
-                    static add(scene, x, y, list) {
-                        const container = new EditorContainer(scene, x, y, list);
-                        scene.sys.displayList.add(container);
-                        return container;
+                function getContainerScreenBounds(container, camera) {
+                    if (container.list.length === 0) {
+                        return [];
                     }
-                    get list() {
-                        return super.list;
+                    const minPoint = new Phaser.Math.Vector2(Number.MAX_VALUE, Number.MAX_VALUE);
+                    const maxPoint = new Phaser.Math.Vector2(Number.MIN_VALUE, Number.MIN_VALUE);
+                    for (const obj of container.list) {
+                        const bounds = obj.getScreenBounds(camera);
+                        for (const point of bounds) {
+                            minPoint.x = Math.min(minPoint.x, point.x);
+                            minPoint.y = Math.min(minPoint.y, point.y);
+                            maxPoint.x = Math.max(maxPoint.x, point.x);
+                            maxPoint.y = Math.max(maxPoint.y, point.y);
+                        }
                     }
-                    set list(list) {
-                        super.list = list;
-                    }
-                    writeJSON(data) {
-                        data.type = "Container";
-                        ui.json.ContainerComponent.write(this, data);
-                    }
-                    ;
-                    readJSON(data) {
-                        ui.json.ContainerComponent.read(this, data);
-                    }
-                    ;
+                    return [
+                        new Phaser.Math.Vector2(minPoint.x, minPoint.y),
+                        new Phaser.Math.Vector2(maxPoint.x, minPoint.y),
+                        new Phaser.Math.Vector2(maxPoint.x, maxPoint.y),
+                        new Phaser.Math.Vector2(minPoint.x, maxPoint.y)
+                    ];
                 }
-                gameobjects.EditorContainer = EditorContainer;
+                gameobjects.getContainerScreenBounds = getContainerScreenBounds;
             })(gameobjects = ui.gameobjects || (ui.gameobjects = {}));
-        })(ui = scene_7.ui || (scene_7.ui = {}));
+        })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
 (function (phasereditor2d) {
     var scene;
-    (function (scene_8) {
+    (function (scene) {
         var ui;
         (function (ui) {
             var gameobjects;
             (function (gameobjects) {
-                class EditorImage extends Phaser.GameObjects.Image {
-                    static add(scene, x, y, texture, frame) {
-                        const sprite = new EditorImage(scene, x, y, texture, frame);
-                        scene.sys.displayList.add(sprite);
-                        return sprite;
+                function getScreenBounds(sprite, camera) {
+                    const points = [
+                        new Phaser.Math.Vector2(0, 0),
+                        new Phaser.Math.Vector2(0, 0),
+                        new Phaser.Math.Vector2(0, 0),
+                        new Phaser.Math.Vector2(0, 0)
+                    ];
+                    let w = sprite.width;
+                    let h = sprite.height;
+                    if (sprite instanceof Phaser.GameObjects.BitmapText) {
+                        // the BitmapText.width is considered a displayWidth, it is already multiplied by the scale
+                        w = w / sprite.scaleX;
+                        h = h / sprite.scaleY;
                     }
-                    writeJSON(data) {
-                        data.type = "Image";
-                        ui.json.ImageComponent.write(this, data);
+                    let flipX = sprite.flipX ? -1 : 1;
+                    let flipY = sprite.flipY ? -1 : 1;
+                    if (sprite instanceof Phaser.GameObjects.TileSprite) {
+                        flipX = 1;
+                        flipY = 1;
                     }
-                    ;
-                    readJSON(data) {
-                        ui.json.ImageComponent.read(this, data);
-                    }
-                    ;
+                    const ox = sprite.originX;
+                    const oy = sprite.originY;
+                    const x = -w * ox * flipX;
+                    const y = -h * oy * flipY;
+                    const tx = sprite.getWorldTransformMatrix();
+                    tx.transformPoint(x, y, points[0]);
+                    tx.transformPoint(x + w * flipX, y, points[1]);
+                    tx.transformPoint(x + w * flipX, y + h * flipY, points[2]);
+                    tx.transformPoint(x, y + h * flipY, points[3]);
+                    return points.map(p => camera.getScreenPoint(p.x, p.y));
                 }
-                gameobjects.EditorImage = EditorImage;
+                gameobjects.getScreenBounds = getScreenBounds;
             })(gameobjects = ui.gameobjects || (ui.gameobjects = {}));
-        })(ui = scene_8.ui || (scene_8.ui = {}));
+        })(ui = scene.ui || (scene.ui = {}));
     })(scene = phasereditor2d.scene || (phasereditor2d.scene = {}));
 })(phasereditor2d || (phasereditor2d = {}));
 var phasereditor2d;
@@ -2349,7 +2393,7 @@ var phasereditor2d;
                     }
                     static initSprite(sprite) {
                         sprite.setDataEnabled();
-                        if (sprite instanceof Phaser.GameObjects.Image) {
+                        if (sprite instanceof ui.gameobjects.EditorImage) {
                             sprite.setInteractive();
                         }
                     }

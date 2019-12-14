@@ -23,7 +23,7 @@ namespace phasereditor2d.scene.ui {
 
     Phaser.GameObjects.DisplayList.prototype.makeNewName = function (baseName: string) {
 
-        const nameMaker = new colibri.ui.ide.utils.NameMaker((obj: Phaser.GameObjects.GameObject) => {
+        const nameMaker = new colibri.ui.ide.utils.NameMaker((obj: gameobjects.EditorObject) => {
             return obj.getEditorLabel();
         });
 

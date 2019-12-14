@@ -1,3 +1,5 @@
+/// <reference path="./EditorObjectMixin.ts" />
+
 namespace phasereditor2d.scene.ui.gameobjects {
 
     export class EditorContainer extends Phaser.GameObjects.Container implements EditorObject {
@@ -30,5 +32,15 @@ namespace phasereditor2d.scene.ui.gameobjects {
 
             json.ContainerComponent.read(this, data);
         };
+
+        getScreenBounds(camera : Phaser.Cameras.Scene2D.Camera) {
+            return getContainerScreenBounds(this, camera);
+        }
     }
+
+    export interface EditorContainer extends EditorObjectMixin {
+        
+    }
+
+    colibri.lang.applyMixins(EditorContainer, [EditorObjectMixin]);
 }

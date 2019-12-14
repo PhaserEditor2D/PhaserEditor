@@ -9,7 +9,7 @@ namespace phasereditor2d.scene.ui.json {
         static textureKey = "textureKey";
         static frameKey = "frameKey";
 
-        static write(sprite: Phaser.GameObjects.Image, data: any): void {
+        static write(sprite: gameobjects.EditorImage, data: any): void {
 
             const texture = sprite.getEditorTexture();
 
@@ -17,7 +17,7 @@ namespace phasereditor2d.scene.ui.json {
             write(data, this.frameKey, texture.frame);
         }
 
-        static read(sprite: Phaser.GameObjects.Image, data: any): void {
+        static read(sprite: gameobjects.EditorImage, data: any): void {
 
             const key = read(data, this.textureKey);
             const frame = read(data, this.frameKey);

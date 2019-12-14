@@ -5,7 +5,7 @@ namespace phasereditor2d.scene.ui.json {
 
     export class TransformComponent {
 
-        static write(sprite: Phaser.GameObjects.Image, data: any): void {
+        static write(sprite: gameobjects.EditorImage, data: any): void {
 
             write(data, "x", sprite.x, 0);
             write(data, "y", sprite.y, 0);
@@ -15,7 +15,7 @@ namespace phasereditor2d.scene.ui.json {
 
         }
 
-        static read(sprite: Phaser.GameObjects.Image, data: any): void {
+        static read(sprite: gameobjects.EditorImage, data: any): void {
 
             sprite.x = read(data, "x", 0);
             sprite.y = read(data, "y", 0);

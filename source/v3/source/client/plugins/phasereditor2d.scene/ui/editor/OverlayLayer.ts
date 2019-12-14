@@ -52,7 +52,9 @@ namespace phasereditor2d.scene.ui.editor {
 
                 if (obj instanceof Phaser.GameObjects.GameObject) {
 
-                    const points = obj.getScreenBounds(camera);
+                    const sprite = obj as gameobjects.EditorObject;
+
+                    const points = sprite.getScreenBounds(camera);
 
                     if (points.length === 4) {
 

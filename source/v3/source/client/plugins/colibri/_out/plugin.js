@@ -1675,6 +1675,20 @@ var colibri;
 })(colibri || (colibri = {}));
 var colibri;
 (function (colibri) {
+    var lang;
+    (function (lang) {
+        function applyMixins(derivedCtor, baseCtors) {
+            baseCtors.forEach(baseCtor => {
+                Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+                    Object.defineProperty(derivedCtor.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
+                });
+            });
+        }
+        lang.applyMixins = applyMixins;
+    })(lang = colibri.lang || (colibri.lang = {}));
+})(colibri || (colibri = {}));
+var colibri;
+(function (colibri) {
     var ui;
     (function (ui) {
         var controls;

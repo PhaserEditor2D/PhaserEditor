@@ -26,7 +26,7 @@ namespace phasereditor2d.scene.ui.json {
         }
 
 
-        static read(container : Phaser.GameObjects.Container, data : any) {
+        static read(container : gameobjects.EditorContainer, data : any) {
             
             const sprite : any = container;
 

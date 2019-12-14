@@ -8,7 +8,7 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
             const sprite = <Phaser.GameObjects.GameObject>args.obj;
 
-            if (sprite instanceof Phaser.GameObjects.Image) {
+            if (sprite instanceof gameobjects.EditorImage) {
 
                 const { key, frame } = sprite.getEditorTexture();
 
@@ -30,7 +30,7 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
         cellHeight(args: colibri.ui.controls.viewers.RenderCellArgs): number {
 
-            if (args.obj instanceof Phaser.GameObjects.Image) {
+            if (args.obj instanceof gameobjects.EditorImage) {
                 return args.viewer.getCellSize();
             }
 

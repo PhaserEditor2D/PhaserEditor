@@ -434,6 +434,9 @@ declare namespace colibri.core.preferences {
         getValue(key: string, defaultValue?: any): any;
     }
 }
+declare namespace colibri.lang {
+    function applyMixins(derivedCtor: any, baseCtors: any[]): void;
+}
 declare namespace colibri.ui.controls {
     const EVENT_ACTION_CHANGED = "actionChanged";
     type ActionConfig = {

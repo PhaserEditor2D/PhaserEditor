@@ -2,7 +2,7 @@ namespace phasereditor2d.scene.ui.json {
 
     export class ImageComponent {
 
-        static write(sprite: Phaser.GameObjects.Image, data: any): void {
+        static write(sprite: gameobjects.EditorImage, data: any): void {
 
             ObjectComponent.write(sprite, data);
 
@@ -14,7 +14,7 @@ namespace phasereditor2d.scene.ui.json {
 
         }
 
-        static read(sprite: Phaser.GameObjects.Image, data: any): void {
+        static read(sprite: gameobjects.EditorImage, data: any): void {
 
             ObjectComponent.read(sprite, data);
 
