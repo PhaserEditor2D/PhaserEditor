@@ -529,10 +529,12 @@ var phasereditor2d;
                 var ide = colibri.ui.ide;
                 const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
                 class SceneEditorBlocksContentProvider extends phasereditor2d.pack.ui.viewers.AssetPackContentProvider {
+                    constructor(packs) {
+                        super();
+                        this._packs = packs;
+                    }
                     getPackItems() {
-                        const finder = new phasereditor2d.pack.core.PackFinder();
-                        return finder
-                            .getPacks()
+                        return this._packs
                             .flatMap(pack => pack.getItems())
                             .filter(item => SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES.has(item.getType()));
                     }
@@ -620,12 +622,15 @@ var phasereditor2d;
                     constructor(editor) {
                         super();
                         this._editor = editor;
+                        this._packs = [];
                     }
                     async preload() {
-                        // await pack.core.PackFinder.preload();
+                        const finder = new phasereditor2d.pack.core.PackFinder();
+                        await finder.preload();
+                        this._packs = finder.getPacks();
                     }
                     getContentProvider() {
-                        return new blocks.SceneEditorBlocksContentProvider();
+                        return new blocks.SceneEditorBlocksContentProvider(this._packs);
                     }
                     getLabelProvider() {
                         return new blocks.SceneEditorBlocksLabelProvider();

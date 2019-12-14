@@ -6,20 +6,26 @@ namespace phasereditor2d.scene.ui.blocks {
     export class SceneEditorBlocksProvider extends ide.EditorViewerProvider {
 
         private _editor: editor.SceneEditor;
+        private _packs : pack.core.AssetPack[];
 
         constructor(editor: editor.SceneEditor) {
             super();
 
             this._editor = editor;
+            this._packs = [];
         }
 
         async preload() {
-            
-            // await pack.core.PackFinder.preload();
+
+            const finder = new pack.core.PackFinder();
+
+            await finder.preload();
+
+            this._packs = finder.getPacks();
         }
 
         getContentProvider(): controls.viewers.ITreeContentProvider {
-            return new SceneEditorBlocksContentProvider();
+            return new SceneEditorBlocksContentProvider(this._packs);
         }
 
         getLabelProvider(): controls.viewers.ILabelProvider {
