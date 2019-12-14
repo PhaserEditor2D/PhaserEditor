@@ -20,11 +20,11 @@ namespace phasereditor2d.scene.ui.editor.undo {
 
         undo(): void {
             
-            const displayList = this._editor.getGameScene().sys.displayList;
+            const scene = this._editor.getGameScene();
 
             for (const data of this._dataList) {
 
-                const obj = displayList.getByEditorId(data.id);
+                const obj = scene.getByEditorId(data.id);
 
                 if (obj) {
                     obj.destroy();

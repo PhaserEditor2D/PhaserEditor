@@ -24,7 +24,7 @@ namespace phasereditor2d.scene.ui {
 
             const container = gameobjects.EditorContainer.add(this._scene, 0, 0, objects);
 
-            const name = this._scene.sys.displayList.makeNewName("container");
+            const name = this._scene.makeNewName("container");
 
             container.setEditorLabel(name);
 
@@ -39,7 +39,7 @@ namespace phasereditor2d.scene.ui {
                 return (<gameobjects.EditorObject>obj).getEditorLabel();
             });
 
-            this._scene.sys.displayList.visit(obj => nameMaker.update([obj]));
+            this._scene.visit(obj => nameMaker.update([obj]));
 
             const worldPoint = this._scene.getCamera().getWorldPoint(e.offsetX, e.offsetY);
             const x = worldPoint.x;

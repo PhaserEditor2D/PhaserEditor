@@ -19,35 +19,61 @@ namespace phasereditor2d.scene.ui {
             return <any>this.sys.displayList.getChildren();
         }
 
-        getByEditorId(id : string) {
+        visit(visitor: (obj: gameobjects.EditorObject) => void) {
+
+            for (const obj of this.getDisplayListChildren()) {
+
+                visitor(obj);
+
+                if (obj instanceof gameobjects.EditorContainer) {
+
+                    for (const child of obj.list) {
+                        visitor(child);
+                    }
+                }
+            }
+        }
+
+        makeNewName(baseName: string) {
+
+            const nameMaker = new colibri.ui.ide.utils.NameMaker((obj: gameobjects.EditorObject) => {
+                return obj.getEditorLabel();
+            });
+    
+            this.visit(obj => nameMaker.update([obj]));
+    
+            return nameMaker.makeName(baseName);
+        }
+
+        getByEditorId(id: string) {
 
             const obj = GameScene.findByEditorId(this.getDisplayListChildren(), id);
-    
+
             if (!obj) {
                 console.error(`Object with id=${id} not found.`);
             }
-    
+
             return obj;
         }
 
         static findByEditorId(list: gameobjects.EditorObject[], id: string) {
 
             for (const obj of list) {
-    
+
                 if (obj.getEditorId() === id) {
                     return obj;
                 }
-    
+
                 if (obj instanceof gameobjects.EditorContainer) {
-    
+
                     const result = this.findByEditorId(obj.list, id);
-    
+
                     if (result) {
                         return result;
                     }
                 }
             }
-    
+
             return null;
         }
 

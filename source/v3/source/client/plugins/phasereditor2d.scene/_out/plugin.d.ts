@@ -26,16 +26,6 @@ declare namespace Phaser.Cameras.Scene2D {
 }
 declare namespace phasereditor2d.scene.ui {
 }
-declare namespace Phaser.GameObjects {
-    interface DisplayList {
-        getByEditorId(id: string): GameObject;
-        visit(visitor: (obj: GameObject) => void): any;
-        makeNewName(baseName: string): string;
-    }
-}
-declare namespace phasereditor2d.scene.ui {
-    function runObjectVisitor(obj: Phaser.GameObjects.GameObject, visitor: (obj: Phaser.GameObjects.GameObject) => void): void;
-}
 declare namespace phasereditor2d.scene.ui.gameobjects {
     class EditorObjectMixin extends Phaser.GameObjects.GameObject {
         getEditorId(): string;
@@ -89,6 +79,8 @@ declare namespace phasereditor2d.scene.ui {
         private _initialState;
         constructor(inEditor?: boolean);
         getDisplayListChildren(): gameobjects.EditorObject[];
+        visit(visitor: (obj: gameobjects.EditorObject) => void): void;
+        makeNewName(baseName: string): string;
         getByEditorId(id: string): any;
         static findByEditorId(list: gameobjects.EditorObject[], id: string): any;
         getSceneType(): json.SceneType;
