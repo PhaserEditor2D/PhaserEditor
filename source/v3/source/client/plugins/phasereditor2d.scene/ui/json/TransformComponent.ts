@@ -3,9 +3,11 @@ namespace phasereditor2d.scene.ui.json {
     import write = colibri.core.json.write;
     import read = colibri.core.json.read;
 
+    export declare type TransformLike = gameobjects.EditorImage|gameobjects.EditorContainer;
+
     export class TransformComponent {
 
-        static write(sprite: gameobjects.EditorImage, data: any): void {
+        static write(sprite: TransformLike, data: any): void {
 
             write(data, "x", sprite.x, 0);
             write(data, "y", sprite.y, 0);
@@ -15,7 +17,7 @@ namespace phasereditor2d.scene.ui.json {
 
         }
 
-        static read(sprite: gameobjects.EditorImage, data: any): void {
+        static read(sprite: TransformLike, data: any): void {
 
             sprite.x = read(data, "x", 0);
             sprite.y = read(data, "y", 0);

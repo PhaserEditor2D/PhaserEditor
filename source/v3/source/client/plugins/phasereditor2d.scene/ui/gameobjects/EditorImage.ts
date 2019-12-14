@@ -17,12 +17,24 @@ namespace phasereditor2d.scene.ui.gameobjects {
 
             data.type = "Image";
 
-            json.ImageComponent.write(this, data);
+            json.ObjectComponent.write(this, data);
+
+            json.VariableComponent.write(this, data);
+
+            json.TransformComponent.write(this, data);
+
+            json.TextureComponent.write(this, data);
         };
 
         readJSON(data: any) {
 
-            json.ImageComponent.read(this, data);
+            json.ObjectComponent.read(this, data);
+
+            json.VariableComponent.read(this, data);
+
+            json.TransformComponent.read(this, data);
+
+            json.TextureComponent.read(this, data);
         };
 
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera) {
@@ -30,11 +42,13 @@ namespace phasereditor2d.scene.ui.gameobjects {
         }
 
         setEditorTexture(key: string, frame: any) {
+
             this.setData("textureKey", key);
             this.setData("textureFrameKey", frame);
         };
 
         getEditorTexture() {
+
             return {
                 key: this.getData("textureKey"),
                 frame: this.getData("textureFrameKey")

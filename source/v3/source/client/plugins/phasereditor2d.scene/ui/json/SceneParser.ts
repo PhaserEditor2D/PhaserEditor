@@ -30,7 +30,9 @@ namespace phasereditor2d.scene.ui.json {
         }
 
         private async updateSceneCacheWithObjectData_async(objData: any) {
+
             const type = objData.type;
+
             switch (type) {
 
                 case "Image": {
@@ -66,10 +68,10 @@ namespace phasereditor2d.scene.ui.json {
 
             if (data instanceof pack.core.AssetPackItem) {
                 if (data instanceof pack.core.ImageFrameContainerAssetPackItem) {
-                    imageFrameContainerPackItem = data;   
+                    imageFrameContainerPackItem = data;
                 }
             } else if (data instanceof pack.core.AssetPackImageFrame) {
-                imageFrameContainerPackItem = <pack.core.ImageFrameContainerAssetPackItem> data.getPackItem();
+                imageFrameContainerPackItem = <pack.core.ImageFrameContainerAssetPackItem>data.getPackItem();
             }
 
             if (imageFrameContainerPackItem !== null) {
@@ -83,7 +85,7 @@ namespace phasereditor2d.scene.ui.json {
         }
 
         createObject(data: any) {
-            
+
             const type = data.type;
 
             let sprite: gameobjects.EditorObject = null;

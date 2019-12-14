@@ -25,12 +25,42 @@ namespace phasereditor2d.scene.ui.gameobjects {
 
             data.type = "Container";
 
-            json.ContainerComponent.write(this, data);
+            json.ObjectComponent.write(this, data);
+
+            json.VariableComponent.write(this, data);
+
+            json.TransformComponent.write(this, data);
+
+            // container
+
+            data.list = this.list.map(obj => {
+
+                const objData = {};
+
+                obj.writeJSON(objData);
+
+                return objData;
+            });
         };
 
         readJSON(data: any) {
 
-            json.ContainerComponent.read(this, data);
+            json.ObjectComponent.read(this, data);
+
+            json.VariableComponent.read(this, data);
+
+            json.TransformComponent.read(this, data);
+
+            // container
+
+            const parser = new json.SceneParser(this.getEditorScene());
+
+            for(const objData of data.list) {
+
+                const sprite = parser.createObject(objData);    
+
+                this.add(sprite);
+            }
         };
 
         getScreenBounds(camera : Phaser.Cameras.Scene2D.Camera) {

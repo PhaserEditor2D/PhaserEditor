@@ -2,6 +2,9 @@ namespace phasereditor2d.scene.ui.gameobjects {
 
     export class EditorObjectMixin extends Phaser.GameObjects.GameObject {
 
+        private _label : string;
+        private _scene : GameScene;
+
         getEditorId() {
             return this.name;
         };
@@ -11,19 +14,19 @@ namespace phasereditor2d.scene.ui.gameobjects {
         };
     
         getEditorLabel() {
-            return this.getData("label") || "";
+            return this._label;
         };
     
         setEditorLabel(label: string) {
-            this.setData("label", label);
+            this._label = label;
         };
     
         getEditorScene() {
-            return this.getData("editorScene");
+            return this._scene;
         };
     
-        setEditorScene(scene: phasereditor2d.scene.ui.GameScene) {
-            this.setData("editorScene", scene);
+        setEditorScene(scene: GameScene) {
+            this._scene = scene;
         };
     } 
 }

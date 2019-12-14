@@ -26,45 +26,6 @@ declare namespace Phaser.Cameras.Scene2D {
 }
 declare namespace phasereditor2d.scene.ui {
 }
-declare namespace phasereditor2d.scene.ui.gameobjects {
-    class EditorObjectMixin extends Phaser.GameObjects.GameObject {
-        getEditorId(): string;
-        setEditorId(id: string): void;
-        getEditorLabel(): any;
-        setEditorLabel(label: string): void;
-        getEditorScene(): any;
-        setEditorScene(scene: phasereditor2d.scene.ui.GameScene): void;
-    }
-}
-declare namespace phasereditor2d.scene.ui.gameobjects {
-    class EditorImage extends Phaser.GameObjects.Image implements EditorObject {
-        static add(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number): EditorImage;
-        writeJSON(data: any): void;
-        readJSON(data: any): void;
-        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
-        setEditorTexture(key: string, frame: any): void;
-        getEditorTexture(): {
-            key: any;
-            frame: any;
-        };
-    }
-    interface EditorImage extends EditorObjectMixin {
-    }
-}
-declare namespace phasereditor2d.scene.ui.gameobjects {
-    class EditorContainer extends Phaser.GameObjects.Container implements EditorObject {
-        static add(scene: Phaser.Scene, x: number, y: number, list: EditorObject[]): EditorContainer;
-        get list(): EditorObject[];
-        set list(list: EditorObject[]);
-        writeJSON(data: any): void;
-        readJSON(data: any): void;
-        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
-    }
-    interface EditorContainer extends EditorObjectMixin {
-    }
-}
-declare namespace Phaser.GameObjects {
-}
 declare namespace phasereditor2d.scene.ui {
     class GameScene extends Phaser.Scene {
         private _sceneType;
@@ -412,6 +373,45 @@ declare namespace phasereditor2d.scene.ui.editor.undo {
     }
 }
 declare namespace phasereditor2d.scene.ui.gameobjects {
+    class EditorObjectMixin extends Phaser.GameObjects.GameObject {
+        private _label;
+        private _scene;
+        getEditorId(): string;
+        setEditorId(id: string): void;
+        getEditorLabel(): string;
+        setEditorLabel(label: string): void;
+        getEditorScene(): GameScene;
+        setEditorScene(scene: GameScene): void;
+    }
+}
+declare namespace phasereditor2d.scene.ui.gameobjects {
+    class EditorContainer extends Phaser.GameObjects.Container implements EditorObject {
+        static add(scene: Phaser.Scene, x: number, y: number, list: EditorObject[]): EditorContainer;
+        get list(): EditorObject[];
+        set list(list: EditorObject[]);
+        writeJSON(data: any): void;
+        readJSON(data: any): void;
+        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
+    }
+    interface EditorContainer extends EditorObjectMixin {
+    }
+}
+declare namespace phasereditor2d.scene.ui.gameobjects {
+    class EditorImage extends Phaser.GameObjects.Image implements EditorObject {
+        static add(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number): EditorImage;
+        writeJSON(data: any): void;
+        readJSON(data: any): void;
+        getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
+        setEditorTexture(key: string, frame: any): void;
+        getEditorTexture(): {
+            key: any;
+            frame: any;
+        };
+    }
+    interface EditorImage extends EditorObjectMixin {
+    }
+}
+declare namespace phasereditor2d.scene.ui.gameobjects {
     interface EditorObject extends Phaser.GameObjects.GameObject, json.ReadWriteJSON {
         getScreenBounds(camera: Phaser.Cameras.Scene2D.Camera): any;
     }
@@ -425,21 +425,9 @@ declare namespace phasereditor2d.scene.ui.gameobjects {
     function getScreenBounds(sprite: EditorImage, camera: Phaser.Cameras.Scene2D.Camera): Phaser.Math.Vector2[];
 }
 declare namespace phasereditor2d.scene.ui.json {
-    class ContainerComponent {
-        static write(container: gameobjects.EditorContainer, data: any): void;
-        static read(container: gameobjects.EditorContainer, data: any): void;
-    }
-}
-declare namespace phasereditor2d.scene.ui.json {
-    class ImageComponent {
-        static write(sprite: gameobjects.EditorImage, data: any): void;
-        static read(sprite: gameobjects.EditorImage, data: any): void;
-    }
-}
-declare namespace phasereditor2d.scene.ui.json {
     class ObjectComponent {
-        static write(sprite: gameobjects.EditorImage, data: any): void;
-        static read(sprite: gameobjects.EditorImage, data: any): void;
+        static write(sprite: gameobjects.EditorObject, data: any): void;
+        static read(sprite: gameobjects.EditorObject, data: any): void;
     }
 }
 declare namespace phasereditor2d.scene.ui.json {
@@ -491,15 +479,16 @@ declare namespace phasereditor2d.scene.ui.json {
     }
 }
 declare namespace phasereditor2d.scene.ui.json {
+    type TransformLike = gameobjects.EditorImage | gameobjects.EditorContainer;
     class TransformComponent {
-        static write(sprite: gameobjects.EditorImage, data: any): void;
-        static read(sprite: gameobjects.EditorImage, data: any): void;
+        static write(sprite: TransformLike, data: any): void;
+        static read(sprite: TransformLike, data: any): void;
     }
 }
 declare namespace phasereditor2d.scene.ui.json {
     class VariableComponent {
-        static write(sprite: gameobjects.EditorImage, data: any): void;
-        static read(sprite: gameobjects.EditorImage, data: any): void;
+        static write(sprite: gameobjects.EditorObject, data: any): void;
+        static read(sprite: gameobjects.EditorObject, data: any): void;
     }
 }
 declare namespace phasereditor2d.scene.ui.viewers {
