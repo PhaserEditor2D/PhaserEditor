@@ -1472,22 +1472,20 @@ var phasereditor2d;
             (function (editor) {
                 var outline;
                 (function (outline) {
-                    var controls = colibri.ui.controls;
                     class GameObjectCellRenderer {
                         renderCell(args) {
                             const sprite = args.obj;
                             if (sprite instanceof Phaser.GameObjects.Image) {
                                 const { key, frame } = sprite.getEditorTexture();
+                                // TODO: we should paint the object using the Phaser rendering system, 
+                                // maybe using a an offline texture that is updated each time the object is updated.
                                 const finder = new phasereditor2d.pack.core.PackFinder();
-                                // TODO: we should use the same finder for the whole paint.
-                                /*finder.preload().then(() => {
-                
+                                finder.preload().then(() => {
                                     const img = finder.getAssetPackItemImage(key, frame);
-                
                                     if (img) {
                                         img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
                                     }
-                                });*/
+                                });
                             }
                         }
                         cellHeight(args) {
@@ -1496,13 +1494,9 @@ var phasereditor2d;
                             }
                             return colibri.ui.controls.ROW_HEIGHT;
                         }
-                        preload(args) {
-                            /*
-                            const finder = new pack.core.PackFinder();
-                
+                        async preload(args) {
+                            const finder = new phasereditor2d.pack.core.PackFinder();
                             return finder.preload();
-                            */
-                            return controls.Controls.resolveNothingLoaded();
                         }
                     }
                     outline.GameObjectCellRenderer = GameObjectCellRenderer;

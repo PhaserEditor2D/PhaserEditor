@@ -203,6 +203,7 @@ namespace colibri.ui.controls.viewers {
 
 
         protected paint(): void {
+            
             const result = this._treeRenderer.paint();
 
             this._contentHeight = result.contentHeight;

@@ -12,18 +12,19 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
                 const { key, frame } = sprite.getEditorTexture();
 
+                // TODO: we should paint the object using the Phaser rendering system, 
+                // maybe using a an offline texture that is updated each time the object is updated.
+
                 const finder = new pack.core.PackFinder();
 
-                // TODO: we should use the same finder for the whole paint.
-
-                /*finder.preload().then(() => {
+                finder.preload().then(() => {
 
                     const img = finder.getAssetPackItemImage(key, frame);
 
                     if (img) {
                         img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
                     }
-                });*/
+                });
             }
         }
 
@@ -36,16 +37,11 @@ namespace phasereditor2d.scene.ui.editor.outline {
             return colibri.ui.controls.ROW_HEIGHT;
         }
 
-        preload(args: controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult> {
-
-            /*
+        async preload(args: controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult> {
+            
             const finder = new pack.core.PackFinder();
 
             return finder.preload();
-            */
-
-            return controls.Controls.resolveNothingLoaded();
         }
     }
-
 }
