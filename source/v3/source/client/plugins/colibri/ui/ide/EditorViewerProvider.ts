@@ -45,6 +45,7 @@ namespace colibri.ui.ide {
         }
 
         repaint() {
+            
             if (this._viewer) {
                 this._viewer.repaint();
             }

@@ -6,17 +6,17 @@ namespace phasereditor2d.scene.ui.blocks {
 
     export class SceneEditorBlocksContentProvider extends pack.ui.viewers.AssetPackContentProvider {
 
-        private _packs : pack.core.AssetPack[];
+        private _getPacks : () => pack.core.AssetPack[];
 
-        constructor(packs : pack.core.AssetPack[]) {
+        constructor(getPacks : () => pack.core.AssetPack[]) {
             super();
             
-            this._packs = packs;
+            this._getPacks = getPacks;
         }
 
         getPackItems() {
 
-            return this._packs
+            return this._getPacks()
 
                 .flatMap(pack => pack.getItems())
 

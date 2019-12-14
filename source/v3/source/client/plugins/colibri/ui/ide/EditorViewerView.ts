@@ -44,7 +44,6 @@ namespace colibri.ui.ide {
 
                 const state = this._viewer.getState();
                 this._viewerMap.set(this._currentEditor, state);
-
             }
 
             const editor = Workbench.getWorkbench().getActiveEditor();

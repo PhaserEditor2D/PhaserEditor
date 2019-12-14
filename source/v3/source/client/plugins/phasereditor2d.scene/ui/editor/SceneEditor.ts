@@ -337,6 +337,8 @@ namespace phasereditor2d.scene.ui.editor {
 
             if (this._blocksProvider) {
 
+                console.log()
+
                 await this._blocksProvider.preload()
 
                 this._blocksProvider.repaint();
