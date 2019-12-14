@@ -6,7 +6,7 @@ namespace phasereditor2d.scene.ui.editor.undo {
 
         private _dataList: any[];
 
-        constructor(editor: SceneEditor, objects: Phaser.GameObjects.GameObject[]) {
+        constructor(editor: SceneEditor, objects: gameobjects.EditorObject[]) {
             super(editor);
 
             this._dataList = objects.map(obj => {
@@ -16,10 +16,10 @@ namespace phasereditor2d.scene.ui.editor.undo {
 
                 return data;
             });
-
         }
 
         undo(): void {
+            
             const displayList = this._editor.getGameScene().sys.displayList;
 
             for (const data of this._dataList) {

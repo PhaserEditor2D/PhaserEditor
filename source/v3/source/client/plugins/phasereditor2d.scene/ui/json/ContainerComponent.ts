@@ -2,7 +2,7 @@ namespace phasereditor2d.scene.ui.json {
 
     export class ContainerComponent {
 
-        static write(container : Phaser.GameObjects.Container, data : any) {
+        static write(container : gameobjects.EditorContainer, data : any) {
 
             const sprite : any = container;
 

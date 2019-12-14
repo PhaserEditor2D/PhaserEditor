@@ -83,16 +83,17 @@ namespace phasereditor2d.scene.ui.json {
         }
 
         createObject(data: any) {
+            
             const type = data.type;
 
-            let sprite: Phaser.GameObjects.GameObject = null;
+            let sprite: gameobjects.EditorObject = null;
 
             switch (type) {
                 case "Image":
-                    sprite = this._scene.add.image(0, 0, "");
+                    sprite = gameobjects.EditorImage.add(this._scene, 0, 0, "");
                     break;
                 case "Container":
-                    sprite = this._scene.add.container(0, 0, []);
+                    sprite = gameobjects.EditorContainer.add(this._scene, 0, 0, []);
                     break;
             }
 

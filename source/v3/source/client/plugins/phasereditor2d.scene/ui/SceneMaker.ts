@@ -20,9 +20,9 @@ namespace phasereditor2d.scene.ui {
             return reader.createObject(objData);
         }
 
-        createContainerWithObjects(objects: Phaser.GameObjects.GameObject[]) {
+        createContainerWithObjects(objects: gameobjects.EditorObject[]) {
 
-            const container = this._scene.add.container(0, 0, objects);
+            const container = gameobjects.EditorContainer.add(this._scene, 0, 0, objects);
 
             const name = this._scene.sys.displayList.makeNewName("container");
 
@@ -36,7 +36,7 @@ namespace phasereditor2d.scene.ui {
         async createWithDropEvent_async(e: DragEvent, dropDataArray: any[]) {
 
             const nameMaker = new ide.utils.NameMaker(obj => {
-                return (<Phaser.GameObjects.GameObject>obj).getEditorLabel();
+                return (<gameobjects.EditorObject>obj).getEditorLabel();
             });
 
             this._scene.sys.displayList.visit(obj => nameMaker.update([obj]));
@@ -51,13 +51,13 @@ namespace phasereditor2d.scene.ui {
                 await parser.addToCache_async(data);
             }
 
-            const sprites: Phaser.GameObjects.GameObject[] = [];
+            const sprites: gameobjects.EditorObject[] = [];
 
             for (const data of dropDataArray) {
 
                 if (data instanceof pack.core.AssetPackImageFrame) {
 
-                    const sprite = this._scene.add.image(x, y, data.getPackItem().getKey(), data.getName());
+                    const sprite = gameobjects.EditorImage.add(this._scene, x, y, data.getPackItem().getKey(), data.getName());
 
                     sprite.setEditorLabel(nameMaker.makeName(data.getName()));
                     sprite.setEditorTexture(data.getPackItem().getKey(), data.getName());
@@ -69,7 +69,7 @@ namespace phasereditor2d.scene.ui {
                     switch (data.getType()) {
                         case pack.core.IMAGE_TYPE: {
 
-                            const sprite = this._scene.add.image(x, y, data.getKey());
+                            const sprite = gameobjects.EditorImage.add(this._scene, x, y, data.getKey());
 
                             sprite.setEditorLabel(nameMaker.makeName(data.getKey()));
                             sprite.setEditorTexture(data.getKey(), null);

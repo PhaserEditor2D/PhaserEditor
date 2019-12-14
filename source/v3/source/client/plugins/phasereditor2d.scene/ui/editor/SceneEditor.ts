@@ -273,9 +273,12 @@ namespace phasereditor2d.scene.ui.editor {
         }
 
         getSelectedGameObjects() {
+
             return this.getSelection()
+
                 .filter(obj => obj instanceof Phaser.GameObjects.GameObject)
-                .map(obj => <Phaser.GameObjects.GameObject>obj);
+
+                .map(obj => <gameobjects.EditorObject>obj);
         }
 
         getActionManager() {

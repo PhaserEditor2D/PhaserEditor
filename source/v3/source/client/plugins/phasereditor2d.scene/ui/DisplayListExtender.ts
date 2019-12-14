@@ -13,20 +13,6 @@ namespace Phaser.GameObjects {
 
 namespace phasereditor2d.scene.ui {
 
-    Phaser.GameObjects.DisplayList.prototype.getByEditorId = function (id: string) {
-
-        const displayList: Phaser.GameObjects.DisplayList = this;
-
-
-        const obj = getByEditorId(displayList.list, id);
-
-        if (!obj) {
-            console.error(`Object with id=${id} not found.`);
-        }
-
-        return obj;
-    }
-
     Phaser.GameObjects.DisplayList.prototype.visit = function (visitor: (obj: Phaser.GameObjects.GameObject) => void) {
 
         for (const obj of this.list) {
@@ -54,27 +40,6 @@ namespace phasereditor2d.scene.ui {
                 visitor(child);
             }
         }
-    }
-
-    export function getByEditorId(list: Phaser.GameObjects.GameObject[], id: string) {
-
-        for (const obj of list) {
-
-            if (obj.getEditorId() === id) {
-                return obj;
-            }
-
-            if (obj instanceof Phaser.GameObjects.Container) {
-
-                const result = getByEditorId(obj.list, id);
-
-                if (result) {
-                    return result;
-                }
-            }
-        }
-
-        return null;
     }
 
 }

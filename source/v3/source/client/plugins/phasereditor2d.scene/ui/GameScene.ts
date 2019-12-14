@@ -15,6 +15,42 @@ namespace phasereditor2d.scene.ui {
             this._sceneType = "Scene";
         }
 
+        getDisplayListChildren(): gameobjects.EditorObject[] {
+            return <any>this.sys.displayList.getChildren();
+        }
+
+        getByEditorId(id : string) {
+
+            const obj = GameScene.findByEditorId(this.getDisplayListChildren(), id);
+    
+            if (!obj) {
+                console.error(`Object with id=${id} not found.`);
+            }
+    
+            return obj;
+        }
+
+        static findByEditorId(list: gameobjects.EditorObject[], id: string) {
+
+            for (const obj of list) {
+    
+                if (obj.getEditorId() === id) {
+                    return obj;
+                }
+    
+                if (obj instanceof gameobjects.EditorContainer) {
+    
+                    const result = this.findByEditorId(obj.list, id);
+    
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
+    
+            return null;
+        }
+
         getSceneType() {
             return this._sceneType;
         }
