@@ -170,18 +170,25 @@ namespace phasereditor2d.pack.ui.editor {
 
             super.onPartActivated();
 
-            if (this._blocksProvider) {
+            await this.resetPackCache();
 
-                // gives a time to the blocks view to get the right values
+            await this.updateBlocks();
+        }
 
-                setTimeout(async () => {
+        private async resetPackCache() {
 
-                    await this._blocksProvider.preload();
-
-                    this._blocksProvider.repaint();
-
-                }, 10);
+            if (!this._pack) {
+                return;
             }
+
+            for (const item of this._pack.getItems()) {
+
+                item.resetCache();
+
+                await item.preload();
+            }
+
+            this._viewer.repaint();
         }
 
         getPack() {

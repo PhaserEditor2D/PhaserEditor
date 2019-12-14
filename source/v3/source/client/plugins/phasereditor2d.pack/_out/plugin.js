@@ -791,7 +791,6 @@ var phasereditor2d;
                     this._packs = [];
                 }
                 async preload(monitor = controls.EmptyProgressMonitor) {
-                    const t = Date.now();
                     let result = controls.PreloadResult.NOTHING_LOADED;
                     this._packs = await core_2.AssetPackUtils.getAllPacks();
                     const items = this._packs.flatMap(pack => pack.getItems());
@@ -2061,13 +2060,18 @@ var phasereditor2d;
                     }
                     async onPartActivated() {
                         super.onPartActivated();
-                        if (this._blocksProvider) {
-                            // gives a time to the blocks view to get the right values
-                            setTimeout(async () => {
-                                await this._blocksProvider.preload();
-                                this._blocksProvider.repaint();
-                            }, 10);
+                        await this.resetPackCache();
+                        await this.updateBlocks();
+                    }
+                    async resetPackCache() {
+                        if (!this._pack) {
+                            return;
                         }
+                        for (const item of this._pack.getItems()) {
+                            item.resetCache();
+                            await item.preload();
+                        }
+                        this._viewer.repaint();
                     }
                     getPack() {
                         return this._pack;
