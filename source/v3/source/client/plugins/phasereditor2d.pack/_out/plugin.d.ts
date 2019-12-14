@@ -231,15 +231,14 @@ declare namespace phasereditor2d.pack.core {
 declare namespace phasereditor2d.pack.core {
     import controls = colibri.ui.controls;
     class PackFinder {
-        private static _packs;
-        private constructor();
-        static clean(): void;
-        static preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
-        static getPacks(): AssetPack[];
-        static findAssetPackItem(key: string): AssetPackItem;
-        static findPackItemOrFrameWithKey(key: string): AssetPackItem | AssetPackImageFrame;
-        static getAssetPackItemOrFrame(key: string, frame: any): AssetPackItem | AssetPackImageFrame;
-        static getAssetPackItemImage(key: string, frame: any): controls.IImage;
+        private _packs;
+        constructor();
+        preload(monitor?: controls.IProgressMonitor): Promise<controls.PreloadResult>;
+        getPacks(): AssetPack[];
+        findAssetPackItem(key: string): AssetPackItem;
+        findPackItemOrFrameWithKey(key: string): AssetPackItem | AssetPackImageFrame;
+        getAssetPackItemOrFrame(key: string, frame: any): AssetPackItem | AssetPackImageFrame;
+        getAssetPackItemImage(key: string, frame: any): controls.IImage;
     }
 }
 declare namespace phasereditor2d.pack.core {

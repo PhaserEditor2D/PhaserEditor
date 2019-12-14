@@ -119,9 +119,9 @@ namespace phasereditor2d.pack {
                 new ide.PreloadProjectResourcesExtension(
                     (monitor) => {
                         
-                        pack.core.PackFinder.clean();
+                        const finder = new  pack.core.PackFinder();
 
-                        return pack.core.PackFinder.preload(monitor)
+                        return finder.preload(monitor);
                     }
                 )
             );

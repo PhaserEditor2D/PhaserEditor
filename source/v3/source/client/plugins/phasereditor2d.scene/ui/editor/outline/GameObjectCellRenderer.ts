@@ -12,13 +12,19 @@ namespace phasereditor2d.scene.ui.editor.outline {
 
                 const { key, frame } = sprite.getEditorTexture();
 
-                const img = pack.core.PackFinder.getAssetPackItemImage(key, frame);
+                const finder = new pack.core.PackFinder();
 
-                if (img) {
-                    img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
-                }
+                // TODO: we should use the same finder for the whole paint.
+
+                /*finder.preload().then(() => {
+
+                    const img = finder.getAssetPackItemImage(key, frame);
+
+                    if (img) {
+                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
+                    }
+                });*/
             }
-
         }
 
         cellHeight(args: colibri.ui.controls.viewers.RenderCellArgs): number {
@@ -30,11 +36,16 @@ namespace phasereditor2d.scene.ui.editor.outline {
             return colibri.ui.controls.ROW_HEIGHT;
         }
 
-        preload(args : controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult> {
+        preload(args: controls.viewers.PreloadCellArgs): Promise<colibri.ui.controls.PreloadResult> {
+
+            /*
+            const finder = new pack.core.PackFinder();
+
+            return finder.preload();
+            */
+
             return controls.Controls.resolveNothingLoaded();
         }
-
-
     }
 
 }

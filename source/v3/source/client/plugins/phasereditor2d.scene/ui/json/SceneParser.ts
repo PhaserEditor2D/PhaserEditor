@@ -37,7 +37,11 @@ namespace phasereditor2d.scene.ui.json {
 
                     const key = objData[TextureComponent.textureKey];
 
-                    const item = pack.core.PackFinder.findAssetPackItem(key);
+                    const finder = new pack.core.PackFinder();
+
+                    await finder.preload();
+
+                    const item = finder.findAssetPackItem(key);
 
                     if (item) {
                         await this.addToCache_async(item);

@@ -218,14 +218,16 @@ var phasereditor2d;
                     monaco.languages.registerCompletionItemProvider("javascript", {
                         provideCompletionItems: (model, pos) => {
                             return {
-                                suggestions: computeCompletionItems()
+                                suggestions: computeCompletionItems(),
                             };
                         }
                     });
                 }
                 function computeCompletionItems() {
                     const result = [];
-                    const packs = phasereditor2d.pack.core.PackFinder.getPacks();
+                    //TODO: missing preload finder, but we need to compute the completions async, we should look in the monaco docs.
+                    const finder = new phasereditor2d.pack.core.PackFinder();
+                    const packs = finder.getPacks();
                     for (const pack_ of packs) {
                         const packName = pack_.getFile().getName();
                         for (const item of pack_.getItems()) {
@@ -270,8 +272,11 @@ var phasereditor2d;
                             const str = getStringTokenValue(model, e.position);
                             if (str) {
                                 this.setSelection([str]);
-                                const obj = phasereditor2d.pack.core.PackFinder.findPackItemOrFrameWithKey(str);
-                                this.setSelection([obj]);
+                                const finder = new phasereditor2d.pack.core.PackFinder();
+                                finder.preload().then(() => {
+                                    const obj = finder.findPackItemOrFrameWithKey(str);
+                                    this.setSelection([obj]);
+                                });
                             }
                             else if (this.getSelection().length > 0) {
                                 this.setSelection([]);

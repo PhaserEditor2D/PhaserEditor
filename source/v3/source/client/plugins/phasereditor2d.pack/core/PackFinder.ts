@@ -6,17 +6,15 @@ namespace phasereditor2d.pack.core {
 
     export class PackFinder {
 
-        private static _packs: AssetPack[] = [];
+        private _packs: AssetPack[];
 
-        private constructor() {
-
-        }
-
-        static clean() {
+        constructor() {
             this._packs = [];
         }
 
-        static async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
+        async preload(monitor: controls.IProgressMonitor = controls.EmptyProgressMonitor): Promise<controls.PreloadResult> {
+
+            let result = controls.PreloadResult.NOTHING_LOADED;
 
             this._packs = await AssetPackUtils.getAllPacks();
 
@@ -26,25 +24,26 @@ namespace phasereditor2d.pack.core {
 
             for (const item of items) {
 
-                await item.preload();
+                const result2  = await item.preload();
+                result = Math.max(result, result2);
 
                 monitor.step();
             }
 
-            return controls.Controls.resolveResourceLoaded();
+            return Promise.resolve(result);
         }
 
-        static getPacks() {
+        getPacks() {
             return this._packs;
         }
 
-        static findAssetPackItem(key: string) {
+        findAssetPackItem(key: string) {
             return this._packs
                 .flatMap(pack => pack.getItems())
                 .find(item => item.getKey() === key);
         }
 
-        static findPackItemOrFrameWithKey(key: string) {
+        findPackItemOrFrameWithKey(key: string) {
 
             for (const pack of this._packs) {
 
@@ -55,8 +54,8 @@ namespace phasereditor2d.pack.core {
                     }
 
                     if (item instanceof ImageFrameContainerAssetPackItem) {
-                        
-                        for(const frame of item.getFrames()) {
+
+                        for (const frame of item.getFrames()) {
 
                             if (frame.getName() === key) {
                                 return frame;
@@ -69,7 +68,7 @@ namespace phasereditor2d.pack.core {
             return null;
         }
 
-        static getAssetPackItemOrFrame(key: string, frame: any) {
+        getAssetPackItemOrFrame(key: string, frame: any) {
 
             let item = this.findAssetPackItem(key);
 
@@ -95,7 +94,7 @@ namespace phasereditor2d.pack.core {
             return item;
         }
 
-        static getAssetPackItemImage(key: string, frame: any): controls.IImage {
+        getAssetPackItemImage(key: string, frame: any): controls.IImage {
 
             const asset = this.getAssetPackItemOrFrame(key, frame);
 

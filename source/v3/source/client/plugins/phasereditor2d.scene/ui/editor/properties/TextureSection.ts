@@ -25,14 +25,19 @@ namespace phasereditor2d.scene.ui.editor.properties {
             this.addUpdater(() => {
 
                 const obj = this.getSelection()[0];
-                
+
                 const { key, frame } = obj.getEditorTexture();
 
-                const img = pack.core.PackFinder.getAssetPackItemImage(key, frame);
+                const finder = new pack.core.PackFinder();
 
-                imgControl.setImage(img);
+                finder.preload().then(() => {
 
-                setTimeout(() => imgControl.resizeTo(), 1);
+                    const img = finder.getAssetPackItemImage(key, frame);
+
+                    imgControl.setImage(img);
+
+                    setTimeout(() => imgControl.resizeTo(), 1);
+                });
             });
         }
 

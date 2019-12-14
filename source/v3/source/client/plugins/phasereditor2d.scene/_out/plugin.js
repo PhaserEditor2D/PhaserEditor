@@ -530,7 +530,8 @@ var phasereditor2d;
                 const SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES = new Set(["image", "atlas", "atlasXML", "multiatlas", "unityAtlas", "spritesheet"]);
                 class SceneEditorBlocksContentProvider extends phasereditor2d.pack.ui.viewers.AssetPackContentProvider {
                     getPackItems() {
-                        return phasereditor2d.pack.core.PackFinder
+                        const finder = new phasereditor2d.pack.core.PackFinder();
+                        return finder
                             .getPacks()
                             .flatMap(pack => pack.getItems())
                             .filter(item => SCENE_EDITOR_BLOCKS_PACK_ITEM_TYPES.has(item.getType()));
@@ -621,7 +622,7 @@ var phasereditor2d;
                         this._editor = editor;
                     }
                     async preload() {
-                        await phasereditor2d.pack.core.PackFinder.preload();
+                        // await pack.core.PackFinder.preload();
                     }
                     getContentProvider() {
                         return new blocks.SceneEditorBlocksContentProvider();
@@ -1477,10 +1478,16 @@ var phasereditor2d;
                             const sprite = args.obj;
                             if (sprite instanceof Phaser.GameObjects.Image) {
                                 const { key, frame } = sprite.getEditorTexture();
-                                const img = phasereditor2d.pack.core.PackFinder.getAssetPackItemImage(key, frame);
-                                if (img) {
-                                    img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
-                                }
+                                const finder = new phasereditor2d.pack.core.PackFinder();
+                                // TODO: we should use the same finder for the whole paint.
+                                /*finder.preload().then(() => {
+                
+                                    const img = finder.getAssetPackItemImage(key, frame);
+                
+                                    if (img) {
+                                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
+                                    }
+                                });*/
                             }
                         }
                         cellHeight(args) {
@@ -1490,6 +1497,11 @@ var phasereditor2d;
                             return colibri.ui.controls.ROW_HEIGHT;
                         }
                         preload(args) {
+                            /*
+                            const finder = new pack.core.PackFinder();
+                
+                            return finder.preload();
+                            */
                             return controls.Controls.resolveNothingLoaded();
                         }
                     }
@@ -1773,9 +1785,12 @@ var phasereditor2d;
                             this.addUpdater(() => {
                                 const obj = this.getSelection()[0];
                                 const { key, frame } = obj.getEditorTexture();
-                                const img = phasereditor2d.pack.core.PackFinder.getAssetPackItemImage(key, frame);
-                                imgControl.setImage(img);
-                                setTimeout(() => imgControl.resizeTo(), 1);
+                                const finder = new phasereditor2d.pack.core.PackFinder();
+                                finder.preload().then(() => {
+                                    const img = finder.getAssetPackItemImage(key, frame);
+                                    imgControl.setImage(img);
+                                    setTimeout(() => imgControl.resizeTo(), 1);
+                                });
                             });
                         }
                         canEdit(obj) {
@@ -2209,7 +2224,9 @@ var phasereditor2d;
                         switch (type) {
                             case "Image": {
                                 const key = objData[json.TextureComponent.textureKey];
-                                const item = phasereditor2d.pack.core.PackFinder.findAssetPackItem(key);
+                                const finder = new phasereditor2d.pack.core.PackFinder();
+                                await finder.preload();
+                                const item = finder.findAssetPackItem(key);
                                 if (item) {
                                     await this.addToCache_async(item);
                                 }

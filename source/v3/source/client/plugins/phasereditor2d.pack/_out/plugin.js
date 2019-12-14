@@ -85,8 +85,8 @@ var phasereditor2d;
                 ]));
                 // project resources preloader
                 reg.addExtension(new ide.PreloadProjectResourcesExtension((monitor) => {
-                    pack.core.PackFinder.clean();
-                    return pack.core.PackFinder.preload(monitor);
+                    const finder = new pack.core.PackFinder();
+                    return finder.preload(monitor);
                 }));
                 // editors
                 reg.addExtension(new ide.EditorExtension([
@@ -788,29 +788,29 @@ var phasereditor2d;
             var controls = colibri.ui.controls;
             class PackFinder {
                 constructor() {
-                }
-                static clean() {
                     this._packs = [];
                 }
-                static async preload(monitor = controls.EmptyProgressMonitor) {
+                async preload(monitor = controls.EmptyProgressMonitor) {
+                    let result = controls.PreloadResult.NOTHING_LOADED;
                     this._packs = await core_2.AssetPackUtils.getAllPacks();
                     const items = this._packs.flatMap(pack => pack.getItems());
                     monitor.addTotal(items.length);
                     for (const item of items) {
-                        await item.preload();
+                        const result2 = await item.preload();
+                        result = Math.max(result, result2);
                         monitor.step();
                     }
-                    return controls.Controls.resolveResourceLoaded();
+                    return Promise.resolve(result);
                 }
-                static getPacks() {
+                getPacks() {
                     return this._packs;
                 }
-                static findAssetPackItem(key) {
+                findAssetPackItem(key) {
                     return this._packs
                         .flatMap(pack => pack.getItems())
                         .find(item => item.getKey() === key);
                 }
-                static findPackItemOrFrameWithKey(key) {
+                findPackItemOrFrameWithKey(key) {
                     for (const pack of this._packs) {
                         for (const item of pack.getItems()) {
                             if (item.getKey() === key) {
@@ -827,7 +827,7 @@ var phasereditor2d;
                     }
                     return null;
                 }
-                static getAssetPackItemOrFrame(key, frame) {
+                getAssetPackItemOrFrame(key, frame) {
                     let item = this.findAssetPackItem(key);
                     if (!item) {
                         return null;
@@ -844,7 +844,7 @@ var phasereditor2d;
                     }
                     return item;
                 }
-                static getAssetPackItemImage(key, frame) {
+                getAssetPackItemImage(key, frame) {
                     const asset = this.getAssetPackItemOrFrame(key, frame);
                     if (asset instanceof core_2.AssetPackItem && asset.getType() === core_2.IMAGE_TYPE) {
                         return core_2.AssetPackUtils.getImageFromPackUrl(asset.getData().url);
@@ -855,7 +855,6 @@ var phasereditor2d;
                     return new controls.ImageWrapper(null);
                 }
             }
-            PackFinder._packs = [];
             core_2.PackFinder = PackFinder;
         })(core = pack_18.core || (pack_18.core = {}));
     })(pack = phasereditor2d.pack || (phasereditor2d.pack = {}));

@@ -7,7 +7,10 @@ namespace phasereditor2d.scene.ui.blocks {
     export class SceneEditorBlocksContentProvider extends pack.ui.viewers.AssetPackContentProvider {
 
         getPackItems() {
-            return pack.core.PackFinder
+
+            const finder = new pack.core.PackFinder();
+
+            return finder
 
                 .getPacks()
 
