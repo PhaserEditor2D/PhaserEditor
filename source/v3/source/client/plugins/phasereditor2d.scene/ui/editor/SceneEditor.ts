@@ -302,21 +302,21 @@ namespace phasereditor2d.scene.ui.editor {
 
             super.layout();
 
-            if (!this._gameBooted) {
-                return;
-            }
-
             this._overlayLayer.resizeTo();
 
             const parent = this._gameCanvas.parentElement;
+
             const w = parent.clientWidth;
             const h = parent.clientHeight;
 
             this._game.scale.resize(w, h);
-            this._gameScene.scale.resize(w, h);
-            this._gameScene.getCamera().setSize(w, h);
 
-            this.repaint();
+            if (this._gameBooted) {
+
+                this._gameScene.getCamera().setSize(w, h);
+
+                this.repaint();
+            }
         }
 
         getPropertyProvider() {
@@ -360,6 +360,7 @@ namespace phasereditor2d.scene.ui.editor {
         }
 
         private async onGameBoot() {
+
             this._gameBooted = true;
 
             if (!this._sceneRead) {

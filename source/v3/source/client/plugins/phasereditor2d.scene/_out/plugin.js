@@ -1211,17 +1211,15 @@ var phasereditor2d;
                     }
                     layout() {
                         super.layout();
-                        if (!this._gameBooted) {
-                            return;
-                        }
                         this._overlayLayer.resizeTo();
                         const parent = this._gameCanvas.parentElement;
                         const w = parent.clientWidth;
                         const h = parent.clientHeight;
                         this._game.scale.resize(w, h);
-                        this._gameScene.scale.resize(w, h);
-                        this._gameScene.getCamera().setSize(w, h);
-                        this.repaint();
+                        if (this._gameBooted) {
+                            this._gameScene.getCamera().setSize(w, h);
+                            this.repaint();
+                        }
                     }
                     getPropertyProvider() {
                         return this._propertyProvider;
