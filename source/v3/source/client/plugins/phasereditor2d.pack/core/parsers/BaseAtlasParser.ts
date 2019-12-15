@@ -17,7 +17,7 @@ namespace phasereditor2d.pack.core.parsers {
 
         addToPhaserCache(game: Phaser.Game) {
 
-            const item = this.getPackItem();
+            const item = this.getPackItem() as ImageFrameContainerAssetPackItem;
 
             if (!game.textures.exists(item.getKey())) {
 
@@ -28,7 +28,12 @@ namespace phasereditor2d.pack.core.parsers {
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(textureURL);
 
                 if (image) {
+
                     game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+
+                    for(const frame of item.getFrames()) {
+                        ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                    }
                 }
             }
         }

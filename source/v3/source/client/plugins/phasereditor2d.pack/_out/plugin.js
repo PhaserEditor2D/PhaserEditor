@@ -1396,6 +1396,20 @@ var phasereditor2d;
                     getPackItem() {
                         return this._packItem;
                     }
+                    static initSourceImageMap(game) {
+                        game["_sourceImageFrame_map"] = {};
+                    }
+                    static clearSourceImageMap(game) {
+                        delete game["_sourceImageFrame_map"];
+                    }
+                    static setSourceImageFrame(game, image, key, frame) {
+                        let imageMap = game["_sourceImageFrame_map"];
+                        imageMap["__frame__" + key + "$" + (frame ? frame : "")] = image;
+                    }
+                    static getSourceImageFrame(game, key, frame) {
+                        let imageMap = game["_sourceImageFrame_map"];
+                        return imageMap["__frame__" + key + "$" + (frame ? frame : "")];
+                    }
                 }
                 parsers.ImageFrameParser = ImageFrameParser;
             })(parsers = core.parsers || (core.parsers = {}));
@@ -1427,6 +1441,9 @@ var phasereditor2d;
                             const image = core.AssetPackUtils.getImageFromPackUrl(textureURL);
                             if (image) {
                                 game.textures.addAtlas(item.getKey(), image.getImageElement(), atlasData);
+                                for (const frame of item.getFrames()) {
+                                    parsers.ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                                }
                             }
                         }
                     }
@@ -1541,6 +1558,9 @@ var phasereditor2d;
                             const image = core_4.AssetPackUtils.getImageFromPackUrl(textureURL);
                             if (atlasData && image) {
                                 game.textures.addAtlasXML(item.getKey(), image.getImageElement(), atlasData);
+                                for (const frame of item.getFrames()) {
+                                    parsers.ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                                }
                             }
                         }
                     }
@@ -1600,6 +1620,7 @@ var phasereditor2d;
                             const image = core.AssetPackUtils.getImageFromPackUrl(url);
                             if (image) {
                                 game.textures.addImage(item.getKey(), image.getImageElement());
+                                ImageParser.setSourceImageFrame(game, image, item.getKey());
                             }
                         }
                     }
@@ -1654,6 +1675,9 @@ var phasereditor2d;
                                     jsonArrayData.push(textureData);
                                 }
                                 game.textures.addAtlasJSONArray(this.getPackItem().getKey(), images, jsonArrayData);
+                                for (const frame of item.getFrames()) {
+                                    parsers.ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                                }
                             }
                         }
                     }
@@ -1719,6 +1743,9 @@ var phasereditor2d;
                             const image = core.AssetPackUtils.getImageFromPackUrl(data.url);
                             if (image) {
                                 game.textures.addSpriteSheet(item.getKey(), image.getImageElement(), data.frameConfig);
+                                for (const frame of item.getFrames()) {
+                                    parsers.ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                                }
                             }
                         }
                     }
@@ -1809,6 +1836,9 @@ var phasereditor2d;
                             const image = core.AssetPackUtils.getImageFromPackUrl(textureURL);
                             if (image && atlasData) {
                                 game.textures.addUnityAtlas(item.getKey(), image.getImageElement(), atlasData);
+                                for (const frame of item.getFrames()) {
+                                    parsers.ImageFrameParser.setSourceImageFrame(game, frame, item.getKey(), frame.getName());
+                                }
                             }
                         }
                     }

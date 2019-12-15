@@ -384,6 +384,10 @@ declare namespace phasereditor2d.pack.core.parsers {
         private _packItem;
         constructor(packItem: AssetPackItem);
         getPackItem(): AssetPackItem;
+        static initSourceImageMap(game: Phaser.Game): void;
+        static clearSourceImageMap(game: Phaser.Game): void;
+        static setSourceImageFrame(game: Phaser.Game, image: controls.IImage, key: string, frame?: string | number): void;
+        static getSourceImageFrame(game: Phaser.Game, key: string, frame?: string | number): any;
         abstract addToPhaserCache(game: Phaser.Game): void;
         abstract preloadFrames(): Promise<controls.PreloadResult>;
         abstract parseFrames(): AssetPackImageFrame[];

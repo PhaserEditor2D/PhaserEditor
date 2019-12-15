@@ -1401,15 +1401,10 @@ var phasereditor2d;
                             const sprite = args.obj;
                             if (sprite instanceof ui.gameobjects.EditorImage) {
                                 const { key, frame } = sprite.getEditorTexture();
-                                // TODO: we should paint the object using the Phaser rendering system, 
-                                // maybe using a an offline texture that is updated each time the object is updated.
-                                const finder = new phasereditor2d.pack.core.PackFinder();
-                                finder.preload().then(() => {
-                                    const img = finder.getAssetPackItemImage(key, frame);
-                                    if (img) {
-                                        img.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
-                                    }
-                                });
+                                const image = phasereditor2d.pack.core.parsers.ImageFrameParser.getSourceImageFrame(sprite.getEditorScene().game, key, frame);
+                                if (image) {
+                                    image.paint(args.canvasContext, args.x, args.y, args.w, args.h, false);
+                                }
                             }
                         }
                         cellHeight(args) {
@@ -2266,6 +2261,7 @@ var phasereditor2d;
                         }
                     }
                     async createSceneCache_async(data) {
+                        phasereditor2d.pack.core.parsers.ImageFrameParser.initSourceImageMap(this._scene.game);
                         for (const objData of data.displayList) {
                             await this.updateSceneCacheWithObjectData_async(objData);
                         }

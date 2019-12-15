@@ -24,6 +24,8 @@ namespace phasereditor2d.scene.ui.json {
 
         async createSceneCache_async(data: SceneData) {
 
+            pack.core.parsers.ImageFrameParser.initSourceImageMap(this._scene.game);
+
             for (const objData of data.displayList) {
                 await this.updateSceneCacheWithObjectData_async(objData);
             }

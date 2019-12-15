@@ -19,7 +19,10 @@ namespace phasereditor2d.pack.core.parsers {
                 const image = <controls.DefaultImage>AssetPackUtils.getImageFromPackUrl(url);
 
                 if (image) {
+
                     game.textures.addImage(item.getKey(), image.getImageElement());
+
+                    ImageParser.setSourceImageFrame(game, image, item.getKey());
                 }
             }
         }
