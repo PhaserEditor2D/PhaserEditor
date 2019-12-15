@@ -590,12 +590,14 @@ declare namespace colibri.ui.controls {
         private _element;
         private _bgElement;
         private _menuCloseCallback;
+        private static _openMenu;
         constructor();
         setMenuClosedCallback(callback: () => void): void;
         add(action: Action): void;
         addSeparator(): void;
         isEmpty(): boolean;
         getElement(): HTMLUListElement;
+        static getOpenMenu(): Menu;
         create(e: MouseEvent): void;
         close(): void;
     }

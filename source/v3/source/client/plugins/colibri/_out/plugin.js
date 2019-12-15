@@ -2149,7 +2149,11 @@ var colibri;
                 getElement() {
                     return this._element;
                 }
+                static getOpenMenu() {
+                    return this._openMenu;
+                }
                 create(e) {
+                    Menu._openMenu = this;
                     this._element = document.createElement("ul");
                     this._element.classList.add("Menu");
                     let lastIsSeparator = true;
@@ -2200,6 +2204,7 @@ var colibri;
                     this._element.style.top = y + "px";
                 }
                 close() {
+                    Menu._openMenu = null;
                     this._bgElement.remove();
                     this._element.remove();
                     if (this._menuCloseCallback) {
@@ -2207,6 +2212,7 @@ var colibri;
                     }
                 }
             }
+            Menu._openMenu = null;
             controls.Menu = Menu;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -4378,10 +4384,6 @@ var colibri;
                         }));
                     }
                     escape() {
-                        if (this._menu) {
-                            this._menu.close();
-                            return;
-                        }
                         if (this._selectedObjects.size > 0) {
                             this._selectedObjects.clear();
                             this.repaint();
@@ -6239,13 +6241,16 @@ var colibri;
                         }));
                         // escape
                         manager.addCommandHelper(actions.CMD_ESCAPE);
-                        manager.addHandlerHelper(actions.CMD_ESCAPE, isViewerScope, args => {
-                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
-                            viewer.escape();
-                        });
                         manager.addKeyBinding(actions.CMD_ESCAPE, new KeyMatcher({
                             key: "Escape"
                         }));
+                        // clear viewer selection
+                        manager.addHandlerHelper(actions.CMD_ESCAPE, args => !ui.controls.Menu.getOpenMenu() && isViewerScope(args), args => {
+                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                            viewer.escape();
+                        });
+                        // escape menu
+                        manager.addHandlerHelper(actions.CMD_ESCAPE, args => ui.controls.Menu.getOpenMenu() !== null, args => ui.controls.Menu.getOpenMenu().close());
                     }
                     static initUndo(manager) {
                         // undo

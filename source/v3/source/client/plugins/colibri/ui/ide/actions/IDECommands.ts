@@ -107,18 +107,26 @@ namespace colibri.ui.ide.actions {
 
             manager.addCommandHelper(CMD_ESCAPE);
 
+            manager.addKeyBinding(CMD_ESCAPE, new KeyMatcher({
+                key: "Escape"
+            }));
+
+            // clear viewer selection
+
             manager.addHandlerHelper(CMD_ESCAPE,
-                isViewerScope,
+                args => !controls.Menu.getOpenMenu() && isViewerScope(args),
                 args => {
                     const viewer = <controls.viewers.Viewer>controls.Control.getControlOf(args.activeElement);
                     viewer.escape();
                 }
             );
 
-            manager.addKeyBinding(CMD_ESCAPE, new KeyMatcher({
-                key: "Escape"
-            }));
+            // escape menu
 
+            manager.addHandlerHelper(CMD_ESCAPE,
+                args => controls.Menu.getOpenMenu() !== null,
+                args => controls.Menu.getOpenMenu().close()
+            );
         }
 
         private static initUndo(manager: commands.CommandManager) {

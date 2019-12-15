@@ -55,7 +55,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         private onKeyDown(e : KeyboardEvent) {
-            
+
         }
 
         private onDragStart(e: DragEvent) {
@@ -212,11 +212,6 @@ namespace colibri.ui.controls.viewers {
         }
 
         escape(): void {
-
-            if (this._menu) {
-                this._menu.close();
-                return;
-            }
 
             if (this._selectedObjects.size > 0) {
                 this._selectedObjects.clear();
