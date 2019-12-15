@@ -148,6 +148,7 @@ namespace phasereditor2d.scene.ui.editor {
             this._gameBooted = false;
 
             (<any>this._game.config).postBoot = () => {
+                // the scene is created just at this moment!
                 this.onGameBoot();
             };
 
@@ -159,11 +160,13 @@ namespace phasereditor2d.scene.ui.editor {
             this._selectionManager = new SelectionManager(this);
             this._actionManager = new ActionManager(this);
 
-
-            this.updateTitleIcon();
         }
 
-        private updateTitleIcon() {
+        private async updateTitleIcon() {
+
+            const file = this.getInput();
+
+            await SceneThumbnailCache.getInstance().preload(file);
 
             const img = this.getIcon();
 
@@ -224,20 +227,6 @@ namespace phasereditor2d.scene.ui.editor {
 
 
             return manager;
-        }
-
-        async setInput(file: colibri.core.io.FilePath) {
-
-            super.setInput(file);
-
-            if (this._gameBooted) {
-                await this.readScene();
-            }
-
-            this.updateTitleIcon();
-
-            //TODO: a so ugly workaround!
-            setTimeout(() => this.updateTitleIcon(), 1000);
         }
 
         private async readScene() {
@@ -374,7 +363,10 @@ namespace phasereditor2d.scene.ui.editor {
             this._gameBooted = true;
 
             if (!this._sceneRead) {
+
                 await this.readScene();
+
+                this.updateTitleIcon();
             }
 
             this.layout();

@@ -211,7 +211,6 @@ declare namespace phasereditor2d.scene.ui.editor {
         private updateTitleIcon;
         getIcon(): controls.IImage;
         createEditorToolbar(parent: HTMLElement): controls.ToolbarManager;
-        setInput(file: colibri.core.io.FilePath): Promise<void>;
         private readScene;
         getSelectedGameObjects(): gameobjects.EditorObject[];
         getActionManager(): ActionManager;

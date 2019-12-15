@@ -1107,6 +1107,7 @@ var phasereditor2d;
                         this._sceneRead = false;
                         this._gameBooted = false;
                         this._game.config.postBoot = () => {
+                            // the scene is created just at this moment!
                             this.onGameBoot();
                         };
                         // init managers and factories
@@ -1115,9 +1116,10 @@ var phasereditor2d;
                         this._cameraManager = new editor.CameraManager(this);
                         this._selectionManager = new editor.SelectionManager(this);
                         this._actionManager = new editor.ActionManager(this);
-                        this.updateTitleIcon();
                     }
-                    updateTitleIcon() {
+                    async updateTitleIcon() {
+                        const file = this.getInput();
+                        await ui.SceneThumbnailCache.getInstance().preload(file);
                         const img = this.getIcon();
                         if (img) {
                             img.preload().then(w => this.dispatchTitleUpdatedEvent());
@@ -1159,15 +1161,6 @@ var phasereditor2d;
                             callback: () => { }
                         }));
                         return manager;
-                    }
-                    async setInput(file) {
-                        super.setInput(file);
-                        if (this._gameBooted) {
-                            await this.readScene();
-                        }
-                        this.updateTitleIcon();
-                        //TODO: a so ugly workaround!
-                        setTimeout(() => this.updateTitleIcon(), 1000);
                     }
                     async readScene() {
                         this._sceneRead = true;
@@ -1261,6 +1254,7 @@ var phasereditor2d;
                         this._gameBooted = true;
                         if (!this._sceneRead) {
                             await this.readScene();
+                            this.updateTitleIcon();
                         }
                         this.layout();
                         this.refreshOutline();
