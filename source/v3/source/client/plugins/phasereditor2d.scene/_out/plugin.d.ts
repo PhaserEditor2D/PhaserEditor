@@ -186,6 +186,7 @@ declare namespace phasereditor2d.scene.ui.editor {
 }
 declare namespace phasereditor2d.scene.ui.editor {
     import controls = colibri.ui.controls;
+    import io = colibri.core.io;
     class SceneEditor extends colibri.ui.ide.FileEditor {
         private _blocksProvider;
         private _outlineProvider;
@@ -207,6 +208,7 @@ declare namespace phasereditor2d.scene.ui.editor {
         saveState(state: any): void;
         restoreState(state: any): void;
         protected onEditorInputContentChanged(): void;
+        setInput(file: io.FilePath): void;
         protected createPart(): void;
         private updateTitleIcon;
         getIcon(): controls.IImage;

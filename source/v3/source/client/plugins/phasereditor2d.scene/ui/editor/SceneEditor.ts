@@ -103,6 +103,14 @@ namespace phasereditor2d.scene.ui.editor {
             //TODO: missing to implement
         }
 
+        setInput(file: io.FilePath) {
+
+            super.setInput(file);
+
+            // we do this here because the icon should be shown even if the editor is not created yet.
+            this.updateTitleIcon();
+        }
+
         protected createPart() {
 
             this.setLayoutChildren(false);
@@ -366,8 +374,6 @@ namespace phasereditor2d.scene.ui.editor {
             if (!this._sceneRead) {
 
                 await this.readScene();
-
-                this.updateTitleIcon();
             }
 
             this.layout();

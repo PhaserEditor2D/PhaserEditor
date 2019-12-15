@@ -1076,6 +1076,11 @@ var phasereditor2d;
                     onEditorInputContentChanged() {
                         //TODO: missing to implement
                     }
+                    setInput(file) {
+                        super.setInput(file);
+                        // we do this here because the icon should be shown even if the editor is not created yet.
+                        this.updateTitleIcon();
+                    }
                     createPart() {
                         this.setLayoutChildren(false);
                         const container = document.createElement("div");
@@ -1252,7 +1257,6 @@ var phasereditor2d;
                         this._gameBooted = true;
                         if (!this._sceneRead) {
                             await this.readScene();
-                            this.updateTitleIcon();
                         }
                         this.layout();
                         this.refreshOutline();
