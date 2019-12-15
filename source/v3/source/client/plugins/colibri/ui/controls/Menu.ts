@@ -6,7 +6,7 @@ namespace colibri.ui.controls {
         private _element: HTMLUListElement;
         private _bgElement: HTMLDivElement;
         private _menuCloseCallback: () => void;
-        private static _openMenu : Menu = null;
+        private static _activeMenu : Menu = null;
 
         constructor() {
             this._actions = [];
@@ -32,13 +32,13 @@ namespace colibri.ui.controls {
             return this._element;
         }
 
-        static getOpenMenu() {
-            return this._openMenu;
+        static getActiveMenu() {
+            return this._activeMenu;
         }
 
         create(e: MouseEvent) {
 
-            Menu._openMenu = this;
+            Menu._activeMenu = this;
 
             this._element = document.createElement("ul");
             this._element.classList.add("Menu");
@@ -121,7 +121,7 @@ namespace colibri.ui.controls {
 
         close() {
 
-            Menu._openMenu = null;
+            Menu._activeMenu = null;
 
             this._bgElement.remove();
             this._element.remove();

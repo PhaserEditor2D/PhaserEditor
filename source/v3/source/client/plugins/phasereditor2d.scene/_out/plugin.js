@@ -666,7 +666,7 @@ var phasereditor2d;
                             obj.destroy();
                         }
                         this._editor.refreshOutline();
-                        this._editor.getSelectionManager().cleanSelection();
+                        this._editor.getSelectionManager().refreshSelection();
                         this._editor.setDirty(true);
                         this._editor.repaint();
                     }
@@ -1292,7 +1292,11 @@ var phasereditor2d;
                         canvas.addEventListener("click", e => this.onMouseClick(e));
                         this._editor.addEventListener(controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
                     }
-                    cleanSelection() {
+                    clearSelection() {
+                        this._editor.setSelection([]);
+                        this._editor.repaint();
+                    }
+                    refreshSelection() {
                         this._editor.setSelection(this._editor.getSelection().filter(obj => {
                             if (obj instanceof Phaser.GameObjects.GameObject) {
                                 return this._editor.getGameScene().sys.displayList.exists(obj);
@@ -1370,8 +1374,13 @@ var phasereditor2d;
                                 const editor = args.activeEditor;
                                 editor.getSelectionManager().selectAll();
                             });
+                            // clear selection
+                            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_ESCAPE, isSceneScope, args => {
+                                const editor = args.activeEditor;
+                                editor.getSelectionManager().clearSelection();
+                            });
                             // delete 
-                            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE, args => isSceneScope(args), args => {
+                            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE, isSceneScope, args => {
                                 const editor = args.activeEditor;
                                 editor.getActionManager().deleteObjects();
                             });
@@ -1894,7 +1903,7 @@ var phasereditor2d;
                                     obj.destroy();
                                 }
                             }
-                            this._editor.getSelectionManager().cleanSelection();
+                            this._editor.getSelectionManager().refreshSelection();
                             this.updateEditor();
                         }
                         redo() {

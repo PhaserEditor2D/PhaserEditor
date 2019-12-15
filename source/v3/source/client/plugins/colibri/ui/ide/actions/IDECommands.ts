@@ -114,7 +114,7 @@ namespace colibri.ui.ide.actions {
             // clear viewer selection
 
             manager.addHandlerHelper(CMD_ESCAPE,
-                args => !controls.Menu.getOpenMenu() && isViewerScope(args),
+                isViewerScope,
                 args => {
                     const viewer = <controls.viewers.Viewer>controls.Control.getControlOf(args.activeElement);
                     viewer.escape();
@@ -124,8 +124,8 @@ namespace colibri.ui.ide.actions {
             // escape menu
 
             manager.addHandlerHelper(CMD_ESCAPE,
-                args => controls.Menu.getOpenMenu() !== null,
-                args => controls.Menu.getOpenMenu().close()
+                args => args.activeMenu !== null,
+                args => args.activeMenu.close()
             );
         }
 

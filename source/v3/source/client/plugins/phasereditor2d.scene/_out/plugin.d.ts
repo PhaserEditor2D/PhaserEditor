@@ -236,7 +236,8 @@ declare namespace phasereditor2d.scene.ui.editor {
     class SelectionManager {
         private _editor;
         constructor(editor: SceneEditor);
-        cleanSelection(): void;
+        clearSelection(): void;
+        refreshSelection(): void;
         selectAll(): void;
         private updateOutlineSelection;
         private onMouseClick;

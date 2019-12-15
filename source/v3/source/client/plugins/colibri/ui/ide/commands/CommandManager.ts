@@ -75,10 +75,18 @@ namespace colibri.ui.ide.commands {
 
             const wb = Workbench.getWorkbench();
 
+            const activeMenu = controls.Menu.getActiveMenu();
+            let activeElement = wb.getActiveElement();
+
+            if (activeMenu) {
+                activeElement = activeMenu.getElement();
+            }
+
             return new CommandArgs(
                 wb.getActivePart(),
                 wb.getActiveEditor(),
-                wb.getActiveElement(),
+                activeElement,
+                activeMenu,
                 wb.getActiveWindow(),
                 wb.getActiveDialog()
             );

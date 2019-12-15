@@ -2149,11 +2149,11 @@ var colibri;
                 getElement() {
                     return this._element;
                 }
-                static getOpenMenu() {
-                    return this._openMenu;
+                static getActiveMenu() {
+                    return this._activeMenu;
                 }
                 create(e) {
-                    Menu._openMenu = this;
+                    Menu._activeMenu = this;
                     this._element = document.createElement("ul");
                     this._element.classList.add("Menu");
                     let lastIsSeparator = true;
@@ -2204,7 +2204,7 @@ var colibri;
                     this._element.style.top = y + "px";
                 }
                 close() {
-                    Menu._openMenu = null;
+                    Menu._activeMenu = null;
                     this._bgElement.remove();
                     this._element.remove();
                     if (this._menuCloseCallback) {
@@ -2212,7 +2212,7 @@ var colibri;
                     }
                 }
             }
-            Menu._openMenu = null;
+            Menu._activeMenu = null;
             controls.Menu = Menu;
         })(controls = ui.controls || (ui.controls = {}));
     })(ui = colibri.ui || (colibri.ui = {}));
@@ -6245,12 +6245,12 @@ var colibri;
                             key: "Escape"
                         }));
                         // clear viewer selection
-                        manager.addHandlerHelper(actions.CMD_ESCAPE, args => !ui.controls.Menu.getOpenMenu() && isViewerScope(args), args => {
+                        manager.addHandlerHelper(actions.CMD_ESCAPE, isViewerScope, args => {
                             const viewer = ui.controls.Control.getControlOf(args.activeElement);
                             viewer.escape();
                         });
                         // escape menu
-                        manager.addHandlerHelper(actions.CMD_ESCAPE, args => ui.controls.Menu.getOpenMenu() !== null, args => ui.controls.Menu.getOpenMenu().close());
+                        manager.addHandlerHelper(actions.CMD_ESCAPE, args => args.activeMenu !== null, args => args.activeMenu.close());
                     }
                     static initUndo(manager) {
                         // undo
@@ -6375,10 +6375,11 @@ var colibri;
             var commands;
             (function (commands) {
                 class CommandArgs {
-                    constructor(activePart, activeEditor, activeElement, activeWindow, activeDialog) {
+                    constructor(activePart, activeEditor, activeElement, activeMenu, activeWindow, activeDialog) {
                         this.activePart = activePart;
                         this.activeEditor = activeEditor;
                         this.activeElement = activeElement;
+                        this.activeMenu = activeMenu;
                         this.activeWindow = activeWindow;
                         this.activeDialog = activeDialog;
                     }
@@ -6491,7 +6492,12 @@ var colibri;
                     }
                     makeArgs() {
                         const wb = ide.Workbench.getWorkbench();
-                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), wb.getActiveElement(), wb.getActiveWindow(), wb.getActiveDialog());
+                        const activeMenu = ui.controls.Menu.getActiveMenu();
+                        let activeElement = wb.getActiveElement();
+                        if (activeMenu) {
+                            activeElement = activeMenu.getElement();
+                        }
+                        return new commands.CommandArgs(wb.getActivePart(), wb.getActiveEditor(), activeElement, activeMenu, wb.getActiveWindow(), wb.getActiveDialog());
                     }
                     getCommand(id) {
                         const command = this._commandIdMap.get(id);

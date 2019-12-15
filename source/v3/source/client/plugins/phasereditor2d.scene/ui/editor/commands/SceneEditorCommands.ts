@@ -9,7 +9,7 @@ namespace phasereditor2d.scene.ui.editor.commands {
 
     export class SceneEditorCommands {
 
-        static registerCommands(manager : colibri.ui.ide.commands.CommandManager) {
+        static registerCommands(manager: colibri.ui.ide.commands.CommandManager) {
 
             // select all
 
@@ -22,12 +22,22 @@ namespace phasereditor2d.scene.ui.editor.commands {
                     editor.getSelectionManager().selectAll();
                 });
 
+            // clear selection
+
+            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_ESCAPE,
+
+                isSceneScope,
+
+                args => {
+                    const editor = args.activeEditor as SceneEditor;
+                    editor.getSelectionManager().clearSelection();
+                });
 
             // delete 
 
             manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE,
 
-                args => isSceneScope(args),
+                isSceneScope,
 
                 args => {
                     const editor = <SceneEditor>args.activeEditor;

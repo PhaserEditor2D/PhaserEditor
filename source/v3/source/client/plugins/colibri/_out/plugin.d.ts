@@ -590,14 +590,14 @@ declare namespace colibri.ui.controls {
         private _element;
         private _bgElement;
         private _menuCloseCallback;
-        private static _openMenu;
+        private static _activeMenu;
         constructor();
         setMenuClosedCallback(callback: () => void): void;
         add(action: Action): void;
         addSeparator(): void;
         isEmpty(): boolean;
         getElement(): HTMLUListElement;
-        static getOpenMenu(): Menu;
+        static getActiveMenu(): Menu;
         create(e: MouseEvent): void;
         close(): void;
     }
@@ -1583,9 +1583,10 @@ declare namespace colibri.ui.ide.commands {
         readonly activePart: Part;
         readonly activeEditor: EditorPart;
         readonly activeElement: HTMLElement;
+        readonly activeMenu: controls.Menu;
         readonly activeWindow: ide.WorkbenchWindow;
         readonly activeDialog: controls.dialogs.Dialog;
-        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement, activeWindow: ide.WorkbenchWindow, activeDialog: controls.dialogs.Dialog);
+        constructor(activePart: Part, activeEditor: EditorPart, activeElement: HTMLElement, activeMenu: controls.Menu, activeWindow: ide.WorkbenchWindow, activeDialog: controls.dialogs.Dialog);
     }
 }
 declare namespace colibri.ui.ide.commands {

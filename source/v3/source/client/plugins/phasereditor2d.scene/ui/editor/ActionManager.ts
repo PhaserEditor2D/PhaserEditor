@@ -19,7 +19,7 @@ namespace phasereditor2d.scene.ui.editor {
             }
 
             this._editor.refreshOutline();
-            this._editor.getSelectionManager().cleanSelection();
+            this._editor.getSelectionManager().refreshSelection();
             this._editor.setDirty(true);
             this._editor.repaint();
         }

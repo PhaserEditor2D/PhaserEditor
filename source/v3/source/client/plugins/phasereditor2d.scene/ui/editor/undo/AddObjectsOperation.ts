@@ -31,7 +31,7 @@ namespace phasereditor2d.scene.ui.editor.undo {
                 }
             }
 
-            this._editor.getSelectionManager().cleanSelection();
+            this._editor.getSelectionManager().refreshSelection();
 
             this.updateEditor();
         }

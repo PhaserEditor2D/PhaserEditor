@@ -6,20 +6,29 @@ namespace phasereditor2d.scene.ui.editor {
         private _editor: SceneEditor;
 
         constructor(editor: SceneEditor) {
+            
             this._editor = editor;
 
             const canvas = this._editor.getOverlayLayer().getCanvas();
             canvas.addEventListener("click", e => this.onMouseClick(e));
 
             this._editor.addEventListener(controls.EVENT_SELECTION_CHANGED, e => this.updateOutlineSelection());
-
         }
 
-        cleanSelection() {
+        clearSelection() {
+
+            this._editor.setSelection([]);
+            this._editor.repaint();
+        }
+
+        refreshSelection() {
+
             this._editor.setSelection(this._editor.getSelection().filter(obj => {
+
                 if (obj instanceof Phaser.GameObjects.GameObject) {
                     return this._editor.getGameScene().sys.displayList.exists(obj);
                 }
+
                 return true;
             }))
         }
