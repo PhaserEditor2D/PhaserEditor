@@ -4269,6 +4269,8 @@ var colibri;
                         canvas.addEventListener("dblclick", e => this.onDoubleClick(e));
                         canvas.addEventListener("dragstart", e => this.onDragStart(e));
                     }
+                    onKeyDown(e) {
+                    }
                     onDragStart(e) {
                         const paintItemUnderCursor = this.getPaintItemAt(e);
                         if (paintItemUnderCursor) {
@@ -4375,17 +4377,15 @@ var colibri;
                             detail: this.getSelection()
                         }));
                     }
-                    onKeyDown(e) {
-                        if (e.key === "Escape") {
-                            if (this._menu) {
-                                this._menu.close();
-                                return;
-                            }
-                            if (this._selectedObjects.size > 0) {
-                                this._selectedObjects.clear();
-                                this.repaint();
-                                this.fireSelectionChanged();
-                            }
+                    escape() {
+                        if (this._menu) {
+                            this._menu.close();
+                            return;
+                        }
+                        if (this._selectedObjects.size > 0) {
+                            this._selectedObjects.clear();
+                            this.repaint();
+                            this.fireSelectionChanged();
                         }
                     }
                     onWheel(e) {
@@ -6185,6 +6185,7 @@ var colibri;
                 actions.CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
                 actions.CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
                 actions.CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
+                actions.CMD_ESCAPE = "colibri.ui.ide.actions.Scape";
                 function isViewerScope(args) {
                     if (args.activeElement) {
                         const control = ui.controls.Control.getControlOf(args.activeElement);
@@ -6235,6 +6236,15 @@ var colibri;
                         });
                         manager.addKeyBinding(actions.CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
                             key: " "
+                        }));
+                        // escape
+                        manager.addCommandHelper(actions.CMD_ESCAPE);
+                        manager.addHandlerHelper(actions.CMD_ESCAPE, isViewerScope, args => {
+                            const viewer = ui.controls.Control.getControlOf(args.activeElement);
+                            viewer.escape();
+                        });
+                        manager.addKeyBinding(actions.CMD_ESCAPE, new KeyMatcher({
+                            key: "Escape"
                         }));
                     }
                     static initUndo(manager) {

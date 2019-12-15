@@ -1045,6 +1045,7 @@ declare namespace colibri.ui.controls.viewers {
         private _menu;
         constructor(...classList: string[]);
         private initListeners;
+        private onKeyDown;
         private onDragStart;
         getMenu(): Menu;
         setMenu(menu: controls.Menu): void;
@@ -1062,7 +1063,7 @@ declare namespace colibri.ui.controls.viewers {
         setSelection(selection: any[], notify?: boolean): void;
         abstract reveal(...objects: any[]): void;
         private fireSelectionChanged;
-        private onKeyDown;
+        escape(): void;
         private onWheel;
         private onDoubleClick;
         protected abstract canSelectAtPoint(e: MouseEvent): boolean;
@@ -1546,6 +1547,7 @@ declare namespace colibri.ui.ide.actions {
     const CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
     const CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
     const CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
+    const CMD_ESCAPE = "colibri.ui.ide.actions.Scape";
     class IDECommands {
         static registerCommands(manager: commands.CommandManager): void;
         private static initViewer;

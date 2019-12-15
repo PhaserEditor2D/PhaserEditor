@@ -12,6 +12,7 @@ namespace colibri.ui.ide.actions {
     export const CMD_COLLAPSE_ALL = "colibri.ui.ide.actions.CollapseAll";
     export const CMD_EXPAND_COLLAPSE_BRANCH = "colibri.ui.ide.actions.ExpandCollapseBranch";
     export const CMD_SELECT_ALL = "colibri.ui.ide.actions.SelectAll";
+    export const CMD_ESCAPE = "colibri.ui.ide.actions.Scape";
 
 
     function isViewerScope(args: colibri.ui.ide.commands.CommandArgs) {
@@ -100,6 +101,24 @@ namespace colibri.ui.ide.actions {
             manager.addKeyBinding(CMD_EXPAND_COLLAPSE_BRANCH, new KeyMatcher({
                 key: " "
             }))
+
+
+            // escape
+
+            manager.addCommandHelper(CMD_ESCAPE);
+
+            manager.addHandlerHelper(CMD_ESCAPE,
+                isViewerScope,
+                args => {
+                    const viewer = <controls.viewers.Viewer>controls.Control.getControlOf(args.activeElement);
+                    viewer.escape();
+                }
+            );
+
+            manager.addKeyBinding(CMD_ESCAPE, new KeyMatcher({
+                key: "Escape"
+            }));
+
         }
 
         private static initUndo(manager: commands.CommandManager) {

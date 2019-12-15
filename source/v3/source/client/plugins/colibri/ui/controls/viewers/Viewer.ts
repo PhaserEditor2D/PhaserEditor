@@ -54,6 +54,10 @@ namespace colibri.ui.controls.viewers {
             canvas.addEventListener("dragstart", e => this.onDragStart(e));
         }
 
+        private onKeyDown(e : KeyboardEvent) {
+            
+        }
+
         private onDragStart(e: DragEvent) {
 
             const paintItemUnderCursor = this.getPaintItemAt(e);
@@ -146,7 +150,7 @@ namespace colibri.ui.controls.viewers {
             }
 
             const label = labelProvider.getLabel(obj);
-            
+
             if (label.toLocaleLowerCase().indexOf(filter) !== -1) {
                 return true;
             }
@@ -167,7 +171,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         getSelection() {
-            
+
             const sel = [];
 
             for (const obj of this._selectedObjects) {
@@ -207,20 +211,17 @@ namespace colibri.ui.controls.viewers {
             }));
         }
 
-        private onKeyDown(e: KeyboardEvent): void {
+        escape(): void {
 
-            if (e.key === "Escape") {
+            if (this._menu) {
+                this._menu.close();
+                return;
+            }
 
-                if (this._menu) {
-                    this._menu.close();
-                    return;
-                }
-
-                if (this._selectedObjects.size > 0) {
-                    this._selectedObjects.clear();
-                    this.repaint();
-                    this.fireSelectionChanged();
-                }
+            if (this._selectedObjects.size > 0) {
+                this._selectedObjects.clear();
+                this.repaint();
+                this.fireSelectionChanged();
             }
         }
 
@@ -542,7 +543,7 @@ namespace colibri.ui.controls.viewers {
         }
 
         setState(state: ViewerState): void {
-            
+
             this._expandedObjects = state.expandedObjects;
             this._selectedObjects = state.selectedObjects;
 
@@ -558,9 +559,9 @@ namespace colibri.ui.controls.viewers {
 
 
     export declare type ViewerState = {
-        expandedObjects : Set<any>,
-        selectedObjects : Set<any>,
-        filterText : string,
+        expandedObjects: Set<any>,
+        selectedObjects: Set<any>,
+        filterText: string,
         cellSize: number
     }
 }
