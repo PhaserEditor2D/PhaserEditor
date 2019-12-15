@@ -11,6 +11,18 @@ namespace phasereditor2d.scene.ui.editor.commands {
 
         static registerCommands(manager : colibri.ui.ide.commands.CommandManager) {
 
+            // select all
+
+            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_SELECT_ALL,
+
+                args => args.activePart instanceof SceneEditor,
+
+                args => {
+                    const editor = args.activeEditor as SceneEditor;
+                    editor.getSelectionManager().selectAll();
+                });
+
+
             // delete 
 
             manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE,

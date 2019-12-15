@@ -24,6 +24,13 @@ namespace phasereditor2d.scene.ui.editor {
             }))
         }
 
+        selectAll() {
+
+            const sel = this._editor.getGameScene().getDisplayListChildren();
+            this._editor.setSelection(sel);
+            this._editor.repaint();
+        }
+
         private updateOutlineSelection(): void {
             const provider = this._editor.getOutlineProvider();
             provider.setSelection(this._editor.getSelection(), true, true);

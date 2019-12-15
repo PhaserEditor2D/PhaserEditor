@@ -1300,6 +1300,11 @@ var phasereditor2d;
                             return true;
                         }));
                     }
+                    selectAll() {
+                        const sel = this._editor.getGameScene().getDisplayListChildren();
+                        this._editor.setSelection(sel);
+                        this._editor.repaint();
+                    }
                     updateOutlineSelection() {
                         const provider = this._editor.getOutlineProvider();
                         provider.setSelection(this._editor.getSelection(), true, true);
@@ -1360,6 +1365,11 @@ var phasereditor2d;
                     }
                     class SceneEditorCommands {
                         static registerCommands(manager) {
+                            // select all
+                            manager.addHandlerHelper(colibri.ui.ide.actions.CMD_SELECT_ALL, args => args.activePart instanceof editor_6.SceneEditor, args => {
+                                const editor = args.activeEditor;
+                                editor.getSelectionManager().selectAll();
+                            });
                             // delete 
                             manager.addHandlerHelper(colibri.ui.ide.actions.CMD_DELETE, args => isSceneScope(args), args => {
                                 const editor = args.activeEditor;

@@ -237,6 +237,7 @@ declare namespace phasereditor2d.scene.ui.editor {
         private _editor;
         constructor(editor: SceneEditor);
         cleanSelection(): void;
+        selectAll(): void;
         private updateOutlineSelection;
         private onMouseClick;
         hitTestOfActivePointer(): Phaser.GameObjects.GameObject[];
