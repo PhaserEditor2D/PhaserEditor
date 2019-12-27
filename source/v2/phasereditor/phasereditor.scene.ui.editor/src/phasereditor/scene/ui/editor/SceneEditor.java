@@ -65,6 +65,7 @@ import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetFrameModel;
+import phasereditor.assetpack.core.IAssetKey;
 import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SpritesheetAssetModel;
@@ -895,9 +896,21 @@ public class SceneEditor extends EditorPart implements IPersistableEditor {
 		return newModels;
 	}
 
-	private static String computeBaseName(IAssetFrameModel texture) {
+	public static String computeBaseName(IAssetKey texture) {
+		
 		if (texture instanceof SpritesheetAssetModel.FrameModel) {
 			return texture.getAsset().getKey();
+		}
+
+		if (AssetPackCore.pref_useContainerFolderAsKeyPrefix()) {
+
+			var folderName = texture.getAsset().getPack().getFile().getParent().getName();
+			var name = texture.getKey();
+
+			if (name.startsWith(folderName + ".")) {
+				name = name.substring(folderName.length() + 1);
+				return name;
+			}
 		}
 
 		return texture.getKey();

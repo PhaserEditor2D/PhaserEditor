@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.action.Action;
 
+import phasereditor.assetpack.core.AssetPackCore;
 import phasereditor.assetpack.core.AtlasAssetModel;
 import phasereditor.assetpack.core.BitmapFontAssetModel;
 import phasereditor.assetpack.core.IAssetKey;
@@ -32,6 +33,7 @@ import phasereditor.assetpack.core.ImageAssetModel;
 import phasereditor.assetpack.core.MultiAtlasAssetModel;
 import phasereditor.assetpack.core.SvgAssetModel;
 import phasereditor.assetpack.ui.AssetPackUI;
+import phasereditor.project.core.ProjectCore;
 import phasereditor.scene.core.BitmapTextComponent;
 import phasereditor.scene.core.NameComputer;
 import phasereditor.scene.core.ObjectModel;
@@ -99,6 +101,14 @@ public abstract class AddObjectAction<T extends ObjectModel> extends Action {
 		String basename2 = null;
 		var key = TextureComponent.get_textureKey(model);
 		var frame = TextureComponent.get_textureFrame(model);
+		
+		var finder = AssetPackCore.getAssetFinder(ProjectCore.getActiveProject());
+		var asset = finder.findAssetKey(key, frame);
+		
+		if (asset != null) {
+			var name = SceneEditor.computeBaseName(asset);
+			return computer.newName(name);
+		}
 
 		if (frame != null) {
 			basename2 = frame;
