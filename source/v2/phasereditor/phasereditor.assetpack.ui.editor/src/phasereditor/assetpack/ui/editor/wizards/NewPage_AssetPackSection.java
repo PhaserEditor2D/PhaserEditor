@@ -85,7 +85,22 @@ public class NewPage_AssetPackSection extends WizardPage {
 		_treeViewer = new TreeViewer(container);
 		Tree tree = _treeViewer.getTree();
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		_treeViewer.setLabelProvider(AssetLabelProvider.GLOBAL_16);
+		_treeViewer.setLabelProvider(new AssetLabelProvider() {
+			@Override
+			public String getText(Object element) {
+
+				if (element instanceof AssetPackModel) {
+
+					var webContentPath = ProjectCore.getWebContentFolder(_project).getProjectRelativePath();
+					var packPath = ((AssetPackModel) element).getFile().getProjectRelativePath();
+					var path = packPath.makeRelativeTo(webContentPath);
+
+					return path.toPortableString();
+				}
+
+				return super.getText(element);
+			}
+		});
 		_treeViewer.setContentProvider(new TreeArrayContentProvider());
 
 		afterCreateWidgets();
