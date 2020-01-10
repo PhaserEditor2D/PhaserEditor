@@ -108,13 +108,12 @@ import phasereditor.atlas.core.SettingsBean;
 import phasereditor.atlas.ui.AtlasCanvas_Unmanaged;
 import phasereditor.atlas.ui.ITexturePackerEditor;
 import phasereditor.project.core.ProjectCore;
-import phasereditor.project.ui.ProjectPropertyPage;
 import phasereditor.ui.BaseImageTreeCanvasItemRenderer;
+import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.EditorSharedImages;
 import phasereditor.ui.FilteredTreeCanvasContentOutlinePage;
 import phasereditor.ui.FrameData;
 import phasereditor.ui.IEditorBlock;
-import phasereditor.ui.EditorBlockProvider;
 import phasereditor.ui.IEditorHugeToolbar;
 import phasereditor.ui.IEditorSharedImages;
 import phasereditor.ui.IconTreeCanvasItemRenderer;
@@ -355,9 +354,9 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 	}
 
 	private void createMenu() {
-		
+
 		createActions();
-		
+
 		_selectionProvider.setSelection(StructuredSelection.EMPTY);
 		_menuManager = new MenuManager();
 		_menuManager.add(getDeleteAction());
@@ -605,7 +604,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 					out.println("Temporal atlas file " + libgdxAtlasFile);
 
-					 out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
+					out.println(new String(Files.readAllBytes(libgdxAtlasFile.toPath())));
 
 					TextureAtlasData data = new TextureAtlasData(new FileHandle(libgdxAtlasFile),
 							new FileHandle(tempDir), false);
@@ -654,12 +653,12 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 								frame.setSpriteX((int) (region.offsetX));
 
 								// this happens when white spaces are stripped!
-								
-								//if (region.offsetY != 0) {
-									// LibGDX uses the OpenGL Y order (from
-									// bottom to top)
-									frame.setSpriteY((int) (region.originalHeight - region.offsetY - region.height));
-								//}
+
+								// if (region.offsetY != 0) {
+								// LibGDX uses the OpenGL Y order (from
+								// bottom to top)
+								frame.setSpriteY((int) (region.originalHeight - region.offsetY - region.height));
+								// }
 
 								frame.setSpriteW(region.width);
 								frame.setSpriteH(region.height);
@@ -1292,7 +1291,7 @@ public class TexturePackerEditor extends EditorPart implements IEditorSharedImag
 
 		@Override
 		public IPropertySheetPage createPropertyPage() {
-			return new ProjectPropertyPage();
+			return new TexturePackerEditorPropertyPage();
 		}
 
 	}
