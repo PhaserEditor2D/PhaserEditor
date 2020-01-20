@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2019 Photon Storm Ltd.
+ * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
@@ -12,9 +12,12 @@
  * @function Phaser.Utils.Array.Shuffle
  * @since 3.0.0
  *
- * @param {array} array - The array to shuffle. This array is modified in place.
+ * @generic T
+ * @genericUse {T[]} - [array,$return]
  *
- * @return {array} The shuffled array.
+ * @param {T[]} array - The array to shuffle. This array is modified in place.
+ *
+ * @return {T[]} The shuffled array.
  */
 var Shuffle = function (array)
 {

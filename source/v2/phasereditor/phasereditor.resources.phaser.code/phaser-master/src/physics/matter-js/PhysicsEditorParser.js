@@ -1,15 +1,15 @@
 /**
  * @author       Joachim Grill <joachim@codeandweb.com>
+ * @author       Richard Davey <rich@photonstorm.com>
  * @copyright    2018 CodeAndWeb GmbH
+ * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
 var Bodies = require('./lib/factory/Bodies');
 var Body = require('./lib/body/Body');
-var Bounds = require('./lib/geometry/Bounds');
 var Common = require('./lib/core/Common');
 var GetFastValue = require('../../utils/object/GetFastValue');
-var Vector = require('./lib/geometry/Vector');
 var Vertices = require('./lib/geometry/Vertices');
 
 /**
@@ -27,16 +27,17 @@ var PhysicsEditorParser = {
      * @function Phaser.Physics.Matter.PhysicsEditorParser.parseBody
      * @since 3.10.0
      *
-     * @param {number} x - x position.
-     * @param {number} y - y position.
-     * @param {number} w - width.
-     * @param {number} h - height.
-     * @param {object} config - body configuration and fixture (child body) definitions.
+     * @param {number} x - The horizontal world location of the body.
+     * @param {number} y - The vertical world location of the body.
+     * @param {object} config - The body configuration and fixture (child body) definitions, as exported by PhysicsEditor.
+     * @param {Phaser.Types.Physics.Matter.MatterBodyConfig} [options] - An optional Body configuration object that is used to set initial Body properties on creation.
      * 
-     * @return {object} A matter body, consisting of several parts (child bodies)
+     * @return {MatterJS.BodyType} A compound Matter JS Body.
      */
-    parseBody: function (x, y, w, h, config)
+    parseBody: function (x, y, config, options)
     {
+        if (options === undefined) { options = {}; }
+
         var fixtureConfigs = GetFastValue(config, 'fixtures', []);
         var fixtures = [];
 
@@ -50,7 +51,9 @@ var PhysicsEditorParser = {
             }
         }
 
-        var matterConfig = Common.extend({}, false, config);
+        var matterConfig = Common.clone(config, true);
+
+        Common.extend(matterConfig, options, true);
 
         delete matterConfig.fixtures;
         delete matterConfig.type;
@@ -58,13 +61,11 @@ var PhysicsEditorParser = {
         var body = Body.create(matterConfig);
 
         Body.setParts(body, fixtures);
-        body.render.sprite.xOffset = body.position.x / w;
-        body.render.sprite.yOffset = body.position.y / h;
+        
         Body.setPosition(body, { x: x, y: y });
 
         return body;
     },
-
 
     /**
      * Parses an element of the "fixtures" list exported by PhysicsEditor
@@ -72,9 +73,9 @@ var PhysicsEditorParser = {
      * @function Phaser.Physics.Matter.PhysicsEditorParser.parseFixture
      * @since 3.10.0
      *
-     * @param {object} fixtureConfig - the fixture object to parse
+     * @param {object} fixtureConfig - The fixture object to parse.
      * 
-     * @return {object[]} - A list of matter bodies
+     * @return {MatterJS.BodyType[]} - An array of Matter JS Bodies.
      */
     parseFixture: function (fixtureConfig)
     {
@@ -106,20 +107,21 @@ var PhysicsEditorParser = {
      * @function Phaser.Physics.Matter.PhysicsEditorParser.parseVertices
      * @since 3.10.0
      *
-     * @param {object} vertexSets - The vertex lists to parse.
-     * @param {object} options - Matter body options.
+     * @param {array} vertexSets - The vertex lists to parse.
+     * @param {Phaser.Types.Physics.Matter.MatterBodyConfig} [options] - An optional Body configuration object that is used to set initial Body properties on creation.
      * 
-     * @return {object[]} - A list of matter bodies.
+     * @return {MatterJS.BodyType[]} - An array of Matter JS Bodies.
      */
     parseVertices: function (vertexSets, options)
     {
-        var i, j, k, v, z;
+        if (options === undefined) { options = {}; }
+
         var parts = [];
 
-        options = options || {};
-
-        for (v = 0; v < vertexSets.length; v += 1)
+        for (var v = 0; v < vertexSets.length; v++)
         {
+            Vertices.clockwiseSort(vertexSets[v]);
+
             parts.push(Body.create(Common.extend({
                 position: Vertices.centre(vertexSets[v]),
                 vertices: vertexSets[v]
@@ -127,44 +129,7 @@ var PhysicsEditorParser = {
         }
 
         // flag coincident part edges
-        var coincidentMaxDist = 5;
-
-        for (i = 0; i < parts.length; i++)
-        {
-            var partA = parts[i];
-
-            for (j = i + 1; j < parts.length; j++)
-            {
-                var partB = parts[j];
-
-                if (Bounds.overlaps(partA.bounds, partB.bounds))
-                {
-                    var pav = partA.vertices,
-                        pbv = partB.vertices;
-
-                    // iterate vertices of both parts
-                    for (k = 0; k < partA.vertices.length; k++)
-                    {
-                        for (z = 0; z < partB.vertices.length; z++)
-                        {
-                            // find distances between the vertices
-                            var da = Vector.magnitudeSquared(Vector.sub(pav[(k + 1) % pav.length], pbv[z])),
-                                db = Vector.magnitudeSquared(Vector.sub(pav[k], pbv[(z + 1) % pbv.length]));
-
-                            // if both vertices are very close, consider the edge concident (internal)
-                            if (da < coincidentMaxDist && db < coincidentMaxDist)
-                            {
-                                pav[k].isInternal = true;
-                                pbv[z].isInternal = true;
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-        return parts;
+        return Bodies.flagCoincidentParts(parts);
     }
 };
 

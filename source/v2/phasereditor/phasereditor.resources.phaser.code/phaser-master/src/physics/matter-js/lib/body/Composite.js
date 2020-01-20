@@ -52,6 +52,9 @@ var Body = require('./Body');
      * @param {boolean} [updateChildren=false]
      */
     Composite.setModified = function(composite, isModified, updateParents, updateChildren) {
+
+        Events.trigger(composite, 'compositeModified', composite);
+
         composite.isModified = isModified;
 
         if (updateParents && composite.parent) {
@@ -440,8 +443,8 @@ var Body = require('./Body');
      */
     Composite.rebase = function(composite) {
         var objects = Composite.allBodies(composite)
-                        .concat(Composite.allConstraints(composite))
-                        .concat(Composite.allComposites(composite));
+            .concat(Composite.allConstraints(composite))
+            .concat(Composite.allComposites(composite));
 
         for (var i = 0; i < objects.length; i++) {
             objects[i].id = Common.nextId();

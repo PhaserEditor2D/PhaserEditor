@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2019 Photon Storm Ltd.
+ * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
@@ -671,11 +671,11 @@ var Game = new Class({
      */
     runDestroy: function ()
     {
+        this.scene.destroy();
+        
         this.events.emit(Events.DESTROY);
 
         this.events.removeAllListeners();
-
-        this.scene.destroy();
 
         if (this.renderer)
         {

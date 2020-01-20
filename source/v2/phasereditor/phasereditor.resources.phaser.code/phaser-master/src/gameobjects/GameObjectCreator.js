@@ -1,6 +1,6 @@
 /**
  * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2019 Photon Storm Ltd.
+ * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
@@ -63,7 +63,7 @@ var GameObjectCreator = new Class({
         /**
          * A reference to the Scene Update List.
          *
-         * @name Phaser.GameObjects.GameObjectCreator#updateList;
+         * @name Phaser.GameObjects.GameObjectCreator#updateList
          * @type {Phaser.GameObjects.UpdateList}
          * @protected
          * @since 3.0.0
