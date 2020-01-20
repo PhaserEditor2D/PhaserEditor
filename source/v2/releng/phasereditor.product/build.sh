@@ -1,10 +1,10 @@
 #!/bin/bash
 
 export root=~/Documents/PhaserEditor
-export ver=2.1.5
-export fullver=2.1.5.20191125
-export prever=2.1.4
-export fullprever=2.1.4.20191016
+export ver=2.1.6
+export fullver=2.1.6.20200120
+export prever=2.1.5
+export fullprever=2.1.5.20191125
 
 echo ----------------------------------------
 echo Applying Phaser Editor 2D products patch
