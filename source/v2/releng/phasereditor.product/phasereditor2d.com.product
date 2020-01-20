@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Phaser Editor 2D" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.1.5.20191125" useFeatures="true" includeLaunchers="true">
+<product name="Phaser Editor 2D" uid="phasereditor2d.com" id="phasereditor.ide.product" application="phasereditor.ide.application" version="2.1.6.20200120" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 2D - 2.1.5.20191125
+         Phaser Editor 2D - 2.1.6.20200120
 
-Includes Phaser v3.21.0
+Includes Phaser v3.22.0
 
 Powered by:
 
@@ -195,8 +195,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
-      <property name="osgi.instance.area" value="@noDefault" />
       <property name="osgi.splashPath" value="platform:/base/plugins/phasereditor.ide" />
+      <property name="osgi.instance.area" value="@noDefault" />
    </configurations>
 
    <preferencesInfo>
