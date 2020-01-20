@@ -61,15 +61,19 @@ public class SceneScreenshotBuildParticipant2 implements IProjectBuildParticipan
 
 	@Override
 	public void startupOnInitialize(IProject project, Map<String, Object> env) {
+		
 		var cache = SceneCore.getSceneFileDataCache();
+		
 		var sfiles = cache.getProjectData(project);
 
 		buildAndSendMessage(project, sfiles.stream().map(sfile -> sfile.getFile()).collect(toList()));
 	}
 
 	private static void buildAndSendMessage(IProject project, Collection<IFile> files) {
-		var msg = new CreateSceneScreenshotMessage(files, project);
-		ApiHub.sendMessageAllClients(SOCKET_CHANNEL, msg);
+		if (!files.isEmpty()) {
+			var msg = new CreateSceneScreenshotMessage(files, project);
+			ApiHub.sendMessageAllClients(SOCKET_CHANNEL, msg);
+		}
 	}
 
 	@Override
