@@ -6,31 +6,29 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho.version>1.3.0</tycho.version>
+		<tycho.version>1.6.0</tycho.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
     	<maven.compiler.target>11</maven.compiler.target>
 
 
-<!--		<eclipse-release.url>http://download.eclipse.org/releases/2019-09</eclipse-release.url>		
+		<eclipse-release.url>http://download.eclipse.org/releases/2019-12</eclipse-release.url>
+
+<!--				
 		<eclipse-license.url>https://download.eclipse.org/cbi/updates/license/</eclipse-license.url>
    		<eclipse-tm-terminal.url>https://download.eclipse.org/tm/updates/4.5.100-SNAPSHOT/repository/</eclipse-tm-terminal.url>
    		<eclipse-cdt.url>https://download.eclipse.org/tools/cdt/releases/9.7/cdt-9.7.2/</eclipse-cdt.url> 
 
-
--->
-
-<!--
    		<chromium-cef.url>http://dl.maketechnology.io/chromium-cef/rls/repository</chromium-cef.url>
 		<chromium-swt.url>http://dl.maketechnology.io/chromium-swt/rls/repository</chromium-swt.url>
 
 
--->  
+ 
 		<eclipse-release.url>http://localhost/repo-mirror/eclipse-release</eclipse-release.url>
 		<eclipse-license.url>http://localhost/repo-mirror/eclipse-license</eclipse-license.url>
 		<eclipse-tm-terminal.url>http://localhost/repo-mirror/tm-repository-4.5.101-SNAPSHOT</eclipse-tm-terminal.url>
 		<eclipse-cdt.url>http://localhost/repo-mirror/eclipse-cdt-9.7.2</eclipse-cdt.url>
-
+-->
 		<chromium-cef.url>http://localhost/repo-mirror/chromium-cef/</chromium-cef.url>
 		<chromium-swt.url>http://localhost/repo-mirror/chromium-swt/</chromium-swt.url>
 			
