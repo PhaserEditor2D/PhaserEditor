@@ -53,6 +53,7 @@ public abstract class GameObjectModel extends EditorObjectModel implements
 		GameObjectComponent.set_objectFactory(this, data.optString(objectFactory_name, objectFactory_default));
 		GameObjectComponent.set_objectFactoryType(this, data.optString(objectFactoryType_name, objectFactoryType_default));
 		GameObjectComponent.set_objectBuild(this, data.optBoolean(objectBuild_name, objectBuild_default));
+		GameObjectComponent.set_useName(this, data.optBoolean(useName_name, useName_default));
 
 		VisibleComponent.set_visible(this, data.optBoolean(visible_name, visible_default));
 
@@ -67,6 +68,7 @@ public abstract class GameObjectModel extends EditorObjectModel implements
 		data.put(objectFactory_name, GameObjectComponent.get_objectFactory(this), objectFactory_default);
 		data.put(objectFactoryType_name, GameObjectComponent.get_objectFactoryType(this), objectFactoryType_default);
 		data.put(objectBuild_name, GameObjectComponent.get_objectBuild(this), objectBuild_default);
+		data.put(useName_name, GameObjectComponent.get_useName(this), useName_default);
 
 		data.put(visible_name, VisibleComponent.get_visible(this), visible_default);
 	}
