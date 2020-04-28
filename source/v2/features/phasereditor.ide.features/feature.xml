@@ -2,7 +2,7 @@
 <feature
       id="phasereditor.ide.features"
       label="Phaser Editor 2D - Workbench"
-      version="2.1.6.20200120"
+      version="2.1.7.20200428"
       provider-name="Arian Fornaris">
 
    <description url="http://phasereditor2d.com">
