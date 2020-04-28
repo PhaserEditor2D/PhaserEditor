@@ -6410,11 +6410,9 @@
                 "orig": "src/game objects/particle emitter/emit from texture.js",
                 "dst": "emit from texture.js"
               },
-              {"orig": "assets/particles/flares.png"},
-              {"orig": "assets/particles/explosion.png"},
-              {"orig": "assets/sprites/phaser2.png"},
-              {"orig": "assets/particles/explosion.json"},
               {"orig": "assets/particles/flares.json"},
+              {"orig": "assets/particles/flares.png"},
+              {"orig": "assets/sprites/phaser2.png"},
               {"orig": "assets/skies/space.jpg"}
             ]
           },
@@ -7178,6 +7176,148 @@
               "orig": "src/game objects/render texture/transform draw.js",
               "dst": "transform draw.js"
             }]
+          }
+        ]
+      },
+      {
+        "name": "Rope",
+        "relPath": "src/game objects/rope",
+        "subCategories": [],
+        "examples": [
+          {
+            "mainFile": "src/game objects/rope/animated rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/animated rope.js",
+                "dst": "animated rope.js"
+              },
+              {"orig": "assets/rope/background-grave.png"},
+              {"orig": "assets/rope/skeleton.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/draw rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/draw rope.js",
+                "dst": "draw rope.js"
+              },
+              {"orig": "assets/rope/phaser3-logo.png"},
+              {"orig": "assets/rope/pipe3.png"},
+              {"orig": "assets/rope/pipe2.png"},
+              {"orig": "assets/rope/pipe1.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/draw rope gradient.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/draw rope gradient.js",
+                "dst": "draw rope gradient.js"
+              },
+              {"orig": "assets/rope/background-chalk.jpg"},
+              {"orig": "assets/rope/6x6.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/flip rope xy.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/flip rope xy.js",
+                "dst": "flip rope xy.js"
+              },
+              {"orig": "assets/rope/ui-icons.png"},
+              {"orig": "assets/rope/background-woof.png"},
+              {"orig": "assets/rope/ui-icons.json"},
+              {"orig": "assets/rope/doggo.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/horizontal rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/horizontal rope.js",
+                "dst": "horizontal rope.js"
+              },
+              {"orig": "assets/rope/background-red.png"},
+              {"orig": "assets/rope/fade-one.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/rope as a mask.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/rope as a mask.js",
+                "dst": "rope as a mask.js"
+              },
+              {"orig": "assets/rope/mha.jpg"},
+              {"orig": "assets/rope/dragonball.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/rope with a mask.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/rope with a mask.js",
+                "dst": "rope with a mask.js"
+              },
+              {"orig": "assets/rope/weathering-with-you.jpg"},
+              {"orig": "assets/rope/patchouli.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/rope with shader texture.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/rope with shader texture.js",
+                "dst": "rope with shader texture.js"
+              },
+              {"orig": "assets/rope/bundle6.glsl.js"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/single alpha rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/single alpha rope.js",
+                "dst": "single alpha rope.js"
+              },
+              {"orig": "assets/rope/underwater.jpg"},
+              {"orig": "assets/rope/snake.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/split alpha rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/split alpha rope.js",
+                "dst": "split alpha rope.js"
+              },
+              {"orig": "assets/rope/background-neon.png"},
+              {"orig": "assets/rope/batman-logo.png"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/vertex tint rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/vertex tint rope.js",
+                "dst": "vertex tint rope.js"
+              },
+              {"orig": "assets/rope/glassblock.png"},
+              {"orig": "assets/rope/background-geo-grey.jpg"}
+            ]
+          },
+          {
+            "mainFile": "src/game objects/rope/vertical rope.js",
+            "map": [
+              {
+                "orig": "src/game objects/rope/vertical rope.js",
+                "dst": "vertical rope.js"
+              },
+              {"orig": "assets/rope/pikachu.png"},
+              {"orig": "assets/rope/background-meadow.png"}
+            ]
           }
         ]
       },
@@ -8370,6 +8510,18 @@
             "subCategories": [],
             "examples": [
               {
+                "mainFile": "src/game objects/tilemap/static/Chebyshev distance.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/tilemap/static/Chebyshev distance.js",
+                    "dst": "Chebyshev distance.js"
+                  },
+                  {"orig": "assets/sprites/spaceman.png"},
+                  {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"},
+                  {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"}
+                ]
+              },
+              {
                 "mainFile": "src/game objects/tilemap/static/create from objects.js",
                 "map": [
                   {
@@ -8562,6 +8714,18 @@
                   },
                   {"orig": "assets/tilemaps/maps/super-mario.json"},
                   {"orig": "assets/tilemaps/tiles/super-mario.png"}
+                ]
+              },
+              {
+                "mainFile": "src/game objects/tilemap/static/snake distance.js",
+                "map": [
+                  {
+                    "orig": "src/game objects/tilemap/static/snake distance.js",
+                    "dst": "snake distance.js"
+                  },
+                  {"orig": "assets/tilemaps/csv/catastrophi_level2.csv"},
+                  {"orig": "assets/sprites/spaceman.png"},
+                  {"orig": "assets/tilemaps/tiles/catastrophi_tiles_16.png"}
                 ]
               },
               {
@@ -13214,6 +13378,62 @@
     ]
   },
   {
+    "name": "Math",
+    "relPath": "src/math",
+    "subCategories": [{
+      "name": "Distance",
+      "relPath": "src/math/distance",
+      "subCategories": [],
+      "examples": [
+        {
+          "mainFile": "src/math/distance/Chebyshev distance.js",
+          "map": [
+            {
+              "orig": "src/math/distance/Chebyshev distance.js",
+              "dst": "Chebyshev distance.js"
+            },
+            {"orig": "assets/sprites/ufo.png"},
+            {"orig": "assets/sprites/slimeeyes.png"}
+          ]
+        },
+        {
+          "mainFile": "src/math/distance/distance.js",
+          "map": [
+            {
+              "orig": "src/math/distance/distance.js",
+              "dst": "distance.js"
+            },
+            {"orig": "assets/sprites/ufo.png"},
+            {"orig": "assets/sprites/slimeeyes.png"}
+          ]
+        },
+        {
+          "mainFile": "src/math/distance/distance between points.js",
+          "map": [
+            {
+              "orig": "src/math/distance/distance between points.js",
+              "dst": "distance between points.js"
+            },
+            {"orig": "assets/sprites/ufo.png"},
+            {"orig": "assets/sprites/slimeeyes.png"}
+          ]
+        },
+        {
+          "mainFile": "src/math/distance/snake distance.js",
+          "map": [
+            {
+              "orig": "src/math/distance/snake distance.js",
+              "dst": "snake distance.js"
+            },
+            {"orig": "assets/sprites/slimeeyes.png"},
+            {"orig": "assets/sprites/ufo.png"}
+          ]
+        }
+      ]
+    }],
+    "examples": []
+  },
+  {
     "name": "Paths",
     "relPath": "src/paths",
     "subCategories": [],
@@ -13446,6 +13666,28 @@
             }]
           },
           {
+            "mainFile": "src/physics/arcade/circular collisions.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/circular collisions.js",
+                "dst": "circular collisions.js"
+              },
+              {"orig": "assets/sprites/wizball.png"},
+              {"orig": "assets/sprites/balls.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/arcade/circular collisions 2.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/circular collisions 2.js",
+                "dst": "circular collisions 2.js"
+              },
+              {"orig": "assets/sprites/wizball.png"},
+              {"orig": "assets/sprites/balls.png"}
+            ]
+          },
+          {
             "mainFile": "src/physics/arcade/closest furthest.js",
             "map": [
               {
@@ -13564,6 +13806,17 @@
               {"orig": "assets/sprites/spikedball.png"},
               {"orig": "assets/sprites/lemming.png"},
               {"orig": "assets/sprites/platform.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/arcade/get bodies within circle.js",
+            "map": [
+              {
+                "orig": "src/physics/arcade/get bodies within circle.js",
+                "dst": "get bodies within circle.js"
+              },
+              {"orig": "assets/sprites/mushroom16x16.png"},
+              {"orig": "assets/sprites/flower-exo.png"}
             ]
           },
           {
@@ -13774,7 +14027,8 @@
                 "orig": "src/physics/arcade/smaller bounding box.js",
                 "dst": "smaller bounding box.js"
               },
-              {"orig": "assets/sprites/lemming.png"}
+              {"orig": "assets/sprites/mushroom2.png"},
+              {"orig": "assets/sprites/atari130xe.png"}
             ]
           },
           {
@@ -13919,10 +14173,14 @@
           },
           {
             "mainFile": "src/physics/arcade/world controls.js",
-            "map": [{
-              "orig": "src/physics/arcade/world controls.js",
-              "dst": "world controls.js"
-            }]
+            "map": [
+              {
+                "orig": "src/physics/arcade/world controls.js",
+                "dst": "world controls.js"
+              },
+              {"orig": "assets/sprites/yellow_ball.png"},
+              {"orig": "assets/sprites/32x32.png"}
+            ]
           },
           {
             "mainFile": "src/physics/arcade/wrap group.js",
@@ -14647,6 +14905,18 @@
               },
               {"orig": "assets/sprites/triangle.png"},
               {"orig": "assets/sprites/platform.png"}
+            ]
+          },
+          {
+            "mainFile": "src/physics/matterjs/particles follow body.js",
+            "map": [
+              {
+                "orig": "src/physics/matterjs/particles follow body.js",
+                "dst": "particles follow body.js"
+              },
+              {"orig": "assets/tests/space/space.json"},
+              {"orig": "assets/tests/space/space.png"},
+              {"orig": "assets/tests/space/nebula.jpg"}
             ]
           },
           {

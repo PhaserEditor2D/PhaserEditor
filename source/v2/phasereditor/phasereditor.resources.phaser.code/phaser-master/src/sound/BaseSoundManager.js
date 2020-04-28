@@ -11,15 +11,12 @@ var EventEmitter = require('eventemitter3');
 var Events = require('./events');
 var GameEvents = require('../core/events');
 var NOOP = require('../utils/NOOP');
+var GetAll = require('../utils/array/GetAll');
+var GetFirst = require('../utils/array/GetFirst');
 
 /**
  * @classdesc
- * The sound manager is responsible for playing back audio via Web Audio API or HTML Audio tag as fallback.
- * The audio file type and the encoding of those files are extremely important.
- *
- * Not all browsers can play all audio formats.
- *
- * There is a good guide to what's supported [here](https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/Cross-browser_audio_basics#Audio_Codec_Support).
+ * Base class for other Sound Manager classes.
  *
  * @class BaseSoundManager
  * @extends Phaser.Events.EventEmitter
@@ -28,6 +25,10 @@ var NOOP = require('../utils/NOOP');
  * @since 3.0.0
  *
  * @param {Phaser.Game} game - Reference to the current game instance.
+ *
+ * @see Phaser.Sound.HTML5AudioSoundManager
+ * @see Phaser.Sound.NoAudioSoundManager
+ * @see Phaser.Sound.WebAudioSoundManager
  */
 var BaseSoundManager = new Class({
 
@@ -147,22 +148,8 @@ var BaseSoundManager = new Class({
          */
         this.unlocked = false;
 
-        game.events.on(GameEvents.BLUR, function ()
-        {
-            if (this.pauseOnBlur)
-            {
-                this.onBlur();
-            }
-        }, this);
-
-        game.events.on(GameEvents.FOCUS, function ()
-        {
-            if (this.pauseOnBlur)
-            {
-                this.onFocus();
-            }
-        }, this);
-
+        game.events.on(GameEvents.BLUR, this.onGameBlur, this);
+        game.events.on(GameEvents.FOCUS, this.onGameFocus, this);
         game.events.on(GameEvents.PRE_STEP, this.update, this);
         game.events.once(GameEvents.DESTROY, this.destroy, this);
     },
@@ -227,6 +214,36 @@ var BaseSoundManager = new Class({
     },
 
     /**
+     * Gets the first sound in the manager matching the given key, if any.
+     *
+     * @method Phaser.Sound.BaseSoundManager#get
+     * @since 3.23.0
+     *
+     * @param {string} key - Sound asset key.
+     *
+     * @return {?Phaser.Sound.BaseSound} - The sound, or null.
+     */
+    get: function (key)
+    {
+        return GetFirst(this.sounds, 'key', key);
+    },
+
+    /**
+     * Gets any sounds in the manager matching the given key.
+     *
+     * @method Phaser.Sound.BaseSoundManager#getAll
+     * @since 3.23.0
+     *
+     * @param {string} key - Sound asset key.
+     *
+     * @return {Phaser.Sound.BaseSound[]} - The sounds, or an empty array.
+     */
+    getAll: function (key)
+    {
+        return GetAll(this.sounds, 'key', key);
+    },
+
+    /**
      * Adds a new sound to the sound manager and plays it.
      * The sound will be automatically removed (destroyed) once playback ends.
      * This lets you play a new sound on the fly without the need to keep a reference to it.
@@ -266,8 +283,9 @@ var BaseSoundManager = new Class({
     },
 
     /**
-     * Enables playing audio sprite sound on the fly without the need to keep a reference to it.
-     * Sound will auto destroy once its playback ends.
+     * Adds a new audio sprite sound to the sound manager and plays it.
+     * The sprite will be automatically removed (destroyed) once playback ends.
+     * This lets you play a new sound on the fly without the need to keep a reference to it.
      *
      * @method Phaser.Sound.BaseSoundManager#playAudioSprite
      * @listens Phaser.Sound.Events#COMPLETE
@@ -313,6 +331,23 @@ var BaseSoundManager = new Class({
         }
 
         return false;
+    },
+
+
+    /**
+     * Removes all sounds from the manager, destroying the sounds.
+     *
+     * @method Phaser.Sound.BaseSoundManager#removeAll
+     * @since 3.23.0
+     */
+    removeAll: function ()
+    {
+        this.sounds.forEach(function (sound)
+        {
+            sound.destroy();
+        });
+
+        this.sounds.length = 0;
     },
 
     /**
@@ -398,6 +433,29 @@ var BaseSoundManager = new Class({
         this.emit(Events.STOP_ALL, this);
     },
 
+
+    /**
+     * Stops any sounds matching the given key.
+     *
+     * @method Phaser.Sound.BaseSoundManager#stopByKey
+     * @since 3.23.0
+     *
+     * @param {string} key - Sound asset key.
+     *
+     * @return {number} - How many sounds were stopped.
+     */
+    stopByKey: function (key)
+    {
+        var stopped = 0;
+
+        this.getAll(key).forEach(function (sound)
+        {
+            if (sound.stop()) { stopped++; }
+        });
+
+        return stopped;
+    },
+
     /**
      * Method used internally for unlocking audio playback on devices that
      * require user interaction before any sound can be played on a web page.
@@ -432,6 +490,36 @@ var BaseSoundManager = new Class({
      * @since 3.0.0
      */
     onFocus: NOOP,
+
+    /**
+     * Internal handler for Phaser.Core.Events#BLUR.
+     *
+     * @method Phaser.Sound.BaseSoundManager#onGameBlur
+     * @private
+     * @since 3.23.0
+     */
+    onGameBlur: function ()
+    {
+        if (this.pauseOnBlur)
+        {
+            this.onBlur();
+        }
+    },
+
+    /**
+     * Internal handler for Phaser.Core.Events#FOCUS.
+     *
+     * @method Phaser.Sound.BaseSoundManager#onGameFocus
+     * @private
+     * @since 3.23.0
+     */
+    onGameFocus: function ()
+    {
+        if (this.pauseOnBlur)
+        {
+            this.onFocus();
+        }
+    },
 
     /**
      * Update method called on every game step.
@@ -477,12 +565,13 @@ var BaseSoundManager = new Class({
      */
     destroy: function ()
     {
+        this.game.events.off(GameEvents.BLUR, this.onGameBlur, this);
+        this.game.events.off(GameEvents.FOCUS, this.onGameFocus, this);
+        this.game.events.off(GameEvents.PRE_STEP, this.update, this);
+
         this.removeAllListeners();
 
-        this.forEachActiveSound(function (sound)
-        {
-            sound.destroy();
-        });
+        this.removeAll();
 
         this.sounds.length = 0;
         this.sounds = null;

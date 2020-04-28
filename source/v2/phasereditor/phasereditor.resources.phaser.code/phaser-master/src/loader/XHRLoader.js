@@ -30,6 +30,14 @@ var XHRLoader = function (file, globalXHRSettings)
     xhr.responseType = file.xhrSettings.responseType;
     xhr.timeout = config.timeout;
 
+    if (config.headers)
+    {
+        for (var key in config.headers)
+        {
+            xhr.setRequestHeader(key, config.headers[key]);
+        }
+    }
+
     if (config.header && config.headerValue)
     {
         xhr.setRequestHeader(config.header, config.headerValue);
@@ -43,6 +51,11 @@ var XHRLoader = function (file, globalXHRSettings)
     if (config.overrideMimeType)
     {
         xhr.overrideMimeType(config.overrideMimeType);
+    }
+
+    if (config.withCredentials)
+    {
+        xhr.withCredentials = true;
     }
 
     // After a successful request, the xhr.response property will contain the requested data as a DOMString, ArrayBuffer, Blob, or Document (depending on what was set for responseType.)

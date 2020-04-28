@@ -6,9 +6,9 @@
    <aboutInfo>
       <image path="icons/about.png"/>
       <text>
-         Phaser Editor 2D - 2.1.6.20200120
+         Phaser Editor 2D - 2.1.7.20200428
 
-Includes Phaser v3.22.0
+Includes Phaser v3.23.0
 
 Powered by:
 
@@ -195,8 +195,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
-      <property name="osgi.splashPath" value="platform:/base/plugins/phasereditor.ide" />
       <property name="osgi.instance.area" value="@noDefault" />
+      <property name="osgi.splashPath" value="platform:/base/plugins/phasereditor.ide" />
    </configurations>
 
    <preferencesInfo>
