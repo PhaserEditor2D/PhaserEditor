@@ -1,3 +1,5 @@
+.. include:: _header.rst
+
 Optimize The PNG Image Files
 ============================
 

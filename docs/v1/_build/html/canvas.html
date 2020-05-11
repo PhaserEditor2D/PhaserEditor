@@ -267,7 +267,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="canvas-the-scene-editor">
+  <div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Read the documentation of the latest major version of Phaser Editor 2D <a class="reference external" href="https://help.phasereditor2d.com">here</a>.</p>
+</div>
+<div class="section" id="canvas-the-scene-editor">
 <h1>Canvas, The Scene Editor<a class="headerlink" href="#canvas-the-scene-editor" title="Permalink to this headline">¶</a></h1>
 <p>Canvas is a visual (WYSIWYG) game level/object editor for Phaser. With this tool, you can create a level or the prefabs (reusable objects) of the game, layout sprites and edit object properties like transformation, physics body, and animation. The scenes are compiled to Phaser code, in JavaScript or TypeScript.</p>
 <p>There are three types of Canvas files: states (compiled to a <code class="docutils literal notranslate"><span class="pre">Phaser.State</span></code> code), sprite prefabs (compiled to <code class="docutils literal notranslate"><span class="pre">Phaser.Sprite</span></code> code) and group prefabs (compiled to`Phaser.Group` code). These Phaser classes contain the code that creates the objects of the game world. It is not like other tools like Tiled that uses a custom format to represent the layout and properties of the objects, else it compiles to a code that mimics what a developer can write with his “own hands”. This method has the advantage that the user can read and understand what is behind the scene and like in other tools provided in Phaser Editor, the developer can learn Phaser or reuse his current Phaser learnings.</p>

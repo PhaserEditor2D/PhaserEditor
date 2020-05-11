@@ -44,6 +44,12 @@
 .. |PropertiesView| replace:: Properties view
 .. _PropertiesView: workbench.html#properties-view
 
+
+.. warning::
+
+    Read the documentation of the latest major version of Phaser Editor 2D `here <https://help.phasereditor2d.com>`_.
+
+
 .. warning::
 
   This documentation is in construction.

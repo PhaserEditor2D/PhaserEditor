@@ -1,3 +1,5 @@
+.. include:: _header.rst
+
 Update and Upgrade
 ==================
 

@@ -1,6 +1,7 @@
+.. include:: _header.rst
+
 Coding The Game: The JavaScript Editor
 --------------------------------------
-
 
 With Phaser, you write the game with JavaScript as the main language (there is also support for TypeScript). In Phaser Editor the JavaScript programming is a first citizen, the JavaScript editor is the more important component for us, and we do an extra effort to build the best experience for the Phaser developer.
 

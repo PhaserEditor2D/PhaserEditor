@@ -1,3 +1,5 @@
+.. include:: _header.rst
+
 .. Phaser Editor documentation master file, created by
    sphinx-quickstart on Thu May 25 08:35:14 2017.
    You can adapt this file completely to your liking, but it should at least

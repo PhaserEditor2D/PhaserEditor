@@ -1,3 +1,5 @@
+.. include:: _header.rst
+
 Audio Sprites Editor
 ====================
 

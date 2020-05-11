@@ -1,3 +1,6 @@
+
+.. include:: _header.rst
+
 Assets Management
 =================
 
