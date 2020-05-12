@@ -1,6 +1,8 @@
 ![banner](https://github.com/PhaserEditor2D/PhaserEditor/blob/master/art/logo/banner.png)
 
-# Phaser Editor
+# Phaser Editor 2D v2
+
+**There is a newer major version of Phaser Editor 2D**. Visit its [repository PhaserEditor2D-v3](https://github.com/PhaserEditor2D/PhaserEditor2D-v3/).
 
 A friendly IDE to develop HTML5 games based on the popular [Phaser][phaser] framework.
 
